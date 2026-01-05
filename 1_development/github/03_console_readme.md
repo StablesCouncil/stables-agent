@@ -129,7 +129,7 @@ Special thanks to the Minima community for their support and feedback.
 
 ---
 
-**Stability is a right, not a privilege.**
+**Money Platform.**
 
 Built with ❤️ by the Stables community.
 

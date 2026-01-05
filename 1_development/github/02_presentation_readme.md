@@ -78,7 +78,7 @@ This is a read-only presentation repository. For protocol contributions, see:
 
 ---
 
-**Stability is a right, not a privilege.**
+**Money Platform.**
 
 Built with ❤️ by the Stables community on Minima.
 

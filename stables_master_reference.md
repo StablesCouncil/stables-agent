@@ -96,7 +96,7 @@ To protect your work against hardware failure (a "glass of water"):
 *   **No Jargon**: Do NOT use crypto or DeFi-specific terms like "decentralized" in any external communication or copy for the general public. These terms do not resonate with our target audience.
 *   **Hashtags Exception**: Technical terms (e.g., #decentralized, #defi, #crypto) are permitted ONLY as hashtags on platforms like X/Twitter for community reach and discovery.
 *   **Strict Tagline**: Use ONLY **"Money that is truly yours. Secure, Pseudonymous and Unstoppable."**
-*   **RETIRED**: Do NOT use "Stability is a right, not a privilege."
+*   **Target**: General public worldwide.
 
 ### Core Messaging
 *   **Slogan**: Money Platform
@@ -120,11 +120,11 @@ To protect your work against hardware failure (a "glass of water"):
 ---
 ## 10. The Handshake (Magic Sentence)
 To start any new session, use this exact phrase:
-> **"Refer to the Stables master reference file at `c:\Users\Charles\.gemini\antigravity\scratch\Stables\stables_master_reference.md` and confirm that you are now working on this basis."**
+> **"Run `/stablesworks` and confirm that you are now working on this basis."**
 
 ## 11. External Platforms & Contact
 - **X (Twitter) Profile**: https://x.com/StablesCouncil
-- **Private GitHub Repository (Dev)**: https://github.com/Charles0xhorizonxyz/Stablesworks-docs
+- **Private GitHub Repository (Dev)**: https://github.com/Charles0xhorizonxyz/stablesworks.git
 - **Public GitHub Repository (Release)**: https://github.com/Charles0xhorizonxyz/stablescouncil
 - **Contact Email**: StablesCouncil@protonmail.com
 

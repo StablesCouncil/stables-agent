@@ -86,7 +86,7 @@ Stables is live.
 
 A decentralized money platform built on Minima.
 
-Stability is a right, not a privilege.
+Money Platform.
 The protocol is autonomous.
 The Council is forming.
 
@@ -260,7 +260,7 @@ Keep the console **private** for now. Plan to open-source in Week 2 after initia
 - Iterate based on feedback
 - Build in public
 
-**Stability is a right, not a privilege.**
+**Money Platform.**
 
 Good luck! 🎉
 

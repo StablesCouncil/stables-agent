@@ -1,0 +1,5 @@
+$filePath = "c:\Users\Charles\.gemini\antigravity\scratch\Stables\1_development\docs\presentations V01\stables - presentation en v01.html"
+$lines = [System.IO.File]::ReadAllLines($filePath)
+$lines[7] = '    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAACXBIWXMAAAsTAAALEwEAmpwYAAAByElEQVRYR+2VvUoDQRSFv7m7idFGsREitvERfADfQfAFfAnfQfAl9L6GfAUL30BEm8TS7O6cGSeZ7C6uSREEnAtDdnZ2z8f9uXNnbpY6mBf8S5j3g9s9mG9D+YV4C8vX4WjKz4/HqPzBeC/Cj4r1p9f+fG56/z3n/0X3/nuOn1997qdf73N/ffv++v65C4i7gLgLqI7K6uLpCjT9D0/P1uD17G+X7M23X7I5f7/k3nz6Zc78mTPf5swveZmrE1u5z78M3L7P/YreR99H36f6p6l8nfrH7V9+9/pXOn/D61n8WubK/G6Z3zY3p6X896l/2vy98uN0WkYp9W9T/6S5O6X7J7X296F/uPkHzd6V/mXzn87P+fAn1C9p7m7p/S/S98X7x81fOn8v9XOaByS9/03S98Z98f5x85fO30v9nuYByd0vSbrO2/6+3f67m3+g8h9V3+X3y/ye6N2V/lXyY83dmX9W/9m5D3Sfk3y/Mv6lO79Kfqy5u6T7v0r7P3v9N90/X+7e1C9p7p70L4v/Xv69iX+v8oCnfpH6ufrXqZ/rvyX5Z/VvUj/Xv0v9N/Vz/S9IPitfBfA3E39X8fcmPtef/P+C/r888A9O8O/7AAAAAElFTkSuQmCC">'
+[System.IO.File]::WriteAllLines($filePath, $lines)
+Write-Output "Favicon optimized successfully."

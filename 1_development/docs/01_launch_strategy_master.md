@@ -13,7 +13,7 @@ You have **11 comprehensive launch documents** covering every aspect of your lau
 ### What You're Launching
 
 **Product**: Stables - A decentralized money platform built on Minima  
-**Core Message**: "Stability is a right, not a privilege"  
+**Core Message**: "Money Platform"  
 **Target Audience**: Minima community, DeFi users, privacy advocates, Stablescoin users
 
 ### Launch Assets Ready
@@ -195,7 +195,7 @@ Stables is live.
 
 A decentralized money platform built on Minima.
 
-Stability is a right, not a privilege.
+Money Platform.
 The protocol is autonomous.
 The Council is forming.
 
@@ -212,7 +212,7 @@ Stables is live.
 
 A decentralized money platform built on Minima.
 
-Stability is a right, not a privilege.
+Money Platform.
 The protocol is autonomous.
 The Council is forming.
 
@@ -616,7 +616,7 @@ This is just the beginning.
 > 5. **Build in public** - Share your journey, wins, and challenges
 > 6. **Patience** - Overnight success is a myth
 
-**Stability is a right, not a privilege.**
+**Money Platform.**
 
 Good luck! 🚀
 
