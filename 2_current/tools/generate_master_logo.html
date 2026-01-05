@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Stables Master Logo Renderer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: transparent;
+            /* Transparent for PNG capture if supported, else white */
+        }
+
+        canvas {
+            display: block;
+            /* Remove border and background grid for final capture */
+            border: none;
+            background: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="logoCanvas" width="2000" height="800"></canvas>
+
+    <script>
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Font needs to load before drawing
+        document.fonts.ready.then(function () {
+            // Tiny delay to ensure render
+            setTimeout(drawLogo, 100);
+        });
+
+        function drawLogo() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // --- 1. Draw "STABLES" ---
+            const text = "STABLES";
+            const fontSize = 400;
+            const x = canvas.width / 2;
+            const y = 400; // Centered vertically in 800px
+
+            ctx.font = `800 ${fontSize}px 'Inter'`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            // Gradient
+            const gradient = ctx.createLinearGradient(x - 600, y - 200, x + 600, y + 200);
+            gradient.addColorStop(0, '#E2E8F0');
+            gradient.addColorStop(1, '#94A3B8');
+
+            // Shadow
+            ctx.shadowColor = 'rgba(0,0,0,0.1)';
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 4;
+
+            ctx.fillStyle = gradient;
+            ctx.fillText(text, x, y);
+
+            ctx.shadowColor = 'transparent';
+
+            // --- 2. Draw "MONEY PLATFORM" ---
+            const slogan = "MONEY PLATFORM";
+            const sloganSize = 140;
+            const sloganY = y + 250;
+
+            ctx.font = `400 ${sloganSize}px 'Inter'`;
+            ctx.fillStyle = '#94A3B8';
+
+            const letterSpacing = sloganSize * 0.2;
+            const totalWidth = ctx.measureText(slogan).width + (slogan.length - 1) * letterSpacing;
+            let currentX = x - (totalWidth / 2);
+
+            for (let i = 0; i < slogan.length; i++) {
+                ctx.fillText(slogan[i], currentX + (ctx.measureText(slogan[i]).width / 2), sloganY);
+                currentX += ctx.measureText(slogan[i]).width + letterSpacing;
+            }
+
+            // Signal completeness if needed (headless browsers might just wait a bit)
+            document.body.setAttribute('data-ready', 'true');
+        }
+    </script>
+</body>
+
+</html>
+
+

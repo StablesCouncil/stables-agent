@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Stables — Test App (Prototype)</title>
+
+  <!-- INLINED CSS - No external file =  No loading issues -->
+  <style>
+    :root {
+      --bg: #0b0f14;
+      --panel: #101826;
+      --text: #f0f4f8;
+      /* ✅ Updated to match template demo (brighter) */
+      --muted: #9fb0c0;
+      --line: #223044;
+      --accent: #67e8f9;
+      --good: #34d399;
+      --warn: #fbbf24;
+      --bad: #fb7185;
+      --shadow: 0 10px 25px rgba(0, 0, 0, .35);
+      --radius: 18px
+    }
+
+    * {
+      box-sizing: border-sizing
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+      overflow-x: hidden;
+
+      /* Font sharpening for crisp text */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: 'kern' 1;
+      font-kerning: normal;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(11, 15, 20, .72);
+      backdrop-filter: blur(10px);
+    }
+
+    .topbar-inner {
+      /* ✅ NO max-width - use full viewport width */
+      padding: 14px 16px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      letter-spacing: .2px
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(103, 232, 249, .15)
+    }
+
+    .sub {
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid rgba(34, 48, 68, .85);
+      background: rgba(16, 24, 38, .65);
+      border-radius: 999px;
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none
+    }
+
+    .pill .badge {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--warn)
+    }
+
+    .right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end
+    }
+
+    .mini-pill {
+      border: 1px solid rgba(34, 48, 68, .85);
+      background: rgba(16, 24, 38, .55);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 13px;
+      /* Increased from 12px */
+      color: var(--muted);
+      display: flex;
+      gap: 8px;
+      /* Reduced gap for tighter alignment */
+      align-items: center;
+      height: 36px;
+      /* Fixed height for consistent alignment */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    .mini-pill strong {
+      color: var(--text);
+      font-weight: 800;
+      /* Increased from 700 for sharper appearance */
+      font-size: 14px;
+      /* Explicit size */
+      line-height: 1;
+    }
+
+    .shell {
+      max-width: 1180px;
+      /* 240px sidebar + 40px gap + 900px content */
+      margin: 0 auto;
+      padding: 0 16px 30px 16px;
+      position: relative;
+    }
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0;
+      max-width: 900px;
+      margin: 0 auto;
+      min-height: 600px;
+      /* Fixed height - prevents content shifting between pages */
+    }
+
+    /* Price change animations */
+    @keyframes priceUp {
+      0% {
+        transform: translateY(4px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes priceDown {
+      0% {
+        transform: translateY(-4px);
+        opacity: 0;
+      }
+
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      padding-left: 256px;
+      /* 240px sidebar + 16px gap */
+      align-items: start;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: -100%;
+        height: 100vh;
+        width: 240px;
+        z-index: 1000;
+        transition: left 0.3s ease;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .menu-toggle {
+        display: block !important;
+      }
+    }
+
+    .menu-toggle {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1001;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 78px;
+      left: calc(50% - 590px);
+      /* Center: (1180px / 2) - sidebar width */
+      width: 240px;
+      max-height: calc(100vh - 78px);
+      overflow-y: auto;
+      border: 1px solid rgba(103, 232, 249, .15);
+      background: rgba(16, 24, 38, .75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, .3);
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      gap: 4px
+    }
+
+    .nav a {
+      padding: 10px 10px;
+      border-radius: 14px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid transparent
+    }
+
+    .nav a:hover {
+      background: rgba(34, 48, 68, .25);
+      color: var(--text)
+    }
+
+    .nav a.active {
+      background: rgba(103, 232, 249, .10);
+      border-color: rgba(103, 232, 249, .25);
+      color: var(--text)
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(34, 48, 68, .85);
+      background: rgba(11, 15, 20, .35);
+      color: var(--muted)
+    }
+
+    .tag.ok {
+      border-color: rgba(52, 211, 153, .35);
+      color: rgba(52, 211, 153, .9)
+    }
+
+    .main {
+      border: 1px solid rgba(34, 48, 68, .85);
+      background: rgba(16, 24, 38, .55);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden
+    }
+
+    .main-head {
+      display: none;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin: 0
+    }
+
+    .desc {
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 760px
+    }
+
+    .content {
+      padding: 18px
+    }
+
+    .stack {
+      display: grid;
+      gap: 14px
+    }
+
+    .card {
+      border: 1px solid rgba(34, 48, 68, .85);
+      background: rgba(11, 15, 20, .28);
+      border-radius: 16px;
+      padding: 16px
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 14px
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px
+    }
+
+    .step-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px
+    }
+
+    .step-badge {
+      font-weight: 900;
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(103, 232, 249, .35);
+      background: rgba(103, 232, 249, .08)
+    }
+
+    .kpi {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: .2px
+    }
+
+    .row {
+      display: grid;
+      gap: 12px
+    }
+
+    .row.two {
+      grid-template-columns: 1fr 1fr
+    }
+
+    .hr {
+      height: 1px;
+      background: rgba(34, 48, 68, .6);
+      margin: 14px 0
+    }
+
+    .btnbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid rgba(34, 48, 68, .9);
+      background: rgba(31, 42, 59, .75);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      font-weight: 750;
+      letter-spacing: .1px
+    }
+
+    button:hover {
+      background: rgba(31, 42, 59, .95)
+    }
+
+    button.primary {
+      border-color: rgba(103, 232, 249, .45);
+      background: rgba(103, 232, 249, .12)
+    }
+
+    button.primary:hover {
+      background: rgba(103, 232, 249, .18)
+    }
+
+    button.ghost {
+      background: rgba(24, 34, 52, .45)
+    }
+
+    button:disabled {
+      opacity: .45;
+      cursor: not-allowed
+    }
+
+    .bigbtn {
+      padding: 14px 16px;
+      border-radius: 18px;
+      font-size: 14px;
+      font-weight: 850;
+      letter-spacing: .15px;
+      min-height: 50px
+    }
+
+    .iconbtn {
+      width: 38px;
+      height: 38px;
+      padding: 0;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      color: var(--muted);
+      background: rgba(24, 34, 52, .45);
+      border: 1px solid rgba(34, 48, 68, .85)
+    }
+
+    .iconbtn:hover {
+      color: var(--text);
+      background: rgba(31, 42, 59, .95)
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 6px
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid rgba(34, 48, 68, .85);
+      background: rgba(11, 15, 20, .35);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 14px;
+      outline: none;
+      autocomplete: off
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(103, 232, 249, .45)
+    }
+
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
+
+    .slider-wrap {
+      display: grid;
+      gap: 10px
+    }
+
+    .asset-row {
+      border: 1px solid rgba(34, 48, 68, .75);
+      background: rgba(11, 15, 20, .20);
+      border-radius: 14px;
+      padding: 12px
+    }
+
+    .asset-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap
+    }
+
+    .asset-name {
+      font-weight: 900
+    }
+
+    .asset-name .em {
+      color: var(--accent)
+    }
+
+    .asset-sub {
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 6px
+    }
+
+    .asset-controls {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px
+    }
+
+    .asset-controls .line {
+      display: flex;
+      gap: 10px;
+      align-items: center
+    }
+
+    input[type="range"] {
+      width: 100%
+    }
+
+    .amt {
+      min-width: 110px;
+      text-align: right;
+      font-weight: 900;
+      font-size: 15px
+    }
+
+    .asset-name {
+      font-weight: 900;
+      font-size: 15px
+    }
+
+    .asset-sub {
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 6px
+    }
+
+    details {
+      border: 1px solid rgba(34, 48, 68, .75);
+      background: rgba(11, 15, 20, .18);
+      border-radius: 16px;
+      padding: 12px
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 850
+    }
+
+    .backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      padding-left: 148px;
+      /* 128px (half sidebar+gap) + 20px extra for centering on content */
+      z-index: 50
+    }
+
+    .modal {
+      width: min(760px, 100%);
+      border: 1px solid rgba(34, 48, 68, .85);
+      background: rgba(16, 24, 38, .96);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+      overflow: hidden
+    }
+
+    .modal-head {
+      padding: 14px 14px 12px;
+      border-bottom: 1px solid rgba(34, 48, 68, .6);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px
+    }
+
+    .modal-body {
+      padding: 14px
+    }
+
+    .hint {
+      border-left: 3px solid rgba(103, 232, 249, .55);
+      padding: 10px 12px;
+      background: rgba(103, 232, 249, .06);
+      border-radius: 14px;
+      font-size: 13px
+    }
+
+    .toast {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      z-index: 60;
+      max-width: 420px;
+      display: none;
+      border: 1px solid rgba(34, 48, 68, .85);
+      background: rgba(16, 24, 38, .95);
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: var(--shadow)
+    }
+
+    .toast strong {
+      display: block;
+      margin-bottom: 6px
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+
+      .sidebar {
+        position: relative;
+        top: auto
+      }
+
+      .row.two {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Mobile Menu Toggle -->
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()">☰</button>
+
+  <!-- Top Bar -->
+  <div class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#/wallet" aria-label="Stables Home">
+        <img src="assets/stables_logo.png" alt="Stables" style="width: 44px; height: 44px; border-radius: 8px;" />
+        <span>
+          <div>Stables</div>
+          <div class="sub">The Money Platform</div>
+        </span>
+      </a>
+
+      <div class="pill" id="phasePill" title="Click to learn about test phases">
+        <span class="badge"></span>
+        <span id="phaseText">Public Test — Capped</span>
+        <span class="sub" style="opacity:.95">(click)</span>
+      </div>
+
+      <div class="right">
+        <div class="mini-pill"><span style="font-weight: 600;">MINIMA</span><strong id="minimaPrice"
+            style="color: var(--cyan);">$—</strong></div>
+        <div class="mini-pill"><span style="font-weight: 600;">Wallet</span><strong id="walletAddr"
+            style="font-family: monospace; font-size: 12px; font-weight: 700;">Loading...</strong></div>
+        <div class="mini-pill"><span style="font-weight: 600;">Block</span><strong id="blockStatus"
+            style="font-size: 15px; font-weight: 900;">—</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="grid">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <nav class="nav" id="nav">
+          <a href="#/wallet" data-route="wallet"><span>🏠 Wallet</span><span class="tag ok">HOME</span></a>
+          <a href="#/investment" data-route="investment"><span>💼 Investment</span><span class="tag ok">NEW</span></a>
+          <a href="#/swap" data-route="swap"><span>🔄 Swap</span><span class="tag">TRADE</span></a>
+          <a href="#/factory" data-route="factory"><span>🏭 Factory</span><span class="tag">MINT</span></a>
+          <a href="#/chat" data-route="chat"><span>💬 Chat</span><span class="tag ok">NEW</span></a>
+          <a href="#/contacts" data-route="contacts"><span>👥 Contacts</span><span class="tag ok">NEW</span></a>
+          <a href="#/faucet" data-route="faucet"><span>🚰 Faucet</span><span class="tag warn"
+              id="gateFaucet">TEST</span></a>
+          <a href="#/protocol" data-route="protocol"><span>📊 Protocol</span><span class="tag">INFO</span></a>
+          <a href="#/council" data-route="council"><span>🏛️ Council</span><span class="tag">GOV</span></a>
+          <a href="#/feedback" data-route="feedback"><span>📝 Feedback</span><span class="tag">HELP</span></a>
+        </nav>
+      </aside>
+
+      <!-- Main -->
+      <main class="main">
+        <div class="main-head">
+          <div>
+            <h1 id="pageTitle">Wallet</h1>
+            <div class="desc" id="pageDesc">Wallet-first: use mUSD day-to-day. Use the Factory only when you need to
+              mint/burn.</div>
+          </div>
+          <div class="btnbar" id="headerButtons"></div>
+        </div>
+        <div class="content" id="app"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Onboarding Modal -->
+  <div class="backdrop" id="onboardBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" style="width:min(520px, 100%)">
+      <div class="modal-head">
+        <strong>Test mode</strong>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; align-items:center; justify-content:space-between; gap:10px">
+          <div>
+            <div style="font-weight:900">Need test MINIMA?</div>
+            <div class="muted" style="margin-top:4px">One tap to get test MINIMA. No value.</div>
+          </div>
+          <button class="iconbtn" id="onboardHelp" title="What is a faucet?">?</button>
+        </div>
+
+        <div class="hr"></div>
+
+        <div style="display:grid; gap:10px">
+          <button class="primary bigbtn" id="quickFaucet">Get 10,000 test MINIMA</button>
+          <button class="ghost bigbtn" id="continueApp">Continue</button>
+        </div>
+
+        <div class="muted" style="margin-top:12px">If you already have test MINIMA, just continue.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase Modal -->
+  <div class="backdrop" id="phaseBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-head">
+        <strong>Test Phase</strong>
+        <button class="ghost" id="closePhase">Close</button>
+      </div>
+      <div class="modal-body">
+        <div class="hint" style="margin-bottom:12px">
+          <strong>Everything here is test-only.</strong>
+          <div style="margin-top:6px; color:var(--muted)">Faucet assets have no value. Use them to experiment safely.
+          </div>
+        </div>
+        <div class="row two">
+          <div class="card">
+            <h3>Public Test — Capped</h3>
+            <div class="muted">Stricter faucet and mint limits.</div>
+            <div class="hr"></div>
+            <button class="primary" id="setCapped">Set Capped</button>
+          </div>
+          <div class="card">
+            <h3>Public Test — Uncapped</h3>
+            <div class="muted">Fewer limits (still test-only).</div>
+            <div class="hr"></div>
+            <button class="primary" id="setUncapped">Set Uncapped</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Receive Modal -->
+  <div class="backdrop" id="recvBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" style="width:min(520px, 100%)">
+      <div class="modal-head">
+        <strong>Receive</strong>
+        <button class="ghost" id="closeRecv">Done</button>
+      </div>
+      <div class="modal-body">
+        <!-- Currency Selection -->
+        <div>
+          <label for="recvCurrency"
+            style="color: var(--muted); font-size: 12px; margin-bottom: 6px; display: block;">Currency</label>
+          <select id="recvCurrency">
+            <option value="m">mUSD</option>
+            <option value="eur">mEUR</option>
+            <option value="cad">mCAD</option>
+            <option value="chf">mCHF</option>
+            <option value="minima">MINIMA</option>
+            <option value="sm">smUSD</option>
+            <option value="x">xMINIMA</option>
+          </select>
+        </div>
+
+        <!-- Amount Input -->
+        <div style="margin-top: 14px;">
+          <label for="recvAmount"
+            style="color: var(--muted); font-size: 12px; margin-bottom: 6px; display: block;">Amount (Optional)</label>
+          <input type="text" id="recvAmount" inputmode="decimal" placeholder="Enter amount..." />
+        </div>
+        <div class="hr"></div>
+
+        <!-- QR Code Container -->
+        <div id="qrCodeContainer" style="margin: 16px 0;"></div>
+
+        <!-- Address Display -->
+        <div>
+          <label style="color: var(--muted); font-size: 12px; margin-bottom: 6px; display: block;">Receiving
+            Address</label>
+          <div
+            style="padding: 12px; background: rgba(11,15,20,.35); border-radius: 12px; border: 1px solid rgba(34,48,68,.85); font-family: monospace; font-size: 11px; word-break: break-all; color: var(--text);"
+            id="recvAddr">Loading...</div>
+        </div>
+
+        <!-- Copy Address Button -->
+        <button class="ghost" id="copyReceive"
+          style="margin-top: 14px; padding: 16px; font-size: 16px; font-weight: 900; width: 100%;">Copy Address</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Send Modal -->
+  <div class="backdrop" id="sendBackdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal" style="width:min(520px, 100%)">
+      <div class="modal-head">
+        <strong>Send</strong>
+        <button class="ghost" id="closeSend">Done</button>
+      </div>
+      <div class="modal-body">
+        <select id="sendAsset">
+          <option value="m" selected>mUSD</option>
+          <option value="minima">MINIMA</option>
+          <option value="sm">smUSD</option>
+          <option value="x">xMINIMA</option>
+        </select>
+        <div style="margin-top:10px">
+          <label for="sendTo">To</label>
+          <div style="display: flex; gap: 8px;">
+            <input id="sendTo" placeholder="Paste address" style="flex: 1;" />
+            <button class="iconbtn" onclick="openQRScanner()" title="Scan QR Code"
+              style="width: 44px; height: 44px; font-size: 18px;">📷</button>
+          </div>
+        </div>
+        <div style="margin-top:10px">
+          <label for="sendAmt">Amount</label>
+          <input id="sendAmt" type="number" min="0" step="0.0001" value="1" />
+        </div>
+        <div style="margin-top:12px; max-width: 300px; margin-left: auto; margin-right: auto;">
+          <button class="primary bigbtn" id="confirmSend">Send</button>
+        </div>
+        <div class="muted" style="margin-top:12px">Prototype: updates your local balances only.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <strong id="toastTitle">Done</strong>
+    <div class="muted" id="toastBody">Action completed.</div>
+  </div>
+
+  <!-- Minima Blockchain Integration -->
+  <script type="text/javascript" src="mds.js"></script>
+  <script src="assets/minima-integration.js"></script>
+  <script src="assets/price-oracle.js"></script>
+
+  <!-- Libraries -->
+  <script src="assets/libs/qrcode.js"></script>
+
+  <!-- Route Scripts -->
+  <script src="assets/routes/wallet.js"></script>
+  <script src="assets/routes/investment.js"></script>
+  <script src="assets/routes/swap.js"></script>
+  <script src="assets/routes/factory.js"></script>
+  <script src="assets/routes/protocol.js"></script>
+  <script src="assets/routes/contacts.js"></script>
+  <script src="assets/routes/chat.js"></script>
+  <script src="assets/routes/council.js"></script>
+  <script src="assets/routes/faucet.js"></script>
+  <script src="assets/routes/feedback.js"></script>
+
+  <!-- Main App -->
+  <script src="assets/app.js"></script>
+</body>
+
+</html>
+
+

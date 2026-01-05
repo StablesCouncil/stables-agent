@@ -1,0 +1,37 @@
+# Git Ignore File - Files Git Should NOT Track
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor Files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Temporary Files
+*.tmp
+*.log
+
+# Node modules (if we add any later)
+node_modules/
+
+# Sensitive Data (never commit these!)
+*.key
+*.pem
+.env
+secrets/
+
+# Build Output (if we create builds later)
+dist/
+build/
+*.zip
+
+# Large media files (already in Files folder)
+*.mp4
+*.mov
+*.avi
+
