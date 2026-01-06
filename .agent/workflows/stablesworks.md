@@ -11,6 +11,7 @@ description: The Mandatory Handshake Protocol (Run /Stablesworks at session star
     - Branding: Use "Stables" (NOT "Stables Protocol"), "Council" (NOT "DAO")
     - Platform: MiniDapp only (NO website)
     - Target: General public worldwide
+    - **Archival Rule**: Never delete; always move to `3_archive/`
 3.  **Report Status**:
     List the contents of `C:\Users\Charles\.gemini\antigravity\scratch\Stables\2_current\assets\` to see current approved assets.
 

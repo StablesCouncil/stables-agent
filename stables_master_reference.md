@@ -9,6 +9,7 @@
 3.  **Reuse First**: Always attempt to composite/reuse existing assets from `2_current` before regenerating. If an asset is broken, REPORT IT.
 4.  **Confirm Understanding**: When triggered, acknowledge these rules immediately.
 5.  **Promotion Authority**: AI proposes → User reviews → User promotes to `2_current/`. Never assume files are "current" until user confirms.
+6.  **Archival Protocol**: **NEVER DELETE ANY FILE**. When a file is redundant or replaced, move it to the corresponding folder in `3_archive/`. This ensures business continuity.
 
 
 # 01. ASSET LIFECYCLE PROTOCOL (PROMOTION & ARCHIVING)
@@ -19,7 +20,7 @@
     *   Work in `assets/development/`.
     *   Iterate until user gives **Explicit Approval**.
 2.  **Promotion Phase** (Triggered by User Approval):
-    *   **Archive**: Check `current/` for the existing asset. Move it to `archive/assets/`, renaming it with a version suffix (e.g., `_v04.png`).
+    *   **Archive**: Check `current/` for the existing asset. Move it to `3_archive/assets/`, renaming it with a version suffix (e.g., `_v04.png`).
     *   **Promote**: Move the new approved file from `development/` to `current/`.
     *   **Tag**: Ensure the new file in `current/` uses the standard naming convention (typically ending in `_current` or a specific version like `_v05`).
 3.  **Sanity Check**:
@@ -30,7 +31,7 @@
 
 ## 0. Document Versioning
 - **Current Version**: v4
-- **Archive Path**: `archive/master_reference/`
+- **Archive Path**: `3_archive/master_reference/`
 - **Policy**: When this document is significantly updated, move the previous version to the archive with a version suffix (e.g., `v3.md`).
 
 ## 1. The Global Anchor
@@ -46,11 +47,11 @@
 | **`current/app/`** | **Live dApp Source** | The core code of the Stables MiniDapp. |
 | **`current/docs/`** | **Approved Content** | Definitive manuals, roadmap, and overview. |
 | **`current/tools/`** | **Building Machinery** | Scripts to compile and package the app. |
-| `archive/` | Historical Reference | Read-only. Old versions renamed chronologically. |
+| `3_archive/` | Historical Reference | Read-only. Old versions renamed chronologically. |
 
 ### 3. Archiving Rule (Chronological)
 When a `_current` asset is replaced:
-1.  Move the old `_current` file to `archive/assets/`.
+1.  Move the old `_current` file to `3_archive/assets/`.
 2.  Rename it with its next version number (e.g., if `v10` exists, rename to `logo_v11.png`).
 3.  Identify the new version in `assets/current/` as the new `_current`.
 
@@ -73,7 +74,7 @@ To protect your work against hardware failure (a "glass of water"):
 - **Currency Ticker**: Always prefix with lowercase 'm' followed by uppercase ticker. 
   - English (Global): `mUSD`
   - Bilingual (French): `mCAD`
-  - Bilingual (Farsi): `mIRT` (Value = EN x 1,000,000)
+  - Bilingual (Farsi): `mIRT` (Value = EN x 100,000)
   - Bilingual (German): `mEUR`
 - **File Naming**: Use `v0X` suffix for versioning (e.g., `Stables - Presentation v01.html`).
 
