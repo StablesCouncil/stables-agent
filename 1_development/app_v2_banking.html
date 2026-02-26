@@ -3804,8 +3804,8 @@
         const XWM_PRICE = 0.00846, XWM_LEV = 4.2;
         function calcXwm() {
             const wn = parseFloat(document.getElementById('xwmAmt').value) || 0;
-            const xwm = wn > 0 ? (wn * XWM_PRICE * XWM_LEV / XWM_PRICE).toFixed(2) : '\u2014';
-            document.getElementById('xwmCalcR').textContent = wn > 0 ? xwm + ' xWiniwa' : '\u2014';
+            const xwm = wn > 0 ? (wn * XWM_PRICE * XWM_LEV / XWM_PRICE) : '\u2014';
+            document.getElementById('xwmCalcR').textContent = wn > 0 ? xwm.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' xWiniwa' : '\u2014';
             calcSlider();
         }
         function setXwmMax() {
@@ -3822,16 +3822,16 @@
         // Reclaim calc
         function calcReclaim() {
             const amt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
-            const wn = amt > 0 ? (amt / 0.00846).toFixed(0) : '\u2014';
-            document.getElementById('rCalcM').textContent = wn > 0 ? wn + ' Winiwa' : '\u2014';
+            const wn = amt > 0 ? (amt / 0.00846) : '\u2014';
+            document.getElementById('rCalcM').textContent = wn !== '\u2014' ? wn.toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' Winiwa' : '\u2014';
         }
 
         // Burn xWiniwa calc
         function calcXwmBurn() {
             const amt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
-            const wn = amt > 0 ? (amt * XWM_PRICE * XWM_LEV / XWM_PRICE).toFixed(0) : '\u2014';
+            const wn = amt > 0 ? (amt * XWM_PRICE * XWM_LEV / XWM_PRICE) : '\u2014';
             const el = document.getElementById('xwmBurnCalc');
-            if (el) el.textContent = wn !== '\u2014' ? wn + ' Winiwa' : '\u2014';
+            if (el) el.textContent = wn !== '\u2014' ? wn.toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' Winiwa' : '\u2014';
         }
 
         // Live block counter - anchored to 1968296 at 2026-02-26T07:34:00 UTC (~12s per block)
@@ -3870,8 +3870,8 @@
             const c = document.getElementById('issCalc');
             if (amt > 0) {
                 if (c) c.style.display = '';
-                document.getElementById('iCalcM').textContent = (amt / 0.00846).toFixed(0) + ' Winiwa';
-                document.getElementById('iCalcR').textContent = amt.toFixed(2) + ' ' + (document.getElementById('issueCcy') ? document.getElementById('issueCcy').value.split(' ')[0] : 'USDw');
+                document.getElementById('iCalcM').textContent = (amt / 0.00846).toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' Winiwa';
+                document.getElementById('iCalcR').textContent = amt.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + (document.getElementById('issueCcy') ? document.getElementById('issueCcy').value.split(' ')[0] : 'USDw');
                 document.getElementById('iCalcCR').textContent = '247% \u2713';
             } else if (c) c.style.display = 'none';
         }
