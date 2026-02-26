@@ -2600,7 +2600,7 @@
                         </div>
                         <button class="btn"
                             style="background:linear-gradient(135deg,rgba(167,139,250,.25),rgba(103,232,249,.15));border-color:rgba(167,139,250,.4);width:100%"
-                            onclick="showToast('xWiniwa minting live at launch')">Mint xWiniwa &rarr;</button>
+                            onclick="showToast('xWiniwa minting live at launch')">Mint xWiniwa</button>
 
 
                         <!-- PORTFOLIO SIMULATOR — slider -->
@@ -4029,16 +4029,10 @@
             const customPrice = parseFloat(document.getElementById('simPrice').value);
             const currentPrice = SIM_Winiwa_PRICE;
             const xWiniwaHeld = SIM_XWM_HELD;
-            const totalWiniwa = 2458321; // Match protocol scale for realistic CR math
-            const currentLiabilities = 3450.75;
             const resultEl = document.getElementById('simResult');
             if (!customPrice || customPrice <= 0) { resultEl.textContent = ''; return; }
             const newVal = (xWiniwaHeld * customPrice * SIM_LEVERAGE / currentPrice).toFixed(2);
-            const totalAssets = totalWiniwa * customPrice;
-            const newCR = ((totalAssets / currentLiabilities) * 100).toFixed(0);
-            const crColor = newCR >= 110 ? 'var(--gr)' : 'var(--rd)';
-            const lock = newCR < 110 ? ' \u26a0\ufe0f xWiniwa LOCKED' : ' \u2713 Open';
-            resultEl.innerHTML = 'At <strong>$' + customPrice + '</strong> \u2014 xWiniwa value: <strong style="color:var(--pu)">$' + newVal + '</strong> \u00b7 CR: <strong style="color:' + crColor + '">' + newCR + '%</strong>' + lock;
+            resultEl.innerHTML = 'At <strong>$' + customPrice + '</strong> \u2014 xWiniwa value: <strong style="color:var(--pu)">$' + newVal + '</strong>';
         }
 
         function flipEx() {
