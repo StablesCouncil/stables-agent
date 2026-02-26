@@ -4027,13 +4027,13 @@
 
         function runSim() {
             const customPrice = parseFloat(document.getElementById('simPrice').value);
-            const currentPrice = 0.00846;
-            const xWiniwaHeld = 12;
-            const totalWiniwa = 10000;
+            const currentPrice = SIM_Winiwa_PRICE;
+            const xWiniwaHeld = SIM_XWM_HELD;
+            const totalWiniwa = 2458321; // Match protocol scale for realistic CR math
             const currentLiabilities = 3450.75;
             const resultEl = document.getElementById('simResult');
             if (!customPrice || customPrice <= 0) { resultEl.textContent = ''; return; }
-            const newVal = (xWiniwaHeld * customPrice * XWM_LEV / currentPrice).toFixed(2);
+            const newVal = (xWiniwaHeld * customPrice * SIM_LEVERAGE / currentPrice).toFixed(2);
             const totalAssets = totalWiniwa * customPrice;
             const newCR = ((totalAssets / currentLiabilities) * 100).toFixed(0);
             const crColor = newCR >= 110 ? 'var(--gr)' : 'var(--rd)';
