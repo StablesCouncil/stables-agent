@@ -2572,7 +2572,10 @@
                         </div>
                         <!-- Input -->
                         <div style="margin-bottom:10px">
-                            <div class="xs mu" style="margin-bottom:5px">Winiwa to lock</div>
+                            <div class="fbet xs mu" style="margin-bottom:5px">
+                                <div>Winiwa to lock</div>
+                                <div>Available: 10,000</div>
+                            </div>
                             <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
                                 <input class="finput" type="number" id="xwmAmt" placeholder="0" oninput="calcXwm()"
                                     inputmode="decimal" style="min-width:0">
@@ -2697,31 +2700,30 @@
                                 </div>
                             </details>
                         </div>
-                    </div>
-
-                    <!-- BURN xWINIWA — Reclaim Winiwa -->
-                    <div style="margin-top:32px">
-                        <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn xWiniwa</div>
-                        <div
-                            style="padding:14px;background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.18);border-radius:12px">
-                            <div class="xs mu" style="margin-bottom:10px">Requires CR &gt; 110% after burn &middot;
-                                no fees</div>
-                            <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
-                                <input class="finput" type="number" id="xwmBurnAmt" placeholder="xWiniwa to burn"
-                                    oninput="calcXwmBurn()" inputmode="decimal" style="min-width:0">
-                                <div
-                                    style="display:flex;align-items:center;padding:0 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:10px;font-size:12px;font-weight:700;color:var(--pu)">
-                                    xWiniwa</div>
+                        <!-- BURN xWINIWA — Reclaim Winiwa -->
+                        <div style="margin-top:32px">
+                            <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn xWiniwa</div>
+                            <div
+                                style="padding:14px;background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.18);border-radius:12px">
+                                <div class="xs mu" style="margin-bottom:10px">Requires CR &gt; 110% after burn &middot;
+                                    no fees</div>
+                                <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
+                                    <input class="finput" type="number" id="xwmBurnAmt" placeholder="xWiniwa to burn"
+                                        oninput="calcXwmBurn()" inputmode="decimal" style="min-width:0">
+                                    <div
+                                        style="display:flex;align-items:center;padding:0 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:10px;font-size:12px;font-weight:700;color:var(--pu)">
+                                        xWiniwa</div>
+                                </div>
+                                <div class="calc-box" style="margin-bottom:10px">
+                                    <div class="calc-row"><span class="mu">Winiwa you receive</span><span
+                                            id="xwmBurnCalc" style="font-weight:800">&mdash;</span></div>
+                                    <div class="calc-row"><span class="mu">CR after burn</span><span
+                                            style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
+                                </div>
+                                <button class="btn btn-w" style="border-color:rgba(167,139,250,.3)"
+                                    onclick="showToast('Burn available after full launch')">Burn xWiniwa &rarr;
+                                    Reclaim</button>
                             </div>
-                            <div class="calc-box" style="margin-bottom:10px">
-                                <div class="calc-row"><span class="mu">Winiwa you receive</span><span id="xwmBurnCalc"
-                                        style="font-weight:800">&mdash;</span></div>
-                                <div class="calc-row"><span class="mu">CR after burn</span><span
-                                        style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
-                            </div>
-                            <button class="btn btn-w" style="border-color:rgba(167,139,250,.3)"
-                                onclick="showToast('Burn available after full launch')">Burn xWiniwa &rarr;
-                                Reclaim</button>
                         </div>
                     </div>
                 </div>
@@ -2733,7 +2735,10 @@
                         <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x26CF;&#xFE0F; Mint Wables
                         </div>
                         <div style="margin-bottom:10px">
-                            <div class="xs mu" style="margin-bottom:5px">Amount to issue</div>
+                            <div class="fbet xs mu" style="margin-bottom:5px">
+                                <div>Amount to issue</div>
+                                <div>Available: 10,000 Winiwa</div>
+                            </div>
                             <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
                                 <input class="finput" type="number" id="issueAmt" placeholder="0.00"
                                     oninput="calcIssue()" inputmode="decimal" style="min-width:0">
@@ -2801,19 +2806,23 @@
                                 <div class="lm-body">
                                     <div class="fbet xs" style="margin-bottom:4px"><span class="mu">Total
                                             assets</span><span style="font-weight:800">$84.60 <span
-                                                style="font-weight:normal;color:var(--m)">equiv. &nbsp;&middot;&nbsp;
+                                                style="font-weight:normal;color:var(--m)">equiv.
+                                                &nbsp;&middot;&nbsp;
                                                 10,000 Winiwa</span></span></div>
                                     <div class="fbet xs" style="margin-bottom:4px"><span class="mu">Liabilities
                                             (senior)</span><span style="font-weight:800">$70.82 <span
-                                                style="font-weight:normal;color:var(--m)">equiv. &nbsp;&middot;&nbsp;
+                                                style="font-weight:normal;color:var(--m)">equiv.
+                                                &nbsp;&middot;&nbsp;
                                                 3,450 USDs circulating</span></span></div>
                                     <div class="fbet xs" style="margin-bottom:4px"><span class="mu">Convertibles (cf
                                             pool)</span><span style="font-weight:800">$10.49 <span
-                                                style="font-weight:normal;color:var(--m)">equiv. &nbsp;&middot;&nbsp;
+                                                style="font-weight:normal;color:var(--m)">equiv.
+                                                &nbsp;&middot;&nbsp;
                                                 1,240 cf tokens</span></span></div>
                                     <div class="fbet xs" style="margin-bottom:4px"><span class="mu">Equity
-                                            (xWiniwa)</span><span style="font-weight:800;color:var(--pu)">$2.88 <span
-                                                style="font-weight:normal;color:var(--m)">equiv. &nbsp;&middot;&nbsp;
+                                            (xWiniwa)</span><span style="font-weight:800;color:var(--pu)">$2.88
+                                            <span style="font-weight:normal;color:var(--m)">equiv.
+                                                &nbsp;&middot;&nbsp;
                                                 340 xWiniwa</span></span></div>
                                     <table class="threshold-table" style="margin-top:6px">
                                         <tr>
@@ -2834,10 +2843,12 @@
                         </div>
                         <!-- Burn Wables reclaim -->
                         <div style="margin-top:32px">
-                            <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn Wables</div>
+                            <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn Wables
+                            </div>
                             <div
                                 style="padding:14px;background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15);border-radius:12px">
-                                <div class="xs mu" style="margin-bottom:10px">Requires CR &gt; 110% after burn &middot;
+                                <div class="xs mu" style="margin-bottom:10px">Requires CR &gt; 110% after burn
+                                    &middot;
                                     no
                                     fees</div>
                                 <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
@@ -3108,25 +3119,29 @@
             <!-- CURRENT PROTOCOL DECISIONS -->
             <div
                 style="margin-bottom:16px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.18);border-radius:14px;padding:14px">
-                <div style="font-size:13px;font-weight:800;margin-bottom:12px;color:var(--pu)">&#x2696;&#xFE0F; Current
+                <div style="font-size:13px;font-weight:800;margin-bottom:12px;color:var(--pu)">&#x2696;&#xFE0F;
+                    Current
                     Protocol Decisions</div>
                 <div class="ph-row"><span class="ph-label">Coverage ratio floor</span><span class="ph-val"
                         style="color:var(--am)">110%</span></div>
                 <div class="ph-row"><span class="ph-label">Crisis conversion threshold</span><span class="ph-val"
                         style="color:var(--rd)">100%</span></div>
-                <div class="ph-row"><span class="ph-label">Stablecoin tx fee</span><span class="ph-val">0%</span></div>
+                <div class="ph-row"><span class="ph-label">Stablecoin tx fee</span><span class="ph-val">0%</span>
+                </div>
                 <div class="ph-row"><span class="ph-label">Coverage Fund fee share</span><span class="ph-val"
                         style="color:var(--gr)">100% of all fees</span></div>
-                <div class="ph-row"><span class="ph-label">xWiniwa burn fee</span><span class="ph-val">0%</span></div>
-                <div class="ph-row" style="margin-bottom:0"><span class="ph-label">Governance multipliers</span><span
-                        class="ph-val xs mu">Wables 1x
+                <div class="ph-row"><span class="ph-label">xWiniwa burn fee</span><span class="ph-val">0%</span>
+                </div>
+                <div class="ph-row" style="margin-bottom:0"><span class="ph-label">Governance
+                        multipliers</span><span class="ph-val xs mu">Wables 1x
                         ·
                         cf 2x
                         ·
                         xWiniwa 3x</span></div>
                 <details class="lm" style="margin-top:10px">
                     <summary>&#x2139;&#xFE0F; Who sets these parameters?</summary>
-                    <div class="lm-body">Protocol parameters are set by the Council through on-chain governance votes.
+                    <div class="lm-body">Protocol parameters are set by the Council through on-chain governance
+                        votes.
                         Any xWiniwa, Wables or cover pool holder can vote. Changes require a majority weighted by
                         Voting
                         Power (amount &times; token multiplier &times; time multiplier). Emergency parameters may be
