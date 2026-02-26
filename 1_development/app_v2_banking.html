@@ -2077,7 +2077,7 @@
         <div class="flex gap8">
             <div class="test-pill" onclick="openMore();setTimeout(()=>navigate('faucet'),350)">
                 🧪
-                Test Phase</div>
+                Test Phase - No real value</div>
             <div class="sync-pill" title="Current block">
                 <div class="dot"></div><span id="syncNum">1,968,096</span>
             </div>
@@ -3151,7 +3151,7 @@
                 These tools will NOT
                 exist in
                 the
-                final app. Winiwa has no real-world value.</div>
+                final app. Winiwa and all of the token created here have no real-world value.</div>
             <div class="card">
                 <div class="cb">
                     <div style="font-size:16px;font-weight:800;margin-bottom:5px">Get Test Winiwa</div>
@@ -3422,13 +3422,13 @@
             </div>
             <div class="dsect">
                 <div class="dsect-t">Discover</div>
-                <div class="ditem" onclick="navigate('spend');closeMoreNow()">
+                <div class="ditem" onclick="navigate('exchange');closeMoreNow()">
                     <div class="dic">
-                        🗺️
+                        🔄
                     </div>
                     <div class="dinfo">
-                        <div class="dname">Where to Spend</div>
-                        <div class="ddesc">Find merchants near you</div>
+                        <div class="dname">Exchange</div>
+                        <div class="ddesc">Swap currencies instantly</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
                 <div class="ditem" onclick="navigate('invoice');closeMoreNow()">
@@ -3665,15 +3665,15 @@
                 class="nlabel">Invest</span></button>
         <button class="ntab active" id="tab-wallet" onclick="navigate('wallet')"><span
                 class="nicon">&#x1F4B0;</span><span class="nlabel">Wallet</span></button>
-        <button class="ntab" id="tab-exchange" onclick="navigate('exchange')"><span class="nicon">🔄</span><span
-                class="nlabel">Exchange</span></button>
+        <button class="ntab" id="tab-spend" onclick="navigate('spend')"><span class="nicon">🗺️</span><span
+                class="nlabel">Spend it</span></button>
         <button class="ntab" id="tab-more" onclick="openMore()"><span class="nicon">⋯</span><span
                 class="nlabel">More</span></button>
     </nav>
 
     <script>
         const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'chat', 'council', 'faucet', 'settings', 'invoice'];
-        const TABS = ['invest', 'exchange', 'wallet', 'mint'];
+        const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
         let privacyMode = false; lede = false;
 
