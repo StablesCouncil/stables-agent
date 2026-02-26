@@ -637,6 +637,41 @@
         grid-template-columns: 1fr
       }
     }
+
+    /* Walkthrough */
+    .wt-btn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #0b0f14;
+      font-weight: 900;
+      font-size: 22px;
+      border: none;
+      box-shadow: 0 4px 12px rgba(103, 232, 249, 0.4);
+      cursor: pointer;
+      z-index: 90;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .wt-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(103, 232, 249, 0.6);
+    }
+
+    .wt-slide {
+      display: none;
+    }
+
+    .wt-slide.active {
+      display: block;
+    }
   </style>
 </head>
 
@@ -848,6 +883,59 @@
     </div>
   </div>
 
+  <!-- Walkthrough -->
+  <button class="wt-btn" id="wtBtn" aria-label="Walkthrough" title="Walkthrough">?</button>
+
+  <div class="backdrop" id="wtBackdrop" role="dialog" aria-modal="true" aria-hidden="true" style="z-index: 110;">
+    <div class="modal" style="width:min(520px, 100%)">
+      <div class="modal-head">
+        <strong>Stables Walkthrough</strong>
+        <button class="ghost" id="closeWt">Close</button>
+      </div>
+      <div class="modal-body">
+        <div id="wtSlide0" class="wt-slide active">
+          <h3 style="margin-top:0">Welcome to Stables!</h3>
+          <p class="muted">Stables is the money platform on the Minima blockchain. It enables a robust, self-regulating
+            ecosystem of stablecoins and variable-value tokens.</p>
+        </div>
+        <div id="wtSlide1" class="wt-slide">
+          <h3 style="margin-top:0">Wallet & Assets</h3>
+          <p class="muted">Your Wallet holds your stablecoins (like WUSD) for daily use, and your xWINIWA for holding
+            equity in the network.</p>
+        </div>
+        <div id="wtSlide2" class="wt-slide">
+          <h3 style="margin-top:0">Minting & Burning</h3>
+          <p class="muted">The Mint tab allows you to mint stablecoins against MINIMA collateral, or burn them back. It
+            operates with zero fees and no liquidation risks.</p>
+        </div>
+        <div id="wtSlide3" class="wt-slide">
+          <h3 style="margin-top:0">Investments</h3>
+          <p class="muted">Put your assets to work in the Investment tab. You can participate in the xWiniwa position,
+            Coverage Fund, or provide Liquidity.</p>
+        </div>
+        <div id="wtSlide4" class="wt-slide">
+          <h3 style="margin-top:0">Protocol Health</h3>
+          <p class="muted">Monitor the system's Coverage Ratio (CR). The protocol automatically adjusts to maintain the
+            peg and protect stablecoin value.</p>
+        </div>
+
+        <div class="wt-dots" id="wtDots" style="display: flex; gap: 6px; justify-content: center; margin: 20px 0;">
+          <div class="wt-dot active" style="width: 8px; height: 8px; border-radius: 50%; background: var(--accent);">
+          </div>
+          <div class="wt-dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line);"></div>
+          <div class="wt-dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line);"></div>
+          <div class="wt-dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line);"></div>
+          <div class="wt-dot" style="width: 8px; height: 8px; border-radius: 50%; background: var(--line);"></div>
+        </div>
+
+        <div class="wt-nav" style="display: flex; justify-content: space-between; align-items: center;">
+          <button class="ghost" id="wtPrev" style="visibility:hidden">Back</button>
+          <button class="primary" id="wtNext">Next</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast -->
   <div class="toast" id="toast">
     <strong id="toastTitle">Done</strong>
@@ -879,5 +967,3 @@
 </body>
 
 </html>
-
-

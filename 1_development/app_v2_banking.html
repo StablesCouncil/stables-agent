@@ -2304,7 +2304,7 @@
                                     ·
                                     14:32</div>
                             </div>
-                            <div class="tx-amt neg">
+                            <div class="tx-amt neg bal-amount">
                                 −50.00
                                 USDw</div>
                         </div>
@@ -2318,7 +2318,7 @@
                                     ·
                                     09:14</div>
                             </div>
-                            <div class="tx-amt pos">+120.00 USDw</div>
+                            <div class="tx-amt pos bal-amount">+120.00 USDw</div>
                         </div>
                         <div class="tx-row">
                             <div class="tx-ic out-ic">
@@ -2330,7 +2330,7 @@
                                     ·
                                     08:55</div>
                             </div>
-                            <div class="tx-amt neg">
+                            <div class="tx-amt neg bal-amount">
                                 −4.50
                                 USDw</div>
                         </div>
@@ -2346,7 +2346,7 @@
                                     ·
                                     18:02</div>
                             </div>
-                            <div class="tx-amt neg">
+                            <div class="tx-amt neg bal-amount">
                                 −200.00
                                 USDw</div>
                         </div>
@@ -2410,8 +2410,8 @@
                 </div>
                 <div class="pool-grid" style="margin-bottom:12px">
                     <div>
-                        <div class="ps-lbl">My xWiniwa</div>
-                        <div class="ps-val" style="color:var(--t)">12.00</div>
+                        <div class="ph-lbl xs mu">My power</div>
+                        <div class="ph-val xs mu">Wables 1x &middot; cfUSDw 2x</div>
                         <div class="xs mu mt8">&asymp; $125.88 USDw equiv.</div>
                     </div>
                     <div>
@@ -2625,7 +2625,7 @@
                                             &#x2014;</td>
                                     </tr>
                                     <tr style="border-top:1px solid rgba(103,232,249,.08)">
-                                        <td style="padding:7px 0;color:var(--gr);font-weight:700">Stables</td>
+                                        <td style="padding:7px 0;color:var(--gr);font-weight:700">Wables</td>
                                         <td style="padding:7px 0;text-align:right;font-weight:700">$8,420.00</td>
                                         <td style="padding:7px 0;text-align:right;font-weight:700">$8,420.00</td>
                                         <td style="padding:7px 0;text-align:right;font-weight:800;color:var(--m)">
@@ -2736,7 +2736,7 @@
                             </div>
                         </div>
                         <button class="btn btn-w btn-lg" onclick="showToast('Minting available after full launch')">Mint
-                            Stables</button>
+                            Wables</button>
                         <!-- RESERVE STATUS compact -->
                         <div
                             style="margin-top:16px;background:rgba(103,232,249,.04);border:1px solid rgba(103,232,249,.1);border-radius:12px;padding:12px">
@@ -2745,7 +2745,7 @@
                                 <div class="rs-badge rs-good">&#x1F7E2; Healthy</div>
                             </div>
                             <div class="bs-visual" style="margin-bottom:8px">
-                                <div class="bs-seg" style="width:84%;background:rgba(52,211,153,.65)" title="Stables">
+                                <div class="bs-seg" style="width:84%;background:rgba(52,211,153,.65)" title="Wables">
                                 </div>
                                 <div class="bs-seg" style="width:6%;background:rgba(251,191,36,.7)" title="cover pool">
                                 </div>
@@ -3091,7 +3091,7 @@
                         style="color:var(--gr)">100% of all fees</span></div>
                 <div class="ph-row"><span class="ph-label">xWiniwa burn fee</span><span class="ph-val">0%</span></div>
                 <div class="ph-row" style="margin-bottom:0"><span class="ph-label">Governance multipliers</span><span
-                        class="ph-val xs mu">Stables 1x
+                        class="ph-val xs mu">Wables 1x
                         ·
                         cf 2x
                         ·
@@ -3853,9 +3853,11 @@
 
         // Portfolio Simulator Slider
         // Portfolio base state (demo values)
-        const SIM_WINIWA_HELD = 10000;   // Winiwa held in vault
-        const SIM_XWM_HELD = 12;      // xWiniwa currently held
-        const SIM_Stables = 8420;    // Wablecoins in USD equiv
+        const SIM_WINIWA_HELD = 10000;        // Simulator variables
+        const SIM_Winiwa = 150000;
+        const SIM_Xwm = 14200;
+        const SIM_Wables = 8420;    // Wablecoins in USD equiv
+        const SIM_CF = 500;
         const SIM_Winiwa_PRICE = 0.00846; // current Winiwa price USD
         const SIM_XWM_PRICE = 10.49;   // current xWiniwa price USD
         const SIM_LEVERAGE = 4.2;     // current effective xWiniwa leverage
@@ -3895,28 +3897,30 @@
             const newCR = ((simTotalAssets / simLiab)).toFixed(0);
 
             // Coverage fund baseline
-            const curCFVal = 500;
-            let simCFVal = 500;
+            const curCFVal = SIM_CF;
+            let simCFVal = SIM_CF;
             let extraXwmFromCF = 0;
 
             if (newCR < 100) {
                 // Below 100% CR, CF converts progressively to xWiniwa padding the deficit
                 let crDeficit = 100 - newCR;
                 let conversionRatio = Math.min(1, crDeficit / 10); // Converts fully if drops by 10%
-                let convertedVal = 500 * conversionRatio;
-                simCFVal = 500 - convertedVal;
+                let convertedVal = SIM_CF * conversionRatio;
+                simCFVal = SIM_CF - convertedVal;
                 extraXwmFromCF = convertedVal;
             }
 
             // xWiniwa moves at leverage × Winiwa move, guaranteed delta=0 at pct=0, plus any converted Coverage pool amount
             // Bounding to 0 so xWiniwa equity doesn't go explicitly negative visually to end users
             const simXwmVal = Math.max(0, (curXwmVal * (1 + priceMove * SIM_LEVERAGE)) + extraXwmFromCF);
-            const simTotal = simWiniwVal + simXwmVal + SIM_Stables + simCFVal;
+            // Calculate pure totals
+            const simTotal = simWiniwVal + simXwmVal + SIM_Wables + simCFVal;
+            const simCR = (simWiniwVal / simTotal) * 100;
 
             const deltaWiniwa = simWiniwVal - curWiniwVal;
             const deltaXwm = simXwmVal - curXwmVal;
             const deltaCF = simCFVal - curCFVal;
-            const curTotal = curWiniwVal + curXwmVal + SIM_Stables + curCFVal;
+            const curTotal = curWiniwVal + curXwmVal + SIM_Wables + curCFVal;
             const deltaTotal = simTotal - curTotal;
 
             function fmt(v) {

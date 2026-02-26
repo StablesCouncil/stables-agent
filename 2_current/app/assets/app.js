@@ -30,7 +30,7 @@ const state = {
     chf: 0,  // mCHF
     eur: 0,  // mEUR
   },
-  vault: { deposited: 0 },
+  mint: { deposited: 0 },
 
   // Real wallet data (from MDS)
   wallet: { address: 'Loading...' }, // Will be updated by MDS
@@ -138,7 +138,7 @@ function coverageRatio() {
   // Coverage ratio = USD value(collateral) ÷ USD value(Stables supply)
   const StablesUSD = ((state.balances.m || 0) * state.prices.mUSD) + ((state.balances.sm || 0) * state.prices.smUSD);
   if (StablesUSD <= 0) return Infinity;
-  const collateralUSD = (state.vault.deposited || 0) * (state.prices.minimaUSD || 0);
+  const collateralUSD = (state.mint.deposited || 0) * (state.prices.minimaUSD || 0);
   return collateralUSD / StablesUSD;
 }
 
@@ -416,6 +416,59 @@ $('confirmSend').addEventListener('click', () => {
   close('sendBackdrop');
   $('sendTo').value = '';
   safeRender();
+});
+
+// Walkthrough Logic
+let currentWtSlide = 0;
+const totalWtSlides = 5;
+
+function updateWtDisplay() {
+  for (let i = 0; i < totalWtSlides; i++) {
+    const slide = $(`wtSlide${i}`);
+    if (slide) slide.classList.toggle('active', i === currentWtSlide);
+    const dot = $('wtDots').children[i];
+    if (dot) {
+      if (i === currentWtSlide) {
+        dot.style.background = 'var(--accent)';
+      } else {
+        dot.style.background = 'var(--line)';
+      }
+    }
+  }
+
+  $('wtPrev').style.visibility = currentWtSlide === 0 ? 'hidden' : 'visible';
+  $('wtNext').innerText = currentWtSlide === totalWtSlides - 1 ? 'Done' : 'Next';
+}
+
+function closeWalkthrough() {
+  close('wtBackdrop');
+  currentWtSlide = 0;
+  updateWtDisplay();
+}
+
+$('wtBtn').addEventListener('click', () => {
+  currentWtSlide = 0;
+  updateWtDisplay();
+  openModal('wtBackdrop');
+});
+
+$('closeWt').addEventListener('click', closeWalkthrough);
+$('wtBackdrop').addEventListener('click', (e) => { if (e.target === $('wtBackdrop')) closeWalkthrough(); });
+
+$('wtPrev').addEventListener('click', () => {
+  if (currentWtSlide > 0) {
+    currentWtSlide--;
+    updateWtDisplay();
+  }
+});
+
+$('wtNext').addEventListener('click', () => {
+  if (currentWtSlide < totalWtSlides - 1) {
+    currentWtSlide++;
+    updateWtDisplay();
+  } else {
+    closeWalkthrough();
+  }
 });
 
 // ------------------------------

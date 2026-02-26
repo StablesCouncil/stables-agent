@@ -6,14 +6,14 @@ function renderInvestment(ctx) {
   $('pageDesc').textContent = '';
   setHeaderButtons([]);
 
-  // Protocol currencies (MINIMA, smUSD, xMINIMA)
-  const protocolAssets = [
-    { key: 'minima', label: 'MINIMA', qty: state.balances.minima, price: state.prices.minimaUSD },
-    { key: 'sm', label: 'smUSD', qty: state.balances.sm, price: state.prices.smUSD },
-    { key: 'x', label: 'xMINIMA', qty: state.balances.x, price: state.prices.xMinimaUSD, lev: state.metrics.leverageX },
+  // Invest page options
+  const investOptions = [
+    { key: 'xwiniwa', label: 'xWiniwa Position', desc: 'Equity-like position, no fixed yield.', qty: state.balances.x, price: state.prices.xMinimaUSD, lev: state.metrics.leverageX },
+    { key: 'coverage', label: 'Coverage Fund', desc: 'cUSD tokens, earn fees with conversion risk.', qty: 0, price: 1, lev: null },
+    { key: 'lp', label: 'Winiwa/xWiniwa LP', desc: 'Liquidity Provider pair (Planned feature)', qty: 0, price: 0, lev: null },
   ];
 
-  const totalValue = protocolAssets.reduce((a, r) => a + (r.qty * r.price), 0);
+  const totalValue = investOptions.reduce((a, r) => a + (r.qty * r.price), 0);
 
   // Store selected asset in global state for modal interaction
   window.selectedWalletAsset = window.selectedWalletAsset || 'minima';
@@ -29,23 +29,26 @@ function renderInvestment(ctx) {
       </div>
 
       <!-- ✅ LAY-002: Asset Rows (220px / 110px / 110px, padding: 12px, gap: 12px) -->
-      ${protocolAssets.map(r => `
+      ${investOptions.map(r => `
         <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; padding: 12px; background: rgba(103,232,249,.03); border-radius: 12px; border: 1px solid rgba(103,232,249,.10); cursor: pointer;"
              onclick="window.selectWalletAsset('${r.key}')">
           <div style="width:240px; display:flex; align-items:center; gap:6px; justify-content:flex-start;">
             <!-- ✅ INP-003: Radio button with flex-shrink: 0 -->
             <input type="radio" name="walletAsset" value="${r.key}" ${window.selectedWalletAsset === r.key ? 'checked' : ''}
                    onchange="window.selectWalletAsset('${r.key}')" style="flex-shrink: 0; margin: 0;" />
-            <div style="display: flex; align-items: center; gap: 8px; flex: 1;">
-              <!-- ✅ Content text: 14px / 900 -->
-              <span style="font-weight:900; color:var(--text); font-size: 14px;">${r.label}</span>
-              <!-- ✅ TAG-003: LEV badge (9px / 700) -->
-              ${r.lev ? `<span style="background: rgba(251, 191, 36, 0.15); color: var(--warn); padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 700;">LEV ${r.lev.toFixed(1)}×</span>` : ''}
+            <div style="display: flex; flex-direction: column; gap: 2px; flex: 1; padding-left: 8px;">
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <!-- ✅ Content text: 14px / 900 -->
+                <span style="font-weight:900; color:var(--text); font-size: 14px;">${r.label}</span>
+                <!-- ✅ TAG-003: LEV badge (9px / 700) -->
+                ${r.lev ? `<span style="background: rgba(251, 191, 36, 0.15); color: var(--warn); padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 700;">LEV ${r.lev.toFixed(1)}×</span>` : ''}
+              </div>
+              <div style="font-size: 11px; color: var(--muted);">${r.desc}</div>
             </div>
           </div>
           <!-- ✅ Values: 14px / 900, right-aligned, 110px width -->
-          <div style="width:110px; text-align:right; font-weight:900; font-size: 14px;">${fmt(r.qty)}</div>
-          <div style="width:110px; text-align:right; font-weight:900; font-size: 14px;">${fmt(r.qty * r.price)}</div>
+          <div style="width:110px; text-align:right; font-weight:900; font-size: 14px;">${r.key === 'lp' ? '—' : fmt(r.qty)}</div>
+          <div style="width:110px; text-align:right; font-weight:900; font-size: 14px;">${r.key === 'lp' ? '—' : fmt(r.qty * r.price)}</div>
         </div>
       `).join('')}
       

@@ -9,7 +9,7 @@ function portfolioSnapshot(state, tokenQtyFromMinimaValue, mult, includePendingM
   let qM = Number(state.balances.m || 0);
   let qSM = Number(state.balances.sm || 0);
   let qX = Number(state.balances.x || 0);
-  let vDeposit = Number(state.vault.deposited || 0);
+  let vDeposit = Number(state.mint.deposited || 0);
 
   if (includePendingMint) {
     const amt = Math.max(0, Math.floor(Number(state.factory.mintAmount || 0)));
@@ -24,18 +24,18 @@ function portfolioSnapshot(state, tokenQtyFromMinimaValue, mult, includePendingM
   const usdX = qX * pX;
   const usdM = qM * 1;
   const usdSM = qSM * 1;
-  const usdVault = vDeposit * pMin;
+  const usdMint = vDeposit * pMin;
 
-  const total = usdMin + usdX + usdM + usdSM + usdVault;
+  const total = usdMin + usdX + usdM + usdSM + usdMint;
 
   const StablesUSD = usdM + usdSM;
-  const cr = StablesUSD > 0 ? (usdVault / StablesUSD) : Infinity;
+  const cr = StablesUSD > 0 ? (usdMint / StablesUSD) : Infinity;
   const zone = (!Number.isFinite(cr)) ? 'none' : (cr >= state.params.coverage.maintenance ? 'ok' : (cr >= state.params.coverage.rebalanceTrigger ? 'maint' : 'rebal'));
 
   return {
     prices: { pMin, pX },
-    qty: { minima: qMin, m: qM, sm: qSM, x: qX, vault: vDeposit },
-    usd: { minima: usdMin, m: usdM, sm: usdSM, x: usdX, vault: usdVault },
+    qty: { minima: qMin, m: qM, sm: qSM, x: qX, mint: vDeposit },
+    usd: { minima: usdMin, m: usdM, sm: usdSM, x: usdX, mint: usdMint },
     total,
     cr,
     zone,
@@ -90,7 +90,7 @@ function renderSimBreakdown(snap, fmt, showCR) {
     { label: 'mUSD', qty: snap.qty.m, usd: snap.usd.m },
     { label: 'smUSD', qty: snap.qty.sm, usd: snap.usd.sm },
     { label: 'xMINIMA', qty: snap.qty.x, usd: snap.usd.x },
-    { label: 'Vault (MINIMA)', qty: snap.qty.vault, usd: snap.usd.vault },
+    { label: 'Mint (MINIMA)', qty: snap.qty.mint, usd: snap.usd.mint },
   ];
 
   const crTxt = Number.isFinite(snap.cr) ? `${snap.cr.toFixed(2)}×` : '∞';
@@ -479,7 +479,7 @@ function renderFactory(ctx) {
 
         <div class="row two">
           <div class="card">
-            <h3 style="margin:0">Current wallet + vault</h3>
+            <h3 style="margin:0">Current wallet + mint</h3>
             <div class="muted" style="margin-top:6px">Quantities stay fixed. Values move with MINIMA.</div>
             <div class="hr"></div>
             ${renderSimBreakdown(snapNow, fmt)}
@@ -534,7 +534,7 @@ function renderFactory(ctx) {
       if (amt > state.balances.minima) return showToast('Mint blocked', 'Insufficient MINIMA in wallet.');
 
       state.balances.minima -= amt;
-      state.vault.deposited += amt;
+      state.mint.deposited += amt;
 
       state.balances.x += tokenQtyFromMinimaValue('x', state.factory.allocMinima.x);
       state.balances.sm += tokenQtyFromMinimaValue('sm', state.factory.allocMinima.sm);

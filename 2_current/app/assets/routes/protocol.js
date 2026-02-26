@@ -40,8 +40,8 @@ function renderProtocol(ctx) {
         <div>
           <div style="color: var(--muted); font-size: 12px; margin-bottom: 6px;">Total Collateral</div>
           <!-- ✅ TXT-001: KPI Display (32px / 900) -->
-          <div style="font-size: 32px; font-weight: 900; line-height: 1.1;">${fmt(state.vault.deposited)}</div>
-          <div style="color: var(--muted); font-size: 12px; margin-top: 4px;">MINIMA</div>
+          <div style="font-size: 32px; font-weight: 900; line-height: 1.1;">$<span id="totalCollatUsd">${fmt(state.mint.deposited * state.prices.minimaUSD)}</span></div>
+          <div style="color: var(--muted); font-size: 12px; margin-top: 4px;">${fmt(state.mint.deposited)} MINIMA</div>
         </div>
         <div>
           <div style="color: var(--muted); font-size: 12px; margin-bottom: 6px;">Global Headroom</div>
