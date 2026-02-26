@@ -3929,7 +3929,7 @@
             const simWiniwaPrice = SIM_Winiwa_PRICE * (1 + priceMove);
             const simTotalAssets = 2458321 * simWiniwaPrice;           // protocol total Winiwa for realistic CR
             const simLiab = 3450.75;
-            const newCR = ((simTotalAssets / simLiab)).toFixed(0);
+            const newCR = ((simTotalAssets / simLiab) * 100).toFixed(0);
 
             // Coverage fund baseline
             const curCFVal = SIM_CF;
