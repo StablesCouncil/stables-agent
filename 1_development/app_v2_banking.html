@@ -88,7 +88,16 @@
 
         .brand-name {
             font-size: 17px;
-            font-weight: 800
+            font-weight: 800;
+            line-height: 1;
+        }
+
+        .brand-sub {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--gr);
+            letter-spacing: 0.02em;
+            margin-top: 3px;
         }
 
         .sync-pill {
@@ -2088,7 +2097,10 @@
         <div class="brand" onclick="navigate('wallet')" title="Home">
             <img src="../2_current/assets/brand_masters/master_symbol.png" alt="Stables"
                 onerror="this.style.display='none'">
-            <span class="brand-name">Stables</span>
+            <div style="display:flex;flex-direction:column;justify-content:center">
+                <span class="brand-name">Stables</span>
+                <span class="brand-sub">Be your own bank</span>
+            </div>
         </div>
         <div class="flex gap8">
             <div class="test-pill" onclick="openMore();setTimeout(()=>navigate('faucet'),350)">
