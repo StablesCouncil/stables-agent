@@ -223,11 +223,24 @@
             letter-spacing: .02em
         }
 
+        .fab-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            max-width: 580px;
+            margin: 0 auto;
+            pointer-events: none;
+            z-index: 99;
+            height: 100dvh;
+        }
+
         /* FAB QR */
         .fab {
-            position: fixed;
+            position: absolute;
             bottom: calc(var(--nh) + 12px);
             right: 16px;
+            pointer-events: auto;
             z-index: 99;
             width: 50px;
             height: 50px;
@@ -1942,9 +1955,10 @@
 
         /* WALKTHROUGH */
         .wt-fab {
-            position: fixed;
+            position: absolute;
             bottom: calc(var(--nh) + 76px);
             right: 19px;
+            pointer-events: auto;
             width: 44px;
             height: 44px;
             border-radius: 22px;
@@ -2086,9 +2100,7 @@
         </div>
     </div>
 
-    <!-- WALKTHROUGH FAB & OVERLAY -->
-    <div class="wt-fab" onclick="openWT()" title="App Guide">&#x2753;</div>
-
+    <!-- WALKTHROUGH OVERLAY -->
     <div class="wt-overlay" id="wtOverlay">
         <button class="wt-skip" onclick="closeWT()">Skip</button>
 
@@ -2143,19 +2155,23 @@
         </div>
     </div>
 
-    <!-- FAB QR SCAN -->
-    <div class="fab" onclick="openModal('qrModal')" title="Scan to pay">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="3" width="7" height="7" rx="1" />
-            <rect x="14" y="3" width="7" height="7" rx="1" />
-            <rect x="3" y="14" width="7" height="7" rx="1" />
-            <rect x="5" y="5" width="3" height="3" fill="currentColor" stroke="none" />
-            <rect x="16" y="5" width="3" height="3" fill="currentColor" stroke="none" />
-            <rect x="5" y="16" width="3" height="3" fill="currentColor" stroke="none" />
-            <path d="M14 14h2v2h-2z M16 16h2v2h-2z M18 14h2v2h-2z M14 18h4v2h-4z M18 18h2v2h-2z" fill="currentColor"
-                stroke="none" />
-        </svg>
+    <!-- FLOATING ACTION BUTTONS (Constrained to mobile width) -->
+    <div class="fab-container">
+        <div class="wt-fab" onclick="openWT()" title="App Guide">&#x2753;</div>
+
+        <div class="fab" onclick="openModal('qrModal')" title="Scan to pay">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7" rx="1" />
+                <rect x="14" y="3" width="7" height="7" rx="1" />
+                <rect x="3" y="14" width="7" height="7" rx="1" />
+                <rect x="5" y="5" width="3" height="3" fill="currentColor" stroke="none" />
+                <rect x="16" y="5" width="3" height="3" fill="currentColor" stroke="none" />
+                <rect x="5" y="16" width="3" height="3" fill="currentColor" stroke="none" />
+                <path d="M14 14h2v2h-2z M16 16h2v2h-2z M18 14h2v2h-2z M14 18h4v2h-4z M18 18h2v2h-2z" fill="currentColor"
+                    stroke="none" />
+            </svg>
+        </div>
     </div>
 
     <!-- SCROLL AREA -->
