@@ -2399,7 +2399,7 @@
         <div class="page" id="page-invest">
 
             <!-- TOTAL PORTFOLIO HOLDINGS -->
-            <div class="pool-section-title">Total Protocol Holdings</div>
+            <div class="pool-section-title">Total Holdings</div>
             <div class="card"
                 style="padding:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
                 <div class="fbet" style="margin-bottom:14px">
@@ -2428,49 +2428,6 @@
                 </div>
             </div>
 
-
-            <!-- SECTION 1: xWINIWA POSITION -->
-            <div class="pool-section-title">xWiniwa &mdash; Equity Provider</div>
-            <div class="card" style="margin-bottom:24px">
-                <div class="fbet" style="margin-bottom:10px">
-                    <div style="font-size:15px;font-weight:900">xWiniwa Position</div>
-                    <div class="apy"
-                        style="background:rgba(167,139,250,.12);color:var(--pu);border-color:rgba(167,139,250,.3)">
-                        Leveraged exposure</div>
-                </div>
-                <div class="pool-grid" style="margin-bottom:12px">
-                    <div>
-                        <div class="ph-lbl xs mu">My power</div>
-                        <div class="ph-val xs mu">Wables 1x &middot; cfUSDw 2x</div>
-                        <div class="xs mu mt8">&asymp; $125.88 USDw equiv.</div>
-                    </div>
-                    <div>
-                        <div class="ps-lbl">Current leverage</div>
-                        <div class="ps-val" style="color:var(--pu)">4.2x</div>
-                        <div class="xs mu mt8">No funding fee</div>
-                    </div>
-                </div>
-                <div
-                    style="padding:9px 12px;background:rgba(167,139,250,.04);border:1px solid rgba(167,139,250,.12);border-radius:9px;margin-bottom:12px">
-                    <div class="fbet">
-                        <div class="xs mu">Current value</div>
-                        <div style="font-size:13px;font-weight:800;color:var(--pu)">$10.49 USDw equiv.</div>
-                    </div>
-                </div>
-                <div class="pool-btns">
-                    <button class="btn btn-g" onclick="navigate('mint');setVTab('xwm')">Manage Position
-                        &#x2192;</button>
-                </div>
-                <details class="lm">
-                    <summary>&#x2139;&#xFE0F; How xWiniwa works</summary>
-                    <div class="lm-body">
-                        xWiniwa provides leveraged price exposure to Winiwa with zero liquidation risk. It absorbs
-                        protocol volatility to ensure Wables remain pegged. <strong>Risk:</strong> 0% yield. Value
-                        fluctuates intensely. If CR drops &le; 110%, xWiniwa redemptions are locked until health
-                        improves.
-                    </div>
-                </details>
-            </div>
 
             <!-- SECTION 2: COVERAGE FUND -->
             <div class="pool-section-title">Coverage Fund &mdash; Earn Fees</div>
@@ -2574,7 +2531,7 @@
                         <div style="margin-bottom:10px">
                             <div class="fbet xs mu" style="margin-bottom:5px">
                                 <div>Winiwa to lock</div>
-                                <div>Available: 10,000</div>
+                                <div id="availWiniwaXwm">Available: 5,000,000</div>
                             </div>
                             <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
                                 <input class="finput" type="number" id="xwmAmt" placeholder="0" oninput="calcXwm()"
@@ -2603,7 +2560,7 @@
                         </div>
                         <button class="btn"
                             style="background:linear-gradient(135deg,rgba(167,139,250,.25),rgba(103,232,249,.15));border-color:rgba(167,139,250,.4);width:100%"
-                            onclick="showToast('xWiniwa minting live at launch')">Mint xWiniwa</button>
+                            onclick="executeMintXwm()">Mint xWiniwa</button>
 
 
                         <!-- BURN xWINIWA — Reclaim Winiwa -->
@@ -2627,7 +2584,7 @@
                                             style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
                                 </div>
                                 <button class="btn btn-w" style="border-color:rgba(167,139,250,.3)"
-                                    onclick="showToast('Burn available after full launch')">Burn xWiniwa &rarr;
+                                    onclick="executeBurnXwm()">Burn xWiniwa &rarr;
                                     Reclaim Winiwa</button>
                             </div>
                         </div>
@@ -2643,7 +2600,7 @@
                         <div style="margin-bottom:10px">
                             <div class="fbet xs mu" style="margin-bottom:5px">
                                 <div>Amount to issue</div>
-                                <div>Available: 10,000 Winiwa</div>
+                                <div id="availWiniwaIss">Available: 5,000,000 Winiwa</div>
                             </div>
                             <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
                                 <input class="finput" type="number" id="issueAmt" placeholder="0.00"
@@ -2676,7 +2633,7 @@
                                 <span id="iCalcCR" style="font-weight:800;color:var(--gr)">247% &#10003;</span>
                             </div>
                         </div>
-                        <button class="btn btn-w btn-lg" onclick="showToast('Minting available after full launch')">Mint
+                        <button class="btn btn-w btn-lg" onclick="executeMintWables()">Mint
                             Wables</button>
                         <!-- RESERVE STATUS compact -->
                         <div
@@ -2772,7 +2729,7 @@
                                             style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
                                 </div>
                                 <button class="btn btn-w" style="border-color:rgba(52,211,153,.25)"
-                                    onclick="showToast('Reclaim available after full launch')">Burn Wables &rarr;
+                                    onclick="executeBurnWables()">Burn Wables &rarr;
                                     Reclaim
                                     Winiwa</button>
                             </div>
@@ -3050,6 +3007,38 @@
             <div class="xs mu" style="margin-bottom:12px">Community governance
                 · Your
                 voice matters</div>
+
+            <!-- PROTOCOL LEVEL (Transplanted & Upgraded) -->
+            <div class="pool-section-title">Protocol Level Overview</div>
+            <div class="card"
+                style="padding:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
+                <!-- Placeholders for visual simulator to be designed later -->
+                <div class="fbet" style="margin-bottom:14px">
+                    <span class="xs mu" style="font-weight:700;text-transform:uppercase;letter-spacing:0.04em">Total
+                        Protocol Assets</span>
+                    <span class="bal-amount" id="protocolAssetsVal"
+                        style="font-size:22px;font-weight:900;color:var(--t)">$2,009,010.31</span>
+                </div>
+                <div class="bs-visual" style="margin-bottom:16px;height:6px;border-radius:3px">
+                    <div class="bs-seg" id="protSegLiab" style="width:54%;background:rgba(52,211,153,.65)"
+                        title="Liabilities (Wables)"></div>
+                    <div class="bs-seg" id="protSegEq" style="width:46%;background:rgba(167,139,250,.7)"
+                        title="Equity (xWiniwa + Cover Pool)"></div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+                    <div>
+                        <div class="xs mu" style="margin-bottom:4px">Liabilities (Wables)</div>
+                        <div class="bal-amount" id="protocolLiabVal"
+                            style="font-size:13px;font-weight:800;color:var(--gr)">$1,091,853.42</div>
+                    </div>
+                    <div>
+                        <div class="xs mu" style="margin-bottom:4px">Equity Buffer</div>
+                        <div class="bal-amount" id="protocolEqVal"
+                            style="font-size:13px;font-weight:800;color:var(--pu)">$917,156.88</div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Voting Power Card -->
             <div style="margin-bottom:16px">
                 <!-- My Voting Power — time-weighted breakdown -->
@@ -3895,17 +3884,105 @@
             document.getElementById('ratePill').textContent = '1 ' + from + ' = ' + rate.toFixed(4) + ' ' + to + ' \u00b7 No fees';
         }
 
-        // Portfolio Simulator Slider
-        // Portfolio base state (demo values)
-        const SIM_WINIWA_HELD = 10000;        // Simulator variables
-        const SIM_XWM_HELD = 12;      // xWiniwa currently held
-        const SIM_Winiwa = 150000;
-        const SIM_Xwm = 14200;
-        const SIM_Wables = 3450.75;    // Wablecoins in USD equiv
-        const SIM_CF = 500;
+        // Portfolio Simulator Slider & Global Demo State
+        // PROTOCOL GLOBALS
+        let PROTOCOL_WINIWA_ASSETS = 237471667; // ~$2,009,010.31 at $0.00846
+        let PROTOCOL_WABLES_LIAB = 1091853.42;
+        let PROTOCOL_CF_VAL = 200000;
+        let PROTOCOL_XWM_VAL = 717156.88;
+
+        // WALLET GLOBALS
+        let WALLET_WINIWA = 5000000;      // Winiwa currently held
+        let WALLET_XWM = 120;             // xWiniwa currently held
+        let WALLET_WABLES = 3450.75;      // Wablecoins in USD equiv
+        let WALLET_CF = 500;              // Coverage pool value
         const SIM_Winiwa_PRICE = 0.00846; // current Winiwa price USD
-        const SIM_XWM_PRICE = 10.49;   // current xWiniwa price USD
-        const SIM_LEVERAGE = 4.2;     // current effective xWiniwa leverage
+        const SIM_XWM_PRICE = 10.49;      // current xWiniwa price USD
+        const SIM_LEVERAGE = 4.2;         // current effective xWiniwa leverage
+
+        function updateGlobalUI() {
+            document.getElementById('availWiniwaXwm').textContent = `Available: ${WALLET_WINIWA.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+            document.getElementById('availWiniwaIss').textContent = `Available: ${WALLET_WINIWA.toLocaleString('en-US', { maximumFractionDigits: 0 })} Winiwa`;
+
+            const assetsUSD = PROTOCOL_WINIWA_ASSETS * SIM_Winiwa_PRICE;
+            document.getElementById('protocolAssetsVal').textContent = '$' + assetsUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            document.getElementById('protocolLiabVal').textContent = '$' + PROTOCOL_WABLES_LIAB.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const eqUSD = PROTOCOL_CF_VAL + PROTOCOL_XWM_VAL;
+            document.getElementById('protocolEqVal').textContent = '$' + eqUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+            const liabPct = (PROTOCOL_WABLES_LIAB / assetsUSD) * 100;
+            const eqPct = 100 - liabPct;
+            document.getElementById('protSegLiab').style.width = liabPct + '%';
+            document.getElementById('protSegEq').style.width = eqPct + '%';
+
+            calcSlider();
+        }
+
+        function executeMintXwm() {
+            const mintAmt = parseFloat(document.getElementById('xwmAmt').value) || 0;
+            if (mintAmt <= 0 || mintAmt > WALLET_WINIWA) return showToast('Invalid amount or insufficient balance');
+            const earnedXwm = (mintAmt * SIM_Winiwa_PRICE * SIM_LEVERAGE / SIM_XWM_PRICE);
+
+            WALLET_WINIWA -= mintAmt;
+            WALLET_XWM += earnedXwm;
+            PROTOCOL_WINIWA_ASSETS += mintAmt;
+            // XWM value increases because more users minted
+            PROTOCOL_XWM_VAL += (mintAmt * SIM_Winiwa_PRICE);
+
+            document.getElementById('xwmAmt').value = '';
+            calcXwm();
+            updateGlobalUI();
+            showToast(`Successfully minted ${earnedXwm.toLocaleString('en-US', { maximumFractionDigits: 2 })} xWiniwa`);
+        }
+
+        function executeBurnXwm() {
+            const burnAmt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
+            if (burnAmt <= 0 || burnAmt > WALLET_XWM) return showToast('Invalid amount or insufficient balance');
+            const earnedWiniwa = (burnAmt * SIM_XWM_PRICE / SIM_Winiwa_PRICE);
+
+            WALLET_XWM -= burnAmt;
+            WALLET_WINIWA += earnedWiniwa;
+            PROTOCOL_WINIWA_ASSETS -= earnedWiniwa;
+            PROTOCOL_XWM_VAL -= (earnedWiniwa * SIM_Winiwa_PRICE);
+
+            document.getElementById('xwmBurnAmt').value = '';
+            calcXwmBurn();
+            updateGlobalUI();
+            showToast(`Successfully burned xWiniwa for Winiwa`);
+        }
+
+        function executeMintWables() {
+            const mintAmt = parseFloat(document.getElementById('issueAmt').value) || 0;
+            if (mintAmt <= 0) return showToast('Enter valid amount');
+            const winiwaCost = mintAmt / SIM_Winiwa_PRICE;
+            if (winiwaCost > WALLET_WINIWA) return showToast('Insufficient Winiwa balance');
+
+            WALLET_WINIWA -= winiwaCost;
+            WALLET_WABLES += mintAmt;
+            PROTOCOL_WINIWA_ASSETS += winiwaCost;
+            PROTOCOL_WABLES_LIAB += mintAmt;
+
+            document.getElementById('issueAmt').value = '';
+            calcIssue();
+            updateGlobalUI();
+            showToast(`Successfully minted ${mintAmt.toLocaleString('en-US', { maximumFractionDigits: 2 })} Wables`);
+        }
+
+        function executeBurnWables() {
+            const burnAmt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
+            if (burnAmt <= 0 || burnAmt > WALLET_WABLES) return showToast('Invalid amount or insufficient balance');
+            const earnedWiniwa = burnAmt / SIM_Winiwa_PRICE;
+
+            WALLET_WABLES -= burnAmt;
+            WALLET_WINIWA += earnedWiniwa;
+            PROTOCOL_WINIWA_ASSETS -= earnedWiniwa;
+            PROTOCOL_WABLES_LIAB -= burnAmt;
+
+            document.getElementById('reclaimAmt').value = '';
+            calcReclaim();
+            updateGlobalUI();
+            showToast(`Successfully reclaimed ${earnedWiniwa.toLocaleString('en-US', { maximumFractionDigits: 0 })} Winiwa`);
+        }
 
         function calcSlider() {
             const sliderEl = document.getElementById('priceSlider');
@@ -3938,9 +4015,9 @@
             const deltaWablesHeld = mintWablesAmt - burnWablesAmt;
 
             // Post-trade current position (before price move)
-            const curWiniwaHeld = SIM_WINIWA_HELD + deltaWiniwaHeld;
-            const curXwmHeld = SIM_XWM_HELD + deltaXwmHeld;
-            const curWablesHeld = SIM_Wables + deltaWablesHeld;
+            const curWiniwaHeld = WALLET_WINIWA + deltaWiniwaHeld;
+            const curXwmHeld = WALLET_XWM + deltaXwmHeld;
+            const curWablesHeld = WALLET_WABLES + deltaWablesHeld;
 
             const curWiniwVal = curWiniwaHeld * SIM_Winiwa_PRICE;
             const curXwmVal = curXwmHeld * SIM_XWM_PRICE;
@@ -3957,21 +4034,21 @@
 
             // CR at simulated price
             const simWiniwaPrice = SIM_Winiwa_PRICE * (1 + priceMove);
-            const simTotalAssets = (2458321 + deltaProtocolWiniwa) * simWiniwaPrice;           // protocol total Winiwa for realistic CR
-            const simLiab = 3450.75 + deltaProtocolLiab;
+            const simTotalAssets = (PROTOCOL_WINIWA_ASSETS + deltaProtocolWiniwa) * simWiniwaPrice;           // protocol total Winiwa for realistic CR
+            const simLiab = PROTOCOL_WABLES_LIAB + deltaProtocolLiab;
             const newCR = simLiab > 0 ? ((simTotalAssets / simLiab) * 100).toFixed(0) : 999;
 
             // Coverage fund baseline
-            const curCFVal = SIM_CF;
-            let simCFVal = SIM_CF;
+            const curCFVal = WALLET_CF;
+            let simCFVal = WALLET_CF;
             let extraXwmFromCF = 0;
 
             if (newCR < 100) {
                 // Below 100% CR, CF converts progressively to xWiniwa padding the deficit
                 let crDeficit = 100 - newCR;
                 let conversionRatio = Math.min(1, crDeficit / 10); // Converts fully if drops by 10%
-                let convertedVal = SIM_CF * conversionRatio;
-                simCFVal = SIM_CF - convertedVal;
+                let convertedVal = WALLET_CF * conversionRatio;
+                simCFVal = WALLET_CF - convertedVal;
                 extraXwmFromCF = convertedVal;
             }
 
@@ -4189,6 +4266,8 @@
         }
         window.addEventListener('hashchange', routeFromHash);
         routeFromHash();
+        // Initialize dynamic variables on load
+        updateGlobalUI();
     </script>
 </body>
 
