@@ -2428,85 +2428,154 @@
                 </div>
             </div>
 
-
-            <!-- SECTION 2: COVERAGE FUND -->
-            <div class="pool-section-title">Coverage Fund &mdash; Earn Fees</div>
-            <div class="cp-card">
-                <div class="fbet" style="margin-bottom:10px">
-                    <div style="font-size:15px;font-weight:900">cf tokens</div>
-                    <div class="apy"
-                        style="background:rgba(52,211,153,.12);color:var(--gr);border-color:rgba(52,211,153,.3)">100% of
-                        network fees</div>
-                </div>
-                <div class="pool-grid" style="margin-bottom:12px">
-                    <div>
-                        <div class="ps-lbl">My deposit</div>
-                        <div class="ps-val" style="color:var(--gr)">$500.00</div>
-                        <div class="xs mu mt8">&asymp; 494.50 cfUSDw</div>
-                    </div>
-                    <div>
-                        <div class="ps-lbl">30-day yield</div>
-                        <div class="ps-val" style="color:var(--gr)">+$5.33</div>
-                        <div class="xs mu mt8">Paid in cf tokens</div>
-                    </div>
-                </div>
-                <div
-                    style="padding:9px 12px;background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.12);border-radius:9px;margin-bottom:12px">
-                    <div class="fbet">
-                        <div class="xs mu">Total Fund Size</div>
-                        <div style="font-size:13px;font-weight:800">$48,200 equiv.</div>
-                    </div>
-                    <div class="fbet mt8">
-                        <div class="xs mu">cfUSDw value</div>
-                        <div style="font-size:13px;font-weight:800;color:var(--gr)">1.011 USDw / cfUSDw</div>
-                    </div>
-                </div>
-                <div class="pool-btns">
-                    <button class="btn btn-g" onclick="showToast('Redeem cf tokens coming soon')">Redeem</button>
-                    <button class="btn" onclick="showToast('Deposit to Coverage Fund coming soon')">Deposit</button>
-                </div>
-                <details class="lm">
-                    <summary>&#x2139;&#xFE0F; How the Coverage Fund works</summary>
-                    <div class="lm-body">
-                        Convert your Wables (e.g. USDw) into convertible cf tokens (cfUSDw) to earn protocol
-                        transaction fees. <strong>Risk:</strong> If the Protocol Coverage Ratio (CR) drops below 110%,
-                        the fund will start converting into xWiniwa to recapitalize the system, exposing depositors to
-                        price risk.
-                    </div>
-                </details>
+            <!-- INVEST TABS -->
+            <div class="tab-row" style="margin-bottom:24px">
+                <button class="tab-btn active" id="iTabCF" onclick="setInvestTab('cf')">Coverage Pool</button>
+                <button class="tab-btn" id="iTabLP" onclick="setInvestTab('lp')">Provide Liquidity</button>
             </div>
 
-            <!-- SECTION 3: WINIWA/xWINIWA LP PAIR -->
-            <div class="pool-section-title">Winiwa / xWiniwa LP</div>
-            <div class="lp-card">
-                <div class="fbet" style="margin-bottom:10px">
-                    <div style="font-size:15px;font-weight:900">Exchange Liquidity</div>
+            <!-- SECTION 2: COVERAGE FUND -->
+            <div id="panelCF">
+                <div class="pool-section-title">Coverage Fund &mdash; Earn Fees</div>
+                <div class="cp-card">
+                    <div class="fbet" style="margin-bottom:10px">
+                        <div style="font-size:15px;font-weight:900">cf tokens</div>
+                        <div class="apy"
+                            style="background:rgba(52,211,153,.12);color:var(--gr);border-color:rgba(52,211,153,.3)">
+                            100% of
+                            network fees</div>
+                    </div>
+                    <div class="pool-grid" style="margin-bottom:12px">
+                        <div>
+                            <div class="ps-lbl">My deposit</div>
+                            <div class="ps-val" style="color:var(--gr)">$500.00</div>
+                            <div class="xs mu mt8">&asymp; 494.50 cfUSDw</div>
+                        </div>
+                        <div>
+                            <div class="ps-lbl">30-day yield</div>
+                            <div class="ps-val" style="color:var(--gr)">+$5.33</div>
+                            <div class="xs mu mt8">Paid in cf tokens</div>
+                        </div>
+                    </div>
                     <div
-                        style="font-size:11px;font-weight:700;padding:4px 10px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.25);border-radius:999px;color:var(--am)">
-                        Planned</div>
+                        style="padding:9px 12px;background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.12);border-radius:9px;margin-bottom:12px">
+                        <div class="fbet">
+                            <div class="xs mu">Total Fund Size</div>
+                            <div style="font-size:13px;font-weight:800">$48,200 equiv.</div>
+                        </div>
+                        <div class="fbet mt8">
+                            <div class="xs mu">cfUSDw value</div>
+                            <div style="font-size:13px;font-weight:800;color:var(--gr)">1.011 USDw / cfUSDw</div>
+                        </div>
+                    </div>
+                    <div class="pool-btns">
+                        <button class="btn btn-g" onclick="showToast('Redeem cf tokens coming soon')">Redeem</button>
+                        <button class="btn" onclick="showToast('Deposit to Coverage Fund coming soon')">Deposit</button>
+                    </div>
+                    <details class="lm">
+                        <summary>&#x2139;&#xFE0F; How the Coverage Fund works</summary>
+                        <div class="lm-body">
+                            Convert your Wables (e.g. USDw) into convertible cf tokens (cfUSDw) to earn protocol
+                            transaction fees. <strong>Risk:</strong> If the Protocol Coverage Ratio (CR) drops below
+                            110%,
+                            the fund will start converting into xWiniwa to recapitalize the system, exposing depositors
+                            to
+                            price risk.
+                        </div>
+                    </details>
                 </div>
-                <div class="pool-grid" style="margin-bottom:12px">
-                    <div>
-                        <div class="ps-lbl">Pair</div>
-                        <div class="ps-val" style="color:var(--am)">Minima DEX</div>
-                        <div class="xs mu mt8">Winiwa / xWiniwa</div>
+            </div> <!-- end panelCF -->
+
+            <!-- SECTION 3: WINIWA/xWINIWA LP PAIR (CONCENTRATED LIQUIDITY) -->
+            <div id="panelLP" style="display:none">
+                <div class="pool-section-title">Winiwa / xWiniwa LP</div>
+                <div class="lp-card">
+                    <div class="fbet" style="margin-bottom:10px">
+                        <div style="font-size:15px;font-weight:900">Exchange Liquidity</div>
+                        <div class="apy"
+                            style="background:rgba(167,139,250,.12);color:var(--pu);border-color:rgba(167,139,250,.3)">
+                            Earn FX Swap Fees</div>
                     </div>
-                    <div>
-                        <div class="ps-lbl">Est. APY</div>
-                        <div class="ps-val" style="color:var(--am)">~2&ndash;4%</div>
-                        <div class="xs mu mt8">DEX swap fees</div>
+
+                    <div
+                        style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px;margin-bottom:16px">
+                        <div class="fbet" style="margin-bottom:16px">
+                            <div class="xs mu">Current Mid-Point</div>
+                            <div style="font-size:14px;font-weight:800;color:var(--c)">$84.60 per Winiwa</div>
+                        </div>
+
+                        <!-- Heatmap Chart -->
+                        <div style="display:flex;align-items:flex-end;justify-content:space-between;height:80px;margin-bottom:8px;gap:4px"
+                            id="lpHeatmap">
+                            <div class="lp-bucket" onclick="selBucket(0)"
+                                style="flex:1;background:rgba(103,232,249,.1);height:20%;border-radius:4px 4px 0 0;cursor:pointer;transition:all 0.2s">
+                            </div>
+                            <div class="lp-bucket" onclick="selBucket(1)"
+                                style="flex:1;background:rgba(103,232,249,.1);height:35%;border-radius:4px 4px 0 0;cursor:pointer;transition:all 0.2s">
+                            </div>
+                            <div class="lp-bucket" onclick="selBucket(2)"
+                                style="flex:1;background:rgba(103,232,249,.15);height:60%;border-radius:4px 4px 0 0;cursor:pointer;transition:all 0.2s">
+                            </div>
+                            <div class="lp-bucket active-bucket" onclick="selBucket(3)"
+                                style="flex:1;background:var(--c);height:100%;border-radius:4px 4px 0 0;cursor:pointer;transition:all 0.2s;box-shadow:0 0 12px rgba(103,232,249,.4)">
+                            </div>
+                            <div class="lp-bucket" onclick="selBucket(4)"
+                                style="flex:1;background:rgba(103,232,249,.15);height:75%;border-radius:4px 4px 0 0;cursor:pointer;transition:all 0.2s">
+                            </div>
+                            <div class="lp-bucket" onclick="selBucket(5)"
+                                style="flex:1;background:rgba(103,232,249,.1);height:40%;border-radius:4px 4px 0 0;cursor:pointer;transition:all 0.2s">
+                            </div>
+                            <div class="lp-bucket" onclick="selBucket(6)"
+                                style="flex:1;background:rgba(103,232,249,.05);height:15%;border-radius:4px 4px 0 0;cursor:pointer;transition:all 0.2s">
+                            </div>
+                        </div>
+
+                        <div class="fbet xs mu" style="margin-bottom:16px">
+                            <span>$81.00</span>
+                            <span id="lpActiveLabel" style="color:var(--c);font-weight:700">Active range ($84.10 -
+                                $85.10)</span>
+                            <span>$88.00</span>
+                        </div>
+
+                        <div
+                            style="text-align:center;padding:12px;background:rgba(103,232,249,.04);border-radius:8px;border:1px dashed rgba(103,232,249,.2)">
+                            <div class="xs mu" style="margin-bottom:4px">Target APY</div>
+                            <div id="lpApyDisplay" style="font-size:22px;font-weight:900;color:var(--gr)">~18.4%</div>
+                            <div class="xs mu" style="margin-top:4px">Yield drops to 0% if price exits this bucket</div>
+                        </div>
                     </div>
+
+                    <div class="cb">
+                        <label class="flabel">Amount of Winiwa to provide</label>
+                        <div class="fbet"
+                            style="padding:10px 14px;background:rgba(16,24,38,.8);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:6px">
+                            <input class="nobg" type="number" id="lpDepositAmt" placeholder="0.00"
+                                style="font-size:18px;font-weight:700;width:100%;color:var(--t)">
+                            <div class="fbet" style="gap:8px">
+                                <span style="font-size:13px;font-weight:800;color:var(--m)">Winiwa</span>
+                                <button class="max-btn"
+                                    onclick="document.getElementById('lpDepositAmt').value=10000">MAX</button>
+                            </div>
+                        </div>
+                        <div class="fbet xs mu">
+                            <span>Available: 10,000 Winiwa</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-w" style="margin-top:6px;width:100%"
+                        onclick="showToast('\u2713 Liquidity successfully deployed to targeted bucket')">Deposit
+                        Liquidity</button>
+
+                    <details class="lm" style="margin-top:16px">
+                        <summary>&#x2139;&#xFE0F; Concentrated Liquidity Mechanics</summary>
+                        <div class="lm-body">
+                            The xWiniwa/Winiwa secondary market routes 100% of FX Swap fees exclusively to LPs sitting
+                            in the currently active price bucket. Deploy your capital tightly around the mid-point to
+                            capture maximum yield, but you must actively monitor and rebalance your position if the
+                            market moves out of your targeted range.
+                        </div>
+                    </details>
                 </div>
-                <button class="btn btn-g" style="opacity:.6"
-                    onclick="showToast('LP positions available after DEX rollout')">Coming at DEX launch</button>
-                <details class="lm">
-                    <summary>&#x2139;&#xFE0F; How the LP pair works</summary>
-                    <div class="lm-body">
-                        Provide liquidity to the Winiwa/xWiniwa pool on the decentralized exchange to earn swap fees.
-                        The DEX is required for the protocol's secondary markets to enable fast exits at times of high
-                        congestion. Impermanent loss risk applies.
-                    </div>
-                </details>
             </div>
 
 
@@ -3741,6 +3810,37 @@
             else { document.getElementById('tab-more').classList.add('active'); }
             curPage = p;
             window.scrollTo(0, 0);
+        }
+
+        function setInvestTab(t) {
+            ['iTabCF', 'iTabLP'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
+            const active = document.getElementById(t === 'cf' ? 'iTabCF' : 'iTabLP');
+            if (active) active.classList.add('active');
+            document.getElementById('panelCF').style.display = t === 'cf' ? '' : 'none';
+            document.getElementById('panelLP').style.display = t === 'cf' ? 'none' : '';
+        }
+
+        const LP_BUCKETS = [
+            { range: '$78.60 - $80.60', apy: '~2.1%' },
+            { range: '$80.60 - $82.60', apy: '~5.4%' },
+            { range: '$82.60 - $84.10', apy: '~12.8%' },
+            { range: '$84.10 - $85.10', apy: '~18.4%' },
+            { range: '$85.10 - $86.60', apy: '~11.2%' },
+            { range: '$86.60 - $88.60', apy: '~4.7%' },
+            { range: '$88.60 - $90.60', apy: '~1.5%' }
+        ];
+
+        function selBucket(idx) {
+            const boxes = document.querySelectorAll('.lp-bucket');
+            boxes.forEach((b, i) => {
+                b.classList.remove('active-bucket');
+                b.style.background = (i === idx) ? 'var(--c)' : (Math.abs(i - 3) <= 1 ? 'rgba(103,232,249,.15)' : (Math.abs(i - 3) <= 2 ? 'rgba(103,232,249,.1)' : 'rgba(103,232,249,.05)'));
+                b.style.boxShadow = (i === idx) ? '0 0 12px rgba(103,232,249,.4)' : 'none';
+            });
+            const l = document.getElementById('lpActiveLabel');
+            if (l) { l.textContent = 'Active range (' + LP_BUCKETS[idx].range + ')'; l.style.color = (idx === 3) ? 'var(--c)' : 'var(--m)'; }
+            const a = document.getElementById('lpApyDisplay');
+            if (a) { a.textContent = LP_BUCKETS[idx].apy; a.style.color = (idx === 3) ? 'var(--gr)' : 'var(--t)'; }
         }
 
         function openMore() {
