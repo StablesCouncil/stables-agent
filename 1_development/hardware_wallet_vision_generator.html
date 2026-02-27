@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables Hardware Wallet Vision - Instagram Post Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0b0f14;
+            color: #e6edf3;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .controls {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            border-radius: 24px;
+            padding: 32px;
+            position: sticky;
+            top: 40px;
+        }
+
+        .controls h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #67e8f9;
+        }
+
+        .control-group {
+            margin-bottom: 24px;
+        }
+
+        .control-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #9fb0c0;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .control-group input,
+        .control-group textarea {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            border-radius: 12px;
+            padding: 12px 16px;
+            color: #e6edf3;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .control-group input:focus,
+        .control-group textarea:focus {
+            outline: none;
+            border-color: #67e8f9;
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+        }
+
+        .control-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        button {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(167, 139, 250, 0.3));
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            border-radius: 12px;
+            padding: 14px 24px;
+            color: #e6edf3;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.5), rgba(167, 139, 250, 0.5));
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .preview-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #67e8f9;
+            margin-bottom: 12px;
+        }
+
+        #canvas-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #instagram-canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(103, 232, 249, 0.15);
+        }
+
+        .caption-preview {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .caption-preview pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #9fb0c0;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        .pill-badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #67e8f9;
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Controls -->
+        <div class="controls">
+            <h2>⚙️ Customize Post</h2>
+
+            <div class="control-group">
+                <label>Headline</label>
+                <input type="text" id="headline" value="The Ultimate Vision">
+            </div>
+
+            <div class="control-group">
+                <label>Subheadline</label>
+                <input type="text" id="subheadline" value="Your bank. In your pocket.">
+            </div>
+
+            <div class="control-group">
+                <label>Card Text (use • for bullets)</label>
+                <input type="text" id="cardText" value="Minima Node on Chip • Your Keys">
+            </div>
+
+            <div class="control-group">
+                <label>Instagram Caption</label>
+                <textarea id="caption" rows="12">The ultimate vision. 🔐
+
+Imagine a device that is:
+✓ Your wallet (cold storage security)
+✓ Your node (full Minima blockchain)
+✓ Your bank (complete financial sovereignty)
+
+All in your pocket.
+
+This is where we're heading:
+A dedicated hardware wallet running a complete Minima node.
+
+Not just storing your keys.
+Running the entire network.
+
+Cold wallet security.
+Full node power.
+True independence.
+
+Money that is truly yours. Secure, Pseudonymous and Unstoppable.
+
+Built on MINIMA → minima.global
+
+#Stables #HardwareWallet #FullNode #Minima</textarea>
+            </div>
+
+            <div class="button-group">
+                <button onclick="updateCanvas()">🔄 Update Preview</button>
+                <button onclick="downloadImage()">⬇️ Download Image</button>
+            </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-section">
+            <div>
+                <h3>📱 Instagram Visual Preview</h3>
+                <div id="canvas-container">
+                    <canvas id="instagram-canvas" width="1080" height="1080"></canvas>
+                </div>
+            </div>
+
+            <div>
+                <h3>📝 Caption Preview</h3>
+                <div class="caption-preview">
+                    <pre id="caption-display"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('instagram-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Load master assets
+        const masterSymbol = new Image();
+        masterSymbol.src = '../2_current/assets/brand_masters/master_symbol.png';
+
+        function drawBackground() {
+            // Base background
+            ctx.fillStyle = '#0b0f14';
+            ctx.fillRect(0, 0, 1080, 1080);
+
+            // Radial gradient glow
+            const gradient = ctx.createRadialGradient(540, 200, 0, 540, 200, 600);
+            gradient.addColorStop(0, 'rgba(103, 232, 249, 0.18)');
+            gradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1080, 1080);
+
+            // Subtle particles
+            ctx.fillStyle = 'rgba(103, 232, 249, 0.1)';
+            for (let i = 0; i < 30; i++) {
+                const x = Math.random() * 1080;
+                const y = Math.random() * 1080;
+                const size = Math.random() * 3 + 1;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function drawPillBadge(text, x, y) {
+            ctx.save();
+
+            // Measure text
+            ctx.font = '600 22px Inter';
+            const textWidth = ctx.measureText(text).width;
+            const badgeWidth = textWidth + 72;
+            const badgeHeight = 48;
+            const badgeX = x - badgeWidth / 2;
+            const badgeY = y;
+
+            // Background
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.6)';
+            ctx.beginPath();
+            ctx.roundRect(badgeX, badgeY, badgeWidth, badgeHeight, 999);
+            ctx.fill();
+
+            // Border
+            ctx.strokeStyle = 'rgba(103, 232, 249, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Glow
+            ctx.shadowColor = 'rgba(103, 232, 249, 0.3)';
+            ctx.shadowBlur = 30;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Text
+            ctx.fillStyle = '#67e8f9';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, x, badgeY + badgeHeight / 2);
+
+            ctx.restore();
+        }
+
+        function drawHardwareDevice() {
+            ctx.save();
+
+            const deviceX = 540;
+            const deviceY = 380;
+            const deviceWidth = 320;
+            const deviceHeight = 200;
+
+            // Device glow
+            ctx.shadowColor = 'rgba(103, 232, 249, 0.5)';
+            ctx.shadowBlur = 60;
+
+            // Device body
+            const gradient = ctx.createLinearGradient(
+                deviceX - deviceWidth / 2, deviceY - deviceHeight / 2,
+                deviceX + deviceWidth / 2, deviceY + deviceHeight / 2
+            );
+            gradient.addColorStop(0, '#1a2332');
+            gradient.addColorStop(1, '#0f1419');
+
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.roundRect(
+                deviceX - deviceWidth / 2,
+                deviceY - deviceHeight / 2,
+                deviceWidth,
+                deviceHeight,
+                16
+            );
+            ctx.fill();
+
+            // Cyan accent border
+            ctx.strokeStyle = '#67e8f9';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.shadowBlur = 0;
+
+            // Screen area
+            const screenWidth = 180;
+            const screenHeight = 120;
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.roundRect(
+                deviceX - screenWidth / 2,
+                deviceY - screenHeight / 2 - 20,
+                screenWidth,
+                screenHeight,
+                8
+            );
+            ctx.fill();
+
+            // Draw Stables symbol on screen (if loaded)
+            if (masterSymbol.complete) {
+                ctx.save();
+                ctx.globalAlpha = 0.8;
+                const symbolSize = 60;
+                ctx.drawImage(
+                    masterSymbol,
+                    deviceX - symbolSize / 2,
+                    deviceY - symbolSize / 2 - 20,
+                    symbolSize,
+                    symbolSize
+                );
+                ctx.restore();
+            }
+
+            // Button
+            ctx.fillStyle = '#67e8f9';
+            ctx.beginPath();
+            ctx.arc(deviceX - 80, deviceY + 50, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function drawGlassmorphicCard(text, x, y) {
+            ctx.save();
+
+            const cardWidth = 700;
+            const cardHeight = 80;
+            const cardX = x - cardWidth / 2;
+            const cardY = y;
+
+            // Background
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+            ctx.beginPath();
+            ctx.roundRect(cardX, cardY, cardWidth, cardHeight, 16);
+            ctx.fill();
+
+            // Border
+            ctx.strokeStyle = 'rgba(103, 232, 249, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Text
+            ctx.fillStyle = '#9fb0c0';
+            ctx.font = '500 28px Inter';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, x, cardY + cardHeight / 2);
+
+            ctx.restore();
+        }
+
+        function drawText(text, x, y, fontSize, gradient = false) {
+            ctx.save();
+            ctx.font = `900 ${fontSize}px Inter`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+
+            if (gradient) {
+                const grad = ctx.createLinearGradient(x - 300, y, x + 300, y);
+                grad.addColorStop(0, '#ffffff');
+                grad.addColorStop(0.5, '#67e8f9');
+                grad.addColorStop(1, '#a78bfa');
+                ctx.fillStyle = grad;
+            } else {
+                ctx.fillStyle = '#e6edf3';
+            }
+
+            ctx.fillText(text, x, y);
+            ctx.restore();
+        }
+
+        function drawSubtext(text, x, y, fontSize) {
+            ctx.save();
+            ctx.font = `400 ${fontSize}px Inter`;
+            ctx.fillStyle = '#9fb0c0';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, x, y);
+            ctx.restore();
+        }
+
+        function updateCanvas() {
+            const headline = document.getElementById('headline').value;
+            const subheadline = document.getElementById('subheadline').value;
+            const cardText = document.getElementById('cardText').value;
+            const caption = document.getElementById('caption').value;
+
+            // Clear canvas
+            ctx.clearRect(0, 0, 1080, 1080);
+
+            // Draw elements
+            drawBackground();
+            drawPillBadge('BUILT ON MINIMA', 540, 80);
+            drawHardwareDevice();
+            drawGlassmorphicCard(cardText, 540, 620);
+            drawText(headline, 540, 780, 64, true);
+            drawSubtext(subheadline, 540, 860, 32);
+
+            // Update caption preview
+            document.getElementById('caption-display').textContent = caption;
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'stables_hardware_wallet_vision.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Initial render
+        masterSymbol.onload = () => {
+            updateCanvas();
+        };
+
+        // Fallback if image doesn't load
+        setTimeout(() => {
+            if (!masterSymbol.complete) {
+                updateCanvas();
+            }
+        }, 1000);
+    </script>
+</body>
+
+</html>

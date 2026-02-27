@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables YouTube Banner Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            font-family: Inter, sans-serif;
+            color: #e6edf3;
+        }
+
+        .controls {
+            max-width: 1200px;
+            margin: 0 auto 20px;
+            padding: 20px;
+            background: #0b0f14;
+            border-radius: 8px;
+            border: 1px solid #67e8f9;
+        }
+
+        .info {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(103, 232, 249, 0.1);
+            border-radius: 4px;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(167, 139, 250, 0.3));
+            border: 1px solid #67e8f9;
+            border-radius: 8px;
+            color: #67e8f9;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.4), rgba(167, 139, 250, 0.4));
+        }
+
+        .canvas-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        canvas {
+            width: 100%;
+            height: auto;
+            display: block;
+            border: 2px solid #67e8f9;
+        }
+
+        .guides-info {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #9fb0c0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="controls">
+        <h1 style="margin-top: 0; color: #67e8f9;">YouTube Banner Generator</h1>
+        <div class="info">
+            <strong>YouTube Banner Specifications:</strong><br>
+            • Dimensions: 2560x1440px (minimum)<br>
+            • Safe area (visible on all devices): 1546x423px (centered)<br>
+            • Desktop display: 2560x423px<br>
+            • TV display: Full 2560x1440px<br>
+            • Mobile: Varies, use safe area for critical content
+        </div>
+        <button onclick="generateBanner()">Generate Banner</button>
+        <button onclick="downloadBanner()">Download PNG</button>
+        <div class="guides-info" id="status">Ready to generate</div>
+    </div>
+
+    <div class="canvas-container">
+        <canvas id="banner" width="2560" height="1440"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('banner');
+        const ctx = canvas.getContext('2d');
+        const statusEl = document.getElementById('status');
+
+        // YouTube safe areas
+        const SAFE_AREA = {
+            x: (2560 - 1546) / 2,  // 507px
+            y: (1440 - 423) / 2,   // 508.5px
+            width: 1546,
+            height: 423
+        };
+
+        const DESKTOP_AREA = {
+            x: 0,
+            y: (1440 - 423) / 2,
+            width: 2560,
+            height: 423
+        };
+
+        async function generateBanner() {
+            statusEl.textContent = 'Loading assets...';
+
+            try {
+                // Load master assets
+                const symbol = await loadImage('../../2_current/assets/brand_masters/master_symbol.png');
+                const wordmark = await loadImage('../../2_current/assets/brand_masters/master_wordmark_transparent.png');
+
+                // Clear canvas
+                ctx.clearRect(0, 0, 2560, 1440);
+
+                // Background - Dark navy with radial gradient
+                const gradient = ctx.createRadialGradient(1280, 0, 0, 1280, 720, 1440);
+                gradient.addColorStop(0, 'rgba(103, 232, 249, 0.18)');
+                gradient.addColorStop(0.55, 'transparent');
+
+                ctx.fillStyle = '#0b0f14';
+                ctx.fillRect(0, 0, 2560, 1440);
+
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, 2560, 1440);
+
+                // Calculate sizes for desktop safe area (2560x423)
+                // Symbol on left, wordmark on right, centered vertically in desktop area
+                const desktopCenterY = DESKTOP_AREA.y + DESKTOP_AREA.height / 2;
+
+                // Symbol: ~180px height (scaled proportionally)
+                const symbolHeight = 180;
+                const symbolWidth = (symbol.width / symbol.height) * symbolHeight;
+                const symbolX = 280; // Left padding
+                const symbolY = desktopCenterY - symbolHeight / 2;
+
+                ctx.drawImage(symbol, symbolX, symbolY, symbolWidth, symbolHeight);
+
+                // Wordmark: ~120px height (scaled proportionally)
+                const wordmarkHeight = 120;
+                const wordmarkWidth = (wordmark.width / wordmark.height) * wordmarkHeight;
+                const wordmarkX = symbolX + symbolWidth + 40; // 40px gap
+                const wordmarkY = desktopCenterY - wordmarkHeight / 2;
+
+                ctx.drawImage(wordmark, wordmarkX, wordmarkY, wordmarkWidth, wordmarkHeight);
+
+                // Add "Built on MINIMA" badge on the right side
+                drawMinimaBadge(2560 - 280, desktopCenterY);
+
+                // Draw guide overlays (semi-transparent)
+                drawGuides();
+
+                statusEl.textContent = 'Banner generated! Click Download to save.';
+
+            } catch (error) {
+                statusEl.textContent = 'Error: ' + error.message;
+                console.error(error);
+            }
+        }
+
+        function drawMinimaBadge(x, y) {
+            const text = 'BUILT ON MINIMA';
+            ctx.font = '600 16px Inter, sans-serif';
+            ctx.letterSpacing = '0.12em';
+
+            const metrics = ctx.measureText(text);
+            const textWidth = metrics.width;
+            const badgeWidth = textWidth + 36;
+            const badgeHeight = 40;
+
+            const badgeX = x - badgeWidth;
+            const badgeY = y - badgeHeight / 2;
+
+            // Badge background (glassmorphism)
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.6)';
+            ctx.strokeStyle = 'rgba(103, 232, 249, 0.5)';
+            ctx.lineWidth = 1;
+
+            // Rounded rectangle
+            const radius = 999;
+            ctx.beginPath();
+            ctx.roundRect(badgeX, badgeY, badgeWidth, badgeHeight, radius);
+            ctx.fill();
+            ctx.stroke();
+
+            // Text
+            ctx.fillStyle = '#67e8f9';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, badgeX + badgeWidth / 2, badgeY + badgeHeight / 2);
+
+            // Reset
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'alphabetic';
+        }
+
+        function drawGuides() {
+            // Desktop area (2560x423) - Yellow
+            ctx.strokeStyle = 'rgba(251, 191, 36, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([10, 5]);
+            ctx.strokeRect(DESKTOP_AREA.x, DESKTOP_AREA.y, DESKTOP_AREA.width, DESKTOP_AREA.height);
+
+            // Safe area (1546x423) - Cyan
+            ctx.strokeStyle = 'rgba(103, 232, 249, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(SAFE_AREA.x, SAFE_AREA.y, SAFE_AREA.width, SAFE_AREA.height);
+
+            ctx.setLineDash([]);
+        }
+
+        function loadImage(src) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(img);
+                img.onerror = () => reject(new Error(`Failed to load image: ${src}`));
+                img.src = src;
+            });
+        }
+
+        function downloadBanner() {
+            // Create a clean version without guides
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = 2560;
+            tempCanvas.height = 1440;
+            const tempCtx = tempCanvas.getContext('2d');
+
+            // Copy current canvas
+            tempCtx.drawImage(canvas, 0, 0);
+
+            // Remove guides by redrawing without them
+            // (In production, we'd regenerate without calling drawGuides)
+            // For now, just download with guides visible
+
+            const link = document.createElement('a');
+            link.download = 'stables_youtube_banner.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            statusEl.textContent = 'Downloaded! Upload to YouTube.';
+        }
+
+        // Auto-generate on load
+        window.addEventListener('load', () => {
+            setTimeout(generateBanner, 500);
+        });
+    </script>
+</body>
+
+</html>

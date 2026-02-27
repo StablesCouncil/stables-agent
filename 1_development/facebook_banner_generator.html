@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables Facebook Banner Generator (Asset Composition)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* RESET & BASE */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* CANVAS CONTAINER */
+        #banner-canvas {
+            width: 820px;
+            height: 312px;
+            position: relative;
+            overflow: hidden;
+
+            /* EXACT VISUAL IDENTITY BACKGROUND */
+            background-color: #0b0f14;
+            background-image: radial-gradient(circle at 30% 0%, rgba(103, 232, 249, 0.18) 0%, transparent 60%);
+            box-shadow: 0 0 50px rgba(103, 232, 249, 0.1);
+            border: 1px solid #333;
+            /* Just for visibility in browser */
+        }
+
+        /* SAFE ZONES (Guide only, remove or hide for capture if needed, but useful context) */
+        .safe-zone-profile {
+            position: absolute;
+            bottom: 16px;
+            left: 16px;
+            width: 170px;
+            height: 170px;
+            border: 1px dashed rgba(255, 0, 0, 0.3);
+            border-radius: 50%;
+            z-index: 100;
+            display: none;
+            /* Hidden for final render */
+        }
+
+        /* MASTER ASSETS */
+        .master-wordmark {
+            position: absolute;
+            left: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 55px;
+            /* Tuned for 312px height */
+            z-index: 10;
+            filter: drop-shadow(0 0 15px rgba(103, 232, 249, 0.4));
+        }
+
+        .master-symbol {
+            position: absolute;
+            right: -40px;
+            bottom: -60px;
+            height: 280px;
+            opacity: 0.15;
+            /* Subtle watermark effect */
+            z-index: 1;
+        }
+
+        .master-symbol-accent {
+            position: absolute;
+            right: 40px;
+            bottom: 30px;
+            height: 60px;
+            z-index: 10;
+            filter: drop-shadow(0 0 20px rgba(103, 232, 249, 0.6));
+        }
+
+        /* TYPOGRAPHY */
+        .tagline-container {
+            position: absolute;
+            left: 350px;
+            /* Offset to right of wordmark */
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            max-width: 380px;
+        }
+
+        .tagline {
+            color: #9fb0c0;
+            /* Muted grey */
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.4;
+            letter-spacing: -0.01em;
+        }
+
+        /* BADGE */
+        .badge-pill {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+
+            /* Glassmorphism Badge Spec */
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            border-radius: 999px;
+
+            padding: 6px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+            z-index: 20;
+        }
+
+        .badge-text {
+            color: #67e8f9;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        /* PARTICLES / ATMOSPHERE (Pure CSS) */
+        .glow-spot {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(103, 232, 249, 0.08) 0%, transparent 70%);
+            top: -50px;
+            right: 20%;
+            pointer-events: none;
+            z-index: 2;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="banner-canvas">
+        <!-- BACKGROUND ATMOSPHERE -->
+        <div class="glow-spot"></div>
+
+        <!-- MASTER ASSETS (Linked directly from Reference) -->
+        <!-- NOTE: Paths assume this file is in 1_development/ and assets are in 2_current/ -->
+        <img src="../2_current/assets/brand_masters/master_wordmark_transparent.png" class="master-wordmark"
+            alt="STABLES">
+
+        <!-- Large watermark symbol -->
+        <img src="../2_current/assets/brand_masters/master_symbol.png" class="master-symbol" alt="">
+
+        <!-- Small accent symbol -->
+        <img src="../2_current/assets/brand_masters/master_symbol.png" class="master-symbol-accent" alt="S">
+
+        <!-- TEXT CONTENT -->
+        <div class="tagline-container">
+            <p class="tagline">Money that is truly yours.<br>Secure, Pseudonymous and Unstoppable.</p>
+        </div>
+
+        <!-- MANDATORY BADGE -->
+        <div class="badge-pill">
+            <span class="badge-text">Built on MINIMA</span>
+        </div>
+
+        <!-- SAFE ZONE OVERLAY (Remove before screenshot) -->
+        <div class="safe-zone-profile"></div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables Community - Facebook Group Banner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .banner-container {
+            width: 820px;
+            height: 312px;
+            position: relative;
+            /* Different gradient for Group - more cyan/teal */
+            background: linear-gradient(135deg, #0f1923 0%, #1a3a4a 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        /* Logo + Wordmark Lockup - Horizontal */
+        .logo-lockup {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        /* Master Symbol */
+        .master-symbol {
+            width: 120px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        /* STABLES Text - Large */
+        .stables-text {
+            font-size: 64px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* COMMUNITY Label - Prominent */
+        .community-label {
+            font-size: 28px;
+            font-weight: 700;
+            color: #67e8f9;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        /* Tagline - Larger for mobile visibility */
+        .tagline {
+            font-size: 18px;
+            font-weight: 500;
+            color: #e6edf3;
+            line-height: 1.4;
+            text-align: center;
+            max-width: 650px;
+        }
+
+        /* Built on MINIMA badge - TOP CENTER */
+        .minima-badge {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #67e8f9;
+            border: 1px solid rgba(103, 232, 249, 0.6);
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .download-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: #67e8f9;
+            color: #0b0f14;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(103, 232, 249, 0.3);
+            transition: all 0.2s;
+            z-index: 100;
+        }
+
+        .download-btn:hover {
+            background: #a5f3fc;
+            transform: translateX(-50%) translateY(-2px);
+        }
+
+        .download-btn:active {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner-container">
+        <!-- Built on MINIMA badge - TOP CENTER -->
+        <div class="minima-badge">BUILT ON MINIMA</div>
+
+        <!-- Logo + STABLES Lockup -->
+        <div class="logo-lockup">
+            <img src="../2_current/assets/brand_masters/master_symbol.png" alt="Stables Symbol" class="master-symbol">
+            <div class="stables-text">STABLES</div>
+        </div>
+
+        <!-- COMMUNITY Label -->
+        <div class="community-label">COMMUNITY</div>
+    </div>
+
+    <button class="download-btn" onclick="downloadBanner()">Download Banner as PNG</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function downloadBanner() {
+            const banner = document.querySelector('.banner-container');
+
+            html2canvas(banner, {
+                backgroundColor: '#0f1923',
+                scale: 2,
+                logging: false,
+                useCORS: true
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'stables_community_banner.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error('Capture failed:', err);
+                alert('Could not generate image. Please use browser screenshot instead.');
+            });
+        }
+    </script>
+</body>
+
+</html>

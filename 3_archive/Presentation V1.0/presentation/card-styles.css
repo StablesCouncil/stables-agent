@@ -1,0 +1,329 @@
+/* Enhanced Card Styles */
+
+.mockup-card {
+    width: 100%;
+    max-width: 480px;
+    padding: 32px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, rgba(103, 232, 249, 0.12), rgba(15, 23, 42, 0.95));
+    border: 1px solid rgba(103, 232, 249, 0.3);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.mockup-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(103, 232, 249, 0.5), transparent);
+}
+
+.mockup-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(103, 232, 249, 0.5);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 40px rgba(103, 232, 249, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Card Header */
+.mockup-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.mockup-icon {
+    font-size: 32px;
+    line-height: 1;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.mockup-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: -0.01em;
+}
+
+/* Wallet Card Specific */
+.wallet-card {
+    background: linear-gradient(135deg, rgba(103, 232, 249, 0.15), rgba(15, 23, 42, 0.95));
+}
+
+.mockup-balance {
+    text-align: center;
+    margin: 24px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
+    border: 1px solid rgba(103, 232, 249, 0.2);
+}
+
+.balance-amount {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 4px;
+}
+
+.balance-label {
+    font-size: 13px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.mockup-currencies {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.currency-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: all 0.3s ease;
+}
+
+.currency-item:hover {
+    background: rgba(0, 0, 0, 0.25);
+    border-color: rgba(103, 232, 249, 0.3);
+}
+
+.currency-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+.currency-value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
+.mockup-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 14px;
+    background: rgba(103, 232, 249, 0.08);
+    border-radius: 12px;
+    border: 1px solid rgba(103, 232, 249, 0.2);
+}
+
+.stat-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+/* Business Card Specific */
+.business-card {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.12), rgba(15, 23, 42, 0.95));
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.business-card:hover {
+    border-color: rgba(251, 191, 36, 0.5);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 40px rgba(251, 191, 36, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.mockup-metric-large {
+    text-align: center;
+    padding: 24px;
+    margin: 20px 0;
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.metric-value {
+    font-size: 48px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.1;
+    margin-bottom: 6px;
+}
+
+.metric-label {
+    font-size: 13px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+}
+
+.metric-change {
+    font-size: 14px;
+    color: #10b981;
+    font-weight: 600;
+}
+
+.mockup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.grid-item {
+    text-align: center;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: all 0.3s ease;
+}
+
+.grid-item:hover {
+    background: rgba(0, 0, 0, 0.25);
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.grid-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 4px;
+}
+
+.grid-label {
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* Growth Card Specific */
+.growth-card {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.12), rgba(15, 23, 42, 0.95));
+    border-color: rgba(167, 139, 250, 0.3);
+}
+
+.growth-card:hover {
+    border-color: rgba(167, 139, 250, 0.5);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 40px rgba(167, 139, 250, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.mockup-apy {
+    text-align: center;
+    padding: 28px;
+    margin: 20px 0;
+    background: rgba(167, 139, 250, 0.1);
+    border-radius: 16px;
+    border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+.apy-value {
+    font-size: 52px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 8px;
+}
+
+.apy-label {
+    font-size: 13px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.mockup-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    transition: all 0.3s ease;
+}
+
+.metric-row:hover {
+    background: rgba(0, 0, 0, 0.25);
+    border-color: rgba(167, 139, 250, 0.3);
+}
+
+.metric-name {
+    font-size: 14px;
+    color: var(--muted);
+}
+
+.metric-amount {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+}
+
+.metric-amount.highlight {
+    color: #10b981;
+    font-weight: 700;
+}
+
+.mockup-badge-sm {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    font-size: 11px;
+    color: #fb923c;
+    background: rgba(251, 146, 60, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(251, 146, 60, 0.3);
+}
+
+/* Legacy row styles (kept for backward compatibility) */
+.mockup-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    padding-block: 3px;
+}

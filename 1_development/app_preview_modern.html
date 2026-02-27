@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables - Modern Preview</title>
+
+    <!-- Inter Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        /* ========================================
+       CSS VARIABLES - COLOR SYSTEM
+       ======================================== */
+        :root {
+            /* Backgrounds */
+            --bg-primary: #0b0f14;
+            --bg-panel: #101826;
+            --bg-card: rgba(15, 23, 42, 0.85);
+
+            /* Text */
+            --text-primary: #e6edf3;
+            --text-muted: #9fb0c0;
+
+            /* Accents */
+            --accent-cyan: #67e8f9;
+            --accent-purple: #a78bfa;
+            --accent-amber: #fbbf24;
+
+            /* Borders */
+            --border-default: rgba(103, 232, 249, 0.2);
+            --border-focus: rgba(103, 232, 249, 0.4);
+
+            /* Shadows */
+            --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(103, 232, 249, 0.15);
+            --shadow-glow: 0 0 20px rgba(103, 232, 249, 0.2);
+
+            /* Spacing */
+            --nav-height: 70px;
+        }
+
+        /* ========================================
+       RESET & BASE STYLES
+       ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            background: var(--bg-primary);
+            background-image: radial-gradient(circle at top center,
+                    rgba(103, 232, 249, 0.18) 0%,
+                    transparent 55%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            padding-bottom: var(--nav-height);
+        }
+
+        /* ========================================
+       LAYOUT - TOP BAR (STICKY)
+       ======================================== */
+        .top-bar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: transparent;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(103, 232, 249, 0.1);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+        .brand-name {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+        }
+
+        .system-info {
+            display: flex;
+            gap: 6px;
+            flex-wrap: nowrap;
+            max-width: 60%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .system-info::-webkit-scrollbar {
+            display: none;
+        }
+
+        .info-pill {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border-default);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .info-pill strong {
+            color: var(--accent-cyan);
+            margin-left: 3px;
+        }
+
+        /* ========================================
+       MAIN CONTENT
+       =======================================  */
+        main {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Wallet Card */
+        .wallet-card {
+            background: linear-gradient(135deg,
+                    rgba(103, 232, 249, 0.12),
+                    rgba(15, 23, 42, 0.95));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-default);
+            border-radius: 24px;
+            padding: 28px 24px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 20px;
+        }
+
+        .wallet-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .balance-display {
+            font-size: 48px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 0%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px;
+            line-height: 1.1;
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(103, 232, 249, 0.15);
+            margin: 24px 0;
+        }
+
+        /* Currency Rows */
+        .currencies {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .currency-row {
+            background: rgba(11, 15, 20, 0.4);
+            border: 1px solid var(--border-default);
+            border-radius: 16px;
+            padding: 16px 18px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 14px;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .currency-row:hover {
+            border-color: var(--border-focus);
+            box-shadow: var(--shadow-glow);
+            transform: translateY(-2px);
+        }
+
+        .currency-radio {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid var(--border-default);
+            background: transparent;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .currency-radio.active {
+            border-color: var(--accent-cyan);
+            background: var(--accent-cyan);
+        }
+
+        .currency-radio.active::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+        }
+
+        .currency-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .currency-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-cyan);
+        }
+
+        .currency-quantity {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .currency-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: right;
+        }
+
+        .currency-amount {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-align: right;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+
+        .btn {
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-default);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg,
+                    rgba(103, 232, 249, 0.3),
+                    rgba(167, 139, 250, 0.3));
+            border-color: var(--border-focus);
+            color: var(--text-primary);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: rgba(31, 42, 59, 0.75);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(31, 42, 59, 0.95);
+            border-color: var(--border-focus);
+        }
+
+        /* Transactions Section */
+        .transactions-section {
+            margin-top: 28px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .transactions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .transaction {
+            background: rgba(11, 15, 20, 0.3);
+            border: 1px solid rgba(103, 232, 249, 0.1);
+            border-radius: 16px;
+            padding: 16px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        .transaction:hover {
+            border-color: var(--border-default);
+            background: rgba(11, 15, 20, 0.5);
+        }
+
+        .transaction-info {
+            flex: 1;
+        }
+
+        .transaction-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .transaction-date {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .transaction-amount {
+            font-size: 17px;
+            font-weight: 800;
+            text-align: right;
+        }
+
+        .transaction-amount.positive {
+            color: #34d399;
+        }
+
+        .transaction-amount.negative {
+            color: #fb7185;
+        }
+
+        /* ========================================
+       BOTTOM NAVIGATION (Mobile)
+       ======================================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--nav-height);
+            background: linear-gradient(135deg,
+                    rgba(103, 232, 249, 0.08),
+                    rgba(15, 23, 42, 0.95));
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border-default);
+            box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 8px 12px;
+            z-index: 50;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1;
+            max-width: 80px;
+            text-decoration: none;
+            color: var(--text-muted);
+        }
+
+        .nav-item:hover {
+            background: rgba(103, 232, 249, 0.08);
+        }
+
+        .nav-item.active {
+            background: rgba(103, 232, 249, 0.15);
+            border: 1px solid var(--border-focus);
+            box-shadow: 0 0 15px rgba(103, 232, 249, 0.15);
+            color: var(--text-primary);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-icon-large {
+            font-size: 28px;
+        }
+
+        .nav-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        /* ========================================
+       DESKTOP RESPONSIVE
+       ======================================== */
+        @media (min-width: 768px) {
+            body {
+                padding-bottom: 0;
+            }
+
+            .top-bar {
+                padding: 16px 32px;
+            }
+
+            .system-info {
+                max-width: none;
+                gap: 8px;
+            }
+
+            .info-pill {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+
+            .bottom-nav {
+                position: static;
+                height: auto;
+                border-top: none;
+                border-bottom: 1px solid var(--border-default);
+                padding: 0;
+                justify-content: flex-start;
+                gap: 8px;
+                padding: 12px 20px;
+            }
+
+            .nav-item {
+                flex-direction: row;
+                max-width: none;
+                padding: 10px 16px;
+            }
+
+            .nav-icon {
+                font-size: 20px;
+            }
+
+            .nav-label {
+                font-size: 14px;
+            }
+
+            main {
+                padding: 32px;
+            }
+
+            .wallet-card {
+                padding: 36px 32px;
+            }
+
+            .balance-display {
+                font-size: 56px;
+            }
+
+            .action-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                max-width: 400px;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .balance-display {
+                font-size: 64px;
+            }
+
+            .info-pill {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Bar (Sticky) -->
+    <div class="top-bar">
+        <div class="logo-section">
+            <img src="../2_current/assets/brand_masters/master_symbol.png" alt="Stables Logo" class="logo">
+            <div class="brand-name">Stables</div>
+        </div>
+        <div class="system-info">
+            <div class="info-pill">
+                MINIMA<strong>$0.00846</strong>
+            </div>
+            <div class="info-pill">
+                Wallet<strong>0x7a3...2f1b</strong>
+            </div>
+            <div class="info-pill">
+                Block<strong>1,234,567</strong>
+            </div>
+        </div>
+    </div>
+
+    <!-- Desktop Top Navigation (visible on desktop) -->
+    <nav class="bottom-nav">
+        <a href="#" class="nav-item">
+            <span class="nav-icon">💼</span>
+            <span class="nav-label">Invest</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">🔄</span>
+            <span class="nav-label">Swap</span>
+        </a>
+        <a href="#" class="nav-item active nav-item-center">
+            <span class="nav-icon nav-icon-large">💰</span>
+            <span class="nav-label">Wallet</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">🏭</span>
+            <span class="nav-label">Factory</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span class="nav-icon">⋯</span>
+            <span class="nav-label">More</span>
+        </a>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Wallet Card -->
+        <div class="wallet-card">
+            <div class="wallet-header">
+                💰 Your Wallet
+            </div>
+
+            <div class="balance-display">
+                12,345.67 mUSD
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Currencies -->
+            <div class="currencies">
+                <div class="currency-row">
+                    <div class="currency-radio active"></div>
+                    <div class="currency-info">
+                        <div class="currency-name">mUSD</div>
+                        <div class="currency-quantity">8,420.00 USD</div>
+                    </div>
+                    <div class="currency-amount">$8,420.00</div>
+                </div>
+
+                <div class="currency-row">
+                    <div class="currency-radio"></div>
+                    <div class="currency-info">
+                        <div class="currency-name">mEUR</div>
+                        <div class="currency-quantity">2,891.34 EUR</div>
+                    </div>
+                    <div class="currency-amount">$3,473.61</div>
+                </div>
+
+                <div class="currency-row">
+                    <div class="currency-radio"></div>
+                    <div class="currency-info">
+                        <div class="currency-name">mCAD</div>
+                        <div class="currency-quantity">1,034.33 CAD</div>
+                    </div>
+                    <div class="currency-amount">$825.47</div>
+                </div>
+
+                <div class="currency-row">
+                    <div class="currency-radio"></div>
+                    <div class="currency-info">
+                        <div class="currency-name">mTRY</div>
+                        <div class="currency-quantity">12,450.75 TRY</div>
+                    </div>
+                    <div class="currency-amount">$1,650.10</div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn btn-primary">Send Money</button>
+                <button class="btn btn-secondary">Receive</button>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Transactions -->
+            <div class="transactions-section">
+                <div class="section-title">Recent Transactions</div>
+                <div class="transactions">
+                    <div class="transaction">
+                        <div class="transaction-info">
+                            <div class="transaction-title">↗ Sent to Alex</div>
+                            <div class="transaction-date">Jan 8, 2026</div>
+                        </div>
+                        <div class="transaction-amount negative">-50.00 mUSD</div>
+                    </div>
+
+                    <div class="transaction">
+                        <div class="transaction-info">
+                            <div class="transaction-title">↙ Received</div>
+                            <div class="transaction-date">Jan 7, 2026</div>
+                        </div>
+                        <div class="transaction-amount positive">+120.00 mUSD</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables Hardware Wallet - Final Vision</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0b0f14;
+            color: #e6edf3;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .controls {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .controls h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: #67e8f9;
+        }
+
+        button {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(167, 139, 250, 0.3));
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            border-radius: 12px;
+            padding: 14px 32px;
+            color: #e6edf3;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.5), rgba(167, 139, 250, 0.5));
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.3);
+            transform: translateY(-2px);
+        }
+
+        #canvas-container {
+            position: relative;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        #instagram-canvas {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(103, 232, 249, 0.15);
+        }
+
+        .note {
+            background: rgba(103, 232, 249, 0.1);
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 24px;
+            max-width: 600px;
+            width: 100%;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #9fb0c0;
+        }
+
+        .note strong {
+            color: #67e8f9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="controls">
+        <h2>🎨 Hardware Wallet Vision - Final</h2>
+        <p style="font-size: 13px; color: #9fb0c0; margin-bottom: 16px;">
+            Using official master brand assets
+        </p>
+        <button onclick="downloadImage()">⬇️ Download Image (1080x1080)</button>
+    </div>
+
+    <div id="canvas-container">
+        <canvas id="instagram-canvas" width="1080" height="1080"></canvas>
+    </div>
+
+    <div class="note">
+        <strong>✅ Final Specifications:</strong><br>
+        • Stables "S" Symbol on device body<br>
+        • STABLES wordmark on screen<br>
+        • Card: "Dedicated Banking Device • Minima Node on Chip • Fully Secured"<br>
+        • Currency: USDₛ, EURₛ, CADₛ<br>
+        • Buttons: Send & Receive only
+    </div>
+
+    <script>
+        const canvas = document.getElementById('instagram-canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Load master assets
+        const masterSymbol = new Image();
+        masterSymbol.src = 'master_symbol.png';
+
+        const masterWordmark = new Image();
+        masterWordmark.src = 'master_wordmark_transparent.png';
+
+        let assetsLoaded = 0;
+
+        masterSymbol.onload = () => {
+            assetsLoaded++;
+            if (assetsLoaded === 2) render();
+        };
+
+        masterWordmark.onload = () => {
+            assetsLoaded++;
+            if (assetsLoaded === 2) render();
+        };
+
+        function render() {
+            // Background
+            ctx.fillStyle = '#0b0f14';
+            ctx.fillRect(0, 0, 1080, 1080);
+
+            // Radial glow
+            const glow = ctx.createRadialGradient(540, 200, 0, 540, 200, 600);
+            glow.addColorStop(0, 'rgba(103, 232, 249, 0.18)');
+            glow.addColorStop(1, 'transparent');
+            ctx.fillStyle = glow;
+            ctx.fillRect(0, 0, 1080, 1080);
+
+            // Particles
+            ctx.fillStyle = 'rgba(103, 232, 249, 0.1)';
+            for (let i = 0; i < 40; i++) {
+                ctx.beginPath();
+                ctx.arc(Math.random() * 1080, Math.random() * 1080, Math.random() * 3 + 1, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // "BUILT ON MINIMA" badge
+            ctx.save();
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.6)';
+            ctx.beginPath();
+            ctx.roundRect(340, 70, 400, 48, 999);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(103, 232, 249, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.shadowColor = 'rgba(103, 232, 249, 0.3)';
+            ctx.shadowBlur = 30;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+            ctx.fillStyle = '#67e8f9';
+            ctx.font = '600 22px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('BUILT ON MINIMA', 540, 94);
+            ctx.restore();
+
+            // Device
+            ctx.save();
+            const dX = 540, dY = 360, dW = 280, dH = 480;
+
+            ctx.shadowColor = 'rgba(103, 232, 249, 0.5)';
+            ctx.shadowBlur = 60;
+
+            const bodyGrad = ctx.createLinearGradient(dX - dW / 2, dY - dH / 2, dX + dW / 2, dY + dH / 2);
+            bodyGrad.addColorStop(0, '#2a3442');
+            bodyGrad.addColorStop(1, '#1a2332');
+            ctx.fillStyle = bodyGrad;
+            ctx.beginPath();
+            ctx.roundRect(dX - dW / 2, dY - dH / 2, dW, dH, 20);
+            ctx.fill();
+            ctx.strokeStyle = '#67e8f9';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+
+            // Screen
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.roundRect(dX - dW / 2 + 10, dY - dH / 2 + 10, dW - 20, dH * 0.67 - 10, 12);
+            ctx.fill();
+
+            // Wordmark on screen
+            if (masterWordmark.complete) {
+                const wW = 180, wH = (masterWordmark.height / masterWordmark.width) * wW;
+                ctx.drawImage(masterWordmark, dX - wW / 2, dY - dH / 2 + 35, wW, wH);
+            }
+
+            // Balance
+            ctx.fillStyle = '#67e8f9';
+            ctx.font = '700 32px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('USDₛ 1,234.56', dX, dY - 80);
+
+            // Currencies
+            ctx.font = '500 18px Inter';
+            ctx.fillStyle = '#9fb0c0';
+            ctx.textAlign = 'left';
+            ctx.fillText('USDₛ', dX - 100, dY - 30);
+            ctx.fillText('EURₛ', dX - 100, dY - 5);
+            ctx.fillText('CADₛ', dX - 100, dY + 20);
+            ctx.textAlign = 'right';
+            ctx.fillText('1,234.56', dX + 100, dY - 30);
+            ctx.fillText('1,104.25', dX + 100, dY - 5);
+            ctx.fillText('1,580.00', dX + 100, dY + 20);
+
+            // Buttons
+            const bY = dY + 75, bW = 100, bH = 36;
+            ctx.fillStyle = 'rgba(103, 232, 249, 0.3)';
+            ctx.beginPath();
+            ctx.roundRect(dX - 110, bY, bW, bH, 8);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(103, 232, 249, 0.6)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.fillStyle = '#67e8f9';
+            ctx.font = '600 16px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Send', dX - 60, bY + bH / 2 + 1);
+
+            ctx.fillStyle = 'rgba(103, 232, 249, 0.3)';
+            ctx.beginPath();
+            ctx.roundRect(dX + 10, bY, bW, bH, 8);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(103, 232, 249, 0.6)';
+            ctx.stroke();
+            ctx.fillStyle = '#67e8f9';
+            ctx.fillText('Receive', dX + 60, bY + bH / 2 + 1);
+
+            // Stables "S" on device body
+            if (masterSymbol.complete) {
+                const sSize = 50;
+                ctx.globalAlpha = 0.7;
+                ctx.drawImage(masterSymbol, dX - sSize / 2, dY + dH / 2 - 80, sSize, sSize);
+                ctx.globalAlpha = 1;
+            }
+
+            // Physical button
+            ctx.fillStyle = '#67e8f9';
+            ctx.beginPath();
+            ctx.roundRect(dX + dW / 2 - 5, dY, 8, 30, 4);
+            ctx.fill();
+            ctx.restore();
+
+            // Card
+            ctx.save();
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.7)';
+            ctx.beginPath();
+            ctx.roundRect(140, 680, 800, 70, 16);
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(103, 232, 249, 0.4)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.fillStyle = '#9fb0c0';
+            ctx.font = '500 22px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Dedicated Banking Device • Minima Node on Chip • Fully Secured', 540, 715);
+            ctx.restore();
+
+            // Headline
+            ctx.save();
+            ctx.font = '900 72px Inter';
+            ctx.textAlign = 'center';
+            const headGrad = ctx.createLinearGradient(190, 830, 890, 830);
+            headGrad.addColorStop(0, '#ffffff');
+            headGrad.addColorStop(0.5, '#67e8f9');
+            headGrad.addColorStop(1, '#a78bfa');
+            ctx.fillStyle = headGrad;
+            ctx.fillText('The Ultimate Vision', 540, 830);
+            ctx.restore();
+
+            // Subtext
+            ctx.fillStyle = '#9fb0c0';
+            ctx.font = '400 28px Inter';
+            ctx.textAlign = 'center';
+            ctx.fillText('Your bank. In your pocket.', 540, 920);
+        }
+
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'stables_hardware_wallet_final.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Fallback render
+        setTimeout(() => {
+            if (assetsLoaded < 2) render();
+        }, 2000);
+    </script>
+</body>
+
+</html>

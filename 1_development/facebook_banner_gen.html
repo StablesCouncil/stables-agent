@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables Facebook Banner Generator</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 50px;
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .banner-container {
+            width: 820px;
+            height: 312px;
+            position: relative;
+            background-color: #0b0f14;
+            /* Radial gradient: Cyan glow from top-center */
+            background-image: radial-gradient(circle at 50% 0%, rgba(103, 232, 249, 0.18) 0%, rgba(103, 232, 249, 0) 65%);
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            flex-shrink: 0;
+        }
+
+        /* 1. Wordmark */
+        .wordmark {
+            position: absolute;
+            left: 180px;
+            /* Exactly 180px from left as per spec */
+            top: 45%;
+            /* Slightly above center visually */
+            transform: translateY(-50%);
+            width: 200px;
+            filter: drop-shadow(0 0 20px rgba(103, 232, 249, 0.25));
+        }
+
+        /* 2. Built on Minima Badge */
+        .badge {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 18px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            border-radius: 999px;
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+            z-index: 10;
+        }
+
+        .badge span {
+            color: #67e8f9;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* 3. Tagline */
+        .tagline {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #9fb0c0;
+            font-size: 16px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="banner-container">
+        <!-- Wordmark: Using relative path to 2_current master assets -->
+        <img src="../2_current/assets/brand_masters/master_wordmark_transparent.png" alt="Stables" class="wordmark">
+
+        <!-- Badge -->
+        <div class="badge">
+            <span>Built on MINIMA</span>
+        </div>
+
+        <!-- Tagline -->
+        <div class="tagline">Money that is truly yours. Secure, Pseudonymous and Unstoppable.</div>
+    </div>
+
+</body>
+
+</html>

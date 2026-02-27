@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables - Twitch Banner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .banner-container {
+            width: 1200px;
+            height: 480px;
+            position: relative;
+            background: linear-gradient(135deg, #0b0f14 0%, #1a2332 100%);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Logo + Wordmark Lockup */
+        .logo-lockup {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        /* Master Symbol */
+        .master-symbol {
+            width: 160px;
+            height: auto;
+            flex-shrink: 0;
+        }
+
+        /* STABLES Text */
+        .stables-text {
+            font-size: 96px;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        /* Tagline */
+        .tagline {
+            font-size: 24px;
+            font-weight: 500;
+            color: #b0c4d4;
+            line-height: 1.4;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        /* Built on MINIMA badge */
+        .minima-badge {
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #67e8f9;
+            border: 1px solid rgba(103, 232, 249, 0.6);
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .download-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: #67e8f9;
+            color: #0b0f14;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(103, 232, 249, 0.3);
+            transition: all 0.2s;
+            z-index: 100;
+        }
+
+        .download-btn:hover {
+            background: #a5f3fc;
+            transform: translateX(-50%) translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner-container">
+        <!-- Built on MINIMA badge -->
+        <div class="minima-badge">BUILT ON MINIMA</div>
+
+        <!-- Logo + STABLES Lockup -->
+        <div class="logo-lockup">
+            <img src="../2_current/assets/brand_masters/master_symbol.png" alt="Stables Symbol" class="master-symbol">
+            <div class="stables-text">STABLES</div>
+        </div>
+
+        <!-- Tagline -->
+        <div class="tagline">Money that is truly yours. Secure, Pseudonymous and Unstoppable.</div>
+    </div>
+
+    <button class="download-btn" onclick="window.print()">Download Banner (1200x480px)</button>
+</body>
+
+</html>

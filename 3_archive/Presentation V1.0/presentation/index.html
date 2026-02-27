@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stables – Money Platform</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./card-styles.css" />
+</head>
+
+<body>
+    <!--
+        Stables Presentation v2
+        Structure: 5 sections (Hero, Wallet, Business, Growth, CTA)
+        Visual assets are referenced from ./assets/ and defined in assets/index.md
+    -->
+    <div id="app">
+        <header class="hero" id="hero">
+            <div class="hero-inner split hero-split">
+                <div class="hero-brand">
+                    <!-- Logo/wordmark slot; wired from vested assets -->
+                    <img src="../vested_assets/stables_wordmark_transparent.png" alt="Stables" class="hero-logo" />
+                    <p class="hero-tagline">
+                        Money that is truly yours. Secure, Pseudonymous and Unstoppable.
+                    </p>
+                </div>
+                <div class="hero-copy">
+                    <span class="badge"><a href="https://minima.global" target="_blank" rel="noreferrer">Built on
+                            MINIMA</a></span>
+                    <h1>Money Platform</h1>
+                    <p>
+                        A new way to hold and move money that runs with you – directly on your Minima node.
+                    </p>
+                    <div class="hero-actions cta-actions">
+                        <button class="cta-btn primary" type="button" disabled>
+                            Start Testing <span class="cta-label">Coming Soon</span>
+                        </button>
+                        <a class="cta-btn" href="https://x.com/StablesCouncil" target="_blank" rel="noreferrer">
+                            Follow on X
+                        </a>
+                        <a class="cta-btn" href="https://www.instagram.com/StablesCouncil" target="_blank"
+                            rel="noreferrer">
+                            Follow on Instagram
+                        </a>
+                        <a class="cta-btn" href="https://t.me/stablescommunity" target="_blank" rel="noreferrer">
+                            Join on Telegram
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Slide 2: Wallet -->
+        <section id="wallet" class="slide">
+            <div class="slide-inner split">
+                <div class="slide-copy">
+                    <span class="badge">FOR YOU</span>
+                    <h2>Pay Instantly. Own Completely.</h2>
+                    <p>
+                        Experience money that moves as fast as a message. No banks to freeze your account.
+                        No hidden fees. Just a simple, powerful wallet that gives you 100% control over your assets.
+                    </p>
+                </div>
+                <div class="slide-visual">
+                    <div class="mockup-card wallet-card">
+                        <div class="mockup-header">
+                            <div class="mockup-icon">💰</div>
+                            <div class="mockup-label">Your Wallet</div>
+                        </div>
+                        <div class="mockup-balance">
+                            <div class="balance-amount">$12,345.67</div>
+                            <div class="balance-label">Total Balance</div>
+                        </div>
+                        <div class="mockup-currencies">
+                            <div class="currency-item">
+                                <span class="currency-name">mUSD</span>
+                                <span class="currency-value">8,420.00</span>
+                            </div>
+                            <div class="currency-item">
+                                <span class="currency-name">mEUR</span>
+                                <span class="currency-value">2,891.34</span>
+                            </div>
+                            <div class="currency-item">
+                                <span class="currency-name">mCAD</span>
+                                <span class="currency-value">1,034.33</span>
+                            </div>
+                        </div>
+                        <div class="mockup-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">⚡ Instant</div>
+                                <div class="stat-label">Settlement</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">🔒 100%</div>
+                                <div class="stat-label">Your Control</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 3: Business -->
+        <section id="business" class="slide">
+            <div class="slide-inner split reversed">
+                <div class="slide-copy">
+                    <span class="badge badge-business">FOR BUSINESS</span>
+                    <h2>Settled in seconds. Connect directly.</h2>
+                    <p>
+                        Stop waiting days for your money. With Stables, payments are confirmed and settled in seconds.
+                        Build a direct relationship with your customers without intermediaries.
+                    </p>
+                </div>
+                <div class="slide-visual">
+                    <div class="mockup-card business-card">
+                        <div class="mockup-header">
+                            <div class="mockup-icon">📊</div>
+                            <div class="mockup-label">Business Dashboard</div>
+                        </div>
+                        <div class="mockup-row"><span>Today’s Settlements</span><span>Instant</span></div>
+                        <div class="mockup-row"><span>Pending</span><span>0</span></div>
+                        <div class="mockup-row"><span>Intermediaries</span><span>None</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 4: Growth -->
+        <section id="growth" class="slide">
+            <div class="slide-inner split">
+                <div class="slide-copy">
+                    <span class="badge badge-growth">FOR GROWTH</span>
+                    <h2>The Multiplicator.</h2>
+                    <p>
+                        A new way to participate in the stability of the ecosystem. Use the Multiplicator to amplify
+                        your exposure and support the network's resilience.
+                    </p>
+                </div>
+                <div class="slide-visual">
+                    <div class="mockup-card growth-card">
+                        <div class="mockup-header">
+                            <div class="mockup-icon">📈</div>
+                            <div class="mockup-label">Multiplicator</div>
+                        </div>
+                        <div class="mockup-apy">
+                            <div class="apy-value">12.5%</div>
+                            <div class="apy-label">Current APY</div>
+                        </div>
+                        <div class="mockup-metrics">
+                            <div class="metric-row">
+                                <span class="metric-name">Your Position</span>
+                                <span class="metric-amount">5,000 mUSD</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-name">Projected Annual</span>
+                                <span class="metric-amount highlight">+$625</span>
+                            </div>
+                            <div class="metric-row">
+                                <span class="metric-name">Network Support</span>
+                                <span class="metric-amount">Active</span>
+                            </div>
+                        </div>
+                        <div class="mockup-badge-sm">⚠️ Beta - Use at your own risk</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Slide 5: Call to Action -->
+        <section id="cta" class="slide">
+            <div class="slide-inner cta cta-centered">
+                <div class="cta-copy">
+                    <h2>Ready to shape the future?</h2>
+                    <p>
+                        Join the public test. Try to break the system. Help us build the most reliable Money Platform in
+                        the world.
+                    </p>
+                </div>
+                <div class="cta-actions">
+                    <button class="cta-btn primary" type="button" disabled>
+                        Start Testing <span class="cta-label">Coming Soon</span>
+                    </button>
+                    <a class="cta-btn" href="https://x.com/StablesCouncil" target="_blank" rel="noreferrer">
+                        Follow on X
+                    </a>
+                    <a class="cta-btn" href="https://www.instagram.com/StablesCouncil" target="_blank" rel="noreferrer">
+                        Follow on Instagram
+                    </a>
+                    <a class="cta-btn" href="https://t.me/stablescommunity" target="_blank" rel="noreferrer">
+                        Join on Telegram
+                    </a>
+                </div>
+                <div class="cta-footnote">
+                    Stables – Informational Overview v1.0
+                </div>
+            </div>
+        </section>
+
+        <nav class="dot-nav" aria-label="Section navigation">
+            <button data-target="hero" class="dot is-active" aria-label="Hero"></button>
+            <button data-target="wallet" class="dot" aria-label="Wallet"></button>
+            <button data-target="business" class="dot" aria-label="Business"></button>
+            <button data-target="growth" class="dot" aria-label="Growth"></button>
+            <button data-target="cta" class="dot" aria-label="Call to action"></button>
+        </nav>
+    </div>
+
+    <script src="./app.js"></script>
+</body>
+
+</html>

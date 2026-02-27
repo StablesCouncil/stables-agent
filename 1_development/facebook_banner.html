@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables - Facebook Banner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .banner-container {
+            width: 820px;
+            height: 312px;
+            position: relative;
+            background: #0b0f14;
+            overflow: hidden;
+            /* No border - clean export */
+        }
+
+        /* Background gradient */
+        .bg-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(103, 232, 249, 0.18) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        /* Geometric grid pattern (Subtle) */
+        .grid-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(103, 232, 249, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(103, 232, 249, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(103, 232, 249, 0.4);
+            border-radius: 50%;
+            box-shadow: 0 0 4px rgba(103, 232, 249, 0.6);
+        }
+
+        .particle-1 {
+            top: 20%;
+            left: 15%;
+            opacity: 0.6;
+        }
+
+        .particle-2 {
+            top: 60%;
+            left: 25%;
+            opacity: 0.4;
+        }
+
+        .particle-3 {
+            top: 40%;
+            left: 70%;
+            opacity: 0.7;
+        }
+
+        .particle-4 {
+            top: 75%;
+            left: 85%;
+            opacity: 0.5;
+        }
+
+        /* Content Container - Professional Layout */
+        .content-wrapper {
+            position: absolute;
+            left: 80px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            z-index: 2;
+        }
+
+        /* Master Symbol */
+        .master-symbol {
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 0 40px rgba(103, 232, 249, 0.5));
+            flex-shrink: 0;
+        }
+
+        /* Text Stack - Perfectly Aligned */
+        .text-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        /* Master Wordmark */
+        .master-wordmark {
+            width: 380px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(103, 232, 249, 0.3));
+        }
+
+        /* Tagline */
+        .tagline {
+            font-size: 16px;
+            font-weight: 400;
+            color: #9fb0c0;
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+            max-width: 380px;
+        }
+
+        /* Built on MINIMA badge */
+        .minima-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 999px;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: #67e8f9;
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+            z-index: 10;
+        }
+
+        /* Safe Zone Indicators (Hidden by default, useful for debugging) */
+        /* Facebook Desktop: 820x312 */
+        /* Facebook Mobile: 640x360 (central safe zone approx 640 wide) */
+
+        .instructions {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="banner-container">
+        <!-- Background effects -->
+        <div class="bg-gradient"></div>
+        <div class="grid-pattern"></div>
+
+        <!-- Floating particles -->
+        <div class="particle particle-1"></div>
+        <div class="particle particle-2"></div>
+        <div class="particle particle-3"></div>
+        <div class="particle particle-4"></div>
+
+        <!-- Content Wrapper - Professional Layout -->
+        <div class="content-wrapper">
+            <!-- Master Symbol -->
+            <img src="../2_current/assets/brand_masters/master_symbol.png" alt="Stables Symbol" class="master-symbol">
+
+            <!-- Text Stack - Perfectly Aligned -->
+            <div class="text-stack">
+                <img src="../2_current/assets/brand_masters/master_wordmark_transparent.png" alt="Stables"
+                    class="master-wordmark">
+                <div class="tagline">Money that is truly yours. Secure, Pseudonymous and Unstoppable.</div>
+            </div>
+        </div>
+
+        <!-- Built on MINIMA badge -->
+        <div class="minima-badge">BUILT ON MINIMA</div>
+    </div>
+
+    <div class="instructions">
+        Capture area: 820x312px | Profile Picture will cover bottom-left
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        .download-btn {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: #67e8f9;
+            color: #0b0f14;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(103, 232, 249, 0.3);
+            transition: all 0.2s;
+            z-index: 100;
+        }
+
+        .download-btn:hover {
+            background: #a5f3fc;
+            transform: translateX(-50%) translateY(-2px);
+        }
+
+        .download-btn:active {
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Create Download Button
+        const btn = document.createElement('button');
+        btn.textContent = 'Download Banner as PNG';
+        btn.className = 'download-btn';
+        document.body.appendChild(btn);
+
+        btn.addEventListener('click', () => {
+            const banner = document.querySelector('.banner-container');
+
+            // Hide instructions/border for capture if needed, 
+            // though html2canvas captures the element specifically so body stuff is ignored.
+            // We want to remove the border from the capture if it's just a visual guide.
+            const originalBorder = banner.style.border;
+            banner.style.border = 'none';
+
+            html2canvas(banner, {
+                backgroundColor: null, // Transparent background if needed, or keeping container bg
+                scale: 2, // High resolution (Retina)
+                logging: false,
+                useCORS: true
+            }).then(canvas => {
+                // Restore border
+                banner.style.border = originalBorder;
+
+                // Trigger download
+                const link = document.createElement('a');
+                link.download = 'stables_facebook_banner.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error('Capture failed:', err);
+                alert('Could not generate image. Please checking console or use a screenshot.');
+            });
+        });
+    });
+</script>
+
+</html>
