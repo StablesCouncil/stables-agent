@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables Capital Flows: Simplified</title>
+    <style>
+        body {
+            background-color: #0b0f14;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #67e8f9;
+            margin-bottom: 20px;
+        }
+
+        p.subtitle {
+            margin-top: -10px;
+            margin-bottom: 40px;
+            color: #888;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .diagram-container {
+            background: #101826;
+            padding: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(103, 232, 249, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 1400px;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .mermaid {
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+    <!-- Load Mermaid.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: {
+                htmlLabels: true,
+                curve: 'basis',
+                nodespacing: 50,
+                rankspacing: 50
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+    <h1>How the Money Moves: Stables in 4 Steps</h1>
+    <p class="subtitle">A simplified, high-level overview of exactly how capital enters, is used, and safely exits the
+        Stables platform.</p>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+            flowchart LR
+            classDef default fill:#111,stroke:#333,stroke-width:1px,color:#fff
+
+            %% Color themes
+            classDef min fill:#101826,stroke:#fbbf24,stroke-width:2px,color:#fff
+            classDef wable fill:#101826,stroke:#67e8f9,stroke-width:2px,color:#fff
+            classDef action fill:#0f172a,stroke:#475569,stroke-width:1px,stroke-dasharray: 4,color:#cbd5e1
+
+            %% STEP 1: Enter
+            subgraph Enter [1. Deposit Minima]
+            direction TB
+            M1([Your Minima])::::min
+            end
+
+            %% STEP 2: Transform
+            subgraph Mint [2. Create Value]
+            direction TB
+            Oracle[[Protocol Vault]]::::action
+            S1([Stablecoins\nUSDs, EURs])::::wable
+            X1([xMinima\nEquity])::::wable
+            end
+
+            %% STEP 3: Use
+            subgraph Use [3. Use the Economy]
+            direction TB
+            Spend{{Spend with\nMerchants}}::::action
+            Hold{{Hold as\nInvestment}}::::action
+            Earn{{Deposit for\nYield}}::::action
+            end
+
+            %% STEP 4: Exit
+            subgraph Exit [4. Cash Out]
+            direction TB
+            Oracle2[[Protocol Vault]]::::action
+            M2([Your Minima])::::min
+            end
+
+            %% Connections (The Simplified Flow)
+            M1 -- "Lock" --> Oracle
+            Oracle -- "Mint 1:1" --> S1
+            Oracle -- "Mint 1:1" --> X1
+
+            S1 -- "Buy Goods" --> Spend
+            X1 -- "Wait for Growth" --> Hold
+            S1 -- "Coverage Fund" --> Earn
+
+            Spend -. "Return Stables" .-> Oracle2
+            Hold -. "Return xMinima" .-> Oracle2
+            Earn -. "Withdraw" .-> S1
+
+            Oracle2 -. "Unlock" .-> M2
+
+            %% Aligning layout
+            Enter ~~~ Mint ~~~ Use ~~~ Exit
+        </div>
+    </div>
+
+</body>
+
+</html>

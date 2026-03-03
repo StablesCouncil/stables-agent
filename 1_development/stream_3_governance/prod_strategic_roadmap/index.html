@@ -1,0 +1,888 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables Strategic Roadmap | Be Your Own Bank</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="data:image/png;base64,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">
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --accent: #67e8f9;
+            --accent-purple: #a78bfa;
+            --text: #e6edf3;
+            --text-mut: #9fb0c0;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Presentation Style Header */
+        .header {
+            max-width: 1200px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .presentation-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: opacity 0.2s;
+        }
+
+        .presentation-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand img {
+            width: 32px;
+            height: 32px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-weight: 900;
+            font-size: 18px;
+            letter-spacing: 0.05em;
+            color: white;
+        }
+
+        .brand-slogan {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            color: #67e8f9;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .badge-pill:hover {
+            transform: translateY(-2px);
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(103, 232, 249, 0.8);
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.4);
+        }
+
+        /* Title Area */
+        .title-block {
+            text-align: center;
+            margin-bottom: 80px;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-size: 56px;
+            font-weight: 900;
+            margin: 0 0 20px 0;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+            background: linear-gradient(135deg, #ffffff 0%, #67e8f9 50%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: var(--text-mut);
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Progress Bar Styles */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+            margin-top: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(103, 232, 249, 0.4);
+            transition: width 1s ease-out;
+        }
+
+        .progress-label {
+            font-size: 9px;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-top: 6px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Roadmap Grid */
+        .roadmap-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 80px;
+        }
+
+        .stream-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .stream-header {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .stream-title {
+            font-size: 14px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        /* Milestone Card */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(103, 232, 249, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(103, 232, 249, 0.1);
+        }
+
+        .card.goal {
+            background: linear-gradient(145deg, rgba(103, 232, 249, 0.05), rgba(167, 139, 250, 0.05));
+            border-color: rgba(103, 232, 249, 0.2);
+            padding-top: 48px;
+        }
+
+        .card.goal:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 40px rgba(103, 232, 249, 0.2);
+        }
+
+        .card-tag {
+            position: absolute;
+            top: 24px;
+            left: 32px;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: rgba(103, 232, 249, 0.1);
+            color: var(--accent);
+        }
+
+        .quest-tag {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000;
+            font-weight: 900;
+            font-size: 9px;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 10px;
+            vertical-align: middle;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+        }
+
+        .card.quest-active {
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: 0 10px 30px rgba(245, 158, 11, 0.05);
+        }
+
+        .goal-tag {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            color: #000;
+            font-weight: 900;
+            font-size: 11px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 999px;
+            letter-spacing: 0.1em;
+            box-shadow: 0 4px 15px rgba(103, 232, 249, 0.4);
+        }
+
+        .milestone-title {
+            font-size: 24px;
+            font-weight: 800;
+            color: #fff;
+            margin-top: 8px;
+        }
+
+        .milestone-desc {
+            font-size: 15px;
+            color: var(--text-mut);
+            line-height: 1.5;
+        }
+
+        .milestone-points {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .point-item {
+            font-size: 13px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .point-item::before {
+            content: "";
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Connecting lines logic */
+        .connector-wrapper {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: -8px 0;
+            z-index: 10;
+        }
+
+        .connector {
+            height: 60px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--border), rgba(103, 232, 249, 0.5), var(--border));
+        }
+
+        .driver-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg);
+            padding: 4px 12px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent);
+            white-space: nowrap;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+
+        /* Footer */
+        footer {
+            margin-top: auto;
+            color: var(--text-mut);
+            font-size: 14px;
+            text-align: center;
+            padding: 40px 0;
+            border-top: 1px solid var(--border);
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Cross-Stream Spanning */
+        .quest-row {
+            width: 100%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-bottom: 32px;
+        }
+
+        .quest-card-wide {
+            grid-column: span 2;
+            background: linear-gradient(145deg, rgba(245, 158, 11, 0.05), rgba(103, 232, 249, 0.05));
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 30px rgba(245, 158, 11, 0.1);
+        }
+
+        .quest-card-wide .card-tag {
+            background: #f59e0b;
+            color: #000;
+        }
+
+        .quest-card-wide .connector-bottom {
+            position: absolute;
+            bottom: -33px;
+            left: 50%;
+            width: 2px;
+            height: 32px;
+            background: var(--accent);
+            transform: translateX(-50%);
+        }
+
+        @media (max-width: 1024px) {
+            .roadmap-grid {
+                grid-template-columns: 1fr;
+                padding: 0 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 24px;
+                text-align: center;
+            }
+
+            h1 {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="brand">
+            <img src="data:image/png;base64,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" alt="Stables">
+            <div class="brand-text">
+                <span class="brand-name">STABLES</span>
+                <span class="brand-slogan">Be Your Own Bank</span>
+            </div>
+        </div>
+        <div class="header-links">
+            <a href="https://stablescouncil.github.io/" target="_blank" class="presentation-link">Main Presentation</a>
+            <a href="https://minima.global" target="_blank" class="badge-pill">Built on MINIMA</a>
+        </div>
+    </header>
+
+    <div class="title-block">
+        <h1>Unified Global Banking</h1>
+        <p class="subtitle">A planetary infrastructure where everyone becomes their own bank. Together, we form one
+            unified, decentralized banking system on a single network.</p>
+    </div>
+
+    <div class="roadmap-grid">
+
+        <!-- Stream 1: Technical -->
+        <div class="stream-column">
+            <div class="stream-header">
+                <div class="stream-title">Technical Stream</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 0</div>
+                <div class="milestone-title">Technical Vetting</div>
+                <p class="milestone-desc">On-chain parameters and token logic locked. Tested oracle data, token
+                    creation, and parameter definitions.</p>
+                <div class="milestone-points">
+                    <div class="point-item"><strong>Oracle Logic:</strong> Median / TWAP (1h) / Outlier Filter</div>
+                    <div class="point-item"><strong>CR Thresholds:</strong> 150% Target / 110% Critical Lock</div>
+                    <div class="point-item"><strong>Token Variables:</strong> supply, collateral, ratio state</div>
+                </div>
+                <div class="progress-label"><span>Vetted & Locked</span><span>85%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 85%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Back-End Proof</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 0.1</div>
+                <div class="milestone-title">Front-End Dev</div>
+                <p class="milestone-desc">Development of the mini-dApp and main banking interface. Vetted back-end
+                    bridge integration.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Mini-dApp Vetting</div>
+                    <div class="point-item">Interface Framework</div>
+                </div>
+                <div class="progress-label"><span>Development</span><span>20%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 20%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Bridge Lockdown</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 0.2</div>
+                <div class="milestone-title">Back-End Implementation</div>
+                <p class="milestone-desc">Implementing the production-grade stability engine and reconciliation logic.
+                </p>
+                <div class="milestone-points">
+                    <div class="point-item">Engine Porting</div>
+                    <div class="point-item">On-Chain Logic Lock</div>
+                </div>
+                <div class="progress-label"><span>Core Build</span><span>5%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 5%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Infra Readiness</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 1</div>
+                <div class="milestone-title">Oracle & Peg Architecture</div>
+                <p class="milestone-desc">Building the proprietary Stables engine. Minima provides the chain; we build
+                    the stability.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Multi-Source Oracle Engine</div>
+                    <div class="point-item">Mint/Burn Reconciliation</div>
+                </div>
+                <div class="progress-label"><span>Architecture</span><span>45%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 45%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Security Clearance</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 3</div>
+                <div class="milestone-title">V1 Test Release & Quests</div>
+                <p class="milestone-desc">Launching the first live version with a community-wide quest to build
+                    planetary confidence.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Audited Mint/Burn Logic</div>
+                    <div class="point-item">Global Stablecoin Peg</div>
+                </div>
+                <div class="progress-label"><span>Final Prep</span><span>0%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Global Unification</div>
+            </div>
+
+            <div class="card goal">
+                <div class="goal-tag">Destination</div>
+                <div class="milestone-title">Hardware Banking</div>
+                <p class="milestone-desc" style="color: #fff; font-weight: 500;">Dedicated Hardware Nodes.</p>
+                <p class="milestone-desc">Securing the global unified bank with dedicated Node-on-Chip technology.</p>
+            </div>
+        </div>
+
+        <!-- Stream 2: Financial -->
+        <div class="stream-column">
+            <div class="stream-header">
+                <div class="stream-title">Financial Stream</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Foundation</div>
+                <div class="milestone-title">Financial Engineering</div>
+                <p class="milestone-desc">Conceptualizing the model and engineering the financial core. Logic locked.
+                </p>
+                <div class="milestone-points">
+                    <div class="point-item">Conceptual Model Lock</div>
+                    <div class="point-item">Stability Proofs</div>
+                </div>
+                <div class="progress-label"><span>Foundational</span><span>95%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 95%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Mechanics Testing</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 1</div>
+                <div class="milestone-title">Usage & Test</div>
+                <p class="milestone-desc">Testing the financial mechanics in live-simulated environments. Initial
+                    capital entry.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Multi-fiat Pegs</div>
+                    <div class="point-item">Live Adoption Data</div>
+                </div>
+                <div class="progress-label"><span>Seed Liquidity</span><span>5%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 5%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Volume Scaling</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 1.2</div>
+                <div class="milestone-title">Volume</div>
+                <p class="milestone-desc">Scaling total value locked and deep protocol coverage via xMinima
+                    engagement.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Liquidity Depth</div>
+                    <div class="point-item">TVL Milestones</div>
+                </div>
+                <div class="progress-label"><span>Scaling</span><span>0%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Circular Velocity</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Momentum</div>
+                <div class="milestone-title">Velocity</div>
+                <p class="milestone-desc">High-frequency spending and circulation within local circular economies.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Transaction Frequency</div>
+                    <div class="point-item">Merchant Loops</div>
+                </div>
+                <div class="progress-label"><span>Future</span><span>0%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Risk Guardrails</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 2.5</div>
+                <div class="milestone-title">Risk Management</div>
+                <p class="milestone-desc">Deploying the full risk management framework and credit intelligence units.
+                </p>
+                <div class="milestone-points">
+                    <div class="point-item">Fiscal Guardrails</div>
+                    <div class="point-item">Automated Risk Engine</div>
+                </div>
+                <div class="progress-label"><span>Engineering</span><span>10%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 10%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Market Strength</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Power</div>
+                <div class="milestone-title">Strength</div>
+                <p class="milestone-desc">Full fiscal resilience through advanced risk management and credit
+                    intelligence.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Fiscal Resilience</div>
+                    <div class="point-item">Full Risk Framework</div>
+                </div>
+                <div class="progress-label"><span>In Development</span><span>0%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Market Maturity</div>
+            </div>
+
+            <div class="card goal">
+                <div class="goal-tag">Destination</div>
+                <div class="milestone-title">Unified Reserve</div>
+                <p class="milestone-desc" style="color: #fff; font-weight: 500;">One Single Banking Network.</p>
+                <p class="milestone-desc">The ultimate financial strength for a unified global system.</p>
+            </div>
+        </div>
+
+        <!-- Stream 3: Community -->
+        <div class="stream-column">
+            <div class="stream-header">
+                <div class="stream-title">Community Stream</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 0</div>
+                <div class="milestone-title">Building Momentum</div>
+                <p class="milestone-desc">We are already moving. Thousands of profiles created. Foundation established.
+                </p>
+                <div class="milestone-points">
+                    <div class="point-item">Thousands of Profiles</div>
+                    <div class="point-item">Initial Seeding Complete</div>
+                </div>
+                <div class="progress-label"><span>Community Base</span><span>35%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 35%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Massive Outreach</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 0.5</div>
+                <div class="milestone-title">Communication Plan</div>
+                <p class="milestone-desc">Launching the massive initial communication campaign to educate the global
+                    public post-by-post.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Campaign Release Imminent</div>
+                    <div class="point-item">Educational Progression</div>
+                </div>
+                <div class="progress-label"><span>Release Ready</span><span>95%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 95%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Growth Onboarding</div>
+            </div>
+
+            <div class="card quest-active">
+                <div class="card-tag">Phase 1.1</div>
+                <div class="milestone-title">Architecture Quest <span class="quest-tag">Growth Ready</span></div>
+                <p class="milestone-desc">Verifying that the app structure is optimized for global growth and
+                    frictionless self-onboarding.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Onboarding Friction Audit</div>
+                    <div class="point-item">Viral Loop Verification</div>
+                </div>
+                <div class="progress-label"><span>In Review</span><span>60%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 60%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Structural Readiness</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 1</div>
+                <div class="milestone-title">Global Growth</div>
+                <p class="milestone-desc">Scaling the permissionless foundation for anyone to seed their own entry into
+                    the unified network.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Self-Onboarding Toolkit</div>
+                    <div class="point-item">Community Schemas</div>
+                </div>
+                <div class="progress-label"><span>Expanding</span><span>20%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 20%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">One Network</div>
+            </div>
+
+            <div class="card quest-active">
+                <div class="card-tag">Phase 2</div>
+                <div class="milestone-title">Unified Clusters <span class="quest-tag">Quest-Based</span></div>
+                <p class="milestone-desc">Economic hubs merging into a single global fabric through incentivized
+                    federation quests.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Merchant Growth Quests</div>
+                    <div class="point-item">Global Federation Rewards</div>
+                </div>
+                <div class="progress-label"><span>Planned</span><span>0%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Full Handover</div>
+            </div>
+
+            <div class="card">
+                <div class="card-tag">Phase 3</div>
+                <div class="milestone-title">The Handover</div>
+                <p class="milestone-desc">Final transition of control to the Council. A bank owned by its users,
+                    globally.</p>
+                <div class="milestone-points">
+                    <div class="point-item">Full Autonomy</div>
+                    <div class="point-item">Council Governance</div>
+                </div>
+                <div class="progress-label"><span>Locked</span><span>0%</span></div>
+                <div class="progress-container">
+                    <div class="progress-bar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="connector-wrapper">
+                <div class="connector"></div>
+                <div class="driver-label">Total Sovereignty</div>
+            </div>
+
+            <div class="card goal">
+                <div class="goal-tag">Destination</div>
+                <div class="milestone-title">The Unified Bank</div>
+                <p class="milestone-desc" style="color: #fff; font-weight: 500;">Everyone is their own bank.</p>
+                <p class="milestone-desc">A single, unified global banking system. The whole planet on one network.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW CROSS-STREAM QUEST ROW -->
+    <div class="quest-row">
+        <div class="card quest-card-wide">
+            <div class="card-tag">Quest Alpha</div>
+            <div class="milestone-title">V1 Test Release: Alpha Quest</div>
+            <p class="milestone-desc">Launching the first live version. Objectives span Technical (UI/UX, Basic Logic)
+                and Financial (Initial Mechanics) streams.</p>
+            <div class="milestone-points" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <strong style="color: var(--accent); font-size: 11px; text-transform: uppercase;">Technical
+                        Scope</strong>
+                    <div class="point-item">UI/UX Intuition Testing</div>
+                    <div class="point-item">Basic Peg Interaction</div>
+                </div>
+                <div>
+                    <strong style="color: var(--accent-purple); font-size: 11px; text-transform: uppercase;">Financial
+                        Scope</strong>
+                    <div class="point-item">Initial Yield Generation</div>
+                    <div class="point-item">Logic Stability Vetting</div>
+                </div>
+            </div>
+            <div class="progress-label"><span>Final Prep</span><span>10%</span></div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 10%;"></div>
+            </div>
+            <div class="connector-bottom"></div>
+        </div>
+
+        <div class="card">
+            <div class="card-tag">Community Next</div>
+            <div class="milestone-title">Architecture Quest</div>
+            <p class="milestone-desc">Verifying app structure for global growth and frictionless onboarding.</p>
+            <div class="progress-label"><span>In Review</span><span>60%</span></div>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 60%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="roadmap-grid">
+        <!-- Part 2 of Grid for late-stage cards -->
+        <div class="stream-column">
+        </div>
+
+
+        <footer>
+            &copy; 2026 Stables Council. Secure, Pseudonymous and Unstoppable.
+        </footer>
+
+</body>
+
+</html>

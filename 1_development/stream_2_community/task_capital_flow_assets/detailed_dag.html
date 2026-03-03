@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables - Protocol Economic Engine</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: #101826;
+            --accent: #67e8f9;
+            --text-main: #ffffff;
+            --text-mut: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header {
+            max-width: 1400px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(103, 232, 249, 0.2);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .brand img {
+            height: 40px;
+            width: 40px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-slogan {
+            font-size: 13px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .header-meta {
+            text-align: right;
+            font-size: 13px;
+            color: var(--text-mut);
+        }
+
+        .header-meta a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .header-meta a:hover {
+            text-decoration: underline;
+        }
+
+        .title-block {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            color: var(--text-main);
+            font-size: 32px;
+            margin-bottom: 10px;
+            font-weight: 900;
+        }
+
+        p.subtitle {
+            margin-top: 0;
+            color: var(--text-mut);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+        }
+
+        .diagram-container {
+            background: var(--panel);
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(103, 232, 249, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            max-width: 1400px;
+            width: 100%;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .diagram-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(103, 232, 249, 0.05) 0%, rgba(11, 15, 20, 0) 70%);
+            transform: translate(-50%, -50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .mermaid {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: var(--text-mut);
+            text-align: center;
+            max-width: 800px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dateSpan = document.getElementById('current-date');
+            if (dateSpan) {
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                dateSpan.textContent = new Date().toLocaleDateString('en-US', options);
+            }
+        });
+
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'dark',
+            securityLevel: 'loose',
+            flowchart: {
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="brand">
+            <img src="../2_current/assets/1_symbol_favicon.png" alt="Stables Logo">
+            <div class="brand-text">
+                <span class="brand-name">STABLES</span>
+                <span class="brand-slogan">Be Your Own Bank</span>
+            </div>
+        </div>
+        <div class="header-meta">
+            <div>Document Ref: SF-Architecture-01</div>
+            <div id="current-date">February 2026</div>
+            <div><a href="https://stablescouncil.github.io/" target="_blank">View the Official Presentation</a></div>
+        </div>
+    </div>
+
+    <div class="title-block">
+        <h1>Protocol Economic Engine (DAG)</h1>
+        <p class="subtitle">A detailed left-to-right illustration of Minima entering the system, driving commerce,
+            creating protocol-owned liquidity, capturing yield via the Coverage Fund, and safely exiting globally via
+            backwards burn mechanics.</p>
+    </div>
+
+    <div class="diagram-container">
+        <div class="mermaid">
+            flowchart LR
+            classDef user fill:#0b0f14,stroke:#67e8f9,stroke-width:2px,color:#fff
+            classDef protocol fill:#101826,stroke:#aaaaaa,stroke-width:1px,color:#fff
+            classDef council fill:#101826,stroke:#fbbf24,stroke-width:2px,color:#fff
+            classDef fund fill:#101826,stroke:#34d399,stroke-width:2px,color:#fff
+            classDef dex fill:#101826,stroke:#a78bfa,stroke-width:2px,color:#fff
+
+            %% Nodes
+            MinimaHolder(["1. Minima Holders"])::::user
+
+            Oracle["On-Chain Oracle\n(Zero-Fee Mint/Burn)"]::::protocol
+            Reserve[("Minima Reserve\n(Collateral)")]::::protocol
+
+            S_User(["2. Stablecoin Payer"])::::user
+            x_User(["2. xMinima Speculator"])::::user
+
+            Merchant(["3. Merchant"])::::user
+
+            CFund(["Coverage Fund\n(Yield Earners)"])::::fund
+            Splitter{"Merchant Listing\nFee Splitter"}::::protocol
+            Ambassador(["Ambassador"])::::user
+            Council(["Council Treasury"])::::council
+            DEX["xMinima DEX\n(Secondary Market)"]::::dex
+
+            %% FLOW 1: Issuance (MINTING) -> Left to Right
+            MinimaHolder -- "Deposit Minima" --> Oracle
+            Oracle -- "Lock Collateral" --> Reserve
+            Oracle -- "Mint 1:1 Stables" --> S_User
+            Oracle -- "Mint 1:1 xMinima" --> x_User
+
+            %% FLOW 2: Economy & Transfer Fees -> Rightward
+            S_User == "Pay Stables" ==> Merchant
+            S_User -- "Transfer Fee (Max $1)" --> CFund
+            Merchant -- "Transfer Fee (Max $1)" --> CFund
+
+            %% FLOW 3: Structural Stability (Down/Central)
+            S_User -- "Deposit Stables" --> CFund
+            CFund -. "Yield (100% of network fees)" .-> S_User
+            Reserve -. "Primary Absorber\n(xMinima Value Moves)" .-> x_User
+            Reserve -. "Secondary Absorber\n(Converts if CR ≤ 110%)" .-> CFund
+
+            %% FLOW 4: Merchant Onboarding & Expansion (Far Right)
+            Merchant -- "Pay Listing Fee" --> Splitter
+            Splitter -- "50% Share" --> Ambassador
+            Splitter -- "50% Share" --> Council
+
+            %% FLOW 5: DEX POL Capturing Value
+            Council -- "Deploy Minima & xMinima\n(Protocol-Owned Liquidity)" --> DEX
+            x_User <-->|"Trades xMinima via LPs"| DEX
+                DEX -. "Trading Fees Capture" .-> Council
+
+                %% FLOW 6: THE EXIT (BURNING) -> Right to Left (Backwards)
+                x_User -. "Burn xMinima" .-> Oracle
+                Merchant -. "Burn Stables" .-> Oracle
+                Oracle -. "Deplete Collateral" .-> Reserve
+                Oracle -. "Return Minima" .-> MinimaHolder
+        </div>
+    </div>
+
+    <div class="footer">
+        Strict Rule: Minima = Stablecoins + Coverage tokens + xMinima<br><br>
+        All tokens (stablecoins, xMinima, cf tokens) must be tradable or burnable for Minima. Stables operates fully
+        on-chain with zero-fee stablecoin Oracle conversions; the DEX exists strictly for the xMinima secondary market
+        to aggregate Council trading fees.
+    </div>
+
+</body>
+
+</html>

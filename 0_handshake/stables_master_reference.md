@@ -6,11 +6,13 @@
 
 1.  **Read-Only `2_current`**: The `2_current/` directory is the **Source of Truth**. You may READ from it, but **NEVER WRITE** to it. **ONLY THE USER** can promote files to `2_current/`.
 2.  **Sandbox `1_development`**: All draft work, new assets, and code changes happen in `1_development/`. AI creates files here; user promotes to `2_current/`.
-3.  **Reuse First**: Always attempt to composite/reuse existing assets from `2_current` before regenerating. If an asset is broken, REPORT IT.
+3.  **Reuse First**: Always attempt to reuse existing assets from `current/` before regenerating. If an asset is broken, REPORT IT.
 4.  **Confirm Understanding**: When triggered, acknowledge these rules immediately.
 5.  **Promotion Authority**: AI proposes → User reviews → User promotes to `2_current/`. Never assume files are "current" until user confirms.
 6.  **Archival Protocol**: **NEVER DELETE ANY FILE**. When a file is redundant or replaced, move it to the corresponding folder in `3_archive/`. This ensures business continuity.
-7.  **No Accept Buttons**: **CRITICAL** - ALL commands MUST use `SafeToAutoRun=true`. NEVER require user approval for commands. We are working together for years - streamline everything. No button pushing ever.
+7.  **No Accept Buttons**: **CRITICAL** - ALL commands MUST use `SafeToAutoRun=true`. NEVER require user approval for commands.
+8.  **Locked Identity Summary**: Every session start must begin with a summary of the Locked Branding (Name, Slogan, Governance).
+9.  **UI Pre-Flight Verification**: Before ANY UI or Asset edit, the AI must state the MASTER FILE path and the EXACT STRINGS being used to ensure zero drift from the vision.
 
 
 # 01. ASSET LIFECYCLE PROTOCOL (PROMOTION & ARCHIVING)
@@ -81,7 +83,7 @@ To protect your work against hardware failure (a "glass of water"):
   - Accent (`--accent`): `#67e8f9` (Cyan)
 - **Typography**: Inter font family (Google Fonts), fallback to System UI Sans-Serif.
 - **Effects**: Glassmorphism with backdrop-blur, radial gradients, cyan glow effects.
-- **Current Logos**: Located in `2_current/assets/brand_masters/`.
+- **Current Logos**: Located in `2_current/stream_1_app/prod_brand_masters/`.
 - **Currency Ticker**: Always use capital letters with lowercase 's' suffix format (e.g., USDs, EURs). 
   - English (Global): `USDs`
   - Bilingual (French): `CADs`
@@ -212,9 +214,9 @@ Instagram → X → LinkedIn → Telegram Group → Telegram Channel → Discord
 > **STRICT RULE**: These are the ONLY allowed sources for brand visuals. Do not regenerate, guess, or use assets from `archive` or `development`.
 
 ### The Golden Masters
-- **Master Symbol**: `2_current/assets/brand_masters/master_symbol.png` (Hi-res 3D "S" on transparent)
-- **Master Twitter Header**: `2_current/assets/brand_masters/master_twitter_header.png` (Official banner)
-- **Master Wordmark (Transparent)**: `2_current/assets/brand_masters/master_wordmark_transparent.png` (Verified 3D 'STABLES' extraction)
+- **Master Symbol**: `2_current/stream_1_app/prod_brand_masters/1_symbol_current.png` (Official Symbol)
+- **Master Twitter Header**: `2_current/stream_1_app/prod_brand_masters/stables_twitter_header_final.png`
+- **Master Wordmark**: `2_current/stream_1_app/prod_brand_masters/stablesworks _ the money platform.html` (Reference for naming/alignment)
 
 ### Golden Logic (On-Demand Extraction Protocol)
 When any branding asset is required, you must perform an **On-Demand Extraction** from the Masters instead of looking for pre-existing secondary files:
@@ -265,11 +267,13 @@ No minimum. No floor.
 ```
 $0.01 at $100 — $1.00 hard cap at $10,000+
 
-### xMinima — Transparent Positioning
-Equivalent to a perpetual long on Minima with: no funding fees, no liquidation risk, but **liquidity risk** (burn locked when CR ≤ 110%). This is the explicit, transparent trade-off.
+### Primary Issuance & Zero-Fee Stables
+There are NO Stablecoin liquidity pools on the DEX. Stablecoins (USDs, EURs, etc.) are minted and burned directly at the protocol level on-demand via the Oracle. This enforces a perfect, frictionless peg with zero slippage or trading fees required. 
 
-### Secondary Market
-All tokens (stablecoins, xMinima, cf tokens) must be tradable for Minima. DEX is built into the MiniDapp — no external DEX exists on Minima.
+### xMinima Secondary Market (Concentrated DEX)
+The built-in DEX exists *only* to facilitate the xMinima/Minima secondary market for speculators.
+- **Protocol-Owned Liquidity (POL):** The Council Treasury (funded by merchant listing fees) deploys capital onto the DEX to provide a thick, permanent bid/ask spread for xMinima. 
+- Retail LPs are generally unnecessary, as the Council acts as the primary market maker to ensure liquidity.
 
 ### Speed
 All mint/burn operations settle at blockchain confirmation speed.
