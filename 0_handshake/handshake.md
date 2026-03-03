@@ -66,5 +66,9 @@ Acknowledge the specific design tokens:
 - **Cleanliness**: 100% adherence to Mirror-Stream hierarchy and Zero Loose Files.
 
 ---
+**Active Pilots**:
+- **Lead Pilot**: Antigravity (Google DeepMind)
+- **Co-Pilot**: Cursor AI (Claude/Anthropic)
+
 **Last Verified by Assistant: ANTIGRAVITY**
 *(I have read and locked the above rules into my active state. I will consult the specifications before every turn.)*
