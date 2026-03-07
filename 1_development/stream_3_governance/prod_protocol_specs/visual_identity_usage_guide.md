@@ -2,13 +2,13 @@
 
 ## The System
 
-Your visual identity is now **locked into the Stablesworks Handshake Protocol** - the same system that ensures I always know your branding rules, directory structure, and messaging guidelines.
+Your visual identity is now **locked into the Stables Handshake Protocol** - the same system that ensures I always know your branding rules, directory structure, and messaging guidelines.
 
 ---
 
 ## What Happens At Every Session Start
 
-When you (or I) run `/stablesworks` at the beginning of a conversation, I now **mandatory** go through these steps:
+When you (or I) run `/handshake` at the beginning of a conversation, I now **mandatory** go through these steps:
 
 1. ✅ Read `stables_master_reference.md`
 2. ✅ Verify understanding of directory rules, branding, messaging
@@ -34,7 +34,7 @@ This document contains:
 - **Mandatory "Built on MINIMA" requirement**
 
 ### 2. **Updated Handshake Workflow**
-**Location**: `.agent\workflows\stablesworks.md`
+**Location**: `.agent\workflows\handshake.md`
 
 Now includes **Step 4: Visual Identity Lock**
 - Mandatory reading of visual_identity_spec.md
@@ -53,7 +53,7 @@ Section 6 now points to `visual_identity_spec.md` as the source of truth for all
 
 ### At the Start of Every Session:
 ```
-@/stablesworks
+@/handshake
 ```
 
 I will automatically:
@@ -98,7 +98,7 @@ I'll reference the exact specs from `visual_identity_spec.md`.
 ### If Visual Identity Ever Evolves:
 1. Update `2_current/visual_identity_spec.md` with new specs
 2. Archive old version to `3_archive/`
-3. Run `/stablesworks` in next session
+3. Run `/handshake` in next session
 4. I'll automatically use the updated identity
 
 ### For Other Team Members:
@@ -112,7 +112,7 @@ If you work with other AI assistants or designers:
 ## The Magic Sentence
 
 At the start of every session, just say:
-> **@/stablesworks**
+> **@/handshake**
 
 And I'll be locked and loaded with:
 - Your directory rules
@@ -124,3 +124,4 @@ And I'll be locked and loaded with:
 ---
 
 **That's it!** The visual identity is now as protected as your branding rules. Every session, every time. 🔒
+

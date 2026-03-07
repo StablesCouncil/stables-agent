@@ -1,0 +1,20 @@
+I would rather not use the term "the balance sheet" it refers to cetralisation
+
+We have to discuss "**Progressive decentralisation** — authority transfers from founders to community through structural design" i honestly dont know how this will unfold
+
+
+
+
+The challenge we take, a monetary system with no printer and no shooter. 
+
+
+
+The Three Pillars (Not Two)
+The protocol's structural soundness rests on three independent pillars, not two:
+
+Pillar 1: MINIMA Has Permanent Nonzero Value
+Pillar 2: xMINIMA's Asymmetric Payoff Attracts Re-capitalization
+Pillar 3: Physical Arbitrage Through Merchant Acceptance
+Let me go in depth on each, with counter-arguments.
+
+it's the fact that gold has no significant physical usage that makes it a good currency. it'S paradoxal, it'S value comes mainly from the fact that it's useless. Just as minima, it make it the perfect

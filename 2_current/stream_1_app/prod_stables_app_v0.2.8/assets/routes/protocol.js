@@ -65,8 +65,9 @@ function renderProtocol(ctx) {
   `;
 }
 
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderProtocol = renderProtocol;
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderProtocol = renderProtocol;
+
 
 
 

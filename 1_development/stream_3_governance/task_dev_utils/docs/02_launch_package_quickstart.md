@@ -119,7 +119,7 @@ https://stables-council.github.io/presentation
 4. Set bio: "Money Platform. Money that is truly yours. Secure. Pseudonymous. Unstoppable."
 
 
-**Visual assets location**: `h:\My Drive\Stablesworks\2_current\assets\`
+**Visual assets location**: `h:\My Drive\Stables\2_current\assets\`
 
 ---
 
@@ -156,7 +156,7 @@ github/
 stables_X_header_final.png  ← X header
 stables_X_pfp_final.png     ← X profile pic
 1_symbol_social.png                ← GitHub org profile pic
-Stablesworks _ the money platform.html  ← Presentation source
+Stables _ the money platform.html  ← Presentation source
 ```
 
 ---
@@ -267,6 +267,7 @@ Good luck! 🎉
 ---
 
 **Next action**: Open `github/setup_guide.md` and start with Phase 1.
+
 
 
 

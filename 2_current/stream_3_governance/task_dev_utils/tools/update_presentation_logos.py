@@ -3,9 +3,9 @@ import re
 import os
 
 # Paths
-BASE_DIR = r"h:\My Drive\Stablesworks"
+BASE_DIR = r"h:\My Drive\Stables"
 ASSETS_DIR = os.path.join(BASE_DIR, "assets", "current")
-HTML_FILE = os.path.join(ASSETS_DIR, "Stablesworks _ The Money Platform.html")
+HTML_FILE = os.path.join(ASSETS_DIR, "Stables _ The Money Platform.html")
 SYMBOL_IMG = os.path.join(ASSETS_DIR, "1_Symbol_current.png")
 LOCKUP_IMG = os.path.join(ASSETS_DIR, "2_Lockup_Stables_current.png")
 
@@ -90,6 +90,7 @@ except Exception as e:
     print(f"Error writing file: {e}")
 
 print("Script completed.")
+
 
 
 

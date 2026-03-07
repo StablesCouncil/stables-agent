@@ -3,8 +3,8 @@
 # Output: 400x400 Black Background (Twitter will apply circular crop)
 
 # Paths (READ-ONLY from 2_current)
-$symbolPath = "h:\My Drive\Stablesworks\2_current\assets\1_symbol_current.png"
-$destPath = "h:\My Drive\Stablesworks\1_development\assets\stables_twitter_pfp_final.png"
+$symbolPath = "h:\My Drive\Stables\2_current\assets\1_symbol_current.png"
+$destPath = "h:\My Drive\Stables\1_development\assets\stables_twitter_pfp_final.png"
 
 # Load System.Drawing
 Add-Type -AssemblyName System.Drawing
@@ -50,6 +50,7 @@ $symbolImg.Dispose()
 Write-Host "Success: Twitter PFP created at $destPath"
 Write-Host "Source: 1_symbol_current.png (from 2_current/assets)"
 Write-Host "Note: Twitter will apply circular crop automatically"
+
 
 
 

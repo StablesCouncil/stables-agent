@@ -1,4 +1,4 @@
-$baseDir = "h:\My Drive\Stablesworks"
+$baseDir = "h:\My Drive\Stables"
 $assetsDir = Join-Path $baseDir "assets"
 
 # Regex to find h1.hero-title block
@@ -49,6 +49,7 @@ foreach ($file in $files) {
     }
 }
 Write-Host "Batch Line-Height Fix Complete."
+
 
 
 

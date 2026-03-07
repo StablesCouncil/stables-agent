@@ -1,7 +1,7 @@
 Add-Type -AssemblyName System.Drawing
 
-$sourceDir = "c:\Users\Charles\.gemini\antigravity\scratch\Stablesworks_v2\V2\Files"
-$symbolSource = Join-Path $sourceDir "SW_LOGO_Stablesworks_S_v1_MASTER (1).png"
+$sourceDir = "c:\Users\Charles\.gemini\antigravity\scratch\Stables_v2\V2\Files"
+$symbolSource = Join-Path $sourceDir "SW_LOGO_Stables_S_v1_MASTER (1).png"
 $lockupSource = Join-Path $sourceDir "Stables_lockup.png"
 
 $destSymbol = Join-Path $sourceDir "1_Symbol_Transparent.png"
@@ -92,6 +92,7 @@ if (Test-Path $lockupSource) {
 else {
     Write-Error "Source lockup not found: $lockupSource"
 }
+
 
 
 

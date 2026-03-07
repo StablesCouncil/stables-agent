@@ -1,4 +1,4 @@
-# Git Recovery Guide for Stablesworks
+# Git Recovery Guide for Stables
 
 ## Quick Recovery Commands
 
@@ -50,7 +50,7 @@ git show COMMIT_HASH:"path/to/file.html" > recovered_file.html
 ## Before AI Work Session
 ```powershell
 # Create checkpoint before AI modifies anything
-cd "H:\My Drive\Stablesworks"
+cd "H:\My Drive\Stables"
 git add -A
 git commit -m "Pre-AI checkpoint - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
 ```
@@ -58,7 +58,7 @@ git commit -m "Pre-AI checkpoint - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
 ## After AI Work Session
 ```powershell
 # Save AI changes
-cd "H:\My Drive\Stablesworks"
+cd "H:\My Drive\Stables"
 git add -A
 git commit -m "Post-AI: [describe what was done]"
 ```
@@ -78,6 +78,7 @@ If something goes wrong:
 
 ---
 **Last Updated**: 2026-01-05 14:23
+
 
 
 

@@ -1,4 +1,4 @@
-# Stablesworks — Internal Master Roadmap (IMR)
+# Stables — Internal Master Roadmap (IMR)
 
 **Version:** v1.0  
 **Date:** December 28, 2025  
@@ -8,7 +8,7 @@
 
 ## 1. Purpose of this document
 
-This Internal Master Roadmap (IMR) is the authoritative internal reference for the Stablesworks project. It consolidates all architectural, governance, funding, sequencing, and disclosure decisions agreed upon between the core contributors.
+This Internal Master Roadmap (IMR) is the authoritative internal reference for the Stables project. It consolidates all architectural, governance, funding, sequencing, and disclosure decisions agreed upon between the core contributors.
 
 This document is **not public-facing**. It exists to:
 - maintain coherence over time,
@@ -22,7 +22,7 @@ Unless explicitly superseded, this document governs all internal reasoning and p
 
 ## 2. Core objective (non-negotiable)
 
-The ultimate objective of Stablesworks is to **explore, design, and test an algorithmic Stablescoin** through a security-first, adversarial, and staged approach.
+The ultimate objective of Stables is to **explore, design, and test an algorithmic Stablescoin** through a security-first, adversarial, and staged approach.
 
 Key characteristics:
 - algorithmic in nature,
@@ -243,6 +243,7 @@ No silent changes.
 ## 10. Closing note
 
 This document prioritizes patience, correctness, and resilience. Growth is optional. Stability is mandatory.
+
 
 
 

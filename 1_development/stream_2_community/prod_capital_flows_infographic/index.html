@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -227,6 +227,16 @@
             margin-top: 4px;
         }
 
+        .fee-tag {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 8px;
+            opacity: 0.85;
+        }
+
         /* Flow Indicators */
         .stage-arrow {
             display: flex;
@@ -253,12 +263,7 @@
             align-items: center;
             gap: 8px;
             opacity: 0.6;
-            transition: opacity 0.2s ease, color 0.2s ease;
-        }
-
-        .return-link:hover {
-            opacity: 1;
-            color: var(--accent);
+            cursor: default;
         }
 
         .return-link svg {
@@ -341,9 +346,11 @@
             <div class="stage-title">Deposit</div>
             <div class="node-list">
                 <div class="node highlight">
-                    <div class="node-text">Your Minima</div>
+                    <div>
+                        <div class="node-text">Your Minima</div>
+                        <div class="node-subtext">The sole foundation. The only asset that gives you full sovereignty.</div>
+                    </div>
                 </div>
-                <div class="node-subtext">The base asset. Secure, on-chain collateral.</div>
             </div>
             <div class="return-option" style="visibility: hidden;">
                 <!-- Placeholder for layout symmetry -->
@@ -351,44 +358,51 @@
             </div>
         </div>
 
-        <div class="stage-arrow">â†’</div>
+        <div class="stage-arrow">→</div>
 
         <!-- STEP 2: CREATE VALUE -->
         <div class="stage-card">
             <div class="stage-number">Step 02</div>
             <div class="stage-title">Create Value</div>
             <div class="node-list">
+                <div class="node highlight">
+                    <div>
+                        <div class="node-text">Stablecoins</div>
+                        <div class="node-subtext">USDs, EURs, JPYs and many more</div>
+                    </div>
+                </div>
                 <div class="node">
                     <div>
                         <div class="node-text">xMinima</div>
-                        <div class="node-subtext">Protocol Equity & Wealth</div>
+                        <div class="node-subtext">Protocol Wealth</div>
                     </div>
                 </div>
                 <div class="node">
                     <div>
                         <div class="node-text">Coverage Fund</div>
-                        <div class="node-text" style="color:var(--accent); font-size:16px;">Yield & Stability</div>
+                        <div class="node-subtext">Yield & Stability</div>
+                        <div class="fee-tag">&#8592; earns all transaction fees</div>
                     </div>
                 </div>
                 <div class="node">
                     <div>
                         <div class="node-text">Liquidity Fund</div>
-                        <div class="node-subtext">Secondary Market</div>
+                        <div class="node-subtext">xMinima &middot; Minima &middot; Concentrated liquidity</div>
                     </div>
                 </div>
             </div>
             <div class="return-option">
-                <a href="#" class="return-link">
+                <span class="return-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                     </svg>
-                    Optional Return to Minima
-                </a>
+                    Exit anytime &rarr; back to Minima
+                </span>
             </div>
         </div>
 
-        <div class="stage-arrow">â†’</div>
+        <div class="stage-arrow">→</div>
 
         <!-- STEP 3: CIRCULATE -->
         <div class="stage-card">
@@ -397,25 +411,25 @@
             <div class="node-list">
                 <div class="node highlight">
                     <div>
-                        <div class="node-text">Stablecoins</div>
-                        <div class="node-subtext">USDs, EURs, CADs</div>
+                        <div class="node-text">People</div>
+                        <div class="node-subtext">Buyers, savers, senders</div>
                     </div>
                 </div>
                 <div class="node">
                     <div class="node-text">Merchants</div>
                 </div>
                 <div class="node">
-                    <div class="node-text">Suppliers & Friends</div>
+                    <div class="node-text">Suppliers &amp; Friends</div>
                 </div>
             </div>
             <div class="return-option">
-                <a href="#" class="return-link">
+                <span class="return-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
                         <path d="M19 12H5M12 19l-7-7 7-7" />
                     </svg>
-                    Optional Return to Minima
-                </a>
+                    Exit anytime &rarr; back to Minima
+                </span>
             </div>
         </div>
     </div>

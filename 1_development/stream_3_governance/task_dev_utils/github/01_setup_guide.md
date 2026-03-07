@@ -10,7 +10,7 @@ We're creating a **two-tier GitHub structure**:
 
 | Organization | Visibility | Purpose |
 | :--- | :--- | :--- |
-| **`Stablesworks`** | 🔒 Private | Development, internal tools |
+| **`Stables`** | 🔒 Private | Development, internal tools |
 | **`stables-council`** | 🌐 Public | Community-facing, open-source |
 
 ---
@@ -60,7 +60,7 @@ We're creating a **two-tier GitHub structure**:
 1. Go to `https://github.com/stables-council/presentation`
 2. Click **"Add file"** → **"Upload files"**
 3. Upload these files from your local machine:
-   - `Stablesworks _ the money platform.html` (rename to `index.html`)
+   - `Stables _ the money platform.html` (rename to `index.html`)
    - Any associated assets (images, CSS, JS if separate)
 4. **Commit message**: "Initial presentation upload"
 5. Click **"Commit changes"**
@@ -68,8 +68,8 @@ We're creating a **two-tier GitHub structure**:
 **Option B: Via Git Command Line**
 
 ```bash
-# Navigate to your Stablesworks directory
-cd "h:\My Drive\Stablesworks\2_current\assets"
+# Navigate to your Stables directory
+cd "h:\My Drive\Stables\2_current\assets"
 
 # Create a temporary directory for the repo
 mkdir temp_presentation
@@ -82,7 +82,7 @@ git init
 git remote add origin https://github.com/stables-council/presentation.git
 
 # Copy the HTML file and rename it
-cp "../Stablesworks _ the money platform.html" index.html
+cp "../Stables _ the money platform.html" index.html
 
 # Add and commit
 git add index.html
@@ -99,7 +99,7 @@ git push -u origin main
 2. Click on `README.md`
 3. Click the **pencil icon** (Edit)
 4. **Replace content** with the content from:
-   - `h:\My Drive\Stablesworks\1_development\github\presentation_readme.md`
+   - `h:\My Drive\Stables\1_development\github\presentation_readme.md`
 5. **Commit message**: "Update README with project details"
 6. Click **"Commit changes"**
 
@@ -140,7 +140,7 @@ git push -u origin main
 ### Step 2: Update README (When Ready to Open-Source)
 
 1. Replace README.md with content from:
-   - `h:\My Drive\Stablesworks\1_development\github\console_readme.md`
+   - `h:\My Drive\Stables\1_development\github\console_readme.md`
 2. Add security warning banner
 3. Upload your console code
 
@@ -211,7 +211,7 @@ https://stables-council.github.io/presentation
 **Issue**: 404 error on `stables-council.github.io/presentation`
 
 **Solutions:**
-1. Check that the file is named `index.html` (not `Stablesworks _ the money platform.html`)
+1. Check that the file is named `index.html` (not `Stables _ the money platform.html`)
 2. Verify GitHub Pages is enabled in Settings → Pages
 3. Wait 2-5 minutes for initial deployment
 4. Check the "Actions" tab for deployment status
@@ -221,7 +221,7 @@ https://stables-council.github.io/presentation
 **Issue**: GitHub rejects file upload (>100 MB)
 
 **Solution:**
-1. Check file size: `Get-Item "Stablesworks _ the money platform.html" | Select-Object Length`
+1. Check file size: `Get-Item "Stables _ the money platform.html" | Select-Object Length`
 2. If >100 MB, use Git LFS (Large File Storage)
 3. Or optimize the HTML (compress images, remove unused assets)
 
@@ -247,6 +247,7 @@ https://stables-council.github.io/presentation
 ---
 
 **Ready to execute!** Follow these steps in order, and you'll have a professional GitHub presence for launch.
+
 
 
 

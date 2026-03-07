@@ -129,8 +129,9 @@ function renderCouncil(ctx) {
   $('publishNotice').onclick = () => showToast('Council', 'Notice published.');
 }
 
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderCouncil = renderCouncil;
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderCouncil = renderCouncil;
+
 
 
 

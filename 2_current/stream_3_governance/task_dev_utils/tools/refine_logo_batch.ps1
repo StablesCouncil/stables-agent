@@ -1,4 +1,4 @@
-$baseDir = "h:\My Drive\Stablesworks"
+$baseDir = "h:\My Drive\Stables"
 $assetsDir = Join-Path $baseDir "assets"
 
 # 1. Define the Refined CSS
@@ -90,6 +90,7 @@ foreach ($file in $files) {
     }
 }
 Write-Host "Batch Refinement Complete."
+
 
 
 

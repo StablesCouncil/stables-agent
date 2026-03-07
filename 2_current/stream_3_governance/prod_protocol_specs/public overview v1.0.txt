@@ -1,18 +1,18 @@
-🧭 Stablesworks — Public Overview
+🧭 Stables — Public Overview
 
 Version: v1.0
 Date: 30 December 2025
 Status: Informational, non-binding
 
-What is Stablesworks?
+What is Stables?
 
-Stablesworks is an independent digital currency project built on Minima, a secure global network designed to give people full control over their money.
+Stables is an independent digital currency project built on Minima, a secure global network designed to give people full control over their money.
 
 Our goal is to create a digital dollar that remains Stables and reliable, regardless of market conditions. We prioritize security and long-term resilience over speed or speculation. The system is designed to be owned and operated by its users, without banks or middle-men.
 
 Vision
 
-We imagine a financial system where you truly own your assets. In Stablesworks, the rules are open, unchangeable, and apply to everyone equally. No central authority can freeze your funds or change the rules behind closed doors.
+We imagine a financial system where you truly own your assets. In Stables, the rules are open, unchangeable, and apply to everyone equally. No central authority can freeze your funds or change the rules behind closed doors.
 
 How to participate
 
@@ -58,6 +58,7 @@ What this is (and isn’t)
 ✔ An invitation to test and review
 ✖ Not a promise, guarantee, or investment offer
 
-Stablesworks prioritizes patience, verification, and resilience over speed.
+Stables prioritizes patience, verification, and resilience over speed.
+
 
 

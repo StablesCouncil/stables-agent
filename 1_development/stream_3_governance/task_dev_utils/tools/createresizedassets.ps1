@@ -1,9 +1,9 @@
 
 Add-Type -AssemblyName System.Drawing
 
-$sourcePath = "H:\My Drive\Stablesworks\assets\current\1_Symbol_current.png"
-$faviconPath = "H:\My Drive\Stablesworks\assets\current\1_Symbol_favicon.png"
-$socialPath = "H:\My Drive\Stablesworks\assets\current\1_Symbol_social.png"
+$sourcePath = "H:\My Drive\Stables\assets\current\1_Symbol_current.png"
+$faviconPath = "H:\My Drive\Stables\assets\current\1_Symbol_favicon.png"
+$socialPath = "H:\My Drive\Stables\assets\current\1_Symbol_social.png"
 
 $img = [System.Drawing.Image]::FromFile($sourcePath)
 Write-Host "Original Dimensions: $($img.Width)x$($img.Height)"
@@ -54,6 +54,7 @@ if ($img.Width -lt 800) {
 Resize-Image -image $img -width $socialWidth -height $socialHeight -path $socialPath
 
 $img.Dispose()
+
 
 
 

@@ -1,6 +1,6 @@
 
-$logoPath = "C:\Users\Charles\.gemini\antigravity\scratch\Stablesworks\Files\SW_LOGO_Stablesworks_S_v1_MASTER (1).png"
-$targetFile = "C:\Users\Charles\.gemini\antigravity\scratch\Stablesworks\Files\Stables - Presentation.html"
+$logoPath = "C:\Users\Charles\.gemini\antigravity\scratch\Stables\Files\SW_LOGO_Stables_S_v1_MASTER (1).png"
+$targetFile = "C:\Users\Charles\.gemini\antigravity\scratch\Stables\Files\Stables - Presentation.html"
 
 # 1. Read the logo file and convert to Base64
 if (Test-Path $logoPath) {
@@ -97,6 +97,7 @@ $newHtml = @"
 # 3. Write the new file
 Set-Content -Path $targetFile -Value $newHtml
 Write-Host "Successfully created $targetFile with original logo."
+
 
 
 

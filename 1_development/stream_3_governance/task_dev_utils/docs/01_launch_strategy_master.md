@@ -47,7 +47,7 @@ graph LR
 
 **Timeline**: 30-45 minutes  
 **Dependencies**: None (start here)  
-**Reference**: [`github/setup_guide.md`](file:///h:/My%20Drive/Stablesworks/1_development/github/setup_guide.md)
+**Reference**: [`github/setup_guide.md`](file:///h:/My%20Drive/Stables/1_development/github/setup_guide.md)
 
 ### Step 1.1: Create GitHub Organization (10 min)
 
@@ -77,12 +77,12 @@ graph LR
    - Initialize with: ✅ README, ✅ MIT License
 2. **Upload presentation**:
    - Click **"Add file"** → **"Upload files"**
-   - Upload `Stablesworks _ the money platform.html` from `2_current/assets/`
+   - Upload `Stables _ the money platform.html` from `2_current/assets/`
    - **CRITICAL**: Rename to `index.html` during upload
    - Commit message: `Initial presentation upload`
 3. **Update README**:
    - Click on `README.md` → Edit (pencil icon)
-   - Replace content with [`github/presentation_readme.md`](file:///h:/My%20Drive/Stablesworks/1_development/github/presentation_readme.md)
+   - Replace content with [`github/presentation_readme.md`](file:///h:/My%20Drive/Stables/1_development/github/presentation_readme.md)
    - Commit message: `Update README with project details`
 
 **Verification**: Confirm `index.html` appears in the repository root.
@@ -129,7 +129,7 @@ graph LR
 
 **Timeline**: 20-30 minutes  
 **Dependencies**: Phase 1 complete (need GitHub URL for bio)  
-**Reference**: [`docs/social_profile_strategy_updated.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/social_profile_strategy_updated.md)
+**Reference**: [`docs/social_profile_strategy_updated.md`](file:///h:/My%20Drive/Stables/1_development/docs/social_profile_strategy_updated.md)
 
 ### Step 2.1: Create X/X Account (10 min)
 
@@ -164,7 +164,7 @@ graph LR
 2. **Upload assets**:
    - Logo: `1_symbol_social.png`
    - Cover image: `stables_X_header_final.png` (may need to resize)
-3. **Description**: Use professional version from [`launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md)
+3. **Description**: Use professional version from [`launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md)
 
 ---
 
@@ -183,7 +183,7 @@ Now that you have the X handle:
 
 **Timeline**: 20-30 minutes  
 **Dependencies**: Phases 1 & 2 complete  
-**Reference**: [`docs/launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md)
+**Reference**: [`docs/launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md)
 
 ### Step 3.1: Finalize Launch Tweet (10 min)
 
@@ -233,7 +233,7 @@ https://stables-council.github.io/presentation
 
 ### Step 3.2: Prepare Day 2 Thread (5 min)
 
-The 8-tweet thread is pre-written in [`launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md).
+The 8-tweet thread is pre-written in [`launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md).
 
 **Action**:
 1. Review the thread
@@ -245,12 +245,12 @@ The 8-tweet thread is pre-written in [`launch_content_package.md`](file:///h:/My
 ### Step 3.3: Prepare Cross-Platform Posts (5 min)
 
 **Reddit (r/Minima)**:
-- Pre-written template in [`launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md)
+- Pre-written template in [`launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md)
 - Customize with any Minima-specific context
 - Save for Day 1 posting
 
 **LinkedIn** (if created):
-- Professional version in [`launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md)
+- Professional version in [`launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md)
 - Adjust tone for corporate audience
 - Save for Day 5
 
@@ -286,7 +286,7 @@ The 8-tweet thread is pre-written in [`launch_content_package.md`](file:///h:/My
 
 **Timeline**: 5 minutes + ongoing monitoring  
 **Dependencies**: Phases 1-3 complete  
-**Reference**: [`docs/launch_checklist.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_checklist.md)
+**Reference**: [`docs/launch_checklist.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_checklist.md)
 
 ### Step 4.1: Choose Launch Time
 
@@ -374,7 +374,7 @@ The 8-tweet thread is pre-written in [`launch_content_package.md`](file:///h:/My
 - Quality of questions (indicates genuine interest)
 - Community-created content (memes, tutorials, etc.)
 
-**Record in**: [`launch_checklist.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_checklist.md) (Success Metrics section)
+**Record in**: [`launch_checklist.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_checklist.md) (Success Metrics section)
 
 ---
 
@@ -382,7 +382,7 @@ The 8-tweet thread is pre-written in [`launch_content_package.md`](file:///h:/My
 
 **Timeline**: Days 2-7  
 **Dependencies**: Phase 4 complete  
-**Reference**: [`docs/launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md)
+**Reference**: [`docs/launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md)
 
 ### Day-by-Day Content Calendar
 
@@ -400,7 +400,7 @@ The 8-tweet thread is pre-written in [`launch_content_package.md`](file:///h:/My
 
 ### Day 2: X Thread (24 hours after launch)
 
-**Pre-written thread** in [`launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md).
+**Pre-written thread** in [`launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md).
 
 **Action**:
 1. Post the 8-tweet thread
@@ -440,7 +440,7 @@ The 8-tweet thread is pre-written in [`launch_content_package.md`](file:///h:/My
 
 ### Day 5: LinkedIn Professional Post
 
-**Content**: Professional version from [`launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md)
+**Content**: Professional version from [`launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md)
 
 **Tone**: More formal, emphasize innovation and technical achievement
 
@@ -493,7 +493,7 @@ This is just the beginning.
 
 **Backup Option**: Use Google Drive public link
 
-1. Upload `Stablesworks _ the money platform.html` to Google Drive
+1. Upload `Stables _ the money platform.html` to Google Drive
 2. Set sharing to "Anyone with link can view"
 3. Use Drive link in launch tweet
 4. **Note**: This is less professional, so troubleshoot GitHub first
@@ -550,7 +550,7 @@ This is just the beginning.
 - Recognition from Minima community
 - Developer interest (GitHub issues, PRs)
 
-**Track in**: [`launch_checklist.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_checklist.md)
+**Track in**: [`launch_checklist.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_checklist.md)
 
 ---
 
@@ -560,21 +560,21 @@ This is just the beginning.
 
 | File | Purpose |
 |:---|:---|
-| [`launch_package_quickstart.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_package_quickstart.md) | Quick start guide (START HERE) |
-| [`launch_content_package.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_content_package.md) | All social media content |
-| [`launch_checklist.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_checklist.md) | Execution checklist |
-| [`hashtag_strategy.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/hashtag_strategy.md) | Hashtag guidelines |
-| [`launch_strategy_analysis.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_strategy_analysis.md) | Strategic rationale |
-| [`social_profile_strategy_updated.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/social_profile_strategy_updated.md) | Profile configuration |
-| [`launch_summary.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_summary.md) | High-level summary |
+| [`launch_package_quickstart.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_package_quickstart.md) | Quick start guide (START HERE) |
+| [`launch_content_package.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_content_package.md) | All social media content |
+| [`launch_checklist.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_checklist.md) | Execution checklist |
+| [`hashtag_strategy.md`](file:///h:/My%20Drive/Stables/1_development/docs/hashtag_strategy.md) | Hashtag guidelines |
+| [`launch_strategy_analysis.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_strategy_analysis.md) | Strategic rationale |
+| [`social_profile_strategy_updated.md`](file:///h:/My%20Drive/Stables/1_development/docs/social_profile_strategy_updated.md) | Profile configuration |
+| [`launch_summary.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_summary.md) | High-level summary |
 
 ### GitHub Setup (in `1_development/github/`)
 
 | File | Purpose |
 |:---|:---|
-| [`setup_guide.md`](file:///h:/My%20Drive/Stablesworks/1_development/github/setup_guide.md) | GitHub step-by-step instructions |
-| [`presentation_readme.md`](file:///h:/My%20Drive/Stablesworks/1_development/github/presentation_readme.md) | README for presentation repo |
-| [`console_readme.md`](file:///h:/My%20Drive/Stablesworks/1_development/github/console_readme.md) | README for console repo (Week 2) |
+| [`setup_guide.md`](file:///h:/My%20Drive/Stables/1_development/github/setup_guide.md) | GitHub step-by-step instructions |
+| [`presentation_readme.md`](file:///h:/My%20Drive/Stables/1_development/github/presentation_readme.md) | README for presentation repo |
+| [`console_readme.md`](file:///h:/My%20Drive/Stables/1_development/github/console_readme.md) | README for console repo (Week 2) |
 
 ### Visual Assets (in `2_current/assets/`)
 
@@ -583,7 +583,7 @@ This is just the beginning.
 | `stables_X_header_final.png` | X header (1500x500) |
 | `stables_X_pfp_final.png` | X profile picture (400x400) |
 | `1_symbol_social.png` | GitHub org profile picture |
-| `Stablesworks _ the money platform.html` | Presentation source (3MB) |
+| `Stables _ the money platform.html` | Presentation source (3MB) |
 
 ---
 
@@ -625,9 +625,9 @@ Good luck! 🚀
 ## 🆘 Need Help During Launch?
 
 **Troubleshooting**:
-- GitHub Pages issues → [`github/setup_guide.md`](file:///h:/My%20Drive/Stablesworks/1_development/github/setup_guide.md) (Troubleshooting section)
-- Low engagement → [`launch_checklist.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/launch_checklist.md) (Contingency Plans)
-- Hashtag questions → [`hashtag_strategy.md`](file:///h:/My%20Drive/Stablesworks/1_development/docs/hashtag_strategy.md)
+- GitHub Pages issues → [`github/setup_guide.md`](file:///h:/My%20Drive/Stables/1_development/github/setup_guide.md) (Troubleshooting section)
+- Low engagement → [`launch_checklist.md`](file:///h:/My%20Drive/Stables/1_development/docs/launch_checklist.md) (Contingency Plans)
+- Hashtag questions → [`hashtag_strategy.md`](file:///h:/My%20Drive/Stables/1_development/docs/hashtag_strategy.md)
 
 **Quick Decisions**:
 - Hashtag choice → Option A (recommended for broader reach)
@@ -638,6 +638,7 @@ Good luck! 🚀
 
 **Last Updated**: 2026-01-04  
 **Next Review**: After Week 1 (analyze metrics and adjust Week 2 strategy)
+
 
 
 

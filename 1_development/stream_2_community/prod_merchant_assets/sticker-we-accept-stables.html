@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables Shop Sticker - Preview</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #0b0f14;
+            color: #e6edf3;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            min-height: 100vh;
+        }
+        
+        .preview-container {
+            background: radial-gradient(circle at top, rgba(103, 232, 249, 0.18), transparent 55%) #0b0f14;
+            padding: 60px;
+            border-radius: 24px;
+        }
+        
+        .sticker-preview {
+            background: white;
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .sticker-preview svg {
+            display: block;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .info {
+            max-width: 800px;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            border-radius: 24px;
+            padding: 32px;
+        }
+        
+        .info h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ffffff 0%, #67e8f9 50%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .info h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #67e8f9;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        
+        .info p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #9fb0c0;
+            margin-bottom: 16px;
+        }
+        
+        .info ul {
+            margin-left: 24px;
+            color: #9fb0c0;
+            line-height: 1.8;
+        }
+        
+        .info li {
+            margin-bottom: 8px;
+        }
+        
+        .info code {
+            background: rgba(103, 232, 249, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #67e8f9;
+        }
+        
+        .download-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(167, 139, 250, 0.3));
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            border-radius: 999px;
+            color: #67e8f9;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 8px;
+            transition: all 0.2s;
+        }
+        
+        .download-btn:hover {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.4), rgba(167, 139, 250, 0.4));
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="sticker-preview">
+            <svg width="400" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                    <radialGradient id="bgGradient" cx="50%" cy="0%" r="100%">
+                        <stop offset="0%" style="stop-color:rgba(103, 232, 249, 0.18);stop-opacity:1" />
+                        <stop offset="55%" style="stop-color:rgba(103, 232, 249, 0);stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#0b0f14;stop-opacity:1" />
+                    </radialGradient>
+                    <filter id="glass" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+                        <feOffset dx="0" dy="0" result="offsetblur"/>
+                        <feComponentTransfer>
+                            <feFuncA type="linear" slope="0.3"/>
+                        </feComponentTransfer>
+                        <feMerge>
+                            <feMergeNode/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                    <filter id="cyanGlow">
+                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                        <feMerge>
+                            <feMergeNode in="coloredBlur"/>
+                            <feMergeNode in="SourceGraphic"/>
+                        </feMerge>
+                    </filter>
+                    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+                        <stop offset="50%" style="stop-color:#67e8f9;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="400" height="200" fill="#0b0f14" rx="16"/>
+                <rect width="400" height="200" fill="url(#bgGradient)" rx="16"/>
+                <rect x="20" y="20" width="360" height="160" rx="24" 
+                      fill="rgba(15, 23, 42, 0.6)" 
+                      filter="url(#glass)"
+                      stroke="rgba(103, 232, 249, 0.3)" 
+                      stroke-width="1"/>
+                <image href="logo-symbol.png" x="30" y="50" width="80" height="80" preserveAspectRatio="xMidYMid meet" filter="url(#cyanGlow)"/>
+                <text x="200" y="65" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" 
+                      fill="#9fb0c0" text-anchor="start">Pay in</text>
+                <text x="200" y="110" font-family="Inter, system-ui, sans-serif" font-size="36" font-weight="900" 
+                      fill="url(#textGradient)" text-anchor="start" letter-spacing="-0.02em">STABLES</text>
+                <text x="200" y="140" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="600" 
+                      fill="#67e8f9" text-anchor="start">Here</text>
+                <text x="200" y="165" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="500" 
+                      fill="#9fb0c0" text-anchor="start" opacity="0.8">made possible by Minima</text>
+                <line x1="200" y1="75" x2="370" y2="75" stroke="#67e8f9" stroke-width="1.5" opacity="0.4"/>
+            </svg>
+        </div>
+    </div>
+    
+    <div class="info">
+        <h1>Stables Shop Sticker</h1>
+        <p>Official sticker design for shops and merchants to display that they accept Stables payments. Features the official Stables logo, "Pay in STABLES Here" messaging, and Minima attribution.</p>
+        
+        <h2>Design Layout</h2>
+        <ul>
+            <li><strong>"Pay in"</strong> - Top text in muted grey</li>
+            <li><strong>"STABLES"</strong> - Main brand name with gradient (white → cyan → purple)</li>
+            <li><strong>"Here"</strong> - Call-to-action in cyan accent color</li>
+            <li><strong>"made possible by Minima"</strong> - Attribution at bottom</li>
+            <li><strong>Logo Symbol</strong> - Official Stables symbol on the left</li>
+        </ul>
+        
+        <h2>Design Specifications</h2>
+        <ul>
+            <li><strong>Format:</strong> SVG (scalable vector graphics) - can be printed at any size</li>
+            <li><strong>Dimensions:</strong> 400x200px (2:1 aspect ratio) - standard sticker size</li>
+            <li><strong>Colors:</strong> Official brand palette (#0b0f14 background, #67e8f9 cyan accent)</li>
+            <li><strong>Typography:</strong> Inter font family (matches brand guidelines)</li>
+            <li><strong>Style:</strong> Glassmorphism effect with cyan glow accents</li>
+        </ul>
+        
+        <h2>Files Included</h2>
+        <ul>
+            <li><code>sticker-we-accept-stables.svg</code> - Standard size (400x200px) for digital use</li>
+            <li><code>sticker-we-accept-stables-print.svg</code> - High-resolution version (600x300px) for printing</li>
+            <li><code>sticker-we-accept-stables.html</code> - Preview page (this file)</li>
+        </ul>
+        
+        <h2>Usage Instructions</h2>
+        <p><strong>For Digital Use:</strong> Use the standard SVG file. It references <code>logo-symbol.png</code> in the same directory. Make sure both files are in the same folder when using.</p>
+        <p><strong>For Printing:</strong> Use the print version SVG. Recommended print sizes:</p>
+        <ul>
+            <li>Small sticker: 4" x 2" (10cm x 5cm)</li>
+            <li>Medium sticker: 6" x 3" (15cm x 7.5cm)</li>
+            <li>Large sticker: 8" x 4" (20cm x 10cm)</li>
+        </ul>
+        <p><strong>Print Requirements:</strong> Print on adhesive vinyl or sticker paper. The design works on both light and dark backgrounds, but looks best on transparent/clear stickers for shop windows.</p>
+        
+        <h2>Logo Embedding (For Standalone Use)</h2>
+        <p>The SVG files reference <code>logo-symbol.png</code> as an external file. For a truly standalone sticker (e.g., for printing services that require a single file), you can embed the logo as base64:</p>
+        <ol>
+            <li>Convert <code>logo-symbol.png</code> to base64</li>
+            <li>Replace the <code>&lt;image href="logo-symbol.png" ...&gt;</code> line with: <code>&lt;image href="data:image/png;base64,[BASE64_STRING]" ...&gt;</code></li>
+        </ol>
+        <p><strong>Note:</strong> The current file reference works fine when both files are in the same directory, which is suitable for most use cases.</p>
+        
+        <h2>Brand Compliance</h2>
+        <p>This sticker design adheres to the official Stables visual identity specification:</p>
+        <ul>
+            <li>✓ Uses approved color palette (#0b0f14, #67e8f9, #e6edf3, #9fb0c0)</li>
+            <li>✓ Follows glassmorphism design patterns</li>
+            <li>✓ Uses Inter typography</li>
+            <li>✓ Includes official brand symbol (logo-symbol.png)</li>
+            <li>✓ Maintains professional, premium aesthetic</li>
+            <li>✓ Includes Minima attribution as required</li>
+        </ul>
+    </div>
+</body>
+</html>

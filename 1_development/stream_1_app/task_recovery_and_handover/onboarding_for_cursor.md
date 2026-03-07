@@ -2,11 +2,11 @@
 
 Welcome to the team. You are now part of the **Stables** project (formerly "Stables Protocol" - do not use that name).
 
-To assist effectively, you must strictly adhere to the **Stablesworks Protocol**. This document outlines everything you need to know to survive and thrive here.
+To assist effectively, you must strictly adhere to the **Stables Rules**. This document outlines everything you need to know to survive and thrive here.
 
 ## 1. The Prime Directive: The Handshake
 Before doing ANYTHING in a session, you must establish the ground rules.
-**Your First Action**: Always ask to run the `/stablesworks` protocol or confirm you have read the **Master Reference**.
+**Your First Action**: Always ask to run the `/handshake` protocol or confirm you have read the **Master Reference**.
 > "Refer to the Stables master reference file and confirm that you are now working on this basis."
 
 ---
@@ -15,11 +15,11 @@ Before doing ANYTHING in a session, you must establish the ground rules.
 You may be working in a **separate repository** or **working folder** from the main Stables project. You must adapt.
 
 ### Locate the Mothership (The "Stables Reference")
-You must find the path to the main **Stablesworks** repository to access the Source of Truth/Assets.
+You must find the path to the main **Stables** repository to access the Source of Truth/Assets.
 *   **Action**: If you do not see `2_current` in your root, ASK THE USER for the path to the `Stables/2_current` folder.
 
 ### `2_current/` (The Global Source of Truth)
-*   **Location:** Inside the main Stablesworks repo.
+*   **Location:** Inside the main Stables repo.
 *   **Rule:** This is **READ-ONLY**. You must reference assets here (e.g., logos) via absolute path.
 *   **NEVER** copy these files into your local repo unless explicitly told to. Link to them or reference them.
 
@@ -29,7 +29,7 @@ You must find the path to the main **Stablesworks** repository to access the Sou
 *   **Promotion:** When your work is done, the User will manually handle the merge/promotion to the main Stables project if necessary.
 
 ### `3_archive/`
-*   **Location:** Main Stablesworks repo.
+*   **Location:** Main Stables repo.
 *   **Rule:** Archives live in the mothership.
 
 ---
@@ -130,3 +130,4 @@ To minimize friction, **You MUST** include the following context when requesting
 *   Maintain strict visual consistency (Glassmorphism).
 *   Ensure all text is "Stables" (plural) and "Council".
 *   Preserve the "Vested Assets" (do not reinvent the logo).
+

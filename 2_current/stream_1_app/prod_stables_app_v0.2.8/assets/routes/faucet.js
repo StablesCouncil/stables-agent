@@ -22,8 +22,9 @@ function renderFaucet(ctx) {
   };
 }
 
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderFaucet = renderFaucet;
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderFaucet = renderFaucet;
+
 
 
 

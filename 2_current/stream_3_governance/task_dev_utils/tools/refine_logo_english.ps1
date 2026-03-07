@@ -1,4 +1,4 @@
-$baseDir = "h:\My Drive\Stablesworks"
+$baseDir = "h:\My Drive\Stables"
 $assetsDir = Join-Path $baseDir "assets"
 $targetFile = Join-Path $assetsDir "Stables - Presentation v01.html"
 
@@ -80,6 +80,7 @@ else {
 # Write back
 [IO.File]::WriteAllText($targetFile, $content, [System.Text.Encoding]::UTF8)
 Write-Host "Done."
+
 
 
 

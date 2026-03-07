@@ -1,4 +1,4 @@
-$baseDir = "h:\My Drive\Stablesworks"
+$baseDir = "h:\My Drive\Stables"
 $assetsDir = Join-Path $baseDir "assets"
 $currentAssetsDir = Join-Path $assetsDir "current"
 $symbolImg = Join-Path $currentAssetsDir "1_Symbol_current.png"
@@ -113,6 +113,7 @@ foreach ($file in $files) {
         Write-Host "  No changes needed."
     }
 }
+
 
 
 

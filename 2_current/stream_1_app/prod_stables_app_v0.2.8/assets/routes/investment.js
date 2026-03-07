@@ -98,8 +98,9 @@ function renderInvestment(ctx) {
   };
 }
 
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderInvestment = renderInvestment;
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderInvestment = renderInvestment;
+
 
 
 

@@ -163,21 +163,21 @@
         const asset = $('sendAsset').value;
         const balanceSpan = $('sendBalance');
 
-        if (window.StablesworksApp && window.StablesworksApp.state && window.StablesworksApp.state.balances) {
-            const bal = window.StablesworksApp.state.balances[asset] || 0;
+        if (window.StablesApp && window.StablesApp.state && window.StablesApp.state.balances) {
+            const bal = window.StablesApp.state.balances[asset] || 0;
             // Get label from select option
             const sel = $('sendAsset');
             const label = sel.options[sel.selectedIndex].text;
 
-            balanceSpan.textContent = `Balance: ${window.StablesworksApp.fmt(bal)} ${label}`;
+            balanceSpan.textContent = `Balance: ${window.StablesApp.fmt(bal)} ${label}`;
         }
     }
 
     // Max Button Logic for Send Modal
     window.fillSendMax = () => {
         const asset = $('sendAsset').value;
-        if (window.StablesworksApp && window.StablesworksApp.state && window.StablesworksApp.state.balances) {
-            const bal = window.StablesworksApp.state.balances[asset] || 0;
+        if (window.StablesApp && window.StablesApp.state && window.StablesApp.state.balances) {
+            const bal = window.StablesApp.state.balances[asset] || 0;
             $('sendAmt').value = bal; // No formatting for input value usually, or standard format
         }
     };
@@ -344,6 +344,7 @@
     console.log('Modals JS Loaded & delegation active');
 
 })();
+
 
 
 

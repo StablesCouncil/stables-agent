@@ -39,11 +39,12 @@ function Check-Transparency ($path) {
 }
 
 $files = @(
-    "c:\Users\Charles\.gemini\antigravity\scratch\Stablesworks_v2\V2\Files\Stables_lockup.png",
-    "c:\Users\Charles\.gemini\antigravity\scratch\Stablesworks_v2\V2\Files\SW_LOGO_Stablesworks_S_v1_MASTER (1).png"
+    "c:\Users\Charles\.gemini\antigravity\scratch\Stables_v2\V2\Files\Stables_lockup.png",
+    "c:\Users\Charles\.gemini\antigravity\scratch\Stables_v2\V2\Files\SW_LOGO_Stables_S_v1_MASTER (1).png"
 )
 
 foreach ($f in $files) { Check-Transparency $f }
+
 
 
 

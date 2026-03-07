@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > **Owner**: The Council
-> **Managed By**: Stablesworks (Interim)
+> **Managed By**: Stables (Interim)
 > **Goal**: Establish "Stables" as an autonomous financial institution.
 
 ## 1. Identity Philosophy
@@ -10,7 +10,7 @@ The social presence represents **The Protocol**, not the development team.
 *   **Voice**: Neutral, authoritative, institutional.
 *   **Perspective**: "We" refers to the network/consensus.
 *   **Separation**:
-    *   **Stablesworks**: The lab/builder (transient).
+    *   **Stables**: The lab/builder (transient).
     *   **Stables**: The money/protocol (permanent).
 
 ## 2. Profile Configuration (X/X)
@@ -89,6 +89,7 @@ We have prepared two options in the folder. **Start with Option A**, but switch 
 ---
 
 **Last Updated**: 2026-01-04
+
 
 
 

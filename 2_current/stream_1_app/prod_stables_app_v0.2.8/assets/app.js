@@ -211,17 +211,17 @@ function setActiveNav(route) {
 // Routing
 // ------------------------------
 const routes = {
-  wallet: window.StablesworksRoutes?.renderWallet,
-  investment: window.StablesworksRoutes?.renderInvestment,
-  swap: window.StablesworksRoutes?.renderSwap,
-  factory: window.StablesworksRoutes?.renderFactory,
-  protocol: window.StablesworksRoutes?.renderProtocol,
-  contacts: window.StablesworksRoutes?.renderContacts,
-  chat: window.StablesworksRoutes?.renderChat,
-  council: window.StablesworksRoutes?.renderCouncil,
-  console: window.StablesworksRoutes?.renderCouncil, // alias (old)
-  feedback: window.StablesworksRoutes?.renderFeedback,
-  faucet: window.StablesworksRoutes?.renderFaucet,
+  wallet: window.StablesRoutes?.renderWallet,
+  investment: window.StablesRoutes?.renderInvestment,
+  swap: window.StablesRoutes?.renderSwap,
+  factory: window.StablesRoutes?.renderFactory,
+  protocol: window.StablesRoutes?.renderProtocol,
+  contacts: window.StablesRoutes?.renderContacts,
+  chat: window.StablesRoutes?.renderChat,
+  council: window.StablesRoutes?.renderCouncil,
+  console: window.StablesRoutes?.renderCouncil, // alias (old)
+  feedback: window.StablesRoutes?.renderFeedback,
+  faucet: window.StablesRoutes?.renderFaucet,
 };
 
 function currentRoute() {
@@ -648,6 +648,7 @@ waitForMDS(() => {
     console.error('Self-tests failed', e);
   }
 })();
+
 
 
 

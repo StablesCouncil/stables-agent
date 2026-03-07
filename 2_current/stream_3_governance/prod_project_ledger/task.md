@@ -18,3 +18,7 @@
     - [x] Create `0_handshake/cursor_welcome_package.md`
     - [x] Relocate `task.md` to `2_current/stream_3_governance/prod_project_ledger/task.md`
     - [x] Log and Commit Integration Phase
+- [x] Technical Foundation & Design
+    - [x] Research & Design Oracle Solution
+    - [/] Design Lending Contracts (Personal + Commercial)
+    - [/] Design NFT Treasury Collection

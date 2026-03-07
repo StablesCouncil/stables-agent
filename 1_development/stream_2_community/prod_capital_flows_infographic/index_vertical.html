@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stables - How the Money Moves</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../2_current/assets/1_symbol_favicon.png">
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: #101826;
+            --accent: #67e8f9;
+            --accent-glow: rgba(103, 232, 249, 0.4);
+            --text-main: #ffffff;
+            --text-mut: #94a3b8;
+            --card-radius: 24px;
+            --font-large: 22px;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top, rgba(103, 232, 249, 0.12), transparent 70%);
+            transform: translateX(-50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .header {
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+
+        .header-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .presentation-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transition: opacity 0.2s;
+        }
+
+        .presentation-link:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand img {
+            height: 48px;
+            width: 48px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            color: var(--text-main);
+        }
+
+        .brand-slogan {
+            font-size: 14px;
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .title-block {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 900;
+            margin: 0 0 16px 0;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+            background: linear-gradient(135deg, #ffffff 0%, #67e8f9 50%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #9fb0c0;
+            max-width: 850px;
+            margin: 0 auto;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* Vertical flow layout */
+        .diagram-grid {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .stage-card {
+            width: 100%;
+            background: rgba(16, 24, 38, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(103, 232, 249, 0.2);
+            border-radius: var(--card-radius);
+            padding: 40px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            position: relative;
+        }
+
+        .custody-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(103, 232, 249, 0.06);
+            border: 1px solid rgba(103, 232, 249, 0.2);
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .custody-badge svg {
+            width: 11px;
+            height: 11px;
+            flex-shrink: 0;
+        }
+
+        .stage-card:hover {
+            border-color: rgba(103, 232, 249, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .stage-arrow {
+            font-size: 36px;
+            color: var(--accent);
+            opacity: 0.5;
+            padding: 10px 0;
+            text-align: center;
+            line-height: 1;
+        }
+
+        .stage-number {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            letter-spacing: 0.1em;
+            text-align: center;
+        }
+
+        .stage-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 32px;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        /* Shared node styles */
+        .node {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .node:hover {
+            background: rgba(103, 232, 249, 0.08);
+            border-color: rgba(103, 232, 249, 0.4);
+        }
+
+        .node.highlight {
+            border-color: rgba(103, 232, 249, 0.3);
+            background: rgba(103, 232, 249, 0.05);
+        }
+
+        .node-text {
+            font-size: var(--font-large);
+            font-weight: 600;
+            color: #e6edf3;
+        }
+
+        .node-subtext {
+            font-size: 14px;
+            color: #9fb0c0;
+            font-weight: 400;
+            margin-top: 4px;
+        }
+
+        .fee-tag {
+            font-size: 11px;
+            color: var(--accent);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 8px;
+            opacity: 0.85;
+        }
+
+        /* Step 01: single centered node */
+        .node-single {
+            max-width: 440px;
+            margin: 0 auto;
+        }
+
+        /* Step 02: 2x2 grid */
+        .node-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Return label */
+        .return-option {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        .return-label {
+            font-size: 14px;
+            color: var(--text-mut);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.6;
+            cursor: default;
+        }
+
+        .return-label svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        /* Step 03: Circular layout */
+        .circle-stage {
+            position: relative;
+            width: 440px;
+            height: 380px;
+            margin: 0 auto;
+        }
+
+        .circle-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .circle-node {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-align: center;
+            width: 140px;
+            transition: all 0.3s ease;
+        }
+
+        .circle-node.highlight {
+            border-color: rgba(103, 232, 249, 0.3);
+            background: rgba(103, 232, 249, 0.05);
+        }
+
+        .circle-node:hover {
+            background: rgba(103, 232, 249, 0.08);
+            border-color: rgba(103, 232, 249, 0.4);
+            transform: translate(-50%, -50%) scale(1.04);
+        }
+
+        .circle-node .node-text {
+            font-size: 16px;
+        }
+
+        /* Circle center hub */
+        .circle-center {
+            position: absolute;
+            left: 220px;
+            top: 200px;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .circle-center-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(103, 232, 249, 0.12), transparent 70%);
+            border-radius: 50%;
+        }
+
+        .circle-center-label {
+            position: relative;
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .circle-center-sub {
+            position: relative;
+            font-size: 12px;
+            color: #9fb0c0;
+            margin-top: 5px;
+            letter-spacing: 0.03em;
+        }
+
+        /* Small fee note inside the circle */
+        .circle-fee-note {
+            position: absolute;
+            left: 50%;
+            top: 354px;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: rgba(103, 232, 249, 0.45);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            white-space: nowrap;
+            pointer-events: none;
+            text-align: center;
+        }
+
+        footer {
+            margin-top: 100px;
+            text-align: center;
+            color: var(--text-mut);
+            font-size: 16px;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            color: #67e8f9;
+            padding: 8px 18px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            text-decoration: none;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .badge-pill:hover {
+            transform: translateY(-2px);
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(103, 232, 249, 0.8);
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.4);
+        }
+
+        @media (max-width: 560px) {
+            .node-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .circle-stage {
+                width: 340px;
+                height: 310px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="brand">
+            <img src="data:image/png;base64,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" alt="Stables">
+            <div class="brand-text">
+                <span class="brand-name">STABLES</span>
+                <span class="brand-slogan">Be Your Own Bank</span>
+            </div>
+        </div>
+        <div class="header-links">
+            <a href="https://stablescouncil.github.io/" target="_blank" class="presentation-link">View Presentation</a>
+            <a href="https://minima.global" target="_blank" class="badge-pill">Built on MINIMA</a>
+        </div>
+    </header>
+
+    <div class="title-block">
+        <h1>How the Money Moves: Stables in 3 Steps</h1>
+        <p class="subtitle">A simplified, high-level overview of exactly how capital enters, circulates limitlessly
+            within the Stables economy, and remains available for withdrawal at any time.</p>
+    </div>
+
+    <div class="diagram-grid">
+
+        <!-- STEP 1: DEPOSIT -->
+        <div class="stage-card">
+            <div class="custody-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                Full Custody
+            </div>
+            <div class="stage-number">Step 01</div>
+            <div class="stage-title">Deposit to Your Own Bank</div>
+            <div class="node highlight node-single">
+                <div class="node-text">Your Minima</div>
+                <div class="node-subtext">Your bank. No intermediary. The only asset that gives you full sovereignty.</div>
+            </div>
+        </div>
+
+        <div class="stage-arrow">&#8595;</div>
+
+        <!-- STEP 2: CREATE VALUE -->
+        <div class="stage-card">
+            <div class="custody-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                Full Custody
+            </div>
+            <div class="stage-number">Step 02</div>
+            <div class="stage-title">Create Value</div>
+            <div class="node-grid">
+                <div class="node highlight">
+                    <div class="node-text">Stablecoins</div>
+                    <div class="node-subtext">USDs, EURs, JPYs and many more</div>
+                </div>
+                <div class="node">
+                    <div class="node-text">xMinima</div>
+                    <div class="node-subtext">Protocol Wealth</div>
+                </div>
+                <div class="node">
+                    <div class="node-text">Coverage Fund</div>
+                    <div class="node-subtext">Yield &amp; Stability</div>
+                    <div class="fee-tag">&#8592; earns all transaction fees</div>
+                </div>
+                <div class="node">
+                    <div class="node-text">Liquidity Fund</div>
+                    <div class="node-subtext">xMinima / Minima</div>
+                </div>
+            </div>
+            <div class="return-option">
+                <span class="return-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Exit anytime &rarr; back to Minima
+                </span>
+            </div>
+        </div>
+
+        <div class="stage-arrow">&#8595;</div>
+
+        <!-- STEP 3: CIRCULAR ECONOMY -->
+        <div class="stage-card">
+            <div class="custody-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
+                Full Custody
+            </div>
+            <div class="stage-number">Step 03</div>
+            <div class="stage-title">The Circular Economy</div>
+
+            <div class="circle-stage">
+                <!-- Dashed ring: center (220,200) r=135, with three clockwise arc arrows -->
+                <svg class="circle-svg" viewBox="0 0 440 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="220" cy="200" r="135"
+                        stroke="rgba(103,232,249,0.22)"
+                        stroke-dasharray="8 6"
+                        fill="none" />
+                    <!-- Arrow 1: 330deg (upper-right) People→Merchants, direction: lower-right -->
+                    <polyline points="329,129 337,133 337,124"
+                        stroke="rgba(103,232,249,0.65)" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    <!-- Arrow 2: 90deg (bottom) Merchants→Suppliers, direction: left -->
+                    <polyline points="228,330 220,335 228,340"
+                        stroke="rgba(103,232,249,0.65)" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                    <!-- Arrow 3: 210deg (upper-left) Suppliers→People, direction: upper-right -->
+                    <polyline points="103,143 103,133 95,138"
+                        stroke="rgba(103,232,249,0.65)" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                </svg>
+
+                <!-- Center hub: Stablecoins flowing -->
+                <div class="circle-center">
+                    <div class="circle-center-glow"></div>
+                    <div class="circle-center-label">Stablecoins</div>
+                    <div class="circle-center-sub">USDs, EURs, JPYs and many more</div>
+                </div>
+
+                <!-- People: top (270deg) — left:220, top:65 -->
+                <div class="circle-node highlight" style="left:220px; top:65px;">
+                    <div class="node-text">People</div>
+                    <div class="node-subtext">Buyers, savers, senders</div>
+                </div>
+
+                <!-- Merchants: bottom-right (30deg) — left:337, top:268 -->
+                <div class="circle-node" style="left:337px; top:268px;">
+                    <div class="node-text">Merchants</div>
+                </div>
+
+                <!-- Suppliers & Friends: bottom-left (150deg) — left:103, top:268 -->
+                <div class="circle-node" style="left:103px; top:268px;">
+                    <div class="node-text">Suppliers &amp; Friends</div>
+                </div>
+
+                <!-- Fee note: transactions originate from these interactions -->
+                <div class="circle-fee-note">transactions generate fees &rarr; coverage fund</div>
+            </div>
+
+            <div class="return-option">
+                <span class="return-label">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Exit anytime &rarr; back to Minima
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <strong>"Money that is truly yours. Secure, Pseudonymous and Unstoppable."</strong><br><br>
+        Stables is governed entirely by token holders via the Council. All transaction operations described above run
+        on-chain via the Minima network, eliminating trusted intermediaries.
+    </footer>
+
+</body>
+
+</html>

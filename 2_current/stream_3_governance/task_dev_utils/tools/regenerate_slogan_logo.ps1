@@ -1,6 +1,6 @@
 Add-Type -AssemblyName System.Drawing
 
-$assetsDir = "c:\Users\Charles\.gemini\antigravity\scratch\Stablesworks_v2\Assets"
+$assetsDir = "c:\Users\Charles\.gemini\antigravity\scratch\Stables_v2\Assets"
 $lockupSource = Join-Path $assetsDir "2_Lockup_Stables_Transparent.png"
 $destSlogan = Join-Path $assetsDir "3_Lockup_Slogan_Transparent.png"
 
@@ -60,6 +60,7 @@ try {
 catch {
     Write-Error "Script Failed: $_"
 }
+
 
 
 

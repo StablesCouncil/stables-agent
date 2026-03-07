@@ -2,8 +2,8 @@ from PIL import Image
 import os
 
 files = [
-    r"c:\Users\Charles\.gemini\antigravity\scratch\Stablesworks_v2\V2\Files\Stables_lockup.png",
-    r"c:\Users\Charles\.gemini\antigravity\scratch\Stablesworks_v2\V2\Files\SW_LOGO_Stablesworks_S_v1_MASTER (1).png"
+    r"c:\Users\Charles\.gemini\antigravity\scratch\Stables_v2\V2\Files\Stables_lockup.png",
+    r"c:\Users\Charles\.gemini\antigravity\scratch\Stables_v2\V2\Files\SW_LOGO_Stables_S_v1_MASTER (1).png"
 ]
 
 for f_path in files:
@@ -25,6 +25,7 @@ for f_path in files:
             print(f"Error reading {f_path}: {e}")
     else:
         print(f"File not found: {f_path}")
+
 
 
 

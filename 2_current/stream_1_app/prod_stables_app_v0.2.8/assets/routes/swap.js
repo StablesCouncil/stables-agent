@@ -194,8 +194,9 @@ function renderSwap(ctx) {
 }
 
 // Export
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderSwap = renderSwap;
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderSwap = renderSwap;
+
 
 
 

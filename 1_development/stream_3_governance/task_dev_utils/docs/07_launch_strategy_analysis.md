@@ -98,7 +98,7 @@ Before evaluating hashtags, let's define **who** we're trying to reach:
 ## 2. Presentation Sharing Strategy
 
 ### Current Asset
-**File**: `Stablesworks _ the money platform.html` (3 MB)
+**File**: `Stables _ the money platform.html` (3 MB)
 **Format**: HTML presentation (likely reveal.js or similar)
 
 ### Sharing Options Analysis
@@ -196,21 +196,21 @@ Tweet 3/10: ✅ The Solution
 ## 3. GitHub Strategy: Public vs Private
 
 ### Current Situation
-- **Private GitHub**: Active development (Stablesworks codebase)
+- **Private GitHub**: Active development (Stables codebase)
 - **Question**: Create separate public repo for "Console" (assuming this is the dApp/interface)
 
 ### Strategic Analysis
 
-#### The "Stablesworks vs Stables" Separation Principle
+#### The "Stables vs Stables" Separation Principle
 From your `social_profile_strategy.md`:
-> **Stablesworks**: The lab/builder (transient)
+> **Stables**: The lab/builder (transient)
 > **Stables**: The money/protocol (permanent)
 
 This separation should extend to GitHub:
 
 | Repository | Visibility | Purpose | Owner |
 | :--- | :--- | :--- | :--- |
-| **`Stablesworks/stables-protocol`** | 🔒 Private | Core protocol development | Stablesworks (you) |
+| **`Stables/stables-protocol`** | 🔒 Private | Core protocol development | Stables (you) |
 | **`stables-council/console`** | 🌐 Public | User-facing dApp | The Council |
 | **`stables-council/presentation`** | 🌐 Public | Marketing/onboarding | The Council |
 | **`stables-council/docs`** | 🌐 Public | Documentation, guides | The Council |
@@ -219,7 +219,7 @@ This separation should extend to GitHub:
 
 #### Create Two GitHub Organizations:
 
-**1. `Stablesworks` (Private)**
+**1. `Stables` (Private)**
 - **Purpose**: Development, internal tools
 - **Repos**:
   - `stables-protocol` (private) - Core smart contracts/protocol
@@ -287,14 +287,14 @@ This separation should extend to GitHub:
 
 **Phase 3: Post-Audit (When Protocol is Secure)**
 - Create `stables-council/protocol` (public) - Open-source core contracts
-- Move from `Stablesworks` to `stables-council` ownership
+- Move from `Stables` to `stables-council` ownership
 
 ### Immediate Action Items
 
 **For Launch (This Week):**
 1. ✅ Create `stables-council` GitHub organization
 2. ✅ Create `stables-council/presentation` repo
-3. ✅ Upload `Stablesworks _ the money platform.html`
+3. ✅ Upload `Stables _ the money platform.html`
 4. ✅ Enable GitHub Pages
 5. ✅ Use URL in launch tweet
 
@@ -333,6 +333,7 @@ This separation should extend to GitHub:
 1. Which hashtag set to use for launch?
 2. Proceed with GitHub Pages setup for presentation?
 3. Timeline for open-sourcing console?
+
 
 
 

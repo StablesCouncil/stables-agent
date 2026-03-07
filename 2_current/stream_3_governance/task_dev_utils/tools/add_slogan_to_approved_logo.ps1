@@ -1,7 +1,7 @@
 Add-Type -AssemblyName System.Drawing
 
 # Paths - using EXACT existing approved logo
-$assetsDir = "C:\Users\Charles\.gemini\antigravity\scratch\Stablesworks_v2\Assets"
+$assetsDir = "C:\Users\Charles\.gemini\antigravity\scratch\Stables_v2\Assets"
 $approvedLogo = Join-Path $assetsDir "2_Lockup_Stables_Transparent.png"
 $inProgressDir = Join-Path $assetsDir "In-Progress"
 $outputLogo = Join-Path $inProgressDir "Lockup_With_Slogan.png"
@@ -122,6 +122,7 @@ catch {
     Write-Host ""
     exit 1
 }
+
 
 
 

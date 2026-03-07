@@ -1,0 +1,2 @@
+# Sensitive operational files — excluded from version control
+*.csv

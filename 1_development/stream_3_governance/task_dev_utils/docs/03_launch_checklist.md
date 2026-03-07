@@ -231,7 +231,7 @@
 
 ## 📁 Quick Reference Files
 
-All files are in `h:\My Drive\Stablesworks\1_development\`:
+All files are in `h:\My Drive\Stables\1_development\`:
 
 | File | Purpose |
 | :--- | :--- |
@@ -242,11 +242,11 @@ All files are in `h:\My Drive\Stablesworks\1_development\`:
 | `github/presentation_readme.md` | README for presentation repo |
 | `github/console_readme.md` | README for console repo (Week 2) |
 
-**Visual Assets** (in `h:\My Drive\Stablesworks\2_current\assets\`):
+**Visual Assets** (in `h:\My Drive\Stables\2_current\assets\`):
 - `stables_X_header_final.png`
 - `stables_X_pfp_final.png`
 - `1_symbol_social.png` (for GitHub org)
-- `Stablesworks _ the money platform.html` (presentation source)
+- `Stables _ the money platform.html` (presentation source)
 
 ---
 
@@ -273,6 +273,7 @@ Remember: Launch is just the beginning. The real work is building community, ite
 **Money Platform.**
 
 Good luck! 🎉
+
 
 
 

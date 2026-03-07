@@ -33,7 +33,7 @@ let contactsSortDir = 'asc'; // 'asc' or 'desc'
 // Load contacts from localStorage
 function loadContacts() {
   try {
-    const stored = localStorage.getItem('Stablesworks_contacts');
+    const stored = localStorage.getItem('Stables_contacts');
     return stored ? JSON.parse(stored) : [];
   } catch (error) {
     console.error('Failed to load contacts:', error);
@@ -44,7 +44,7 @@ function loadContacts() {
 // Save contacts to localStorage
 function saveContacts(contacts) {
   try {
-    localStorage.setItem('Stablesworks_contacts', JSON.stringify(contacts));
+    localStorage.setItem('Stables_contacts', JSON.stringify(contacts));
   } catch (error) {
     console.error('Failed to save contacts:', error);
   }
@@ -456,8 +456,9 @@ window.closeContactModal = function () {
 };
 
 // Export render function
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderContacts = renderContacts;
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderContacts = renderContacts;
+
 
 
 

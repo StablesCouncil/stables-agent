@@ -3,7 +3,7 @@ import sys
 import os
 
 # Paths
-BASE_DIR = r"h:\My Drive\Stablesworks\assets\current"
+BASE_DIR = r"h:\My Drive\Stables\assets\current"
 INPUT_FILE = os.path.join(BASE_DIR, "2_Lockup_Stables_current.png")
 OUTPUT_FILE = os.path.join(BASE_DIR, "2_Lockup_Stables_current_fixed.png")
 
@@ -118,6 +118,7 @@ for y in range(height):
 print(f"Saving fixed image to {OUTPUT_FILE}...")
 img.save(OUTPUT_FILE)
 print("Done.")
+
 
 
 

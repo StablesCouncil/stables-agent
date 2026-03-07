@@ -1,13 +1,13 @@
 Add-Type -AssemblyName System.Drawing
 
 # Paths
-$assetsDir = "C:\Users\Charles\.gemini\antigravity\scratch\Stablesworks_v2\Assets"
+$assetsDir = "C:\Users\Charles\.gemini\antigravity\scratch\Stables_v2\Assets"
 $lockupSource = Join-Path $assetsDir "2_Lockup_Stables_Transparent.png"
 $destSlogan = Join-Path $assetsDir "3_Lockup_Slogan_Transparent.png"
 
 try {
     Write-Host "==================================================" -ForegroundColor Cyan
-    Write-Host "  Stablesworks Logo Generator - Optimized v1.0" -ForegroundColor Cyan
+    Write-Host "  Stables Logo Generator - Optimized v1.0" -ForegroundColor Cyan
     Write-Host "==================================================" -ForegroundColor Cyan
     Write-Host ""
     
@@ -111,6 +111,7 @@ catch {
     Write-Host ""
     exit 1
 }
+
 
 
 

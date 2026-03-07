@@ -1,4 +1,4 @@
-$path = "H:\My Drive\Stablesworks\assets\Stables - Presentation EN-FR v01.html"
+$path = "H:\My Drive\Stables\assets\Stables - Presentation EN-FR v01.html"
 $content = [IO.File]::ReadAllText($path, [System.Text.Encoding]::UTF8)
 
 # Replace 1: qu\'un -> qu'un
@@ -12,6 +12,7 @@ $content = $content.Replace("l\'&eacute;cosyst&egrave;me", "l'&eacute;cosyst&egr
 
 [IO.File]::WriteAllText($path, $content, [System.Text.Encoding]::UTF8)
 Write-Host "French encoding fixed."
+
 
 
 

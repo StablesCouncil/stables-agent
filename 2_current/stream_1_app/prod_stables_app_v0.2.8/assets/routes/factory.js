@@ -548,8 +548,9 @@ function renderFactory(ctx) {
   }
 }
 
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderFactory = renderFactory;
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderFactory = renderFactory;
+
 
 
 

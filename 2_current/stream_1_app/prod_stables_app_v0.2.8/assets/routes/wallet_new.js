@@ -97,18 +97,19 @@ function renderWallet(ctx) {
 // Global functions
 window.selectWalletAsset = (key) => {
   window.selectedWalletAsset = key;
-  window.StablesworksApp?.render();
+  window.StablesApp?.render();
 };
 
 window.setDefaultCurrency = (key) => {
   localStorage.setItem('defaultCurrency', key);
-  window.StablesworksApp?.render();
+  window.StablesApp?.render();
   showToast('Default Currency', `Set to ${key.toUpperCase()}`);
 };
 
 // Export
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderWallet = renderWallet;
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderWallet = renderWallet;
+
 
 
 

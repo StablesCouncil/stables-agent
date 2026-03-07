@@ -34,7 +34,8 @@ function renderFeedback(ctx) {
   $('sendScenario').onclick = () => { showToast('Feedback', 'Scenario submitted.'); $('scenario').value = ''; };
 }
 
-window.StablesworksRoutes = window.StablesworksRoutes || {}; \nwindow.StablesworksRoutes.renderFeedback = renderFeedback;
+window.StablesRoutes = window.StablesRoutes || {}; \nwindow.StablesRoutes.renderFeedback = renderFeedback;
+
 
 
 

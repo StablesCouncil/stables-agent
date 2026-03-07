@@ -1,6 +1,6 @@
 
 $relativePath = "Files/Stables - Presentation.html"
-$logoFile = "SW_LOGO_Stablesworks_S_v1_MASTER (1).png"
+$logoFile = "SW_LOGO_Stables_S_v1_MASTER (1).png"
 
 # Resolve to absolute path to avoid .NET/PS CWD mismatch
 if (-not (Test-Path $relativePath)) {
@@ -33,6 +33,7 @@ else {
 [IO.File]::WriteAllText($htmlPath, $newHtml)
 
 Write-Host "Successfully updated logo source and copy."
+
 
 
 

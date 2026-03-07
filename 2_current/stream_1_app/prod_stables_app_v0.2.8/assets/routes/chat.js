@@ -7,7 +7,7 @@
 // Load contacts with chat enabled
 function loadChatContacts() {
   try {
-    const stored = localStorage.getItem('Stablesworks_contacts');
+    const stored = localStorage.getItem('Stables_contacts');
     const allContacts = stored ? JSON.parse(stored) : [];
     return allContacts.filter(c => c.showInChat);
   } catch (error) {
@@ -172,9 +172,10 @@ window.refreshMessages = function () {
   // });
 };
 
-// Export to StablesworksRoutes namespace
-window.StablesworksRoutes = window.StablesworksRoutes || {};
-window.StablesworksRoutes.renderChat = renderChat;
+// Export to StablesRoutes namespace
+window.StablesRoutes = window.StablesRoutes || {};
+window.StablesRoutes.renderChat = renderChat;
+
 
 
 

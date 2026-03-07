@@ -25,9 +25,9 @@ Updated with your permanent branding and workflow rules:
 
 ---
 
-### 2. **Workflow File** (`.agent/workflows/Stablesworks.md`)
+### 2. **Workflow File** (`.agent/workflows/Stables.md`)
 
-Updated the `/Stablesworks` handshake to include:
+Updated the `/Stables` handshake to include:
 - ✅ Correct directory references (`2_current/` and `1_development/`)
 - ✅ Branding rules reminder (Stables, Council, MiniDapp)
 - ✅ Target audience reminder (general public)
@@ -89,14 +89,14 @@ Rule:        AI NEVER writes to 2_current/
 ## 📁 Where These Rules Live
 
 ### **Master Reference** (Source of Truth)
-[`h:\My Drive\Stablesworks\stables_master_reference.md`](file:///h:/My%20Drive/Stablesworks/stables_master_reference.md)
+[`h:\My Drive\Stables\stables_master_reference.md`](file:///h:/My%20Drive/Stables/stables_master_reference.md)
 
-This file is read at the start of EVERY conversation when you run `/Stablesworks`.
+This file is read at the start of EVERY conversation when you run `/Stables`.
 
 ### **Workflow** (Handshake Protocol)
-[`h:\My Drive\Stablesworks\.agent\workflows\Stablesworks.md`](file:///h:/My%20Drive/Stablesworks/.agent/workflows/Stablesworks.md)
+[`h:\My Drive\Stables\.agent\workflows\Stables.md`](file:///h:/My%20Drive/Stables/.agent/workflows/Stables.md)
 
-This is the `/Stablesworks` command that triggers the handshake.
+This is the `/Stables` command that triggers the handshake.
 
 ---
 
@@ -104,7 +104,7 @@ This is the `/Stablesworks` command that triggers the handshake.
 
 Every time you start a new conversation:
 
-1. **You run**: `/Stablesworks`
+1. **You run**: `/Stables`
 2. **AI reads**: `stables_master_reference.md`
 3. **AI confirms**: Understanding of all rules
 4. **AI follows**: Branding, workflow, and promotion rules
@@ -138,6 +138,7 @@ You'll want to update your launch files to reflect these rules:
 ---
 
 **These rules are now permanent and will be enforced in every future conversation.** ✅
+
 
 
 

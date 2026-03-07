@@ -1,7 +1,7 @@
 
 import os
 
-file_path = r"H:\My Drive\Stablesworks\assets\Stables - Presentation EN-FR v01.html"
+file_path = r"H:\My Drive\Stables\assets\Stables - Presentation EN-FR v01.html"
 
 # The specific strings to fix (as they appear in the file content read previously)
 # We use byte strings to avoid encoding ambiguity or open with utf-8
@@ -32,6 +32,7 @@ if content != original_content:
     print("Corrections applied successfully.")
 else:
     print("No changes needed or strings not found.")
+
 
 
 

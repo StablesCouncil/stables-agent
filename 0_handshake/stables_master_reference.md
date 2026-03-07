@@ -38,7 +38,7 @@
 - **Policy**: When this document is significantly updated, move the previous version to the archive with a version suffix (e.g., `v3.md`).
 
 ## 1. The Global Anchor
-- **Project Root**: `c:\Users\Charles\.gemini\antigravity\scratch\Stables`
+- **Project Root**: `C:\Users\Charles\Documents\Stables`
 - **History Control**: A project-wide **Git repository** sits at the root. It tracks everything: app code, tools, and assets.
 - **Handshake Phrase**: *"Refer to the Stables master reference file and confirm that you are now working on this basis."*
 - **Strategy Documents**: All strategic planning documents are located in `1_development/strategy/`
@@ -143,7 +143,7 @@ To protect your work against hardware failure (a "glass of water"):
 ---
 ## 10. The Handshake (Magic Sentence)
 To start any new session, use this exact phrase:
-> **"Run `/stablesworks` and confirm that you are now working on this basis."**
+> **"Run `/handshake` and confirm that you are now working on this basis."**
 
 ## 11. External Platforms & Active Presences
 > [!IMPORTANT]
@@ -166,7 +166,7 @@ To start any new session, use this exact phrase:
 | **Twitch** | [stablescouncil](https://www.twitch.tv/stablescouncil) | Live streams |
 | **TikTok** | [@stablescouncil](https://www.tiktok.com/@stablescouncil) | Short video |
 | **GitHub (Public)** | [StablesCouncil](https://github.com/StablesCouncil) | Open source / releases |
-| **GitHub (Dev)** | [Charles0xhorizonxyz/stablesworks](https://github.com/Charles0xhorizonxyz/stablesworks.git) | Private dev repo |
+| **GitHub (Dev)** | [Charles0xhorizonxyz/stables](https://github.com/Charles0xhorizonxyz/stables.git) | Private dev repo |
 | **Contact Email** | StablesCouncil@protonmail.com | Direct contact |
 
 > **Note**: All models must read this section during the handshake and acknowledge the external references.
@@ -216,7 +216,7 @@ Instagram → X → LinkedIn → Telegram Group → Telegram Channel → Discord
 ### The Golden Masters
 - **Master Symbol**: `2_current/stream_1_app/prod_brand_masters/1_symbol_current.png` (Official Symbol)
 - **Master Twitter Header**: `2_current/stream_1_app/prod_brand_masters/stables_twitter_header_final.png`
-- **Master Wordmark**: `2_current/stream_1_app/prod_brand_masters/stablesworks _ the money platform.html` (Reference for naming/alignment)
+- **Master Wordmark**: `2_current/stream_1_app/prod_brand_masters/stables _ the money platform.html` (Reference for naming/alignment)
 
 ### Golden Logic (On-Demand Extraction Protocol)
 When any branding asset is required, you must perform an **On-Demand Extraction** from the Masters instead of looking for pre-existing secondary files:
