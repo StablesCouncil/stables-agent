@@ -35,3 +35,6 @@ yarn-error.log*
 
 # Ignore nested git repositories (already handled by their own .git)
 1_development/stream_2_community/prod_stablescouncil_github_io/
+
+# Operational / Credentials / Admin (NEVER PUSH TO GITHUB)
+2_current/stream_3_governance/prod_admin/
