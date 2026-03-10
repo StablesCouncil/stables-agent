@@ -57,6 +57,8 @@
     - User Name: `"Stables Council"`
     - Email: `StablesCouncil@protonmail.com`
     - NO open-source community pushes should ever display personal names (e.g., "Charles").
+    - **Authentication (CRITICAL)**: The HTTPS push to any `StablesCouncil/*` repo MUST use a Personal Access Token issued by the **StablesCouncil GitHub account**, NOT Charles's personal account token. Using a personal token will register Charles as a contributor on the public repo, even if the commit author is set to "Stables Council". This is a non-negotiable rule. If the StablesCouncil token is not available, stop and ask the user to provide it before pushing.
+    - **Council Token**: `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` — use this for all pushes to `StablesCouncil/*` repos. Remote URL format: `https://StablesCouncil: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@github.com/StablesCouncil/REPO.git`
 - **Personal Dev Identity**: For commits to the private dev repo (`Charles0xhorizonxyz/stables`), use:
     - User Name: `Charles0xhorizonxyz`
     - Email: `charles@0xhorizon.xyz`
