@@ -8,6 +8,10 @@ const OpenAI = require("openai");
 const DB_FILE = path.join(__dirname, "vector_db.json");
 const CSV_FILE = path.join(__dirname, "interaction_logs.csv");
 
+// Only respond in this specific topic thread or in private messages
+const AGENT_THREAD_ID = 256;
+const AGENT_GROUP_ID = -1003504121731;
+
 const token = process.env.TELEGRAM_BOT_TOKEN;
 if (!token) {
     console.error("ERROR: TELEGRAM_BOT_TOKEN is not set in .env.");
@@ -77,8 +81,12 @@ async function startAgent() {
         if (!text) return;
 
         const botName = "@StablesAgentBot";
-        const isMention = text.includes(botName) || msg.chat.type === "private";
-        if (!isMention) return;
+        const isPrivate = msg.chat.type === "private";
+        const isAgentTopic = msg.chat.id === AGENT_GROUP_ID && msg.message_thread_id === AGENT_THREAD_ID;
+        const isMention = text.includes(botName);
+
+        if (!isPrivate && !isAgentTopic) return;
+        if (!isPrivate && !isMention) return;
 
         const cleanQuery = text.replace(botName, "").trim();
         if (!cleanQuery) return;
@@ -126,7 +134,8 @@ RULES:
             console.log(replyText);
             console.log("=========================================\n");
 
-            bot.sendMessage(chatId, replyText);
+            const sendOptions = msg.message_thread_id ? { message_thread_id: msg.message_thread_id } : {};
+            bot.sendMessage(chatId, replyText, sendOptions);
 
             // 3. Anonymous CSV log
             const timestamp = new Date().toISOString();
