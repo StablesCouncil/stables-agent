@@ -47,18 +47,22 @@
   - Communication Plan: `1_development/strategy/detailed_communication_plan.md`
   - Corrections & Clarifications: `1_development/strategy/roadmap_corrections.md`
   - Index: `1_development/strategy/README.md`
-  - **Protocol Mechanics (LOCKED)**: `2_current/docs/protocol_mechanics_spec.md`
-  - **Current State & Path (LOCKED)**: `2_current/docs/current_state_and_path.md`
+  - **Protocol Mechanics (LOCKED)**: `2_current/stream_3_governance/prod_protocol_specs/protocol_mechanics_spec.md`
+  - **Current State & Path (LOCKED)**: `2_current/stream_3_governance/prod_protocol_specs/current_state_and_path.md`
+  - **Visual Identity Spec (LOCKED)**: `2_current/stream_3_governance/prod_protocol_specs/visual_identity_spec.md`
 
 ## 2. Directory Governance (The "Current" Logic)
 
 | Folder | Purpose | Rules |
 | :--- | :--- | :--- |
-| **`assets/current/`** | **Approved Visuals** | Only use files tagged with `_current`. |
-| **`current/app/`** | **Live dApp Source** | The core code of the Stables MiniDapp. |
-| **`current/docs/`** | **Approved Content** | Definitive manuals, roadmap, and overview. |
-| **`current/tools/`** | **Building Machinery** | Scripts to compile and package the app. |
+| **`2_current/stream_1_app/`** | **Live dApp Source** | Finalized code and assets. |
+| **`2_current/stream_2_community/`** | **Live Public Presentation & Community Assets** | Canonical source for anything published on `stablescouncil.github.io` and other static community web resources. |
+| **`2_current/stream_3_governance/prod_protocol_specs/`** | **Approved Docs** | Definitive manuals, roadmap, and overview. |
+| **`2_current/stream_3_governance/prod_strategic_roadmap/`** | **Strategy** | Strategic path. |
 | `3_archive/` | Historical Reference | Read-only. Old versions renamed chronologically. |
+
+> [!IMPORTANT]
+> **Community Web Mirror Rule**: Any page or asset that is live on `stablescouncil.github.io` (including the main presentation and the "Our Own Banking System" overview) MUST have a 1:1 mirror inside `2_current/stream_2_community/` under a clearly named `prod_` folder (for example, `prod_presentation_v02`, `prod_capital_flows_infographic`). Drafts and work-in-progress versions stay in `1_development/stream_2_community/`. GitHub Pages and any other static hosting are always built from the copies in `2_current/stream_2_community/`, never directly from `1_development/`.
 
 ### 3. Archiving Rule (Chronological)
 When a `_current` asset is replaced:
@@ -242,6 +246,11 @@ When any branding asset is required, you must perform an **On-Demand Extraction*
 
 **Fundamental equation**: `Minima = Stablecoins + cf tokens + xMinima`
 
+### The Ultimate Hedge (The Merchant-Maintained Peg)
+> [!URGENT]
+> **CRITICAL DOCTRINE**: Stables is **NOT** an algorithmic stablecoin. It does **NOT** rely on algorithmic over-collateralization to maintain the peg. The ultimate hedge of the peg is the active network of **merchants**.
+> When merchants universally accept and settle Stables at a $1 equivalent value for real-world goods and services, the stability is intrinsically maintained by real-world utility and economic flow, not by synthetic math or "defensive algorithmic layers." NEVER use terms like "algorithmic over-collateralization" to describe Stables.
+
 ### Coverage Ratio (CR) & Threshold Rules
 
 **Default threshold: 110%** (Council-adjustable via supermajority, hard floor: 100%)
@@ -314,3 +323,33 @@ Minima Node on Chip (Hardware Device)
 
 ---
 
+## 15. THE CONSTITUTION (PHILOSOPHICAL ANCHOR)
+> [!IMPORTANT]
+> **STRICT RULE**: Stables relies on deterministic structural mechanics, not discretionary action or generic DeFi tropes.
+
+### The Transition Doctrine
+Stables does not claim to be the final form of human money. It is a necessary bridge.
+- **Stage 1 (Present - Merchant Opt-In):** Stables provides synthetic pegged assets (USDs) so users can opt-in to a sovereign network today without abandoning familiar pricing. The peg is maintained purely by the Merchant Network accepting it at par.
+- **Stage 2 (Minima-Native):** As the network grows, reliance on fiat pegs fades. Goods are priced directly in Minima.
+- **Stage 3 (The Circular Horizon):** A future state where monetary power is recognized as a fundamental human right, flowing continuously rather than accumulating in centralized silos. We are building the infrastructure to reach this horizon.
+
+### Deterministic Mechanics
+- **Floating Redemption:** Stables does NOT defend its peg with a massive algorithmic treasury. It uses floating redemption: The Backing Ratio always equals `Assets / Liabilities`. If ratio dips below 1, redemption floats with it. 
+- **Continuous Logic:** The protocol does not suspend, pause, or switch regimes during crises. It adjusts mathematically. There is no such thing as an "Ultimate Backstop."
+
+---
+
+## 16. THE TECH STACK & ENVIRONMENTS (DEVELOPMENT ANCHOR)
+> [!IMPORTANT]
+> **STRICT RULE**: Before writing code, acknowledge the current state of our technological infrastructure.
+
+### The App Layer (`stream_1_app`)
+- **Framework:** The UI is built using Vanilla HTML/JS/CSS. No complex frontend frameworks (React/Vue) unless explicitly decided.
+- **Design:** Dark navy background `#0b0f14`, cyan radial glows `#67e8f9`, and Inter font. Glassmorphism is heavily used.
+- **Deployment:** The application is packaged into a `.mds.zip` file, which is installed directly onto a user's local Minima node. This means the app is fully decentralized with zero reliance on cloud web servers.
+
+### The AI & Agent Layer (`stream_3_governance/task_stablesagent-brain-base` & `task_x_agent_node`)
+- **StablesAgent:** An autonomous community assistant.
+- **Core Technology:** Node.js, `@xenova/transformers` (local, free, open-source embeddings), and the `Ollama` framework running `Llama-3.2`.
+- **Knowledge Base (`llms.txt`):** Built from markdown files (e.g. `comprehensive_knowledge_base.md`, `core_definitions.md`). The AI's responses must be generated directly from this factual base to prevent hallucination.
+- **Execution Script:** `node ingest_knowledge.js` must be run manually by the user to update the Vector Database whenever the markdown manuals are changed.

@@ -1,4 +1,4 @@
-# STABLES: MANDATORY HANDSHAKE PROTOCOL (V9)
+# STABLES: MANDATORY HANDSHAKE PROTOCOL (V10)
 **Status**: ACTIVE / Unified
 **Last Calibration**: 2026-03-03
 
@@ -8,9 +8,10 @@
     - `stream_2_community`: Community content and infographics.
     - `stream_3_governance`: Roadmaps, specs, and logistics.
 - **Mirror Phases**: Every file must exist in one of these mirroring phases:
-    - `1_development`: Sandbox (AI-driven creation and drafts).
-    - `2_current`: Source of Truth (Finalized/User-approved assets).
+    - `1_development`: Sandbox (AI-driven creation and drafts). **ALL WORK MUST HAPPEN HERE.**
+    - `2_current`: Source of Truth (Finalized/User-approved assets). **ONLY THE USER CAN VALIDATE AND MOVE WORK HERE.** We only ever communicate or publish what is in `2_current`.
     - `3_archive`: Historical record (Never delete; always move here).
+- **The Validation Pipeline (CRITICAL)**: AI Agents work exclusively in `1_development`. Before any code, asset, or document is published to GitHub or moved to `2_current`, the AI MUST explain the contents to the user and receive explicit approval. Do not bypass the user's review.
 - **Zero Loose Files**: NO files are allowed at the root of the project or at the root of any stream/phase folder. Everything must be in a named `prod_` or `task_` folder.
 - **Atomic Folder Rule**: 
     - `task_[description]`: For active/sandbox work.
@@ -32,10 +33,33 @@
     - Platform: **MiniDapp only** (NO website)
     - Slogan: **Be your own bank**
     - Tagline: **Money that is truly yours. Secure, Pseudonymous and Unstoppable.**
+- **Aesthetic**: Minimalist, high contrast (black, white, grays), institutional, secure, and modern financial technology.
+- **Agent Identity**: The AI agent is StablesAgent. It operates as an evolving, dedicated assistant built to spread awareness, organically grow the community, and provide frictionless access to project knowledge. It is the Council's "first hire."
+- **Communication Principles**:
+  - **NEVER use the word "doctrine".** Use terms like "official papers," "knowledge base," "architectural rules," or "working papers."
+  - **Positive Framing:** Never define Stables by what it is *not* (e.g., do not say "we don't build for you"). Speak only to what Stables *is*.
+  - **Core Ethos:** Woven naturally into communications is the philosophy: *We build for all of us.* Growth in numbers is our strength.
 - **UI Pre-Flight Verification**: Before ANY UI or Asset edit, the AI must state the MASTER FILE path and the EXACT STRINGS/RECIPES being used.
 - **MINIMA Attribution**: Every communication must include "Built on MINIMA".
 - **Perpetual Restoration (The Ledger)**: Every modification must be committed to Git and logged in the Project Ledger (`stream_3_governance/prod_project_ledger/ledger.md`). No change is valid until it is indexed with a Point ID.
+- **Knowledge Base Sync Rule (CRITICAL)**: The Agent's knowledge base (`1_development/stream_3_governance/task_stablesagent-brain-base/`) is the brain of all external AIs and the Telegram/X agent. It must always reflect exactly what is public and validated. The full sync process is:
+    1. **Before editing any brain markdown**, the AI MUST first audit all three sources of truth:
+        - `2_current/` (all streams): check for any new or updated files since the last brain update.
+        - Live public pages at `stablescouncil.github.io` (all subpages): check for any content not yet in the brain.
+        - Telegram exports in `1_development/stream_2_community/prod_telegram_export/`: check for community Q&A, clarifications, or explanations that have been publicly communicated and should be distilled into the brain.
+    2. **Only after that audit**, update or create the relevant brain markdown files in `task_stablesagent-brain-base/` to accurately reflect all public content.
+    3. **After any brain markdown change**, the user must run `node ingest_knowledge.js` from `task_x_agent_node/` to rebuild `vector_db.json` and `llms.txt`.
+    4. **Copy updated brain and vector DB to the server**, then run `pm2 restart stables-telegram-agent`.
+    5. **No content should ever be live or in `2_current` without being reflected in the brain.** If it is visible to the public, the Agent must be able to answer questions about it.
+- **The Ledger of Thought Evolution (CRITICAL MEMORY ANCHOR)**: Because AI sessions reset, conversational memory is lost. To prevent architectural amnesia, `0_handshake/stables_master_reference.md` serves as the Living Brain of the AI. Anytime the user finalizes a new architectural or philosophical doctrine (e.g., The Constitution, The Merchant-Maintained Peg, The Transition Doctrine), the active AI **MUST** immediately open and append this new truth to `stables_master_reference.md`. Failure to do so corrupts future sessions.
 - **Atomic Commits**: Every logical change (UI, logic, spec) must have its own commit and ledger entry.
+- **GitHub Council Identity (MANDATORY)**: When pushing ANY code or documentation to the public GitHub repositories, the local machine MUST be configured to commit as the official entity:
+    - User Name: `"Stables Council"`
+    - Email: `StablesCouncil@protonmail.com`
+    - NO open-source community pushes should ever display personal names (e.g., "Charles").
+- **Personal Dev Identity**: For commits to the private dev repo (`Charles0xhorizonxyz/stables`), use:
+    - User Name: `Charles0xhorizonxyz`
+    - Email: `charles@0xhorizon.xyz`
 
 ## 2. THE CALIBRATION WORKFLOW (/handshake)
 To start any session or when context-drift is suspected, perform the following steps:
@@ -75,9 +99,9 @@ Acknowledge the specific design tokens:
 ## 4. COMMUNITY COMMUNICATION RULES
 When drafting replies for community channels (Telegram, Discord, X, etc.):
 - **Keep it brief**: Give all necessary information but stay concise. We want members to come back with more questions, not dump everything at once. An active chat is the goal.
-- **Personalize**: Always thank the person for asking. Use their name. Make it feel human.
-- **No AI markers**: No emojis, no icons, no em-dashes (—), no bullet points, no structured lists in replies.
-- **Hashtags**: Use hashtags for X/Twitter posts only. Never use hashtags in our Telegram community channel or other community spaces.
+- **Personalize (MANDATORY)**: Always thank the person for asking and **always use their name** (e.g., "Thanks for the question [Name]"). Make it feel human.
+- **No AI markers (CRITICAL GRAMMAR RULE)**: No emojis, no icons, no bullet points, no structured lists. **NEVER use an em-dash (—) or en-dash (–) to connect sentences.** This is a grammatical mistake and a dead giveaway for AI. Use standard commas or periods only.
+- **Hashtags (MANDATORY on X)**: You MUST include hashtags for X/Twitter posts. Never use hashtags in our Telegram community channel or other community spaces.
 - **Natural tone**: Write like a real person in a casual conversation. Short sentences, natural flow.
 
 ---
