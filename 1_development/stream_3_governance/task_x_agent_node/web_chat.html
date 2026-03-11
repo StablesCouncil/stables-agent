@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>StablesAgent — Chat Room</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/png" href="/stables_agent_avatar.png" />
+  <!-- Shared Stables design system — never duplicate its rules locally -->
+  <link rel="stylesheet" href="stables.css" />
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px var(--container-pad);
+    }
+
+    .shell {
+      width: min(860px, 100%);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--panel);
+      border: 1px solid rgba(103, 232, 249, 0.3);
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(103,232,249,0.15);
+    }
+
+    /* ── Header ── */
+    .shell-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .shell-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid rgba(103, 232, 249, 0.3);
+      background: rgba(103, 232, 249, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .shell-logo img { width: 30px; height: 30px; object-fit: contain; }
+
+    .shell-title-wrap { flex: 1; }
+    .shell-title-main {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .shell-title-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* minima badge — reusing .badge style from stables.css but smaller */
+    .shell-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 13px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      white-space: nowrap;
+      letter-spacing: 0.04em;
+    }
+    .shell-status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+      flex-shrink: 0;
+    }
+
+    /* ── Chat log ── */
+    .chat-area {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 16px 18px;
+      height: min(420px, calc(100vh - 380px));
+    }
+    .chat-log {
+      flex: 1;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      padding: 12px;
+      border-radius: 1rem;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: var(--bg);
+    }
+
+    /* message bubbles */
+    .msg {
+      max-width: 86%;
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      border-radius: 13px;
+      font-size: 14px;
+      line-height: 1.55;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+    .msg-user {
+      margin-left: auto;
+      background: rgba(103,232,249,0.08);
+      border: 1px solid rgba(103,232,249,0.2);
+    }
+    .msg-agent {
+      margin-right: auto;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .msg-label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 5px;
+    }
+
+    /* ── Input row ── */
+    .input-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+    textarea {
+      flex: 1;
+      min-height: 42px;
+      max-height: 96px;
+      resize: none;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: var(--bg);
+      color: var(--text);
+      padding: 11px 18px;
+      font: 14px ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+      outline: none;
+      line-height: 1.4;
+    }
+    textarea::placeholder { color: var(--muted); }
+    textarea:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 1px rgba(103,232,249,0.25);
+    }
+    .send-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 11px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--accent-cyan);
+      background: var(--accent-cyan);
+      color: var(--bg);
+      font: 600 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .send-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(103,232,249,0.35); }
+    .send-btn[disabled] { opacity: 0.4; cursor: default; }
+
+    /* ── Footer ── */
+    .shell-footer {
+      padding: 18px 24px 22px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .disclaimer {
+      font-size: clamp(0.8rem, 1.8vw, 0.9375rem);
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .disclaimer a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+    }
+    .disclaimer a:hover { text-decoration: underline; }
+
+    /* Footer buttons centred, slightly smaller than hero buttons */
+    .shell-footer .buttons { justify-content: center; }
+    .shell-footer .btn { width: auto; min-width: 120px; height: 48px; padding: 0 20px; font-size: 14px; }
+
+    /* ── Bring your own AI strip ── */
+    .byoai {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 18px 24px 22px;
+      text-align: center;
+    }
+    .byoai p {
+      font-size: clamp(0.8rem, 1.8vw, 0.9375rem);
+      color: var(--muted);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+    .byoai p em {
+      font-style: italic;
+      color: var(--text-primary);
+    }
+    .byoai-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg);
+      border: 1px solid rgba(103,232,249,0.25);
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: clamp(0.75rem, 1.6vw, 0.875rem);
+      font-family: inherit;
+      color: var(--accent-cyan);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .byoai-copy:hover {
+      border-color: rgba(103,232,249,0.55);
+      box-shadow: 0 0 12px rgba(103,232,249,0.12);
+    }
+    .byoai-copy svg { flex-shrink: 0; }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      body { padding: 8px; align-items: flex-start; }
+      .shell { border-radius: 1rem; }
+      .chat-area {
+        padding: 10px 12px;
+        height: min(320px, calc(100vh - 320px));
+      }
+      .shell-header { flex-wrap: wrap; gap: 10px; padding: 14px 14px 12px; }
+      .shell-status { align-self: flex-start; }
+      .shell-footer { padding: 12px 14px 16px; }
+      .shell-footer .buttons { flex-direction: column; align-items: center; gap: 10px; }
+      .shell-footer .btn { width: 100%; max-width: 320px; justify-content: center; }
+      .byoai { padding: 14px 14px 18px; }
+      .byoai-copy { width: 100%; max-width: 320px; justify-content: center; }
+      textarea { padding: 10px 14px; font-size: 16px; /* prevent iOS zoom */ }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <!-- Header -->
+    <div class="shell-header">
+      <div class="shell-logo">
+        <img src="/stables_agent_avatar.png" alt="StablesAgent" />
+      </div>
+      <div class="shell-title-wrap">
+        <div class="shell-title-main">StablesAgent</div>
+        <div class="shell-title-sub">Ask anything about Stables. No account, no signup.</div>
+      </div>
+      <div class="shell-status">
+        <span class="shell-status-dot"></span>
+        <span>Built on MINIMA</span>
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <div class="chat-area">
+      <div id="chatLog" class="chat-log"
+           aria-live="polite" aria-label="Conversation with StablesAgent"></div>
+      <div class="input-row">
+        <textarea id="chatInput" rows="1" autocomplete="off"></textarea>
+        <button id="sendBtn" class="send-btn">
+          <span>➤</span><span>Send</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Footer: buttons only (hidden in embed mode) -->
+    <div class="shell-footer">
+      <div class="buttons">
+        <a class="btn btn-primary"
+           href="https://t.me/stablescommunity"
+           target="_blank" rel="noopener noreferrer">Telegram</a>
+        <a class="btn btn-secondary"
+           href="https://stablescouncil.github.io/"
+           target="_blank" rel="noopener noreferrer">Presentation</a>
+        <a class="btn btn-secondary"
+           href="https://stablescouncil.github.io/links.html"
+           target="_blank" rel="noopener noreferrer">Links</a>
+      </div>
+    </div>
+
+    <!-- Bring your own AI strip -->
+    <div class="byoai">
+      <p>Prefer to ask your own AI? Copy the knowledge base link below, paste it into ChatGPT, Claude, or any model, and say:<br>
+         <em>"Read this knowledge base and answer my questions about Stables: [paste link]"</em>
+      </p>
+      <button class="byoai-copy" id="copyBrainBtn" onclick="copyBrain()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <span id="copyBrainLabel">Copy knowledge base link</span>
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    const API_URL   = "/api/chat";
+    const chatLog   = document.getElementById("chatLog");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn   = document.getElementById("sendBtn");
+
+    function appendMessage(text, role) {
+      const wrap  = document.createElement("div");
+      wrap.className = "msg " + (role === "user" ? "msg-user" : "msg-agent");
+      const label = document.createElement("span");
+      label.className   = "msg-label";
+      label.textContent = role === "user" ? "You" : "StablesAgent";
+      const body        = document.createElement("div");
+      body.textContent  = text;
+      wrap.appendChild(label);
+      wrap.appendChild(body);
+      chatLog.appendChild(wrap);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function setSending(on) {
+      sendBtn.disabled   = on;
+      chatInput.disabled = on;
+      if (!on) chatInput.focus();
+    }
+
+    async function sendMessage() {
+      const text = (chatInput.value || "").trim();
+      if (!text) return;
+      appendMessage(text, "user");
+      chatInput.value = "";
+      setSending(true);
+      try {
+        const res  = await fetch(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text })
+        });
+        const data = await res.json();
+        appendMessage(
+          data.reply || "I am currently undergoing maintenance. Please try again shortly.",
+          "agent"
+        );
+      } catch {
+        appendMessage("Network error. Please check your connection and try again.", "agent");
+      } finally {
+        setSending(false);
+      }
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+
+    appendMessage(
+      "Hello! How can I help you today?\n\nFeel free to ask me anything about Stables — and I'll answer in the language of your choice.",
+      "agent"
+    );
+    // Embed mode (?embed=1): strip chrome, let chat fill the popup
+    if (new URLSearchParams(window.location.search).get('embed') === '1') {
+      const style = document.createElement('style');
+      style.textContent = `
+        body { padding: 0 !important; align-items: stretch !important; background: transparent !important; }
+        .shell { width: 100% !important; height: 100vh !important; border-radius: 0 !important;
+                 border: none !important; box-shadow: none !important; }
+        .shell-header { display: none !important; }
+        .shell-footer { display: none !important; }
+        .chat-area { flex: 1 !important; height: auto !important; min-height: 0 !important; padding: 12px !important; }
+        .byoai { flex-shrink: 0 !important; }
+      `;
+      document.head.appendChild(style);
+    }
+
+    chatInput.focus();
+
+    function copyBrain() {
+      const url = "https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt";
+      navigator.clipboard.writeText(url).then(() => {
+        const label = document.getElementById("copyBrainLabel");
+        label.textContent = "Copied!";
+        setTimeout(() => { label.textContent = "Copy knowledge base link"; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>

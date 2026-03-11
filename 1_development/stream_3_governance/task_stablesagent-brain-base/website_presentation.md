@@ -20,3 +20,20 @@ Advanced tools for those who want to do more than just pay.
 
 ## The Core Concept
 Let's be our own banking system. The Network of Everybody's Own Bank.
+
+## StablesAgent and the Knowledge Base
+
+StablesAgent is the official AI assistant for the Stables community. It can be reached in the following ways:
+
+- In the Stables Community Telegram group, in the dedicated 4-StablesAgent thread, by mentioning @StablesAgentBot followed by a question.
+- In a private conversation with @StablesAgentBot directly.
+- On X at https://x.com/StablesCouncil
+
+Anyone who prefers to use their own AI (ChatGPT, Grok, Claude, or any other tool) can access the full Stables knowledge base using this direct link:
+
+https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt
+
+To use it, paste that link into any AI and say: "Learn everything in this file." The AI will then be able to answer any question about Stables in detail and in any language.
+
+The knowledge base and all anonymous interaction logs are publicly available at:
+https://github.com/StablesCouncil/stables-agent

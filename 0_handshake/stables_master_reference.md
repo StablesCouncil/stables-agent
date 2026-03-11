@@ -116,14 +116,15 @@ To protect your work against hardware failure (a "glass of water"):
 *   **No Jargon**: Do NOT use crypto or DeFi-specific terms like "decentralized" in any external communication or copy for the general public. These terms do not resonate with our target audience.
 *   **Hashtags Exception**: Technical terms (e.g., #decentralized, #defi, #crypto) are permitted ONLY as hashtags on platforms like X/Twitter for community reach and discovery.
 *   **Strict Tagline**: Use ONLY **"Money that is truly yours. Secure, Pseudonymous and Unstoppable."**
-*   **MANDATORY ATTRIBUTION**: Every communication (social posts, presentations, marketing) MUST include "Built on MINIMA" badge or text with link to https://minima.global where applicable.
+*   **MANDATORY ATTRIBUTION**: Official presentations and marketing materials MUST include "Built on MINIMA" badge or text with link to https://minima.global where applicable. Social media communications (Telegram, X) are exempt from this requirement as the technical link is implied.
 *   **Human Writing Style**: NEVER use AI writing markers in social media posts, comments, or public communication:
     - NO emojis (🚀✨💪📚💬 etc.)
     - NO bullet points or structured lists
     - NO excessive formatting (bold, italics, ALL CAPS for emphasis)
     - Write naturally like a real person would in casual conversation
     - Use simple sentences and natural flow
-    - Exception: Hashtags at the end are acceptable
+    - **X/Twitter Limit**: Maximum 280 characters.
+    - **Hashtags**: MANDATORY on X (at the end). Never use in Telegram.
 
 ### Core Messaging
 *   **Slogan**: Be your own bank

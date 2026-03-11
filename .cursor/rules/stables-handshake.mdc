@@ -1,0 +1,68 @@
+---
+description: Mandatory Stables project calibration — read at the start of every session
+alwaysApply: true
+---
+
+# Stables Mandatory Handshake
+
+At the start of **every session**, before any work, read these two files in order:
+
+1. `0_handshake/README.md` — orientation and calibration order
+2. `0_handshake/session_map.md` — full file map and task→file matrix
+
+Then follow the calibration steps in `0_handshake/handshake.md`.
+
+Confirm calibration by stating:
+> "Calibration Active: Working on the basis of the Unified Handshake."
+
+**Never start work without this confirmation.**
+
+---
+
+## UI QUICK RULES (no file read needed — these are always active)
+
+Any time you touch HTML or CSS, these rules apply before you write a single line.
+
+### Design Tokens (from live site `https://stablescouncil.github.io/`, fetched 2026-03-11)
+
+| Token | Value |
+|-------|-------|
+| `--bg` | `#0b0f14` |
+| `--panel` | `#101826` |
+| `--text-primary` | `#e6edf3` |
+| `--text-secondary` / `--muted` | `#9fb0c0` |
+| `--accent-cyan` / `--accent` | `#67e8f9` |
+| `--accent-purple` | `#a78bfa` |
+| `--glow` | `rgba(103,232,249,0.15)` |
+
+### Buttons — exact classes from `stables.css`
+
+```html
+<!-- Primary: cyan-to-purple gradient, light text -->
+<a class="btn btn-primary" href="URL">Label</a>
+
+<!-- Secondary: dark semi-transparent, cyan border, light text -->
+<a class="btn btn-secondary" href="URL">Label</a>
+
+<!-- Group wrapper -->
+<div class="buttons">
+  <a class="btn btn-primary" href="#">Primary</a>
+  <a class="btn btn-secondary" href="#">Secondary</a>
+</div>
+```
+
+- Shape: `border-radius: 16px` (rounded rectangle — NOT full pills)
+- Size: `width: 220px`, `height: 64px`
+- All buttons have: `border: 1px solid rgba(103,232,249,0.3)` + cyan glow shadow
+- `btn-primary` background: `linear-gradient(135deg, rgba(103,232,249,0.3), rgba(167,139,250,0.3))`
+- `btn-secondary` background: `rgba(15,23,42,0.6)`
+- **`btn-link` does not exist. Never use it.**
+
+### Never
+
+- Hardcode a colour that has a token above.
+- Define `.btn`, `.badge`, `.buttons`, or `.container` locally.
+- Use any font other than Inter (imported by `stables.css`).
+- Build UI without linking `stables.css` first.
+
+### Full spec → `0_handshake/web_component_spec.md`

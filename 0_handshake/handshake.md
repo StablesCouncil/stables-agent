@@ -40,7 +40,7 @@
   - **Positive Framing:** Never define Stables by what it is *not* (e.g., do not say "we don't build for you"). Speak only to what Stables *is*.
   - **Core Ethos:** Woven naturally into communications is the philosophy: *We build for all of us.* Growth in numbers is our strength.
 - **UI Pre-Flight Verification**: Before ANY UI or Asset edit, the AI must state the MASTER FILE path and the EXACT STRINGS/RECIPES being used.
-- **MINIMA Attribution**: Every communication must include "Built on MINIMA".
+- **MINIMA Attribution**: Presentations and official documents must include "Built on MINIMA". Social media posts (Telegram, X) do not require explicit attribution as it is implied by the technical context.
 - **Perpetual Restoration (The Ledger)**: Every modification must be committed to Git and logged in the Project Ledger (`stream_3_governance/prod_project_ledger/ledger.md`). No change is valid until it is indexed with a Point ID.
 - **Knowledge Base Sync Rule (CRITICAL)**: The Agent's knowledge base (`1_development/stream_3_governance/task_stablesagent-brain-base/`) is the brain of all external AIs and the Telegram/X agent. It must always reflect exactly what is public and validated. The full sync process is:
     1. **Before editing any brain markdown**, the AI MUST first audit all three sources of truth:
@@ -62,9 +62,22 @@
 - **Personal Dev Identity**: For commits to the private dev repo (`Charles0xhorizonxyz/stables`), use:
     - User Name: `Charles0xhorizonxyz`
     - Email: `charles@0xhorizon.xyz`
+- **Production Server (Vultr)**:
+    - IP: `140.82.36.166`
+    - User: `root`
+    - Bot directory: `/root/stables-agent/`
+    - Brain path: `/root/stables-agent/task_stablesagent-brain-base/`
+    - Agent path: `/root/stables-agent/task_x_agent_node/`
+    - Process manager: PM2, app name `stables-telegram-agent`
+    - To deploy updated brain: `scp` the changed `.md` files and `vector_db.json` to the server, then `pm2 restart stables-telegram-agent`
 
 ## 2. THE CALIBRATION WORKFLOW (/handshake)
 To start any session or when context-drift is suspected, perform the following steps:
+
+### [Step 0] Read the Entry Point FIRST
+Before anything else, read these two files in order:
+- **[README.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/README.md)**: Explains the purpose of this folder, what each file does, and the calibration order. Start here.
+- **[session_map.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/session_map.md)**: The master navigator. It maps every file in the project, its purpose, and which files to load for which task. It also contains the server/deployment reference and the full pipeline rule. Without this, the session is not calibrated.
 
 ### [Step 1] Read the Master Specifications
 Consult the following files representing the immutable specs of Stables:
@@ -72,6 +85,7 @@ Consult the following files representing the immutable specs of Stables:
 - **[visual_identity_spec.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/visual_identity_spec.md)**: Color palettes, glassmorphism, and branding guidelines.
 - **[protocol_mechanics_spec.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/protocol_mechanics_spec.md)**: Detailed mint/burn/redemption rules.
 - **[current_state_and_path.md](file:///C:/Users/Charles/Documents/Stables/2_current/stream_3_governance/prod_protocol_specs/current_state_and_path.md)**: The strategic North Star.
+- **[vault.md](file:///C:/Users/Charles/Documents/Stables/1_development/stream_3_governance/prod_credentials/vault.md)**: Central repository for project accounts and bookmarks.
 
 ### [Step 2] Verify Economic Alignment
 Acknowledge the settled economic model (Do NOT re-debate unless requested):
@@ -102,8 +116,11 @@ Acknowledge the specific design tokens:
 When drafting replies for community channels (Telegram, Discord, X, etc.):
 - **Keep it brief**: Give all necessary information but stay concise. We want members to come back with more questions, not dump everything at once. An active chat is the goal.
 - **Personalize (MANDATORY)**: Always thank the person for asking and **always use their name** (e.g., "Thanks for the question [Name]"). Make it feel human.
-- **No AI markers (CRITICAL GRAMMAR RULE)**: No emojis, no icons, no bullet points, no structured lists. **NEVER use an em-dash (—) or en-dash (–) to connect sentences.** This is a grammatical mistake and a dead giveaway for AI. Use standard commas or periods only.
-- **Hashtags (MANDATORY on X)**: You MUST include hashtags for X/Twitter posts. Never use hashtags in our Telegram community channel or other community spaces.
+- **No AI markers (CRITICAL GRAMMAR RULE)**: No emojis, no icons, no bullet points, no structured lists. **NEVER use an em-dash (—) or en-dash (–) to connect sentences.** This is a grammatical mistake and a dead giveaway for AI. Use standard commas or periods only. (Note: Bullet points are allowed in Telegram ONLY if they significantly improve readability for complex information, but should be avoided in short replies).
+- **X/Twitter Specifics (STRICT)**:
+    - **Character Limit**: Maximum 280 characters per post.
+    - **Hashtags**: You MUST include hashtags for X/Twitter posts.
+    - **No Hashtags in TG**: Never use hashtags in our Telegram community channel or other community spaces.
 - **Natural tone**: Write like a real person in a casual conversation. Short sentences, natural flow.
 
 ---

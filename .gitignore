@@ -49,3 +49,4 @@ build_llms_txt.js
 
 # Operational / Credentials / Admin (NEVER PUSH TO GITHUB)
 2_current/stream_3_governance/prod_admin/
+**/prod_credentials/
