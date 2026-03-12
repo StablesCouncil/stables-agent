@@ -378,7 +378,6 @@
     const sendBtn   = document.getElementById("sendBtn");
 
     const langParam = new URLSearchParams(window.location.search).get("lang") || "en";
-    const langKey = ["fr-qc-edgy"].includes(langParam) ? "fr" : langParam;
     const AGENT_TEXTS = {
       en: {
         firstMsg: "Hello! How can I help you today?\n\nFeel free to ask me anything about Stables — and I'll answer in the language of your choice.",
@@ -430,6 +429,16 @@
         maintenance: "Sono in manutenzione. Riprova tra poco.",
         networkError: "Errore di rete. Controlla la connessione e riprova."
       },
+      "fr-qc-edgy": {
+        firstMsg: "Salut ! Comment j'peux t'aider aujourd'hui ?\n\nPose-moi tes questions sur Stables — j'vais répondre dans la langue de ton choix. Pour vrai.",
+        you: "Toi", agentName: "StablesAgent", send: "Envoyer",
+        byoaiToggle: "Utiliser ta propre IA ? Copier le lien de la base de connaissances",
+        byoaiP: "Copie le lien en bas, colle-le dans ChatGPT, Claude ou n'importe quel modèle, pis dis :<br><em>\"Lis cette base de connaissances pis réponds à mes questions sur Stables : [colle le lien]\"</em>",
+        copyLabel: "Copier le lien de la base de connaissances", copied: "Copié !",
+        copyFallback: "Clic droit sur le lien en bas pour copier",
+        maintenance: "J'suis en maintenance là. Réessaie dans peu.",
+        networkError: "Erreur de réseau. Vérifie ta connexion pis réessaie."
+      },
       zh: {
         firstMsg: "你好！今天我能帮你什么？\n\n随时向我询问有关 Stables 的任何问题 — 我会用你选择的语言回答。",
         you: "你", agentName: "StablesAgent", send: "发送",
@@ -441,7 +450,7 @@
         networkError: "网络错误。请检查您的连接并重试。"
       }
     };
-    const T = AGENT_TEXTS[langKey] || AGENT_TEXTS.en;
+    const T = AGENT_TEXTS[langParam] || AGENT_TEXTS.en;
 
     (function applyTranslations() {
       const tgl = document.getElementById("byoaiToggleText");
