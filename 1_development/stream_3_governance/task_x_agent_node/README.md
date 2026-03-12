@@ -29,6 +29,25 @@ The agent is active on Telegram. You can talk to it directly:
 
 ---
 
+## X (Twitter) posting (@StablesAgent)
+
+The agent can post to its own X account using the free API tier. No paid subscription needed.
+
+**Setup**
+
+1. In the X Developer Portal, create or use an app connected to @StablesAgent.
+2. Add to `.env`:
+   ```
+   X_AGENT_API_KEY=...
+   X_AGENT_API_SECRET=...
+   X_AGENT_ACCESS_TOKEN=...
+   X_AGENT_ACCESS_SECRET=...
+   ```
+3. Run once: `node x_agent_post.js`
+4. Or schedule with cron, e.g. twice daily: `0 9,17 * * * cd /path/to/task_x_agent_node && node x_agent_post.js`
+
+---
+
 ## Transparency
 
 All interactions are logged anonymously (no names, no identifiers) in `interaction_logs.csv` for full community transparency.
