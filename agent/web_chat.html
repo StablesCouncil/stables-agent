@@ -236,6 +236,16 @@
       box-shadow: 0 0 12px rgba(103,232,249,0.12);
     }
     .byoai-copy svg { flex-shrink: 0; }
+    .byoai-link {
+      display: block;
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      word-break: break-all;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .byoai-link:hover { color: var(--accent-cyan); }
 
     /* ── Responsive ── */
     @media (max-width: 640px) {
@@ -312,6 +322,7 @@
         </svg>
         <span id="copyBrainLabel">Copy knowledge base link</span>
       </button>
+      <a href="https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt" target="_blank" rel="noopener noreferrer" class="byoai-link" title="Open in new tab or right-click to copy">raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt</a>
     </div>
 
   </div>
@@ -394,11 +405,36 @@
 
     function copyBrain() {
       const url = "https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt";
-      navigator.clipboard.writeText(url).then(() => {
-        const label = document.getElementById("copyBrainLabel");
+      const label = document.getElementById("copyBrainLabel");
+      function showCopied() {
         label.textContent = "Copied!";
         setTimeout(() => { label.textContent = "Copy knowledge base link"; }, 2000);
-      });
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(showCopied).catch(() => {
+          copyFallback(url, label, showCopied);
+        });
+      } else {
+        copyFallback(url, label, showCopied);
+      }
+    }
+    function copyFallback(url, label, onDone) {
+      const ta = document.createElement("textarea");
+      ta.value = url;
+      ta.style.cssText = "position:fixed;left:-9999px;top:0";
+      document.body.appendChild(ta);
+      ta.select();
+      ta.setSelectionRange(0, 99999);
+      try {
+        if (document.execCommand("copy")) {
+          onDone();
+        } else {
+          label.textContent = "Right-click the link below to copy";
+        }
+      } catch (e) {
+        label.textContent = "Right-click the link below to copy";
+      }
+      document.body.removeChild(ta);
     }
   </script>
 </body>
