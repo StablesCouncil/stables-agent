@@ -3,7 +3,8 @@
 set -eu
 
 LOG_FILE="/root/stables-agent/task_x_agent_node/interaction_logs.csv"
-REPO_URL="https://StablesCouncil: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@github.com/StablesCouncil/stables-agent.git"
+# Use COUNCIL_GITHUB_TOKEN env var (set in crontab or .env). Never commit the token.
+REPO_URL="https://StablesCouncil:${COUNCIL_GITHUB_TOKEN}@github.com/StablesCouncil/stables-agent.git"
 WORK_DIR="/root/stables-agent-sync"
 
 if [ ! -d "$WORK_DIR" ]; then
