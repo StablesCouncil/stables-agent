@@ -378,6 +378,7 @@
     const sendBtn   = document.getElementById("sendBtn");
 
     const langParam = new URLSearchParams(window.location.search).get("lang") || "en";
+    const langKey = ["fr-qc-edgy"].includes(langParam) ? "fr" : langParam;
     const AGENT_TEXTS = {
       en: {
         firstMsg: "Hello! How can I help you today?\n\nFeel free to ask me anything about Stables — and I'll answer in the language of your choice.",
@@ -440,7 +441,7 @@
         networkError: "网络错误。请检查您的连接并重试。"
       }
     };
-    const T = AGENT_TEXTS[langParam] || AGENT_TEXTS.en;
+    const T = AGENT_TEXTS[langKey] || AGENT_TEXTS.en;
 
     (function applyTranslations() {
       const tgl = document.getElementById("byoaiToggleText");
