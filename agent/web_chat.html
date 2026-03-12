@@ -25,6 +25,8 @@
       border: 1px solid rgba(103, 232, 249, 0.3);
       border-radius: 1.5rem;
       box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(103,232,249,0.15);
+      min-height: 400px;
+      max-height: 90vh;
     }
 
     /* ── Header ── */
@@ -92,10 +94,12 @@
       flex-direction: column;
       gap: 10px;
       padding: 16px 18px;
-      height: min(420px, calc(100vh - 380px));
+      flex: 1;
+      min-height: 0;
     }
     .chat-log {
       flex: 1;
+      min-height: 200px;
       overflow-y: auto;
       scrollbar-width: thin;
       padding: 12px;
@@ -200,17 +204,44 @@
     .shell-footer .buttons { justify-content: center; }
     .shell-footer .btn { width: auto; min-width: 120px; height: 48px; padding: 0 20px; font-size: 14px; }
 
-    /* ── Bring your own AI strip ── */
+    /* ── Bring your own AI strip (collapsible) ── */
     .byoai {
       border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 18px 24px 22px;
+      flex-shrink: 0;
+    }
+    .byoai-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 10px 18px;
+      background: transparent;
+      border: none;
+      font-size: 0.8rem;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 0.2s;
+      font-family: inherit;
+    }
+    .byoai-toggle:hover { color: var(--accent-cyan); }
+    .byoai-toggle svg {
+      transition: transform 0.2s;
+    }
+    .byoai.expanded .byoai-toggle svg {
+      transform: rotate(180deg);
+    }
+    .byoai-body {
+      display: none;
+      padding: 12px 24px 18px;
       text-align: center;
     }
+    .byoai.expanded .byoai-body { display: block; }
     .byoai p {
       font-size: clamp(0.8rem, 1.8vw, 0.9375rem);
       color: var(--muted);
-      line-height: 1.7;
-      margin-bottom: 14px;
+      line-height: 1.6;
+      margin-bottom: 12px;
     }
     .byoai p em {
       font-style: italic;
@@ -260,7 +291,7 @@
       .shell-footer { padding: 12px 14px 16px; }
       .shell-footer .buttons { flex-direction: column; align-items: center; gap: 10px; }
       .shell-footer .btn { width: 100%; max-width: 320px; justify-content: center; }
-      .byoai { padding: 14px 14px 18px; }
+      .byoai .byoai-body { padding: 12px 14px 16px; }
       .byoai-copy { width: 100%; max-width: 320px; justify-content: center; }
       textarea { padding: 10px 14px; font-size: 16px; /* prevent iOS zoom */ }
     }
@@ -311,18 +342,24 @@
       </div>
     </div>
 
-    <!-- Bring your own AI strip -->
-    <div class="byoai">
-      <p>Prefer to ask your own AI? Copy the knowledge base link below, paste it into ChatGPT, Claude, or any model, and say:<br>
-         <em>"Read this knowledge base and answer my questions about Stables: [paste link]"</em>
-      </p>
-      <button class="byoai-copy" id="copyBrainBtn" onclick="copyBrain()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-        </svg>
-        <span id="copyBrainLabel">Copy knowledge base link</span>
+    <!-- Bring your own AI strip (collapsible) -->
+    <div class="byoai" id="byoai">
+      <button type="button" class="byoai-toggle" onclick="var e=document.getElementById('byoai'); e.classList.toggle('expanded'); this.setAttribute('aria-expanded',e.classList.contains('expanded'));" aria-expanded="false" aria-controls="byoaiBody">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M6 9l6 6 6-6"/> </svg>
+        Use your own AI? Copy knowledge base link
       </button>
-      <a href="https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt" target="_blank" rel="noopener noreferrer" class="byoai-link" title="Open in new tab or right-click to copy">raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt</a>
+      <div class="byoai-body" id="byoaiBody">
+        <p>Copy the link below, paste it into ChatGPT, Claude, or any model, and say:<br>
+           <em>"Read this knowledge base and answer my questions about Stables: [paste link]"</em>
+        </p>
+        <button class="byoai-copy" id="copyBrainBtn" onclick="copyBrain()">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+          <span id="copyBrainLabel">Copy knowledge base link</span>
+        </button>
+        <a href="https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt" target="_blank" rel="noopener noreferrer" class="byoai-link" title="Open in new tab or right-click to copy">raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt</a>
+      </div>
     </div>
 
   </div>
