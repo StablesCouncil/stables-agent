@@ -143,10 +143,13 @@
     .input-row {
       display: flex;
       align-items: flex-end;
-      gap: 8px;
+      gap: 10px;
+      min-width: 0;
+      flex-shrink: 0;
     }
-    textarea {
-      flex: 1;
+    .input-row textarea {
+      flex: 1 1 0;
+      min-width: 0;
       min-height: 42px;
       max-height: 96px;
       resize: none;
@@ -165,6 +168,7 @@
       box-shadow: 0 0 0 1px rgba(103,232,249,0.25);
     }
     .send-btn {
+      flex-shrink: 0;
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -208,6 +212,10 @@
     .byoai {
       border-top: 1px solid rgba(255,255,255,0.06);
       flex-shrink: 0;
+    }
+    .byoai-in-chat {
+      margin-top: 8px;
+      border-top-color: rgba(255,255,255,0.05);
     }
     .byoai-toggle {
       display: flex;
@@ -325,6 +333,25 @@
           <span>➤</span><span>Send</span>
         </button>
       </div>
+      <!-- Bring your own AI strip (collapsible, below input to avoid overlap) -->
+      <div class="byoai byoai-in-chat" id="byoai">
+        <button type="button" class="byoai-toggle" onclick="var e=document.getElementById('byoai'); e.classList.toggle('expanded'); this.setAttribute('aria-expanded',e.classList.contains('expanded'));" aria-expanded="false" aria-controls="byoaiBody">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M6 9l6 6 6-6"/> </svg>
+          <span id="byoaiToggleText">Use your own AI? Copy knowledge base link</span>
+        </button>
+        <div class="byoai-body" id="byoaiBody">
+          <p id="byoaiBodyP">Copy the link below, paste it into ChatGPT, Claude, or any model, and say:<br>
+             <em>"Read this knowledge base and answer my questions about Stables: [paste link]"</em>
+          </p>
+          <button class="byoai-copy" id="copyBrainBtn" onclick="copyBrain()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span id="copyBrainLabel">Copy knowledge base link</span>
+          </button>
+          <a href="https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt" target="_blank" rel="noopener noreferrer" class="byoai-link" title="Open in new tab or right-click to copy">raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt</a>
+        </div>
+      </div>
     </div>
 
     <!-- Footer: buttons only (hidden in embed mode) -->
@@ -342,26 +369,6 @@
       </div>
     </div>
 
-    <!-- Bring your own AI strip (collapsible) -->
-    <div class="byoai" id="byoai">
-      <button type="button" class="byoai-toggle" onclick="var e=document.getElementById('byoai'); e.classList.toggle('expanded'); this.setAttribute('aria-expanded',e.classList.contains('expanded'));" aria-expanded="false" aria-controls="byoaiBody">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"> <path d="M6 9l6 6 6-6"/> </svg>
-        Use your own AI? Copy knowledge base link
-      </button>
-      <div class="byoai-body" id="byoaiBody">
-        <p>Copy the link below, paste it into ChatGPT, Claude, or any model, and say:<br>
-           <em>"Read this knowledge base and answer my questions about Stables: [paste link]"</em>
-        </p>
-        <button class="byoai-copy" id="copyBrainBtn" onclick="copyBrain()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-          </svg>
-          <span id="copyBrainLabel">Copy knowledge base link</span>
-        </button>
-        <a href="https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt" target="_blank" rel="noopener noreferrer" class="byoai-link" title="Open in new tab or right-click to copy">raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt</a>
-      </div>
-    </div>
-
   </div>
 
   <script>
@@ -370,12 +377,88 @@
     const chatInput = document.getElementById("chatInput");
     const sendBtn   = document.getElementById("sendBtn");
 
+    const langParam = new URLSearchParams(window.location.search).get("lang") || "en";
+    const AGENT_TEXTS = {
+      en: {
+        firstMsg: "Hello! How can I help you today?\n\nFeel free to ask me anything about Stables — and I'll answer in the language of your choice.",
+        you: "You", agentName: "StablesAgent", send: "Send",
+        byoaiToggle: "Use your own AI? Copy knowledge base link",
+        byoaiP: "Copy the link below, paste it into ChatGPT, Claude, or any model, and say:<br><em>\"Read this knowledge base and answer my questions about Stables: [paste link]\"</em>",
+        copyLabel: "Copy knowledge base link", copied: "Copied!",
+        copyFallback: "Right-click the link below to copy",
+        maintenance: "I am currently undergoing maintenance. Please try again shortly.",
+        networkError: "Network error. Please check your connection and try again."
+      },
+      fr: {
+        firstMsg: "Bonjour ! Comment puis-je vous aider aujourd'hui ?\n\nN'hésitez pas à me poser vos questions sur Stables — je répondrai dans la langue de votre choix.",
+        you: "Vous", agentName: "StablesAgent", send: "Envoyer",
+        byoaiToggle: "Utiliser votre propre IA ? Copier le lien de la base de connaissances",
+        byoaiP: "Copiez le lien ci-dessous, collez-le dans ChatGPT, Claude ou tout autre modèle, et dites :<br><em>\"Lisez cette base de connaissances et répondez à mes questions sur Stables : [collez le lien]\"</em>",
+        copyLabel: "Copier le lien de la base de connaissances", copied: "Copié !",
+        copyFallback: "Cliquez droit sur le lien ci-dessous pour copier",
+        maintenance: "Je suis actuellement en maintenance. Veuillez réessayer sous peu.",
+        networkError: "Erreur réseau. Vérifiez votre connexion et réessayez."
+      },
+      de: {
+        firstMsg: "Hallo! Wie kann ich Ihnen heute helfen?\n\nStellen Sie mir gerne Fragen zu Stables — ich antworte in Ihrer bevorzugten Sprache.",
+        you: "Sie", agentName: "StablesAgent", send: "Senden",
+        byoaiToggle: "Eigene KI nutzen? Wissensdatenbank-Link kopieren",
+        byoaiP: "Kopieren Sie den Link unten, fügen Sie ihn in ChatGPT, Claude oder ein anderes Modell ein und sagen Sie:<br><em>\"Lies diese Wissensdatenbank und beantworte meine Fragen zu Stables: [Link einfügen]\"</em>",
+        copyLabel: "Wissensdatenbank-Link kopieren", copied: "Kopiert!",
+        copyFallback: "Rechtsklicken Sie auf den Link unten zum Kopieren",
+        maintenance: "Ich bin derzeit in Wartung. Bitte versuchen Sie es später erneut.",
+        networkError: "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+      },
+      es: {
+        firstMsg: "¡Hola! ¿Cómo puedo ayudarte hoy?\n\nPregúntame lo que quieras sobre Stables — responderé en el idioma de tu elección.",
+        you: "Tú", agentName: "StablesAgent", send: "Enviar",
+        byoaiToggle: "¿Usar tu propia IA? Copiar enlace de la base de conocimientos",
+        byoaiP: "Copia el enlace de abajo, pégalo en ChatGPT, Claude o cualquier modelo y di:<br><em>\"Lee esta base de conocimientos y responde mis preguntas sobre Stables: [pega el enlace]\"</em>",
+        copyLabel: "Copiar enlace de la base de conocimientos", copied: "¡Copiado!",
+        copyFallback: "Clic derecho en el enlace de abajo para copiar",
+        maintenance: "Estoy en mantenimiento. Por favor, inténtalo de nuevo en breve.",
+        networkError: "Error de red. Comprueba tu conexión e inténtalo de nuevo."
+      },
+      it: {
+        firstMsg: "Ciao! Come posso aiutarti oggi?\n\nChiedimi pure qualsiasi cosa su Stables — risponderò nella lingua che preferisci.",
+        you: "Tu", agentName: "StablesAgent", send: "Invia",
+        byoaiToggle: "Usare la propria IA? Copia il link della base di conoscenza",
+        byoaiP: "Copia il link qui sotto, incollalo in ChatGPT, Claude o qualsiasi modello e di':<br><em>\"Leggi questa base di conoscenza e rispondi alle mie domande su Stables: [incolla link]\"</em>",
+        copyLabel: "Copia link base di conoscenza", copied: "Copiato!",
+        copyFallback: "Tasto destro sul link qui sotto per copiare",
+        maintenance: "Sono in manutenzione. Riprova tra poco.",
+        networkError: "Errore di rete. Controlla la connessione e riprova."
+      },
+      zh: {
+        firstMsg: "你好！今天我能帮你什么？\n\n随时向我询问有关 Stables 的任何问题 — 我会用你选择的语言回答。",
+        you: "你", agentName: "StablesAgent", send: "发送",
+        byoaiToggle: "使用您自己的 AI？复制知识库链接",
+        byoaiP: "复制下方链接，粘贴到 ChatGPT、Claude 或任何模型中，并说：<br><em>\"阅读此知识库并回答我有关 Stables 的问题：[粘贴链接]\"</em>",
+        copyLabel: "复制知识库链接", copied: "已复制！",
+        copyFallback: "右键点击下方链接以复制",
+        maintenance: "我正在进行维护。请稍后再试。",
+        networkError: "网络错误。请检查您的连接并重试。"
+      }
+    };
+    const T = AGENT_TEXTS[langParam] || AGENT_TEXTS.en;
+
+    (function applyTranslations() {
+      const tgl = document.getElementById("byoaiToggleText");
+      const bod = document.getElementById("byoaiBodyP");
+      const lbl = document.getElementById("copyBrainLabel");
+      const snd = sendBtn?.querySelector("span:last-child");
+      if (tgl) tgl.textContent = T.byoaiToggle;
+      if (bod) bod.innerHTML = T.byoaiP;
+      if (lbl) lbl.textContent = T.copyLabel;
+      if (snd) snd.textContent = T.send;
+    })();
+
     function appendMessage(text, role) {
       const wrap  = document.createElement("div");
       wrap.className = "msg " + (role === "user" ? "msg-user" : "msg-agent");
       const label = document.createElement("span");
       label.className   = "msg-label";
-      label.textContent = role === "user" ? "You" : "StablesAgent";
+      label.textContent = role === "user" ? T.you : T.agentName;
       const body        = document.createElement("div");
       body.textContent  = text;
       wrap.appendChild(label);
@@ -404,11 +487,11 @@
         });
         const data = await res.json();
         appendMessage(
-          data.reply || "I am currently undergoing maintenance. Please try again shortly.",
+          data.reply || T.maintenance,
           "agent"
         );
       } catch {
-        appendMessage("Network error. Please check your connection and try again.", "agent");
+        appendMessage(T.networkError, "agent");
       } finally {
         setSending(false);
       }
@@ -419,10 +502,7 @@
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
 
-    appendMessage(
-      "Hello! How can I help you today?\n\nFeel free to ask me anything about Stables — and I'll answer in the language of your choice.",
-      "agent"
-    );
+    appendMessage(T.firstMsg, "agent");
     // Embed mode (?embed=1): strip chrome, let chat fill the popup
     if (new URLSearchParams(window.location.search).get('embed') === '1') {
       const style = document.createElement('style');
@@ -444,8 +524,8 @@
       const url = "https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt";
       const label = document.getElementById("copyBrainLabel");
       function showCopied() {
-        label.textContent = "Copied!";
-        setTimeout(() => { label.textContent = "Copy knowledge base link"; }, 2000);
+        label.textContent = T.copied;
+        setTimeout(() => { label.textContent = T.copyLabel; }, 2000);
       }
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(url).then(showCopied).catch(() => {
@@ -466,10 +546,10 @@
         if (document.execCommand("copy")) {
           onDone();
         } else {
-          label.textContent = "Right-click the link below to copy";
+          label.textContent = T.copyFallback;
         }
       } catch (e) {
-        label.textContent = "Right-click the link below to copy";
+        label.textContent = T.copyFallback;
       }
       document.body.removeChild(ta);
     }
