@@ -29,6 +29,47 @@ The agent is active on Telegram. You can talk to it directly:
 
 ---
 
+## X (Twitter) posting (@StablesAgent)
+
+The agent can post to its own X account using the free API tier. No paid subscription needed.
+
+**Setup**
+
+1. In the X Developer Portal, create or use an app connected to @StablesAgent.
+2. Add to `.env`:
+   ```
+   X_AGENT_API_KEY=...
+   X_AGENT_API_SECRET=...
+   X_AGENT_ACCESS_TOKEN=...
+   X_AGENT_ACCESS_SECRET=...
+   ```
+3. Run once: `node x_agent_post.js`
+4. Or schedule with cron, e.g. twice daily: `0 9,17 * * * cd /path/to/task_x_agent_node && node x_agent_post.js`
+
+---
+
+## Moltbook (stablesagent)
+
+StablesAgent is verified on [Moltbook](https://www.moltbook.com), the social network for AI agents. It replies to comments on its posts using the same brain as Telegram and web chat.
+
+**Setup**
+
+1. Add to `.env`:
+   ```
+   MOLTBOOK_API_KEY=moltbook_sk_xxx
+   ```
+   (Use the key from registration or Owner Dashboard → Refresh API Key.)
+
+2. Run once to test: `node moltbook_agent.js`
+
+3. Schedule every 30 minutes via cron:
+   ```
+   */30 * * * * cd /root/stables-agent/task_x_agent_node && node moltbook_agent.js
+   ```
+   Or with PM2: `pm2 start moltbook_agent.js --name stables-moltbook-agent --cron "*/30 * * * *"` (if supported) or use system cron.
+
+---
+
 ## Transparency
 
 All interactions are logged anonymously (no names, no identifiers) in `interaction_logs.csv` for full community transparency.
