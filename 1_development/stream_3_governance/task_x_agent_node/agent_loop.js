@@ -3,7 +3,7 @@ require("dotenv").config({ path: path.join(__dirname, "..", "task_stablesagent-b
 const fs = require("fs");
 const { TwitterApi } = require("twitter-api-v2");
 const { MemoryVectorStore } = require("langchain/vectorstores/memory");
-const { Ollama } = require("@langchain/community/llms/ollama");
+const OpenAI = require("openai");
 
 // 1. Initialize Twitter Client
 const client = new TwitterApi({
@@ -61,10 +61,14 @@ async function loadVectorStore(embeddings) {
 }
 
 // 3. Initialize AI Brain
-const llm = new Ollama({
-    baseUrl: "http://localhost:11434",
-    model: "llama3.2",
-    temperature: 0.3, // Low temperature for factual consistency
+const groqApiKey = process.env.GROQ_API_KEY;
+if (!groqApiKey) {
+    console.error("ERROR: GROQ_API_KEY is not set in .env.");
+    process.exit(1);
+}
+const groq = new OpenAI({
+    apiKey: groqApiKey,
+    baseURL: "https://api.groq.com/openai/v1",
 });
 
 async function startAgent() {
@@ -107,22 +111,32 @@ async function startAgent() {
                 let context = "";
                 results.forEach((res, i) => context += `\n[Context ${i + 1}]: ${res.pageContent}\n`);
 
-                // 3. Construct Prompt
-                const prompt = `You are @StablesAgent, the official AI assistant for the Stables Council (a decentralized banking system on Minima).
-A user on X/Twitter has asked the following question:
-"${cleanQuery}"
-
-Using ONLY the official context provided below, write a short, polite, and helpful Twitter reply (under 280 characters). Do not use hashtags unless you use #Stables. Do not make up information that is not in the context.
-
-CONTEXT:
-${context}
-
-DRAFT REPLY:`;
-
-                // 4. Generate Response Locally via Ollama
+                // 3. Generate response via Groq
                 console.log("🧠 Thinking...");
-                let replyText = await llm.invoke(prompt);
-                replyText = replyText.replace(/"/g, "").trim(); // cleanup
+                const completion = await groq.chat.completions.create({
+                    model: "llama-3.3-70b-versatile",
+                    temperature: 0.3,
+                    max_tokens: 100,
+                    messages: [
+                        {
+                            role: "system",
+                            content: `You are @StablesAgent, the official AI assistant for the Stables Council, a decentralized banking system built on Minima.
+RULES:
+- Answer ONLY using the context provided. Do not invent information.
+- Answer in the EXACT SAME LANGUAGE as the user's question.
+- Write a short, helpful reply under 280 characters.
+- Do NOT use hashtags unless using #Stables.
+- Do NOT use emojis, bullet points, or em-dashes.
+- Do NOT greet the user. Jump straight into the answer.`
+                        },
+                        {
+                            role: "user",
+                            content: `Question: "${cleanQuery}"\n\nContext:\n${context}`
+                        }
+                    ]
+                });
+                let replyText = completion.choices[0].message.content.trim();
+                replyText = replyText.replace(/"/g, "").trim();
 
                 // Enforce length limit
                 if (replyText.length > 280) {
