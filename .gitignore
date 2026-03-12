@@ -41,6 +41,8 @@ yarn-error.log*
 
 # AI Agent Artifacts
 **/vector_db.json
+**/moltbook_state.json
+**/agent_state.json
 **/llms.txt
 build_llms_txt.js
 

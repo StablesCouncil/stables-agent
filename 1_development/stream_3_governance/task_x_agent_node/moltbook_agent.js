@@ -1,6 +1,8 @@
 /**
  * StablesAgent Moltbook Heartbeat
- * Checks Moltbook every run: status, home, notifications, replies to comments.
+ * 1. Replies to comments on our posts
+ * 2. Creates new posts from knowledge base (1 per 30 min max)
+ * 3. Browses feed, comments on relevant posts from other agents
  * Run via cron every 30 min: (e.g. 0,30 * * * * ... node moltbook_agent.js)
  *
  * Requires: MOLTBOOK_API_KEY, GROQ_API_KEY in .env
@@ -14,6 +16,19 @@ const OpenAI = require("openai");
 
 const API_BASE = "https://www.moltbook.com/api/v1";
 const DB_FILE = path.join(__dirname, "vector_db.json");
+const STATE_FILE = path.join(__dirname, "moltbook_state.json");
+
+function loadState() {
+    if (!fs.existsSync(STATE_FILE)) return { lastPostAt: null, commentedPostIds: [] };
+    try {
+        return JSON.parse(fs.readFileSync(STATE_FILE, "utf-8"));
+    } catch { return { lastPostAt: null, commentedPostIds: [] }; }
+}
+
+function saveState(state) {
+    const kept = (state.commentedPostIds || []).slice(-100);
+    fs.writeFileSync(STATE_FILE, JSON.stringify({ ...state, commentedPostIds: kept }), "utf-8");
+}
 
 function checkEnv() {
     if (!process.env.MOLTBOOK_API_KEY) {
@@ -82,6 +97,47 @@ async function generateReply(query, vectorStore, groq) {
         ],
     });
     return completion.choices[0].message.content.trim().replace(/^["']|["']$/g, "");
+}
+
+async function generatePost(vectorStore, groq) {
+    const seed = ["self-custody", "stablecoins", "Minima", "Be your own bank", "decentralized banking"][Math.floor(Math.random() * 5)];
+    const results = await vectorStore.similaritySearch(seed, 4);
+    const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
+    const completion = await groq.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.6,
+        max_tokens: 150,
+        messages: [
+            {
+                role: "system",
+                content: `You are StablesAgent. Write one short Moltbook post (title + 1-2 sentence body) about Stables or decentralized finance, using ONLY the context. No emojis. No em-dashes. Title max 80 chars, body max 200 chars.`,
+            },
+            { role: "user", content: `Context:\n${context}\n\nWrite one post.` },
+        ],
+    });
+    const text = completion.choices[0].message.content.trim();
+    const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
+    const title = (lines[0] || text).slice(0, 80);
+    const content = (lines.slice(1).join(" ") || lines[0] || "").slice(0, 400);
+    return { title, content };
+}
+
+async function shouldCommentAndGenerate(post, vectorStore, groq) {
+    const text = `${post.title || ""} ${post.content || ""}`.slice(0, 800);
+    const completion = await groq.chat.completions.create({
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.2,
+        max_tokens: 120,
+        messages: [
+            {
+                role: "system",
+                content: `Stables is decentralized banking on Minima (stablecoins, self-custody). You decide if we can add value. Reply with ONLY the comment text (1-2 sentences, helpful, no promo) or exactly "NO" if we shouldn't comment. No emojis. No em-dashes.`,
+            },
+            { role: "user", content: `Post: "${text}"\n\nCan we add a useful comment? If yes, write it. If no, reply NO.` },
+        ],
+    });
+    const out = completion.choices[0].message.content.trim();
+    return out.toUpperCase() === "NO" ? null : out.slice(0, 2000);
 }
 
 function parseMathChallenge(challengeText) {
@@ -159,6 +215,32 @@ async function main() {
         return;
     }
 
+    const state = loadState();
+
+    // 1. Create new post (max 1 per 30 min)
+    const now = Date.now();
+    const lastPost = state.lastPostAt ? new Date(state.lastPostAt).getTime() : 0;
+    if (now - lastPost >= 30 * 60 * 1000) {
+        try {
+            const { title, content } = await generatePost(vectorStore, groq);
+            const postRes = await moltbookPost("/posts", { submolt_name: "general", title, content });
+            const createdPost = postRes.post || postRes.data?.post || postRes;
+            if (createdPost?.id) {
+                state.lastPostAt = new Date().toISOString();
+                const v = postRes?.verification || postRes?.post?.verification;
+                if (v?.verification_code && v?.challenge_text) {
+                    const answer = await solveVerification(groq, v.challenge_text);
+                    if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
+                }
+                console.log("Posted:", title);
+            }
+        } catch (e) {
+            console.log("Post failed:", e.message);
+        }
+        saveState(state);
+    }
+
+    // 2. Reply to comments on our posts
     const activity = home.activity_on_your_posts || [];
     for (const item of activity) {
         if ((item.new_notification_count || 0) === 0) continue;
@@ -187,6 +269,38 @@ async function main() {
         }
 
         await moltbookPost(`/notifications/read-by-post/${item.post_id}`);
+    }
+
+    // 3. Browse feed and comment on relevant posts from others
+    const commented = new Set(state.commentedPostIds || []);
+    try {
+        const feedRes = await moltbookGet("/feed?sort=new&limit=15");
+        const posts = feedRes.posts || feedRes.data || [];
+        let commentsAdded = 0;
+        for (const post of posts) {
+            if (commentsAdded >= 2) break;
+            const postId = post.id || post.post_id;
+            const authorName = (post.author?.name || post.author_name || "").toLowerCase();
+            if (!postId || authorName === "stablesagent" || commented.has(postId)) continue;
+
+            const comment = await shouldCommentAndGenerate(post, vectorStore, groq);
+            if (!comment) continue;
+
+            const commentRes = await moltbookPost(`/posts/${postId}/comments`, { content: comment });
+            const v = commentRes?.verification || commentRes?.comment?.verification;
+            if (v?.verification_code && v?.challenge_text) {
+                const answer = await solveVerification(groq, v.challenge_text);
+                if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
+            }
+            commented.add(postId);
+            state.commentedPostIds = [...commented];
+            commentsAdded++;
+            console.log("Commented on", authorName, ":", comment.slice(0, 50) + "...");
+            await new Promise((r) => setTimeout(r, 25000));
+        }
+        saveState(state);
+    } catch (e) {
+        console.log("Feed/comment error:", e.message);
     }
 
     console.log("Moltbook heartbeat done.");
