@@ -135,3 +135,28 @@ Privacy In a world of centralized data leaks Stables provides pseudonymous safe 
 "2026-03-13T11:31:13.487Z","你有几个主人","我没有主人"
 "2026-03-13T11:31:18.616Z","开发者","开发者"
 "2026-03-13T11:31:22.967Z","你有几个","你有几个"
+"2026-03-14T09:12:42.285Z","Now?","We're building the infrastructure for a future where money flows continuously rather than accumulating in centralized silos. Stables is creating a circular economy where monetary power is recognized as a fundamental human right."
+"2026-03-14T09:27:32.288Z","are you live here?","Yes, I'm live here and ready to help you with any questions about Stables."
+"2026-03-14T10:38:37.365Z","你最近有什么更新吗","我们最近的更新主要集中在完善Stables生态系统的基础框架。目前宪法草案正在制定中，旨在确保我们的去中心化银行解决方案在Minima网络上真正实现去中心化、抗审查和公平性。同时我们也在不断优化用户体验，强调更好的现金替代品、零交易费用、即时结算和无拒付等核心卖点，避免使用区块链、加密货币或Web3等技术术语进行消费者营销。"
+"2026-03-14T10:39:19.067Z","你们未来盈利点在哪里","Stables的未来盈利点主要来自于两个方面：
+
+首先是通过Stables与Minima之间的桥梁机制。用户可以用Stables兑换Minima，这个过程中会产生一定的费用收入。随着更多用户加入系统，这种兑换需求会增加，从而带来持续的费用收益。
+
+其次是通过扩大用户和商家网络来获得收益。当人们通过提供商品和服务或推荐其他商家来赚取Stables时，系统会从中获得一定的分成。这种模式让新用户无需先获取Minima就能加入系统，从而促进Stables在经济中的流通和使用。
+
+随着Minima网络的发展，未来Stables将逐渐摆脱对法币挂钩的依赖，直接以Minima定价商品，这将进一步扩大其使用场景和价值。"
+"2026-03-14T11:11:27.842Z","你们团队有几个","根据提供的上下文，没有关于团队人数的具体信息。"
+"2026-03-14T11:11:55.851Z","你调用的API是哪个","根据提供的上下文，该系统**没有调用任何外部API**。它完全运行在本地，使用`@xenova/transformers`进行嵌入，并通过本地的`Ollama`运行`Llama 3.2`模型进行生成。"
+"2026-03-14T11:17:26.576Z","为什么你们要避免区块链宣传","根据提供的上下文，Stables Council 避免进行区块链技术宣传，是因为其长期愿景（Stage 3）是建立一个以 Minima 为实际货币的循环经济体系，而非停留在技术概念阶段。宣传重点应放在协议的实际功能、货币应用和治理机制（如 xMinima 代币）上，以吸引真实的使用和增长，而非技术炒作。国库资金来源于商户上市费等实际业务收入，这进一步表明其增长引擎是实用经济行为，而非市场宣传。"
+"2026-03-14T11:18:13.129Z","MINIMA价格","根据提供的上下文，没有包含关于 Minima 当前或历史价格的具体信息。上下文主要讨论了 Minima 区块链的技术特性、Stables 系统如何利用 Minima 构建，以及未来的发展阶段。"
+"2026-03-14T11:18:32.180Z","你们有对价格预期吗","我们不提供价格预期。Stables 的设计是为了保持价值稳定，而不是作为投资产品。我们专注于提供一种比现金更好的替代方案，具有零交易费用、即时结算和无退款等特性。"
+"2026-03-14T11:18:54.394Z","STABLES对于MINIMA价格有什么帮助","Stables通过其燃烧机制为Minima创造了直接需求，用户需要燃烧Stables来兑换Minima，这为Minima提供了实用的使用场景和潜在的需求支撑。但具体价格影响受市场整体因素制约。"
+"2026-03-14T11:21:18.086Z","STABLES里面商家用什么交易","商家使用Stables进行交易，他们可以通过提供商品和服务来赚取Stables，或者通过烧掉Stables来赎回Minima。商家可以用Stables来支付和接收款项，享受快速、低成本的交易体验。"
+"2026-03-14T11:22:16.907Z","MINIMA价格是会波动的，STABLES赎回MINIMA会用预言机吗","根据提供的上下文，没有信息表明STABLES赎回MINIMA时会使用预言机。赎回机制是通过燃烧Stables来兑换Minima，但具体如何确定兑换比率（尤其是在MINIMA价格波动的情况下）在现有文档中未作说明。"
+"2026-03-14T11:22:38.621Z","STABLES是稳定币吗","是的，STABLES是稳定币。Stables是一个建立在Minima上的去中心化银行系统，它提供的是稳定币服务。根据官方介绍，Stables的目标是让用户成为自己的银行，提供安全、匿名且不可阻挡的货币服务。它强调100%自托管，只有用户自己拥有密钥，并且设计为日常使用，快速、便宜且简单。"
+"2026-03-14T11:23:54.115Z","XMINIMA是什么东西","xMinima是Stables平台的权益代币，用于通过Minima区块链进行协议治理。持有者自愿吸收Minima抵押品的价格波动，以换取长期收益和直接参与治理的权利，并在协议结构中作为缓冲层，优先承担市场波动风险。"
+"2026-03-14T11:24:22.609Z","不懂","我理解你的困惑。在Stables，我们刻意避免使用“区块链”、“加密货币”或“Web3”这类复杂术语。我们向普通用户传达的核心信息很简单：这是一种比现金更好的替代方案，零交易费用，即时结算，没有退单风险。我们专注于提供安全、私密的日常金融体验，而不是技术细节。"
+"2026-03-14T11:24:50.424Z","xMinima是Stables平台的权益代币，用于通过Minima区块链进行协议治理。持有者自愿吸收Minima抵押品的价格波动，以换取长期收益和直接参与治理的权利，并在协议结构中作为缓冲层，优先承担市场波动风险。详细阐述","xMinima是Stables平台的权益代币，通过Minima区块链实现协议治理。持有者自愿承担Minima抵押品的价格波动风险，以换取长期收益和直接参与治理的权利。在协议结构中，xMinima持有者位于稳定币持有者之后，作为缓冲层优先承担市场波动风险，但当网络增长时也能获得最大收益。这种设计确保了Stables作为一个去中心化银行系统的稳定性和可持续性。"
+"2026-03-14T13:38:09.670Z","Are you back?","Based on the provided context, there is no information about system availability or downtime. The context describes logging and generation processes but does not mention any interruption or return."
+"2026-03-14T13:38:47.197Z","Explain how to make most money by using Stables","To make the most money using Stables, focus on earning Stables through work and onboarding others. You can earn Stables directly by providing goods and services, or by helping onboard new merchants to the platform. This work-based approach allows you to accumulate Stables without needing to purchase them initially. Additionally, since Stables transactions have zero fees and settle instantly on the Minima blockchain, you can maximize your earnings by keeping your money in Stables and using them for payments, savings, and transfers. The more you participate in the ecosystem by earning and using Stables, the more you benefit from this decentralized banking system."
+"2026-03-14T13:39:43.100Z","What about trading xMinima?","Trading xMinima is facilitated through the Liquidity Fund, a dedicated pool that provides deep, continuous liquidity between xMinima and Minima. This allows equity participants to enter and exit positions smoothly without destabilizing the stablecoin layer. xMinima holders absorb volatility in the Minima collateral in exchange for long-term upside and governance rights, sitting structurally behind stablecoin holders."
