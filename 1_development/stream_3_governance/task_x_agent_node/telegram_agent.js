@@ -18,17 +18,17 @@ if (!token) {
     process.exit(1);
 }
 
-const groqApiKey = process.env.GROQ_API_KEY;
-if (!groqApiKey) {
-    console.error("ERROR: GROQ_API_KEY is not set in .env.");
+const openRouterKey = process.env.OPENROUTER_API_KEY;
+if (!openRouterKey) {
+    console.error("ERROR: OPENROUTER_API_KEY is not set in .env.");
     process.exit(1);
 }
 
 const bot = new TelegramBot(token, { polling: true });
 
-const groq = new OpenAI({
-    apiKey: groqApiKey,
-    baseURL: "https://api.groq.com/openai/v1",
+const llm = new OpenAI({
+    apiKey: openRouterKey,
+    baseURL: "https://openrouter.ai/api/v1",
 });
 
 // 1. Initialize Embeddings & Vector DB
@@ -66,12 +66,12 @@ async function startAgent() {
     console.log("=========================================");
     console.log("🤖 STABLES TELEGRAM AGENT STARTING 🤖");
     console.log("=========================================");
-    console.log("Initializing local Brain (Xenova embeddings + Groq API)...");
+    console.log("Initializing local Brain (Xenova embeddings + OpenRouter)...");
 
     const embeddings = await initXenova();
     const vectorStore = await loadVectorStore(embeddings);
 
-    console.log("✅ Brain Loaded! Groq API active.");
+    console.log("✅ Brain Loaded! OpenRouter API active.");
     console.log("📡 Listening for Telegram messages on @StablesAgentBot...");
 
     bot.on("message", async (msg) => {
@@ -102,10 +102,10 @@ async function startAgent() {
             let context = "";
             results.forEach((res, i) => context += `\n[Context ${i + 1}]: ${res.pageContent}\n`);
 
-            // 2. Call Groq API
-            console.log("🤖 Calling Groq API...");
-            const completion = await groq.chat.completions.create({
-                model: "llama-3.3-70b-versatile",
+            // 2. Call OpenRouter
+            console.log("🤖 Calling OpenRouter...");
+            const completion = await llm.chat.completions.create({
+                model: "openrouter/free",
                 temperature: 0.3,
                 max_tokens: 400,
                 messages: [
@@ -150,7 +150,15 @@ RULES:
 
         } catch (error) {
             console.error("❌ Error generating response:", error);
-            bot.sendMessage(chatId, "I'm currently undergoing maintenance. Please try again shortly.");
+            const isRateLimit =
+                error?.code === "rate_limit_exceeded" ||
+                error?.code === "insufficient_quota" ||
+                (error?.message && (String(error.message).includes("rate_limit") || String(error.message).includes("quota")));
+            const errorMsg = isRateLimit
+                ? "Sorry, I'm done for today. Heading for a break. Please come back a bit later."
+                : "I'm currently undergoing maintenance. Please try again shortly.";
+            const sendOptions = msg.message_thread_id ? { message_thread_id: msg.message_thread_id } : {};
+            bot.sendMessage(chatId, errorMsg, sendOptions);
         }
     });
 }

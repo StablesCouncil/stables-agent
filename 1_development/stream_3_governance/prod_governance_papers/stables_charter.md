@@ -1,48 +1,84 @@
-# THE CONSTITUTIONAL CHARTER OF THE STABLES COUNCIL
+# THE STABLES CHARTER
+## A Sovereign Banking Infrastructure Framework
 
 **Status:** Internal Draft — Under Council Review
-**Phase:** 1 — Constitutional Skeleton Drafted
+**Phase:** 1 — Foundational Charter Drafted
 **Issued by:** The Stables Council
+
+---
+
+## TABLE OF CONTENTS (Charter Structure)
+
+- [Preamble](stables_charter.md#preamble) — Sovereign Context, Structural Identity, and Transition Doctrine  
+- [Article I — Mission and Dual Destination](stables_charter.md#article-i--mission-and-dual-destination)  
+  - [I.1 Core Objective](stables_charter.md#i1-core-objective)  
+  - [I.2 Structural Identity](stables_charter.md#i2-structural-identity)  
+  - [I.3 Dual Destination Framework](stables_charter.md#i3-dual-destination-framework)  
+  - [I.4 Open Platform Doctrine](stables_charter.md#i4-open-platform-doctrine)  
+- [Article II — Monetary Core (Invariant Foundation)](stables_charter.md#article-ii--monetary-core-invariant-foundation)  
+  - [II.1 Minima-Only Base Collateral](stables_charter.md#ii1-minima-only-base-collateral)  
+  - [II.2 Solvency Invariant](stables_charter.md#ii2-solvency-invariant)  
+  - [II.3 Floating Redemption](stables_charter.md#ii3-floating-redemption)  
+  - [II.4 Deterministic Crisis Continuity](stables_charter.md#ii4-deterministic-crisis-continuity)  
+  - [II.5 Oracle Aggregation and Issuance Integrity](stables_charter.md#ii5-oracle-aggregation-and-issuance-integrity)  
+  - [II.6 No Forced Conversion](stables_charter.md#ii6-no-forced-conversion)  
+  - [II.7 Mechanical Identity of the Core](stables_charter.md#ii7-mechanical-identity-of-the-core)  
+  - [II.8 Three Structural Pillars of Soundness](stables_charter.md#ii8-three-structural-pillars-of-soundness)  
+- [Article III — Structural Layers and Modularity](stables_charter.md#article-iii--structural-layers-and-modularity)  
+- [Article IV — Merchant Activation Doctrine (Growth Architecture)](stables_charter.md#article-iv--merchant-activation-doctrine-growth-architecture)  
+- [Article V — Oracle Framework](stables_charter.md#article-v--oracle-framework)  
+- [Article VI — Transparency Doctrine](stables_charter.md#article-vi--transparency-doctrine)  
+- [Article VII — Governance Evolution (Code-First Structural Limitation)](stables_charter.md#article-vii--governance-evolution-code-first-structural-limitation)  
+- [Article VIII — On-Chain Anchoring](stables_charter.md#article-viii--on-chain-anchoring)  
+- [Article IX — Final Declaration](stables_charter.md#article-ix--final-declaration)  
+- [Annex A — Mathematical Annex](stables_charter.md#annex-a--mathematical-annex)  
+- [Annex B — Risk Review and Mitigation Framework](stables_charter.md#annex-b--risk-review-and-mitigation-framework)  
+- [Annex C — Governance Transition Roadmap](stables_charter.md#annex-c--governance-transition-roadmap)  
+- [Annex D — Anchoring Protocol Specification](stables_charter.md#annex-d--anchoring-protocol-specification)
 
 ---
 
 ## PREAMBLE
 ### Sovereign Context, Structural Identity, and Transition Doctrine
 
-Throughout history, human economic life has been built on exchange. Money, as an abstraction, has never existed independently — it has always been an intermediary asset, valued because a community agreed to use it for coordination. From shells to silver, from banknotes to ledgers, every monetary era has reflected the technology available and the trust structures of its time.
+**Section summary:** The Preamble traces money from human exchange to state money and then to sovereign digital infrastructure. It explains why coercive, jurisdiction-bound "king's money" can work yet remains structurally prone to abuse, why a medium of exchange should have independent value, why Minima can fill that role, and why Stables exists as the banking bridge between present liability systems and a Minima-native horizon.
 
-We stand at a boundary between two such eras.
+Human economic life begins with exchange. People trade because needs differ, abilities differ, and cooperation creates surplus. As communities grow, direct barter becomes insufficient; a common reference is needed so that value can move cleanly across time, distance, and specialisation. Money emerges as a shared medium of exchange chosen because it is scarce enough to matter, recognisable enough to trust, and practical enough to move.
 
-The current system organises monetary coordination through centralised intermediaries — banks, clearinghouses, regulated custodians — that hold assets on behalf of participants. Trust is delegated upward. Sovereignty is surrendered in exchange for convenience. Participation is enforced through legal tender laws, taxation requirements, and the implicit threat of state coercion. One does not choose one's currency — one is assigned it by jurisdiction.
+For much of history, these monetary media were assets with their own value: metals that did not rust, objects that did not decay, units whose usefulness as money did not depend on any decree. Gold is the clearest example. It carries little essential productive use relative to its monetary role, yet is durable, divisible, portable, and widely desired. Its value comes from persistent social consensus, not from an issuer's promise.
 
-**Stables rejects coercion as a foundation for monetary coordination.**
+Modern fiat currencies are different. They are **access coupons on the resources of a jurisdiction**. They work because the economic surface of a country — its land, labour, infrastructure, institutions — can be marshalled through law, taxation, and enforcement. Fiat money is "money of the king": it can function and even thrive inside a tightly governed territory with enforced borders, as long as the population continues to accept that coupon for taxes, debts, and everyday life. In that sense, fiat is not intrinsically flawed; it is backed by what the issuing community owns and protects.
 
-The next system restores monetary coordination to participants directly, through deterministic infrastructure — networks where no single entity holds custody, where code enforces rules, and where every participant validates truth independently. Participation is voluntary. Exit is unconditional. No one is punished for choosing not to participate.
+Yet this structure is **in tension with human nature and vulnerable to abuse**. The same apparatus that backs the currency also controls its issuance and defines who may access it. Coercion is built into the monetary core: participation is mandatory, capital controls and sanctions can restrict movement, and inflation can silently reallocate wealth without explicit consent. Such systems fit a world of closed economies and strict borders; they are poorly aligned with a human aspiration toward universal freedom of association, movement, and exchange.
 
-**Minima** is the sovereign base layer of a borderless digital nation. The Minima token is the native currency of that nation — a network where every participant runs a complete validating node, and no authority sits above the protocol.
+The next monetary layer restores coordination to participants directly. Instead of delegating trust to central intermediaries, individuals validate the rules themselves and settle directly with one another on a shared ledger. Participation becomes voluntary, exit unconditional, and value is no longer hostage to a single jurisdiction's power structure. A medium of exchange in this setting must, like gold, stand on its own: it must be scarce, neutral, and valuable because people choose it, not because they are compelled.
+
+**Minima** is the sovereign base layer of a borderless digital nation. The Minima token is the native unit of that nation — secured by a network in which every participant runs a complete validating node, and no authority sits above the protocol. Minima's value arises from its role as a censorship-resistant settlement asset, from the cost of producing and securing it, and from the collective decision of participants to use it as their shared monetary substrate.
 
 **Stables** is the monetary coordination layer built within that sovereign territory.
 
-It operates as a **sovereign banking infrastructure protocol**: a structured bridge between the liability systems of the present world — denominated in dollars, euros, and existing units of account — and the Minima-native economic future in which participants transact directly, in a currency they collectively validate and equally hold.
+It operates as a **sovereign banking infrastructure protocol**: a structured bridge between the liability systems of the present world — denominated in dollars, euros, and existing units of account — and the Minima-native economic future in which participants transact directly, in a currency they collectively validate and equally hold. This bridge is permanent in its function of interoperability, but transitional in its reliance on fiat-denominated units of account: as Minima adoption deepens, economic life can denominated directly in Minima while Stables continues to connect outward to other ecosystems.
 
-This bridge is not permanent by design. It exists because the transition from centralised to sovereign monetary coordination is gradual. The distribution of Minima must widen. Merchant adoption must deepen. Economic habits must shift. Until that transition completes, Stables provides the coordination layer that makes Minima economically usable *today* — through synthetic stable representations, merchant settlement, and deterministic solvency.
+The transition from centralised to sovereign monetary coordination is gradual. The distribution of Minima must widen. Merchant adoption must deepen. Economic habits must shift. Until that transition matures, Stables provides the coordination layer that makes Minima economically usable *today* — through synthetic stable representations, merchant settlement, and deterministic solvency.
 
 Each participant in the Stables system structurally represents their own bank through:
 
 - **Self-custody** — no third party holds user funds
 - **Deterministic execution** — monetary rules enforced by code, not discretion
-- **Transparent solvency** — the balance sheet is visible, verifiable, and continuous
+- **Transparent solvency** — the system ledger is visible, verifiable, and continuous
 - **Direct on-chain settlement** — transactions resolve on the sovereign base layer
 
-Access to money is a human right. Money should not require permission from a government, cost anything to hold, depend on infrastructure that can be cut off, or discriminate based on geography, identity, or wealth. Stables is built on this conviction.
+Access to money is a human right. Money should not require permission from a government, cost anything to hold, depend on infrastructure that can be cut off without recourse, or discriminate based on geography, identity, or wealth. Stables is built on this conviction.
 
 This Charter is issued as a foundational draft for community feedback and active contribution, prior to formal adoption by a diversified Council. It defines the invariant principles, structural boundaries, and governance architecture within which the Stables protocol shall operate.
 
-The horizon is a Minima-native economy in which Minima functions as a day-to-day currency used by the general public. Stables is the infrastructure that makes that horizon reachable.
+The horizon is a Minima-native economy in which Minima functions as a day-to-day currency used by the general public, with Stables serving both as the bridge to existing monetary systems and as the banking infrastructure of the Minima nation.
 
 ---
 
 ## ARTICLE I — Mission and Dual Destination
+
+**Section summary:** This Article defines why Stables exists, how it is structurally identified within the Minima nation, and which long-term destinations it pursues. It translates the philosophical framing of the Preamble into a concrete mission, a precise institutional identity, and a dual destination framework (infrastructure sovereignty first, economic sovereignty built upon it).
 
 ### I.1 Core Objective
 
@@ -52,13 +88,13 @@ The mission of the Stables Council is to enable individuals and merchants to be 
 2. **Mathematical solvency** — balance sheet health enforced by code, not promise
 3. **Deterministic monetary mechanics** — every operation follows transparent, predictable rules
 4. **Merchant-driven economic relevance** — real commerce anchors the system in material value
-5. **Progressive decentralisation** — authority transfers from founders to community through structural design
+5. **Progressive decentralisation** — authority is designed to migrate from founders to a diversified Council and broader community over time, according to a formal transition roadmap within the boundaries of the immutable monetary core
 
 ### I.2 Structural Identity
 
 Stables is:
 
-> A sovereign banking infrastructure protocol on Minima, with immutable monetary invariants governed by deterministic code, with a Council that stewards expansion and manages systemic risk within invariant boundaries, while acting as a bridge between current-world liabilities and Minima-native economic coordination.
+> A sovereign banking infrastructure protocol on Minima, with immutable monetary invariants governed by deterministic code, with a Council that stewards expansion and manages systemic risk within invariant boundaries, while acting as a bridge between current-world liabilities and Minima-native economic coordination across ecosystems.
 
 Stables is a mechanically continuous system. It does not suspend, pause, or switch regimes. It adjusts.
 
@@ -72,7 +108,7 @@ Full technical sovereignty is achieved through:
 
 - **Minima-native collateral** — the sole asset of the monetary core
 - **Integritas anchoring** — identity and document integrity verified on-chain
-- **On-chain transparency** — every balance sheet variable publicly observable
+- **On-chain transparency** — every core system variable (collateral, liabilities, coverage) publicly observable
 - **Node participation** — every user validates the network they depend on
 - **Code-first monetary logic** — no human intermediary in monetary operations
 - **Dedicated sovereign banking device** — hardware embedding a Minima node on chip, enabling offline-capable, tamper-resistant participation
@@ -82,7 +118,7 @@ Full technical sovereignty is achieved through:
 Full financial sovereignty is achieved through:
 
 - **Synthetic stable representations** — on-chain currencies pegged to real-world units of account
-- **Merchant settlement network** — direct payment acceptance without intermediaries
+- **Merchant settlement network** — direct payment acceptance without intermediaries, anchored in real-world goods and services
 - **Liability matching instruments** — tools to align obligations with holdings
 - **On-chain credit primitives** — credit scoring and history built from verifiable behaviour
 - **Lending infrastructure** — personal and commercial lending governed by smart contracts
@@ -163,9 +199,9 @@ The Stables Council shall not claim exclusive rights to build upon the infrastru
 
 ---
 
-## ARTICLE II — Monetary Constitution (Immutable Core)
+## ARTICLE II — Monetary Core (Invariant Foundation)
 
-The monetary core defines the invariant rules of the Stables system. These rules are not parameters to be governed. They are constitutional boundaries that no Council decision, community vote, or protocol upgrade shall override.
+The monetary core defines the invariant rules of the Stables system. These rules are not parameters to be governed. They are foundational boundaries that no Council decision, community vote, or protocol upgrade shall override.
 
 ### II.1 Minima-Only Base Collateral
 
@@ -231,6 +267,14 @@ There is no forced stable-to-xMinima conversion as a crisis trigger. The system 
 Stables is:
 
 > A floating collateralised synthetic monetary layer, anchored in Minima, driven by merchant adoption, stabilised through equity participation, governed by coded constraints, and fully transparent in operation — with deterministic solvency enforcement and distributed recapitalisation.
+
+### II.8 Three Structural Pillars of Soundness
+
+The durability of the Stables monetary structure rests on three independent pillars:
+
+1. **Minima Non-Zero Value** — Minima functions as a scarce, neutral settlement asset on a sovereign base layer. Its value does not rely on a single jurisdiction's coercive power but on the cost of securing the network and the collective decision of participants to use it as their monetary substrate.
+2. **xMinima Recapitalisation Layer** — Losses under stress are structurally assigned to committed capital providers in the junior recapitalisation layer (xMinima and related instruments), not to unsuspecting holders of the monetary unit. When stress increases, the architecture is designed so that new capital can enter at more attractive terms.
+3. **Merchant-Based Physical Arbitrage** — Real-world merchant acceptance at par, combined with transparent redemption and pricing, creates a physical arbitrage channel: stablecoins trading below par can be used to obtain goods and services at a discount, generating corrective demand. The peg is supported by actual commerce, not by opaque discretionary defence.
 
 ---
 
@@ -374,10 +418,10 @@ The Council is not a monetary operator. It does not manage the money supply, def
 
 | Phase | Name | Scope |
 |-------|------|-------|
-| **Phase I** | Foundational Council | Small founding team, full authority within invariant boundaries |
-| **Phase II** | Parameter Governance | Formal framework for adjustable parameters, community input channels |
-| **Phase III** | Token-holder Participation | Governance weight determined by stake and time commitment |
-| **Phase IV** | Open Council Stewardship | Fully diversified Council, founding team holds zero control |
+| **Phase I** | Foundational Council | Small founding team, full authority within invariant boundaries. Launch of **StablesAgent** as the primary autonomous interface for community support and knowledge distribution. |
+| **Phase II** | Parameter Governance | Formal framework for adjustable parameters, community input channels. Agent scales to multiple platforms. |
+| **Phase III** | Token-holder Participation | Governance weight determined by stake and time commitment. Agent facilitates on-chain voting interpretation. |
+| **Phase IV** | Open Council Stewardship | Fully diversified Council, founding team holds zero control. Agent operates as the neutral "Voice of the Council." |
 
 Authority becomes procedural and distributed. The founding team's role diminishes by structural design, not voluntary goodwill.
 
@@ -406,7 +450,7 @@ The anchoring protocol shall define:
 
 ### VIII.3 Versioning Discipline
 
-Constitutional amendments, once the Charter is anchored, shall follow a versioning discipline that preserves the complete history of the document. Previous versions remain verifiable on-chain. The anchoring protocol shall specify the process for constitutional amendment, which shall require supermajority Council approval and a mandatory deliberation period.
+Charter amendments, once the Charter is anchored, shall follow a versioning discipline that preserves the complete history of the document. Previous versions remain verifiable on-chain. The anchoring protocol shall specify the process for charter amendment, which shall require supermajority Council approval and a mandatory deliberation period.
 
 ---
 

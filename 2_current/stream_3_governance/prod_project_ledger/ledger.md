@@ -17,5 +17,6 @@
 | **010** | 2026-03-03 | `1_development/stream_3_governance/task_admin/` | [ADD] | task_admin folder created with gitignore — sensitive CSVs excluded from git. | `bba8c16` |
 | **011** | 2026-03-03 | `1_development/stream_2_community/prod_capital_flows_infographic/index.html` | [UPDATE] | Capital flows infographic (horizontal) — encoding fix, Stablecoins/People nodes, fee-tag, sovereignty copy, exit labels. | `b3f9b8b` |
 | **012** | 2026-03-03 | `1_development/stream_2_community/prod_capital_flows_infographic/index_vertical.html` | [ADD] | Capital flows infographic v2 — vertical layout, circular Step 03, Full Custody badges, fee-flow annotation. Iterative refinements through `c4a28b3`. | `24dd211` |
-| **014** | 2026-03-05 19:15 | `*` | [PURGE] | GLOBAL PURGE of "Stablesworks". Renamed to **Stables**. Corrected 50+ files (app, specs, tools). | `a4f1e2d` |
+| **015** | 2026-03-12 20:25 | `0_handshake/`, `1_development/stream_3_governance/` | [ANCHOR] | Formally anchored "Drafting Stables Constitution" session consensus (Transition Stage 3, xMinima Equity, Deterministic Mechanics) into Master Reference and Working Notes. | `c6d8e1f` |
+| **016** | 2026-03-11 | `1_development/stream_3_governance/task_x_agent_node/web_chat.html` | [FIX] | Knowledge base link: added visible fallback URL, simplified copy fallback ("Right-click the link below to copy"), deployed to agent.stablescouncil.org and StablesCouncil/stables-agent. | `9d4767e` |
 

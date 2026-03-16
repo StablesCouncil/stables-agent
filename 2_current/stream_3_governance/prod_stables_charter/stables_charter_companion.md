@@ -1,4 +1,4 @@
-# STABLES COUNCIL — Constitutional Phase Companion Document
+# THE STABLES CHARTER COMPANIONL — Constitutional Phase Companion Document
 
 **Status:** Internal Working Document
 **Scope:** Constitutional Draft Phase (Structure + Foundational Decisions)
@@ -11,11 +11,11 @@
 
 We are drafting the **Constitutional Charter of the Stables Council** as a foundational draft for community deliberation.
 
-This is **not** the final constitution.
+This is **not** the final Charter.
 
 This phase produces:
 
-1. A frozen constitutional skeleton (Table of Contents + positioning + article boundaries)
+1. A frozen Charter skeleton (Table of Contents + positioning + article boundaries)
 2. A first full draft written article-by-article in institutional tone
 3. Annexes (mathematical, risk, governance transition, anchoring protocol)
 4. A final version that can be anchored on-chain once adopted by a diversified Council
@@ -24,7 +24,7 @@ We intentionally lock the skeleton first to avoid rewriting foundations later.
 
 ---
 
-## 1. The Constitutional Posture
+## 1. The Charter Posture
 
 ### 1.1 Sovereign Context
 
@@ -32,13 +32,13 @@ We intentionally lock the skeleton first to avoid rewriting foundations later.
 - Minima token is the native currency of that nation
 
 ### 1.2 Stables Structural Identity
-
+# The Stables Charter: Sovereign Banking Framework
 Stables is positioned as:
 
 - The monetary coordination layer built within Minima's sovereign territory
 - A sovereign banking infrastructure protocol built on Minima standards
 
-Stables is **not** framed as a replacement of Minima. The constitution avoids any posture that would imply token-layer supremacy.
+Stables is **not** framed as a replacement of Minima. The Charter avoids any posture that would imply token-layer supremacy.
 
 ### 1.3 Transition Doctrine
 

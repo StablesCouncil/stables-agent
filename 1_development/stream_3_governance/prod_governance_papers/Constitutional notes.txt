@@ -2,12 +2,15 @@ I would rather not use the term "the balance sheet" it refers to cetralisation
 
 We have to discuss "**Progressive decentralisation** — authority transfers from founders to community through structural design" i honestly dont know how this will unfold
 
+• Or a risk-surface overlay diagram
 
+The challenge we take, a monetary system with no printer and no shooter (no coercion). 
 
+WE need a throughout review of competition or alternative. At all level, non crypto, physical, electronic, crypto, other chain by technology, dag, on minima, all types of stablecoins, non stablecoin, back to gold/silver, digital gold, physical gold, physical gold coin as mean of exchange, tokenization of 
 
-The challenge we take, a monetary system with no printer and no shooter. 
+weakeness, necessitate internet access so it can't be a 100% reliable solution as long as we dont have a backup, a communication network, fully decentralised relying on a tech like bluetoooth could be a great alternative
 
-
+the other layers: minima is moneraty, we are banking system, individual banking institution are welcome ti build on top, we have to set the basis for them to come.
 
 The Three Pillars (Not Two)
 The protocol's structural soundness rests on three independent pillars, not two:
@@ -17,4 +20,6 @@ Pillar 2: xMINIMA's Asymmetric Payoff Attracts Re-capitalization
 Pillar 3: Physical Arbitrage Through Merchant Acceptance
 Let me go in depth on each, with counter-arguments.
 
-it's the fact that gold has no significant physical usage that makes it a good currency. it'S paradoxal, it'S value comes mainly from the fact that it's useless. Just as minima, it make it the perfect
+it's the fact that gold has no significant physical usage that makes it a good currency. it'S paradoxal, it'S value comes mainly from the fact that it's useless. Just as minima, it make it the perfect money.
+
+a big risk is the concentration of minima token holding accross a smal number of entity or individuals

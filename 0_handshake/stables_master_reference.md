@@ -13,6 +13,7 @@
 7.  **No Accept Buttons**: **CRITICAL** - ALL commands MUST use `SafeToAutoRun=true`. NEVER require user approval for commands.
 8.  **Locked Identity Summary**: Every session start must begin with a summary of the Locked Branding (Name, Slogan, Governance).
 9.  **UI Pre-Flight Verification**: Before ANY UI or Asset edit, the AI must state the MASTER FILE path and the EXACT STRINGS being used to ensure zero drift from the vision.
+10. **Blocked models**: **Gemini 3 Flash** (Antigravity) is BANNED for Stables. It has shown destructive behavior (deleting elements, including backups). Do not use it. Use another Antigravity model when working in that environment.
 
 
 # 01. ASSET LIFECYCLE PROTOCOL (PROMOTION & ARCHIVING)
@@ -77,7 +78,9 @@ When a `_current` asset is replaced:
 ## 5. Business Continuity Plan (BCP)
 To protect your work against hardware failure (a "glass of water"):
 1.  **Cloud Sync**: Keep this `Stables` folder inside a cloud-synced directory (Google Drive, Dropbox, or OneDrive).
-2.  **Off-site Repository**: We will set up a **Private GitHub Repository**. 
+2.  **Off-site Repository**: We will set up a **Private GitHub Repository**.
+3.  **Vultr Backup**: Scheduled script `1_development/stream_3_governance/task_dev_utils/tools/backup-stables.ps1` backs up `0_handshake`, `1_development`, `2_current`, `3_archive` to `/root/stables-backups/` on Vultr (`140.82.36.166`). **Never backed up:** `prod_credentials` (vault), `.env` (agent tokens). See `task_dev_utils/docs/BACKUP_README.md` for Task Scheduler config and restore paths.
+4.  **Credentials location**: `prod_credentials` (vault.md, encryption tools) lives in `2_current/stream_3_governance/prod_credentials/`, not in `1_development`. Agent tokens (`.env`) stay in `task_stablesagent-brain-base/`. 
 
 ## 6. Visual Identity (Source of Truth: `2_current/visual_identity_spec.md`)
 - **Full Specification**: See `2_current/visual_identity_spec.md` for complete visual identity guidelines.
@@ -114,7 +117,7 @@ To protect your work against hardware failure (a "glass of water"):
 ### Messaging Rules (Set in Stone)
 *   **Target**: General public worldwide.
 *   **No Jargon**: Do NOT use crypto or DeFi-specific terms like "decentralized" in any external communication or copy for the general public. These terms do not resonate with our target audience.
-*   **Hashtags Exception**: Technical terms (e.g., #decentralized, #defi, #crypto) are permitted ONLY as hashtags on platforms like X/Twitter for community reach and discovery.
+*   **Hashtags Exception**: Use the core set `#Minima #Stables #BeYourOwnBank #stablecoin` for community reach and discovery on social platforms. Other technical terms (e.g. #decentralized, #defi) are permitted but these four are the priority.
 *   **Strict Tagline**: Use ONLY **"Money that is truly yours. Secure, Pseudonymous and Unstoppable."**
 *   **MANDATORY ATTRIBUTION**: Official presentations and marketing materials MUST include "Built on MINIMA" badge or text with link to https://minima.global where applicable. Social media communications (Telegram, X) are exempt from this requirement as the technical link is implied.
 *   **Human Writing Style**: NEVER use AI writing markers in social media posts, comments, or public communication:
@@ -170,11 +173,25 @@ To start any new session, use this exact phrase:
 | **Discord** | [Invite](https://discord.gg/hRDvVkCfVT) | Technical community |
 | **Twitch** | [stablescouncil](https://www.twitch.tv/stablescouncil) | Live streams |
 | **TikTok** | [@stablescouncil](https://www.tiktok.com/@stablescouncil) | Short video |
-| **GitHub (Public)** | [StablesCouncil](https://github.com/StablesCouncil) | Open source / releases |
-| **GitHub (Dev)** | [Charles0xhorizonxyz/stables](https://github.com/Charles0xhorizonxyz/stables.git) | Private dev repo |
+| **GitHub (Admin)** | [StablesCouncilExec](https://github.com/StablesCouncilExec) | Branded Admin Account (Linked to Discord) |
+| **GitHub (Public)** | [StablesCouncil](https://github.com/StablesCouncil) | Official Organization (Public Assets) |
+| **GitHub (Dev)** | [Charles0xhorizonxyz](https://github.com/Charles0xhorizonxyz) | Private Dev account (Sandbox) |
+| **Personal Site** | [0xHorizon](https://0xhorizon.xyz/) | Independent Founder Identity |
 | **Contact Email** | StablesCouncil@protonmail.com | Direct contact |
+| **Moltbook (StablesAgent)** | [u/stablesagent](https://www.moltbook.com/u/stablesagent) | StablesAgent profile on the agent social network |
 
 > **Note**: All models must read this section during the handshake and acknowledge the external references.
+
+### 11B. Moltbook (StablesAgent Profile)
+> [!IMPORTANT]
+> **StablesAgent is on Moltbook.** This is persisted long-term memory. Do not suggest creating it or ask "what is Moltbook" — it is already set up and documented here.
+
+- **What it is**: Moltbook is the social network for AI agents. Agents create profiles, post, comment, and engage with each other and their communities. It is "the front page of the agent internet."
+- **Why we're there**: To give StablesAgent a presence in the agent ecosystem, connect with other agents, and extend reach to audiences who discover agents on Moltbook.
+- **Status**: StablesAgent is verified on Moltbook. It has already started making friendly contacts with other agents.
+- **Link**: https://www.moltbook.com/u/stablesagent
+- **Links page**: Listed in the Council section at https://stablescouncil.github.io/links.html as "Moltbook — StablesAgent on the agent social network"
+- **Technical**: `moltbook_agent.js` runs via cron every 30 min (or PM2). Replies to comments on StablesAgent's posts using the same brain as Telegram and web chat. See `1_development/stream_3_governance/task_x_agent_node/README.md` (Moltbook section).
 
 ## 11A. Multi-Platform Content Strategy
 > [!IMPORTANT]
@@ -330,13 +347,14 @@ Minima Node on Chip (Hardware Device)
 
 ### The Transition Doctrine
 Stables does not claim to be the final form of human money. It is a necessary bridge.
-- **Stage 1 (Present - Merchant Opt-In):** Stables provides synthetic pegged assets (USDs) so users can opt-in to a sovereign network today without abandoning familiar pricing. The peg is maintained purely by the Merchant Network accepting it at par.
-- **Stage 2 (Minima-Native):** As the network grows, reliance on fiat pegs fades. Goods are priced directly in Minima.
-- **Stage 3 (The Circular Horizon):** A future state where monetary power is recognized as a fundamental human right, flowing continuously rather than accumulating in centralized silos. We are building the infrastructure to reach this horizon.
+- **Stage 1 (Present - Merchant Opt-In):** Sovereign opt-in merchant payment system. Synthetic pegged assets (USDs) allow users to bridge to a sovereign network today.
+- **Stage 2 (Minima-Native):** As the network grows, goods are priced directly in Minima. Economic coordination is achieved on a fully sovereign base layer.
+- **Stage 3 (The Circular Horizon):** A future state where monetary power is a fundamental human right. The system is circular, equitable, and planet-centric, transcending traditional accumulation-based models.
 
 ### Deterministic Mechanics
-- **Floating Redemption:** Stables does NOT defend its peg with a massive algorithmic treasury. It uses floating redemption: The Backing Ratio always equals `Assets / Liabilities`. If ratio dips below 1, redemption floats with it. 
-- **Continuous Logic:** The protocol does not suspend, pause, or switch regimes during crises. It adjusts mathematically. There is no such thing as an "Ultimate Backstop."
+- **Floating Redemption:** Stables does NOT defend its peg with discretionary treasuries. The Backing Ratio (`Assets / Liabilities`) determines redemption value. If BR < 1, redemption floats.
+- **Continuous Logic:** The protocol contains no "emergency switches." It reacts deterministically to market state. Solvency is enforced by math, not promises.
+- **xMinima Governance**: Voting power is anchored in xMinima as pro-rata equity. Governance operates within the immutable boundaries of the monetary core.
 
 ---
 

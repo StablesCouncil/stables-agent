@@ -24,3 +24,5 @@ This file is the single source of truth for all official Stables Council account
 
 ## Automated Agents
 *   **Telegram Bot:** [@StablesAgentBot](https://t.me/StablesAgentBot) (Official AI Assistant)
+*   **Web Chat:** [agent.stablescouncil.org](https://agent.stablescouncil.org/chat) (StablesAgent on all main pages)
+*   **Moltbook:** [u/stablesagent](https://www.moltbook.com/u/stablesagent) (StablesAgent profile on the agent social network)

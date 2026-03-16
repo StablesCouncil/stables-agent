@@ -138,8 +138,25 @@ We have to make it open so that people will be able to build their applications 
 
 ---
 
-## Threat Assessment Notes
+---
 
-*(Note: Incorporated into Article VII.5 and Annex B risk categories.)*
+## Session Consensus: Drafting the Stables Constitution (2026-03-08)
 
-Big holders of Minima are a potential threat. The Minima team itself represents a concentration risk vector that must be addressed in the governance and risk framework.
+### 1. The Circular Horizon (Stage 3)
+The "Transition Doctrine" was refined to include **Stage 3: The Circular Horizon**. 
+- **Definition**: A state where monetary power is a fundamental human right, flowing continuously like the water cycle.
+- **Equality**: Structural mechanisms must ensure that participation does not favor early adopters or capital concentration over time.
+- **Planet-Centric**: Economic coordination must operate within the ecological limits of the living systems.
+
+### 2. xMinima: Equity and Voting Power
+Clarified the role of xMinima in the governance landscape.
+- **Pro-Rata Equity**: xMinima represents leveraged equity. Its voting power is structurally tied to its role as the risk-absorbing layer.
+- **Incentive Alignment**: xMinima holders are aligned with the long-term solvency of the protocol, as they benefit from surplus but absorb first loss (via CR dynamics).
+
+### 3. Structural Determinism
+Reinforced the preference for **Deterministic Mechanics** over discretionary governance.
+- **Regime Continuity**: The protocol does not "switch" to a crisis mode; it adjusts its parameters (redemption, minting) continuously based on the Coverage Ratio.
+- **Oracle Trust**: Gating issuance during oracle failures is an integrity protection, not a peg defense.
+
+### 4. Anchoring the "Living Brain"
+The `0_handshake/stables_master_reference.md` serves as the primary memory anchor to prevent AI session amnesia. Any high-level philosophical or architectural consensus must be moved there immediately to lock it into the AI's "Handshake" state.

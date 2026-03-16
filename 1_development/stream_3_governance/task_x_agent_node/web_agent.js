@@ -8,15 +8,15 @@ const OpenAI = require("openai");
 const DB_FILE = path.join(__dirname, "vector_db.json");
 const CSV_FILE = path.join(__dirname, "interaction_logs_web.csv");
 
-const groqApiKey = process.env.GROQ_API_KEY;
-if (!groqApiKey) {
-    console.error("ERROR: GROQ_API_KEY is not set in .env.");
+const openRouterKey = process.env.OPENROUTER_API_KEY;
+if (!openRouterKey) {
+    console.error("ERROR: OPENROUTER_API_KEY is not set in .env.");
     process.exit(1);
 }
 
-const groq = new OpenAI({
-    apiKey: groqApiKey,
-    baseURL: "https://api.groq.com/openai/v1",
+const llm = new OpenAI({
+    apiKey: openRouterKey,
+    baseURL: "https://openrouter.ai/api/v1",
 });
 
 async function initXenova() {
@@ -55,12 +55,12 @@ async function startWebAgent() {
     console.log("=========================================");
     console.log("🖥️  STABLES WEB AGENT STARTING");
     console.log("=========================================");
-    console.log("Initializing local Brain (Xenova embeddings + Groq API)...");
+    console.log("Initializing local Brain (Xenova embeddings + OpenRouter)...");
 
     const embeddings = await initXenova();
     const vectorStore = await loadVectorStore(embeddings);
 
-    console.log("✅ Brain Loaded! Groq API active.");
+    console.log("✅ Brain Loaded! OpenRouter API active.");
     console.log("🌐 Ready for browser chat sessions.");
 
     const PORT     = process.env.WEB_AGENT_PORT || 8080;
@@ -133,9 +133,9 @@ async function startWebAgent() {
                         context += `\n[Context ${i + 1}]: ${resDoc.pageContent}\n`;
                     });
 
-                    console.log("🤖 Calling Groq API...");
-                    const completion = await groq.chat.completions.create({
-                        model: "llama-3.3-70b-versatile",
+                    console.log("🤖 Calling OpenRouter...");
+                    const completion = await llm.chat.completions.create({
+                        model: "openrouter/free",
                         temperature: 0.3,
                         max_tokens: 400,
                         messages: [
@@ -145,6 +145,7 @@ async function startWebAgent() {
 RULES:
 - Answer ONLY using the context provided. Do not invent information.
 - Answer in the EXACT SAME LANGUAGE as the user's question.
+- When writing in French, always use proper accents and diacritics (é, è, ê, à, â, ù, ô, û, î, ï, ü, ç, etc.). Never use ASCII-only spellings (e.g. write "élément" not "element", "écosystème" not "ecosysteme").
 - Do NOT greet the user. Jump straight into the answer.
 - Do NOT use the word "doctrine".
 - Do NOT use emojis, bullet points, or em-dashes.
@@ -178,8 +179,15 @@ RULES:
                     return res.end(JSON.stringify({ reply: replyText }));
                 } catch (err) {
                     console.error("❌ Error in /api/chat:", err);
-                    res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
-                    return res.end(JSON.stringify({ error: "Internal error. Please try again shortly." }));
+                    const isRateLimit =
+                        err?.code === "rate_limit_exceeded" ||
+                        err?.code === "insufficient_quota" ||
+                        (err?.message && (String(err.message).includes("rate_limit") || String(err.message).includes("quota")));
+                    const replyMsg = isRateLimit
+                        ? "Sorry, I'm done for today. Heading for a break. Please come back a bit later."
+                        : "I'm currently undergoing maintenance. Please try again shortly.";
+                    res.writeHead(isRateLimit ? 200 : 500, { "Content-Type": "application/json; charset=utf-8" });
+                    return res.end(JSON.stringify({ reply: replyMsg }));
                 }
             });
 

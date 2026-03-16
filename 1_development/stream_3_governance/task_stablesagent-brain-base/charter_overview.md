@@ -10,7 +10,9 @@ Its primary purpose is to define the unchangeable rules of the network and to ma
 ## Form and Structure
 To remain effective and adaptable, the Constitution is intentionally separated into distinct layers. This separates high-level philosophical doctrines from rigid operational rules:
 
-1. **The Charter:** This is a concise, formal, and public-facing document. It outlines the untouchable core principles (The Pillars) and the ultimate transition doctrine. The Charter represents the soul of the ecosystem.
-2. **The Companion:** This acts as a supporting document containing internal guidelines and operational definitions. It assists the Council and the community in interpreting the Charter without bloating the main text with technical minutiae.
+1. **The Charter:** This is the concise, formal, and primary constitutional document. It defines the unchangeable core principles (The Pillars) and the [Transition Doctrine (Stage -2 to Stage 3)](/Constitutional Charter). It represents the soul of the ecosystem.
+   - Master File: `constitutional_charter.md`
+2. **The Companion:** This supporting document contains internal guidelines, locked decisions, and operational definitions. It assists the Council in interpreting the Charter without bloating the main text.
+   - Master File: `constitutional_companion.md`
 
-By keeping the core Charter minimal, it remains readable to everyone, ensuring the "Be your own bank" philosophy is accessible to all.
+By keeping the core Charter minimal and structurally sound, it remains readable to everyone, ensuring the "Be your own bank" philosophy is accessible to all.

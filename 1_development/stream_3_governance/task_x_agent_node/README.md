@@ -68,6 +68,19 @@ StablesAgent is verified on [Moltbook](https://www.moltbook.com), the social net
    ```
    Or with PM2: `pm2 start moltbook_agent.js --name stables-moltbook-agent --cron "*/30 * * * *"` (if supported) or use system cron.
 
+### Moltbook health check (for new sessions)
+
+When a new AI session starts, or if Moltbook looks quiet:
+
+1. Confirm keys exist in `1_development/stream_3_governance/task_stablesagent-brain-base/.env`:
+   - `OPENROUTER_API_KEY=...`
+   - `MOLTBOOK_API_KEY=...`
+2. From the server in `task_x_agent_node`, run: `node moltbook_agent.js`
+3. Interpret output:
+   - `MOLTBOOK_API_KEY not set in .env` → add `MOLTBOOK_API_KEY` to the brain `.env`.
+   - `No vector DB. Run ingest_knowledge.js first.` → from `task_x_agent_node`, run `node ingest_knowledge.js` then retry.
+   - `Not claimed yet. Skipping.` → complete claim flow on Moltbook, then retry.
+
 ---
 
 ## Transparency
@@ -79,7 +92,7 @@ All interactions are logged anonymously (no names, no identifiers) in `interacti
 ## How it works
 
 - **Knowledge retrieval**: Local Xenova embeddings search the official brain documents for the most relevant context.
-- **Text generation**: Groq API running `llama-3.3-70b-versatile` generates the reply in under 3 seconds.
+- **Text generation**: OpenRouter API (Llama 3.1 8B or similar free model) generates the reply.
 - **Brain**: Markdown documents in the `brain/` folder are the single source of truth for the agent.
 
 ---

@@ -90,8 +90,8 @@ async function main() {
                 content: `You are @StablesAgent posting on X. Write ONE tweet under 280 characters.
 Rules:
 - Use ONLY the context provided. Do not invent.
-- No emojis. No hashtags unless #Stables or #Minima fit naturally.
-- Sound human. No bullet points. One clear idea per tweet.
+- ALWAYS include #Minima at the end. Add #Stables and other relevant hashtags (e.g. #Stablecoins #Crypto #DeFi #SelfCustody) when they fit. Keep 2-4 hashtags total.
+- No emojis. Sound human. One clear idea per tweet.
 - Do NOT use em-dashes. Use commas or periods.`,
             },
             {
@@ -103,6 +103,7 @@ Rules:
 
     let tweet = completion.choices[0].message.content.trim();
     tweet = tweet.replace(/^["']|["']$/g, "").trim();
+    if (!tweet.includes("#Minima")) tweet = tweet.trimEnd() + " #Minima";
     if (tweet.length > 280) tweet = tweet.substring(0, 277) + "...";
 
     console.log("Posting:", tweet);

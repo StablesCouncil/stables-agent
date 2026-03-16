@@ -67,6 +67,7 @@
 |------|----------|---------|
 | `telegram_agent.js` | `1_development/stream_3_governance/task_x_agent_node/` | Telegram bot logic. |
 | `web_agent.js` | `1_development/stream_3_governance/task_x_agent_node/` | Web chat HTTP server. |
+| `moltbook_agent.js` | `1_development/stream_3_governance/task_x_agent_node/` | Moltbook heartbeat: posts, replies to comments. StablesAgent at https://www.moltbook.com/u/stablesagent |
 | `web_chat.html` | `1_development/stream_3_governance/task_x_agent_node/` | Browser chat console UI. |
 | `ingest_knowledge.js` | `1_development/stream_3_governance/task_x_agent_node/` | Rebuilds vector_db.json from brain markdowns. |
 | `stables.css` | `1_development/stream_3_governance/task_x_agent_node/` | Shared CSS. Always deploy alongside HTML files. |
@@ -88,7 +89,7 @@
 
 | File | Location | Purpose |
 |------|----------|---------|
-| `vault.md` | `1_development/stream_3_governance/prod_credentials/` | All project accounts, tokens, server access. |
+| `vault.md` | `2_current/stream_3_governance/prod_credentials/` | All project accounts, tokens, server access. |
 | `ledger.md` | `2_current/stream_3_governance/prod_project_ledger/` | Every change must be logged here with a Point ID after commit. |
 
 ---
@@ -122,6 +123,7 @@
 | Work on the public presentation | 0 + 1 + 7 |
 | Commit and log a change | 0 + 8 |
 | Deploy to Vultr server | 0 + 5 + 8 |
+| Configure or run backup to Vultr | 0 + 8, then `task_dev_utils/docs/BACKUP_README.md` |
 
 ---
 

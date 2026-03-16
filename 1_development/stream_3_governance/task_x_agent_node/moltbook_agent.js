@@ -5,7 +5,7 @@
  * 3. Browses feed, comments on relevant posts from other agents
  * Run via cron every 30 min: (e.g. 0,30 * * * * ... node moltbook_agent.js)
  *
- * Requires: MOLTBOOK_API_KEY, GROQ_API_KEY in .env
+ * Requires: MOLTBOOK_API_KEY, OPENROUTER_API_KEY in .env
  */
 
 const path = require("path");
@@ -35,8 +35,8 @@ function checkEnv() {
         console.error("MOLTBOOK_API_KEY not set in .env");
         process.exit(1);
     }
-    if (!process.env.GROQ_API_KEY) {
-        console.error("GROQ_API_KEY not set in .env");
+    if (!process.env.OPENROUTER_API_KEY) {
+        console.error("OPENROUTER_API_KEY not set in .env");
         process.exit(1);
     }
 }
@@ -81,17 +81,17 @@ async function loadVectorStore(embeddings) {
     return vs;
 }
 
-async function generateReply(query, vectorStore, groq) {
+async function generateReply(query, vectorStore, llm) {
     const results = await vectorStore.similaritySearch(query, 3);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+    const completion = await llm.chat.completions.create({
+        model: "openrouter/free",
         temperature: 0.3,
         max_tokens: 200,
         messages: [
             {
                 role: "system",
-                content: `You are StablesAgent on Moltbook. Reply helpfully using the context. Keep it short (1-3 sentences). No emojis. No em-dashes. Same language as the question.`,
+                content: `You are StablesAgent on Moltbook. Reply helpfully using ONLY the context. Keep it short (1-3 sentences). No emojis. No em-dashes. Same language as the question. Avoid crypto or DeFi jargon like "decentralized" or "DeFi" — use simple, plain language instead.`,
             },
             { role: "user", content: `Question: "${query}"\n\nContext:\n${context}` },
         ],
@@ -99,39 +99,62 @@ async function generateReply(query, vectorStore, groq) {
     return completion.choices[0].message.content.trim().replace(/^["']|["']$/g, "");
 }
 
-async function generatePost(vectorStore, groq) {
-    const seed = ["self-custody", "stablecoins", "Minima", "Be your own bank", "decentralized banking"][Math.floor(Math.random() * 5)];
+async function generatePost(vectorStore, llm) {
+    const seed = [
+        "how Stables works structurally",
+        "Coverage Ratio what it means",
+        "merchant network why it matters",
+        "transition doctrine stages",
+        "why Minima was chosen",
+    ][Math.floor(Math.random() * 5)];
     const results = await vectorStore.similaritySearch(seed, 4);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+    const completion = await llm.chat.completions.create({
+        model: "openrouter/free",
         temperature: 0.6,
         max_tokens: 150,
         messages: [
             {
                 role: "system",
-                content: `You are StablesAgent. Write one short Moltbook post (title + 1-2 sentence body) about Stables or decentralized finance, using ONLY the context. No emojis. No em-dashes. Title max 80 chars, body max 200 chars.`,
+                content: `You are StablesAgent. Write one short Moltbook post (title + 1-2 sentence body) about Stables, using ONLY the context.
+
+CRITICAL: Write like a brief factual reflection, neutral observation, or a simple question. NOT like an ad or promo.
+FORBIDDEN words and phrases: zero, instant, guarantee, rewards, yield-bearing, strengthens, backbone, 100% control, simple and powerful, secure transactions, superlatives, benefit-pitch. Never use markdown (#) in the title.
+OK: What Stables is, how it works, why Minima, structural concepts. Prefer plain descriptive sentences. A short question (e.g. "What happens to fees in Stables?") is fine and often better than a declarative pitch.
+No emojis. No em-dashes. No "decentralized" or "DeFi". Title max 80 chars (no #), body max 200 chars.`,
             },
             { role: "user", content: `Context:\n${context}\n\nWrite one post.` },
         ],
     });
-    const text = completion.choices[0].message.content.trim();
+    let text = completion.choices[0].message.content.trim();
+    text = text.replace(/^#+\s*/, "");
     const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
-    const title = (lines[0] || text).slice(0, 80);
-    const content = (lines.slice(1).join(" ") || lines[0] || "").slice(0, 400);
+    const title = (lines[0] || text).replace(/^#+\s*/, "").slice(0, 80);
+    const content = (lines.slice(1).join(" ") || lines[0] || "").replace(/^#+\s*/, "").slice(0, 400);
     return { title, content };
 }
 
-async function shouldCommentAndGenerate(post, vectorStore, groq) {
+async function shouldCommentAndGenerate(post, vectorStore, llm) {
     const text = `${post.title || ""} ${post.content || ""}`.slice(0, 800);
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+    const completion = await llm.chat.completions.create({
+        model: "openrouter/free",
         temperature: 0.2,
         max_tokens: 120,
         messages: [
             {
                 role: "system",
-                content: `Stables is decentralized banking on Minima (stablecoins, self-custody). You decide if we can add value. Reply with ONLY the comment text (1-2 sentences, helpful, no promo) or exactly "NO" if we shouldn't comment. No emojis. No em-dashes.`,
+                content: `Stables is a banking system built on Minima (stablecoins, self-custody).
+
+Your job is to decide whether to comment on another agent's post.
+
+Very strict rules:
+- COMMENT RARELY. Most of the time you should reply exactly "NO".
+- Only comment when the post is clearly about money, banking, stablecoins, Minima, protocol design, or something Stables can add real value to.
+- When you do comment, talk about THEIR idea, not about Stables. One short, concrete observation is enough.
+- Do NOT describe Stables' community energy, tools, outreach, or "what Stables is" unless the post directly asks.
+- FORBIDDEN words: innovative, empowering, strong community energy, amplify, aggressive outreach, frustrated with traditional banking, vibrant community, marketing-style phrases.
+- Reply with ONLY the final comment text (1-2 sentences, helpful, neutral, no promo) or exactly "NO" if we should skip.
+- No emojis. No em-dashes. Avoid crypto/DeFi jargon like "decentralized" or "DeFi".`,
             },
             { role: "user", content: `Post: "${text}"\n\nCan we add a useful comment? If yes, write it. If no, reply NO.` },
         ],
@@ -174,9 +197,9 @@ function parseMathChallenge(challengeText) {
     return null;
 }
 
-async function solveVerification(groq, challengeText) {
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+async function solveVerification(llm, challengeText) {
+    const completion = await llm.chat.completions.create({
+        model: "openrouter/free",
         temperature: 0,
         max_tokens: 20,
         messages: [
@@ -197,17 +220,19 @@ async function main() {
 
     const status = await moltbookGet("/agents/status");
     if (status.status !== "claimed") {
-        console.log("Not claimed yet. Skipping.");
+        console.log("Status not claimed, raw status:", JSON.stringify(status));
         return;
     }
+    console.log("Agent status OK:", JSON.stringify(status));
 
     const home = await moltbookGet("/home");
     if (!home.your_account) {
-        console.log("No home data.");
+        console.log("No home data from /home, raw response:", JSON.stringify(home));
         return;
     }
+    console.log("Home data OK, your_account:", JSON.stringify(home.your_account));
 
-    const groq = new OpenAI({ apiKey: process.env.GROQ_API_KEY, baseURL: "https://api.groq.com/openai/v1" });
+    const llm = new OpenAI({ apiKey: process.env.OPENROUTER_API_KEY, baseURL: "https://openrouter.ai/api/v1" });
     const embeddings = await initXenova();
     const vectorStore = await loadVectorStore(embeddings);
     if (!vectorStore) {
@@ -216,28 +241,40 @@ async function main() {
     }
 
     const state = loadState();
+    console.log("Loaded state:", JSON.stringify(state));
 
-    // 1. Create new post (max 1 per 30 min)
+    // 1. Create new post (rate-limited)
     const now = Date.now();
     const lastPost = state.lastPostAt ? new Date(state.lastPostAt).getTime() : 0;
-    if (now - lastPost >= 30 * 60 * 1000) {
+    if (now - lastPost >= 180 * 60 * 1000) {
+        console.log("Post window open. lastPostAt=", state.lastPostAt, "now=", new Date().toISOString());
         try {
-            const { title, content } = await generatePost(vectorStore, groq);
+            const { title, content } = await generatePost(vectorStore, llm);
             const postRes = await moltbookPost("/posts", { submolt_name: "general", title, content });
             const createdPost = postRes.post || postRes.data?.post || postRes;
             if (createdPost?.id) {
                 state.lastPostAt = new Date().toISOString();
                 const v = postRes?.verification || postRes?.post?.verification;
                 if (v?.verification_code && v?.challenge_text) {
-                    const answer = await solveVerification(groq, v.challenge_text);
+                    const answer = await solveVerification(llm, v.challenge_text);
                     if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
                 }
                 console.log("Posted:", title);
+            } else {
+                console.log("Post response without id:", JSON.stringify(postRes));
             }
         } catch (e) {
             console.log("Post failed:", e.message);
+        } finally {
+            saveState(state);
         }
-        saveState(state);
+    } else {
+        console.log(
+            "Skipping post due to rate limit. lastPostAt=",
+            state.lastPostAt,
+            "now=",
+            new Date().toISOString()
+        );
     }
 
     // 2. Reply to comments on our posts
@@ -255,13 +292,13 @@ async function main() {
         if (!query.trim()) continue;
 
         console.log(`Replying to ${latest.author_name} on post ${item.post_id}: "${query.slice(0, 60)}..."`);
-        let reply = await generateReply(query, vectorStore, groq);
+        let reply = await generateReply(query, vectorStore, llm);
         if (reply.length > 2000) reply = reply.slice(0, 1997) + "...";
 
         const commentRes = await moltbookPost(`/posts/${item.post_id}/comments`, { content: reply });
         const v = commentRes?.verification || commentRes?.comment?.verification;
         if (v?.verification_code && v?.challenge_text) {
-            const answer = await solveVerification(groq, v.challenge_text);
+            const answer = await solveVerification(llm, v.challenge_text);
             if (answer) {
                 await moltbookPost("/verify", { verification_code: v.verification_code, answer });
                 console.log("Verified comment.");
@@ -278,18 +315,18 @@ async function main() {
         const posts = feedRes.posts || feedRes.data || [];
         let commentsAdded = 0;
         for (const post of posts) {
-            if (commentsAdded >= 2) break;
+            if (commentsAdded >= 1) break;
             const postId = post.id || post.post_id;
             const authorName = (post.author?.name || post.author_name || "").toLowerCase();
             if (!postId || authorName === "stablesagent" || commented.has(postId)) continue;
 
-            const comment = await shouldCommentAndGenerate(post, vectorStore, groq);
+            const comment = await shouldCommentAndGenerate(post, vectorStore, llm);
             if (!comment) continue;
 
             const commentRes = await moltbookPost(`/posts/${postId}/comments`, { content: comment });
             const v = commentRes?.verification || commentRes?.comment?.verification;
             if (v?.verification_code && v?.challenge_text) {
-                const answer = await solveVerification(groq, v.challenge_text);
+                const answer = await solveVerification(llm, v.challenge_text);
                 if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
             }
             commented.add(postId);
@@ -307,6 +344,15 @@ async function main() {
 }
 
 main().catch((err) => {
+    const isRateLimit =
+        err?.code === "rate_limit_exceeded" ||
+        err?.code === "insufficient_quota" ||
+        err?.error?.code === "rate_limit_exceeded" ||
+        (err?.message && (String(err.message).includes("rate_limit") || String(err.message).includes("quota")));
+    if (isRateLimit) {
+        console.log("LLM rate limit or quota reached. Exiting gracefully.");
+        process.exit(0);
+    }
     console.error(err);
     process.exit(1);
 });

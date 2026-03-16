@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>0xHorizon | Engineered Financial Autonomy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --accent: #fb923c; /* Orange-500 equivalent */
+            --accent-muted: rgba(251, 146, 60, 0.2);
+            --bg-dark: #000000;
+            --bg-glow: #1e1e1e;
+            --card-bg: rgba(20, 20, 20, 0.6);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --glass-sheen: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at top, var(--bg-glow) 0%, var(--bg-dark) 70%);
+            color: #ffffff;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Texture Overlay */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('assets/background-pattern.png');
+            background-repeat: repeat;
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        main {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .logo-img {
+            max-width: 240px;
+            height: auto;
+            margin-bottom: 32px;
+            filter: drop-shadow(0 0 20px rgba(251, 146, 60, 0.1));
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            color: var(--accent);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .hero-tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            color: #a1a1aa;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        section {
+            margin-bottom: 80px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 32px;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        h2::after {
+            content: "";
+            height: 1px;
+            flex-grow: 1;
+            background: linear-gradient(90deg, var(--accent-muted), transparent);
+        }
+
+        .glass-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            border-top: 1px solid var(--glass-sheen);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(251, 146, 60, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .grid {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .infra-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .infra-card p {
+            color: #a1a1aa;
+            font-size: 0.95rem;
+        }
+
+        .founder-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .founder-item h3 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .founder-item p {
+            color: #a1a1aa;
+        }
+
+        /* Form Styling */
+        .form-container {
+            margin-top: 40px;
+        }
+
+        form {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        input[type="email"] {
+            flex-grow: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 14px 20px;
+            color: white;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus {
+            border-color: var(--accent);
+        }
+
+        button {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 12px;
+            padding: 14px 28px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #fdba74;
+            transform: scale(1.02);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .social-links img {
+            width: 24px;
+            height: 24px;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .social-links a:hover img {
+            opacity: 1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: #52525b;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        @media (max-width: 640px) {
+            h1 { font-size: 2.5rem; }
+            .hero-tagline { font-size: 1.1rem; }
+            form { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+        <!-- Branding Area -->
+        <header>
+            <img src="assets/logo.png" alt="0xHorizon" class="logo-img">
+            <h1>0xHorizon</h1>
+            <p class="hero-tagline">
+                Engineered Financial Autonomy. Sovereign primitives for a decentralized world. 
+                Resilient. Private. Persistent.
+            </p>
+        </header>
+
+        <!-- The Vision -->
+        <section>
+            <h2>The Vision</h2>
+            <div class="glass-card">
+                <p>
+                    We live in an era of transition. Traditional systems are being replaced by programmable coordination. 
+                    0xHorizon builds the foundation for this new reality. The focus is on deterministic engineering 
+                    anchored in real-world economic flow instead of synthetic math or discretionary promises.
+                </p>
+            </div>
+        </section>
+
+        <!-- Core Infrastructure -->
+        <section>
+            <h2>Core Infrastructure</h2>
+            <div class="grid">
+                <div class="glass-card infra-card">
+                    <h3>Deterministic Stability</h3>
+                    <p>
+                        The firm engineers stable value primitives that do not rely on algorithmic chance. 
+                        Stability is maintained through merchant-driven economic settlement.
+                    </p>
+                </div>
+                <div class="glass-card infra-card">
+                    <h3>Systematic Autonomy</h3>
+                    <p>
+                        Financial power is a fundamental human right. The infrastructure is built to be private 
+                        and accessible to anyone, bridging the gap to global trade.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Founders -->
+        <section>
+            <h2>Founders</h2>
+            <div class="founder-grid">
+                <div class="glass-card founder-item">
+                    <h3>Charles Vallée</h3>
+                    <p>
+                        Charles focuses on strategic architecture and financial sovereignty. With two decades in 
+                        traditional finance, he is now dedicated to engineering sovereign banking infrastructure. 
+                        He believes that the next generation of money must be truly resilient.
+                    </p>
+                </div>
+                <div class="glass-card founder-item">
+                    <h3>Parisa Aghaei Nodousti</h3>
+                    <p>
+                        Parisa focuses on performance engineering and scalable growth. She leverages over 10 years 
+                        of computer science expertise to build resilient digital systems that are both theoretically 
+                        sound and industrially performant.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Access -->
+        <section>
+            <h2>Request Strategic Overview</h2>
+            <div class="glass-card form-container">
+                <p style="color: #a1a1aa; margin-bottom: 20px;">
+                    Request our institutional deck for a detailed breakdown of the 0xHorizon primitives.
+                </p>
+                <form action="https://formspree.io/f/mzzeovkl" method="POST">
+                    <input type="email" name="email" required placeholder="Institutional Email">
+                    <button type="submit">SUBMIT</button>
+                </form>
+            </div>
+
+            <div class="social-links">
+                <a href="https://twitter.com/0xHorizonxyz" target="_blank">
+                    <img src="assets/x-icon.png" alt="X">
+                </a>
+                <a href="https://www.linkedin.com/company/0xhorizon-xyz" target="_blank">
+                    <img src="assets/linkedin.svg" alt="LinkedIn">
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2026 0xHorizon. <a href="mailto:charles@0xhorizon.xyz" style="color: var(--accent); text-decoration: none;">Contact</a>
+    </footer>
+
+</body>
+</html>

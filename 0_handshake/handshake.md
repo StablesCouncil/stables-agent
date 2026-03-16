@@ -42,34 +42,42 @@
 - **UI Pre-Flight Verification**: Before ANY UI or Asset edit, the AI must state the MASTER FILE path and the EXACT STRINGS/RECIPES being used.
 - **MINIMA Attribution**: Presentations and official documents must include "Built on MINIMA". Social media posts (Telegram, X) do not require explicit attribution as it is implied by the technical context.
 - **Perpetual Restoration (The Ledger)**: Every modification must be committed to Git and logged in the Project Ledger (`stream_3_governance/prod_project_ledger/ledger.md`). No change is valid until it is indexed with a Point ID.
-- **Knowledge Base Sync Rule (CRITICAL)**: The Agent's knowledge base (`1_development/stream_3_governance/task_stablesagent-brain-base/`) is the brain of all external AIs and the Telegram/X agent. It must always reflect exactly what is public and validated. The full sync process is:
-    1. **Before editing any brain markdown**, the AI MUST first audit all three sources of truth:
-        - `2_current/` (all streams): check for any new or updated files since the last brain update.
-        - Live public pages at `stablescouncil.github.io` (all subpages): check for any content not yet in the brain.
-        - Telegram exports in `1_development/stream_2_community/prod_telegram_export/`: check for community Q&A, clarifications, or explanations that have been publicly communicated and should be distilled into the brain.
-    2. **Only after that audit**, update or create the relevant brain markdown files in `task_stablesagent-brain-base/` to accurately reflect all public content.
-    3. **After any brain markdown change**, the user must run `node ingest_knowledge.js` from `task_x_agent_node/` to rebuild `vector_db.json` and `llms.txt`.
-    4. **Copy updated brain and vector DB to the server**, then run `pm2 restart stables-telegram-agent`.
-    5. **No content should ever be live or in `2_current` without being reflected in the brain.** If it is visible to the public, the Agent must be able to answer questions about it.
-- **The Ledger of Thought Evolution (CRITICAL MEMORY ANCHOR)**: Because AI sessions reset, conversational memory is lost. To prevent architectural amnesia, `0_handshake/stables_master_reference.md` serves as the Living Brain of the AI. Anytime the user finalizes a new architectural or philosophical doctrine (e.g., The Constitution, The Merchant-Maintained Peg, The Transition Doctrine), the active AI **MUST** immediately open and append this new truth to `stables_master_reference.md`. Failure to do so corrupts future sessions.
+- **Knowledge Base Sync Rule (CRITICAL)**: The Agent's knowledge base MUST be maintained in `2_current/stream_3_governance/prod_stablesagent-brain-base/`. This is the brain of all external AIs and the Telegram/X agent. The ingestion process MUST only ever pull from the **Source of Truth** (`2_current`), never the sandbox (`1_development`). The full sync process is:
+    1. **Edit in Sandbox**: Update brain markdown files in `1_development/stream_3_governance/task_stablesagent-brain-base/`.
+    2. **Audit**: Ensure the sandbox edits reflect everything live on `stablescouncil.github.io` and the latest `2_current` protocol specs.
+    3. **Promotion**: Once validated, the user promotes these files to `2_current/stream_3_governance/prod_stablesagent-brain-base/`.
+    4. **Ingestion**: Only after promotion, the user runs `node ingest_knowledge.js` from the production deployment folder (`2_current/stream_3_governance/task_x_agent_node/`) to rebuild `vector_db.json` and `llms.txt`.
+    5. **No content should ever be live or in 2_current without being reflected in the brain.** If it is visible to the public, the Agent must be able to answer questions about it.
+- **The Ledger of Thought Evolution (CRITICAL MEMORY ANCHOR)**: Because AI sessions reset, conversational memory is lost. To prevent architectural amnesia, `0_handshake/stables_master_reference.md` serves as the Living Brain of the AI. Anytime the user finalizes a new architectural or philosophical doctrine (e.g., The Charter, The Merchant-Maintained Peg, The Transition Doctrine), the active AI **MUST** immediately open and append this new truth to `stables_master_reference.md`. Failure to do so corrupts future sessions.
+- **AI Session Memory & Persistence (CRITICAL)**: Each AI session has **no memory of past chats** unless the information is persisted in the repo or a transcript is explicitly referenced. To avoid "I don't remember" responses:
+    1. **Persistence Rule**: Any long-lived configuration, external tool integration (e.g. Moltbook, APIs), or multi-day workflow decision **MUST** be written into a handshake file (`stables_master_reference.md`, `vault.md`, or a dedicated doc). If it isn't in the repo, future sessions will not know it exists.
+    2. **When in doubt, persist**: If the user sets up an integration, deploys something new, or agrees to a significant decision, the active AI **MUST** document it in the appropriate file before the session ends.
+    3. **Transcript fallback**: The user can reference a prior Cursor transcript (e.g. `[short-title](uuid)`) to restore context, but the primary mechanism is file-based persistence.
 - **Atomic Commits**: Every logical change (UI, logic, spec) must have its own commit and ledger entry.
-- **GitHub Council Identity (MANDATORY)**: When pushing ANY code or documentation to the public GitHub repositories, the local machine MUST be configured to commit as the official entity:
-    - User Name: `"Stables Council"`
+- **GitHub Institutional Setup (MANDATORY)**: Push code and docs using the official entity:
+    - User Account (Admin/Discord): `StablesCouncilExec`
+    - Organization (Public): `StablesCouncil`
+    - Display Name: `"Stables Council"`
     - Email: `StablesCouncil@protonmail.com`
     - NO open-source community pushes should ever display personal names (e.g., "Charles").
-    - **Authentication (CRITICAL)**: The HTTPS push to any `StablesCouncil/*` repo MUST use a Personal Access Token issued by the **StablesCouncil GitHub account**, NOT Charles's personal account token. Using a personal token will register Charles as a contributor on the public repo, even if the commit author is set to "Stables Council". This is a non-negotiable rule. If the StablesCouncil token is not available, stop and ask the user to provide it before pushing.
-    - **Council Token**: `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` — use this for all pushes to `StablesCouncil/*` repos. Remote URL format: `https://StablesCouncil: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@github.com/StablesCouncil/REPO.git`
-- **Personal Dev Identity**: For commits to the private dev repo (`Charles0xhorizonxyz/stables`), use:
+- **Authentication (CRITICAL)**: The HTTPS push to any `StablesCouncil/*` repo MUST use a Personal Access Token issued by the **StablesCouncil GitHub account**. Using a personal token will register Charles as a contributor on the public repo. If the token is not available, ask the user.
+    - **Council Token**: `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`
+- **Independent Personal Identity**: For the private dev repo and independent branding, use:
     - User Name: `Charles0xhorizonxyz`
+    - Display Name: `Charles | 0xHorizon`
     - Email: `charles@0xhorizon.xyz`
+    - Website: `https://0xhorizon.xyz/`
+    - **Rule**: Keep the personal account private/unlinked from the StablesCouncil Organization to maintain absolute independence.
 - **Production Server (Vultr)**:
     - IP: `140.82.36.166`
     - User: `root`
     - Bot directory: `/root/stables-agent/`
     - Brain path: `/root/stables-agent/task_stablesagent-brain-base/`
     - Agent path: `/root/stables-agent/task_x_agent_node/`
-    - Process manager: PM2, app name `stables-telegram-agent`
+    - Process manager: PM2
+    - Apps: `stables-telegram-agent` (Telegram bot), `stables-web-agent` (web chat at agent.stablescouncil.org)
     - To deploy updated brain: `scp` the changed `.md` files and `vector_db.json` to the server, then `pm2 restart stables-telegram-agent`
+    - To restart web agent (e.g. after `web_agent.js` update): `pm2 restart stables-web-agent`
 
 ## 2. THE CALIBRATION WORKFLOW (/handshake)
 To start any session or when context-drift is suspected, perform the following steps:
@@ -85,7 +93,7 @@ Consult the following files representing the immutable specs of Stables:
 - **[visual_identity_spec.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/visual_identity_spec.md)**: Color palettes, glassmorphism, and branding guidelines.
 - **[protocol_mechanics_spec.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/protocol_mechanics_spec.md)**: Detailed mint/burn/redemption rules.
 - **[current_state_and_path.md](file:///C:/Users/Charles/Documents/Stables/2_current/stream_3_governance/prod_protocol_specs/current_state_and_path.md)**: The strategic North Star.
-- **[vault.md](file:///C:/Users/Charles/Documents/Stables/1_development/stream_3_governance/prod_credentials/vault.md)**: Central repository for project accounts and bookmarks.
+- **[vault.md](file:///C:/Users/Charles/Documents/Stables/2_current/stream_3_governance/prod_credentials/vault.md)**: Central repository for project accounts and bookmarks.
 
 ### [Step 2] Verify Economic Alignment
 Acknowledge the settled economic model (Do NOT re-debate unless requested):
@@ -119,7 +127,8 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 - **No AI markers (CRITICAL GRAMMAR RULE)**: No emojis, no icons, no bullet points, no structured lists. **NEVER use an em-dash (—) or en-dash (–) to connect sentences.** This is a grammatical mistake and a dead giveaway for AI. Use standard commas or periods only. (Note: Bullet points are allowed in Telegram ONLY if they significantly improve readability for complex information, but should be avoided in short replies).
 - **X/Twitter Specifics (STRICT)**:
     - **Character Limit**: Maximum 280 characters per post.
-    - **Hashtags**: You MUST include hashtags for X/Twitter posts.
+    - **Hashtags**: You MUST include hashtags for X/Twitter posts. 
+    - **Mandatory Set**: Use `#Minima #Stables #BeYourOwnBank #stablecoin` as the core hashtags for discoverability on X and YouTube.
     - **No Hashtags in TG**: Never use hashtags in our Telegram community channel or other community spaces.
 - **Natural tone**: Write like a real person in a casual conversation. Short sentences, natural flow.
 
@@ -127,6 +136,9 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 **Active Pilots**:
 - **Lead Pilot**: Antigravity (Google DeepMind)
 - **Co-Pilot**: Cursor AI (Claude/Anthropic)
+
+**Blocked models (MANDATORY — do not use for Stables)**:
+- **Gemini 3 Flash** (Antigravity): Banned. This model has shown destructive capacity (deleting elements, including backups). It must not be used for any Stables work. When using Antigravity, select a different model (e.g. a non-Flash / non-destructive variant). This rule is permanent until explicitly revoked.
 
 **Last Verified by Assistant: ANTIGRAVITY**
 *(I have read and locked the above rules into my active state. I will consult the specifications before every turn.)*
