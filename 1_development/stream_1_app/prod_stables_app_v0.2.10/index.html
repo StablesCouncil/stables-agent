@@ -2242,7 +2242,6 @@
             <div class="card">
                 <div class="w-hero">
                     <div class="fbet" style="align-items:center;margin-bottom:2px">
-                        <div class="w-label" style="margin:0">Total Balance</div>
                         <button id="balHideBtn" onclick="toggleBalHide()"
                             style="background:none;border:none;cursor:pointer;color:var(--m);padding:4px 6px;line-height:0;opacity:.8;display:flex;align-items:center;justify-content:center"
                             title="Hide amounts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -2265,9 +2264,8 @@
                     </div>
                 </div>
                 <div class="cb" style="padding-top:0">
-                    <div class="stitle">My Currencies</div>
                     <!-- Primary currency card -->
-                    <div class="ccy-primary" data-ccy="USDw">
+                    <div class="ccy-primary" data-ccy="USDw" draggable="true">
                         <div class="ccy-pri-flex">
                             <div>
                                 <div class="ccy-pri-name">
@@ -2388,8 +2386,7 @@
                             </div>
                         </div>
                     </div>
-                    <button class="show-more-btn" id="showMoreCcy" onclick="toggleMoreCcy()">Show 4 more currencies
-                        ▾</button>
+                    <button class="show-more-btn" id="showMoreCcy" onclick="toggleMoreCcy()">Show more currencies ▾</button>
                     <div class="stitle">Recent Activity</div>
                     <div class="tx-list">
                         <div class="tx-row">
@@ -4465,6 +4462,9 @@
             // FOURTH: Set up drag listeners
             let dragRow = null;
             let dragInProgress = false;
+            let lastInsertAfter = null; // used to reduce DOM churn during dragover
+            let lastPrimaryInsertKey = null;
+            let primaryDragBaseRow = null;
 
             const persistOrder = () => {
                 const now = Array.from(list.querySelectorAll('.ccy-sec-row'));
@@ -4497,9 +4497,25 @@
 
                 r.addEventListener('dragover', (e) => {
                     if (!dragRow || dragRow === r) return;
+                    // Only allow reordering around currently visible, enabled rows.
+                    if (r.dataset.walletEnabled === '0' || r.style.display === 'none') return;
                     e.preventDefault();
                     r.classList.add('dragover');
                     e.dataTransfer.dropEffect = 'move';
+
+                    // "Android icon squeeze" behavior:
+                    // As you drag over another row, move the dragged row into the slot
+                    // between rows immediately (based on cursor position).
+                    const rect = r.getBoundingClientRect();
+                    const dropAfter = e.clientY > (rect.top + rect.height / 2);
+                    const refNode = dropAfter ? (r.nextElementSibling || null) : r;
+
+                    // Avoid repeated inserts to reduce jitter.
+                    const key = dropAfter ? `after:${r.dataset.ccy}` : `before:${r.dataset.ccy}`;
+                    if (lastInsertAfter === key) return;
+                    lastInsertAfter = key;
+
+                    r.parentNode.insertBefore(dragRow, refNode);
                 });
 
                 r.addEventListener('dragleave', () => r.classList.remove('dragover'));
@@ -4516,19 +4532,13 @@
                     const refNode = dropAfter ? (r.nextElementSibling || null) : r;
                     r.parentNode.insertBefore(dragRow, refNode);
                     persistOrder();
-
-                    // Topmost enabled (non-principal) side row becomes the new principal.
-                    const enabledRows = Array.from(list.querySelectorAll('.ccy-sec-row'))
-                        .filter(x => x.dataset && x.dataset.walletEnabled === '1' && x.style.display !== 'none');
-                    const candidate = enabledRows[0];
-                    if (candidate && candidate.dataset && candidate.dataset.ccy) {
-                        setPrimary(candidate.dataset.ccy, true);
-                    }
                 });
 
                 r.addEventListener('dragend', () => {
                     dragInProgress = false;
                     dragRow = null;
+                    lastInsertAfter = null;
+                    lastPrimaryInsertKey = null;
                     list.querySelectorAll('.ccy-sec-row').forEach(x => {
                         x.classList.remove('dragging');
                         x.classList.remove('dragover');
@@ -4543,6 +4553,141 @@
                     }
                 }, true);
             });
+
+            // Primary card acts as an extra drop target so you can squeeze above
+            // the first secondary currency row (Android-like reordering).
+            const primaryCard = document.querySelector('.ccy-primary[data-ccy]');
+            if (primaryCard) {
+                // Some browsers are picky about drop events unless the target is draggable.
+                primaryCard.setAttribute('draggable', 'true');
+                const handlePrimaryDragOver = (e) => {
+                    if (!dragRow) return;
+                    e.preventDefault();
+                    try { e.dataTransfer.dropEffect = 'move'; } catch { }
+
+                    const enabledVisible = Array.from(list.querySelectorAll('.ccy-sec-row'))
+                        .filter(x => x && x.dataset && x.dataset.walletEnabled === '1' && x.style.display !== 'none');
+                    const refNode = enabledVisible[0] || null;
+                    const key = refNode ? `primary:before:${refNode.dataset.ccy}` : 'primary:before:end';
+                    if (lastPrimaryInsertKey === key) return;
+                    lastPrimaryInsertKey = key;
+
+                    list.insertBefore(dragRow, refNode);
+                };
+
+                primaryCard.addEventListener('dragenter', handlePrimaryDragOver);
+                primaryCard.addEventListener('dragover', handlePrimaryDragOver);
+
+                primaryCard.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // If we're dropping over the main card, ensure we end up above the first visible enabled row.
+                    const enabledVisible = Array.from(list.querySelectorAll('.ccy-sec-row'))
+                        .filter(x => x && x.dataset && x.dataset.walletEnabled === '1' && x.style.display !== 'none');
+                    if (enabledVisible.length) {
+                        const first = enabledVisible[0];
+                        if (e.clientY <= first.getBoundingClientRect().top + 6) {
+                            list.insertBefore(dragRow, first);
+                        }
+                    }
+                    persistOrder();
+                });
+
+                primaryCard.addEventListener('dragstart', (e) => {
+                    // Dragging the main/primary currency should allow full reordering.
+                    const baseCcy = primaryCard.dataset.ccy;
+                    if (!baseCcy) return;
+
+                    // Use the hidden base row as the actual draggable DOM node.
+                    primaryDragBaseRow = list.querySelector('.ccy-sec-row[data-ccy="' + baseCcy + '"]');
+                    if (!primaryDragBaseRow) return;
+
+                    // Prevent the browser from treating this like an unusable drag.
+                    try { e.dataTransfer.setData('text/plain', baseCcy); } catch { }
+                    e.dataTransfer.effectAllowed = 'move';
+
+                    // Make the base row visible so other rows can "squeeze" during the drag.
+                    // Hide the main card to avoid duplicate visuals while dragging.
+                    if (primaryCard.style.display !== 'none') primaryCard.style.display = 'none';
+                    primaryDragBaseRow.dataset.walletEnabled = '1';
+                    primaryDragBaseRow.style.display = 'flex';
+
+                    if (!ccyExpanded) {
+                        ccyExpanded = true;
+                        applyWalletCcyDisplay();
+                    }
+
+                    dragRow = primaryDragBaseRow;
+                    dragInProgress = true;
+                    dragRow.classList.add('dragging');
+                });
+
+                primaryCard.addEventListener('dragend', () => {
+                    // Restore visuals first.
+                    if (primaryCard.style.display === 'none') primaryCard.style.display = '';
+
+                    // Determine the new primary as the topmost enabled row after reorder.
+                    const enabledVisible = Array.from(list.querySelectorAll('.ccy-sec-row'))
+                        .filter(x => x && x.dataset && x.dataset.walletEnabled === '1' && x.style.display !== 'none');
+                    const nextPrimary = enabledVisible[0] && enabledVisible[0].dataset ? enabledVisible[0].dataset.ccy : null;
+
+                    // Clean drag state.
+                    dragInProgress = false;
+                    dragRow = null;
+                    lastInsertAfter = null;
+                    lastPrimaryInsertKey = null;
+                    if (primaryDragBaseRow) primaryDragBaseRow.classList.remove('dragging');
+                    list.querySelectorAll('.ccy-sec-row').forEach(x => {
+                        x.classList.remove('dragging');
+                        x.classList.remove('dragover');
+                    });
+
+                    // Promote the first enabled currency to primary (this is the explicit "dragged primary" action).
+                    if (nextPrimary) setPrimary(nextPrimary, true);
+
+                    primaryDragBaseRow = null;
+                });
+            }
+
+            // Extra reliability: treat the whole top "wallet content" area as a drop zone,
+            // so you can hover into the small padding/gap above the first visible row.
+            const walletCb = list ? list.closest('.cb') : null;
+            if (walletCb) {
+                walletCb.addEventListener('dragover', (e) => {
+                    if (!dragRow) return;
+                    // If the cursor is above the first visible secondary row,
+                    // force the dragged row to the top of the secondary list.
+                    const enabledVisible = Array.from(list.querySelectorAll('.ccy-sec-row'))
+                        .filter(x => x && x.dataset && x.dataset.walletEnabled === '1' && x.style.display !== 'none' && x !== dragRow);
+                    if (!enabledVisible.length) return;
+                    const first = enabledVisible[0];
+                    const firstTop = first.getBoundingClientRect().top;
+                    if (e.clientY <= firstTop + 6) {
+                        e.preventDefault();
+                        try { e.dataTransfer.dropEffect = 'move'; } catch { }
+                        if (list.firstElementChild !== dragRow) list.insertBefore(dragRow, first);
+                    }
+                });
+            }
+
+            // Even more reliable: make the whole wallet page a drop target.
+            // Some browsers won't dispatch dragover on nested elements reliably.
+            const walletPage = document.getElementById('page-wallet');
+            if (walletPage) {
+                walletPage.addEventListener('dragover', (e) => {
+                    if (!dragRow) return;
+                    const enabledVisible = Array.from(list.querySelectorAll('.ccy-sec-row'))
+                        .filter(x => x && x.dataset && x.dataset.walletEnabled === '1' && x.style.display !== 'none' && x !== dragRow);
+                    if (!enabledVisible.length) return;
+                    const first = enabledVisible[0];
+                    const firstTop = first.getBoundingClientRect().top;
+                    if (e.clientY <= firstTop + 10) {
+                        e.preventDefault();
+                        try { e.dataTransfer.dropEffect = 'move'; } catch { }
+                        if (list.firstElementChild !== dragRow) list.insertBefore(dragRow, first);
+                    }
+                });
+            }
         }
 
         function openModal(id) {
@@ -4613,7 +4758,13 @@
             const btn = document.getElementById('showMoreCcy');
             if (btn) {
                 btn.style.display = enabledRows.length > 3 ? '' : 'none';
-                btn.textContent = ccyExpanded ? 'Show fewer currencies ▴' : 'Show 4 more currencies ▾';
+                if (ccyExpanded) {
+                    btn.textContent = 'Show fewer currencies ▴';
+                } else {
+                    const remaining = Math.max(0, enabledRows.length - 3);
+                    const one = remaining === 1;
+                    btn.textContent = `Show ${remaining} more ${one ? 'currency' : 'currencies'} ▾`;
+                }
             }
 
             if (!enabledRows.length) {
