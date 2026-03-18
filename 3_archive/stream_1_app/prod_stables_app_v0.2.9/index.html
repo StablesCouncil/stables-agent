@@ -1908,256 +1908,61 @@
             background: rgba(240, 244, 248, .95)
         }
 
-        /* WALKTHROUGH OVERLAY */
-        .wt-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            z-index: 600;
-            background: rgba(0, 0, 0, .85);
-            backdrop-filter: blur(12px);
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 24px
-        }
-
-        .wt-overlay.open {
-            display: flex
-        }
-
-        .wt-slide {
-            display: none;
-            text-align: center;
-            max-width: 320px;
-            width: 100%
-        }
-
-        .wt-slide.show {
-            display: block
-        }
-
-        .wt-icon {
-            font-size: 52px;
-            margin-bottom: 16px
-        }
-
-        .wt-title {
-            font-size: 20px;
-            font-weight: 900;
-            margin-bottom: 10px
-        }
-
-        .wt-body {
-            font-size: 14px;
-            color: var(--m);
-            line-height: 1.6;
-            margin-bottom: 24px
-        }
-
-        .wt-dots {
-            display: flex;
-            gap: 6px;
-            justify-content: center;
-            margin-bottom: 20px
-        }
-
-        .wt-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: rgba(103, 232, 249, .3);
-            transition: background .2s
-        }
-
-        .wt-dot.on {
-            background: var(--c)
-        }
-
-        .wt-btns {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px
-        }
-
-        /* LP CARD */
-        .lp-card {
-            background: rgba(251, 191, 36, .04);
-            border: 1px solid rgba(251, 191, 36, .18);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px
-        }
-
-        /* Portfolio Simulator Slider */
-        #priceSlider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: linear-gradient(to right, rgba(248, 113, 113, .3), rgba(103, 232, 249, .15), rgba(52, 211, 153, .3));
-            outline: none;
-            cursor: pointer;
-            margin-bottom: 4px;
-        }
-
-        #priceSlider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--pu);
-            cursor: pointer;
-            box-shadow: 0 0 8px rgba(167, 139, 250, .5);
-            border: 2px solid rgba(255, 255, 255, .15);
-        }
-
-        #priceSlider::-moz-range-thumb {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--pu);
-            cursor: pointer;
-            border: 2px solid rgba(255, 255, 255, .15);
-        }
-
-        /* Tab panel consistency - prevent layout jump on tab switch */
-        #panelXwm,
-        #panelIssue {
-            min-height: 420px;
-        }
-
-        #panelXwm .xwm-card,
-        #panelIssue .card {
-            min-height: 200px;
-        }
-
-        /* WALKTHROUGH */
-        .wt-fab {
-            position: absolute;
-            bottom: calc(var(--nh) + 76px);
-            right: 19px;
-            pointer-events: auto;
+        /* AGENT MODAL & FAB */
+        .agent-fab {
             width: 44px;
             height: 44px;
             border-radius: 22px;
-            background: rgba(167, 139, 250, 0.15);
-            border: 1px solid rgba(167, 139, 250, 0.4);
-            color: var(--pu);
+            background: linear-gradient(135deg, var(--c), var(--pu));
+            color: #fff;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            font-weight: 800;
-            cursor: pointer;
-            z-index: 90;
-            backdrop-filter: blur(8px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.2s;
-        }
-
-        .wt-fab:active {
-            transform: scale(0.95);
-        }
-
-        .wt-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(11, 15, 20, 0.95);
-            z-index: 200;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .wt-overlay.open {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        .wt-slide {
-            width: 100%;
-            max-width: 320px;
-            padding: 30px;
-            text-align: center;
-            display: none;
-            animation: wtFadeIn 0.3s ease forwards;
-        }
-
-        .wt-slide.active {
-            display: block;
-        }
-
-        @keyframes wtFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .wt-icon {
-            font-size: 56px;
-            margin-bottom: 20px;
-        }
-
-        .wt-title {
             font-size: 22px;
-            font-weight: 900;
-            margin-bottom: 12px;
-            color: var(--t);
-        }
-
-        .wt-desc {
-            font-size: 15px;
-            line-height: 1.5;
-            color: var(--m);
-            margin-bottom: 30px;
-        }
-
-        .wt-dots {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .wt-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 4px;
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .wt-dot.active {
-            background: var(--t);
-        }
-
-        .wt-skip {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            border: none;
-            color: var(--m);
-            font-size: 14px;
-            font-weight: 700;
             cursor: pointer;
-            padding: 10px;
+            box-shadow: 0 4px 15px rgba(103, 232, 249, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.2s;
+            margin-bottom: 2px;
+        }
+
+        .agent-fab:active {
+            transform: scale(0.92);
+        }
+
+        .agent-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(11, 15, 20, 0.9);
+            backdrop-filter: blur(10px);
+            display: none;
+            flex-direction: column;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        .agent-modal.open {
+            display: flex;
+        }
+
+        .agent-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(103, 232, 249, 0.15);
+        }
+
+        .agent-iframe {
+            flex: 1;
+            border: none;
+            width: 100%;
+            background: transparent;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
@@ -2187,63 +1992,16 @@
         </div>
     </div>
 
-    <!-- WALKTHROUGH OVERLAY -->
-    <div class="wt-overlay" id="wtOverlay">
-        <button class="wt-skip" onclick="closeWT()">Skip</button>
-
-        <div class="wt-slide active" id="wtSlide-0">
-            <div class="wt-icon">&#x1F4B0;</div>
-            <div class="wt-title">Your Wallet</div>
-            <div class="wt-desc">Send, receive, and safely store your Minima tokens. Tap any currency to make it
-                your
-                primary display.</div>
-            <div class="wt-dots"><span class="wt-dot active"></span><span class="wt-dot"></span><span
-                    class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot"></span></div>
-            <button class="btn" style="width:100%" onclick="nextSlide(1)">Next &rarr;</button>
-        </div>
-
-        <div class="wt-slide" id="wtSlide-1">
-            <div class="wt-icon">&#x1F3E6;</div>
-            <div class="wt-title">Mint Wables</div>
-            <div class="wt-desc">Lock Winiwa to mint price-stable Wables (USDw, EURw) with zero fees and no
-                liquidation
-                risk.</div>
-            <div class="wt-dots"><span class="wt-dot"></span><span class="wt-dot active"></span><span
-                    class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot"></span></div>
-            <button class="btn" style="width:100%" onclick="nextSlide(2)">Next &rarr;</button>
-        </div>
-
-        <div class="wt-slide" id="wtSlide-2">
-            <div class="wt-icon">&#x1F4C8;</div>
-            <div class="wt-title">Invest</div>
-            <div class="wt-desc">Provide equity via xWiniwa, earn fees via the Coverage Fund, or provide DEX
-                liquidity.
+    <!-- AGENT MODAL -->
+    <div class="agent-modal" id="agentModal">
+        <div class="agent-header" style="background:#0b0f14">
+            <div style="display:flex; align-items:center; gap:10px">
+                <div style="width:32px; height:32px; border-radius:50%; background:var(--c); display:flex; align-items:center; justify-content:center; font-weight:900; color:#0b0f14">@</div>
+                <div style="font-weight:800">StablesAgent</div>
             </div>
-            <div class="wt-dots"><span class="wt-dot"></span><span class="wt-dot"></span><span
-                    class="wt-dot active"></span><span class="wt-dot"></span><span class="wt-dot"></span></div>
-            <button class="btn" style="width:100%" onclick="nextSlide(3)">Next &rarr;</button>
+            <div class="dclose" onclick="closeAgent()">✕</div>
         </div>
-
-        <div class="wt-slide" id="wtSlide-3">
-            <div class="wt-icon">&#x1F504;</div>
-            <div class="wt-title">Exchange</div>
-            <div class="wt-desc">Instantly swap between any supported stablecoins directly through the protocol at
-                oracle exchange rates.</div>
-            <div class="wt-dots"><span class="wt-dot"></span><span class="wt-dot"></span><span
-                    class="wt-dot"></span><span class="wt-dot active"></span><span class="wt-dot"></span></div>
-            <button class="btn" style="width:100%" onclick="nextSlide(4)">Next &rarr;</button>
-        </div>
-
-        <div class="wt-slide" id="wtSlide-4">
-            <div class="wt-icon">&#x1F3DB;&#xFE0F;</div>
-            <div class="wt-title">The Council</div>
-            <div class="wt-desc">Stables is governed entirely by token holders. Propose and vote on protocol
-                parameters
-                directly on-chain.</div>
-            <div class="wt-dots"><span class="wt-dot"></span><span class="wt-dot"></span><span
-                    class="wt-dot"></span><span class="wt-dot"></span><span class="wt-dot active"></span></div>
-            <button class="btn btn-g" style="width:100%" onclick="closeWT()">Finish</button>
-        </div>
+        <iframe id="agentFrame" class="agent-iframe" src="about:blank"></iframe>
     </div>
 
     <!-- FLOATING ACTION BUTTONS (Constrained to mobile width) -->
@@ -2255,7 +2013,7 @@
                 <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
             </svg>
         </div>
-        <div class="wt-fab" onclick="openWT()" title="App Guide">&#x2753;</div>
+        <div class="agent-fab" onclick="openAgent()" title="Stables Agent">@</div>
 
         <div class="fab" onclick="openModal('qrModal')" title="Scan to pay">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -3433,67 +3191,6 @@
                 Display</button>
         </div>
 
-        <!-- WALKTHROUGH OVERLAY -->
-        <div class="wt-overlay" id="wtOverlay">
-            <!-- slide 0: wallet -->
-            <div class="wt-slide show" id="wt0">
-                <div class="wt-icon">&#x1F4B3;</div>
-                <div class="wt-title">Wallet</div>
-                <div class="wt-body">Your currencies live here. Send and receive any stablecoin instantly. Tap a
-                    currency to
-                    set it as primary. All balances shown in your chosen base currency.</div>
-            </div>
-            <!-- slide 1: mint -->
-            <div class="wt-slide" id="wt1">
-                <div class="wt-icon">&#x1F3E6;</div>
-                <div class="wt-title">Mint</div>
-                <div class="wt-body">Lock Winiwa to issue Wablecoins (USDw, EURw&hellip;) or burn Wablecoins to
-                    reclaim
-                    Winiwa. This is the primary market &mdash; no fees, blockchain speed.</div>
-            </div>
-            <!-- slide 2: invest -->
-            <div class="wt-slide" id="wt2">
-                <div class="wt-icon">&#x1F4C8;</div>
-                <div class="wt-title">Invest</div>
-                <div class="wt-body">Three options: hold <strong>xWiniwa</strong> for leveraged Winiwa exposure
-                    (equity,
-                    no
-                    yield), deposit to the <strong>Coverage Fund</strong> to earn 100% of transaction fees (with
-                    conversion
-                    risk), or provide <strong>LP liquidity</strong> on the DEX.</div>
-            </div>
-            <!-- slide 3: exchange -->
-            <div class="wt-slide" id="wt3">
-                <div class="wt-icon">&#x1F504;</div>
-                <div class="wt-title">Exchange</div>
-                <div class="wt-body">Swap between any of the 8 Wablecoins, Winiwa, or xWiniwa instantly. Rates
-                    update
-                    in
-                    real time. Fee: 0.01% max, capped at $1.00.</div>
-            </div>
-            <!-- slide 4: council -->
-            <div class="wt-slide" id="wt4">
-                <div class="wt-icon">&#x1F3DB;&#xFE0F;</div>
-                <div class="wt-title">Council</div>
-                <div class="wt-body">Participate in governance. Voting power is time-weighted &mdash; holding longer
-                    multiplies your voice. Wables 1&times;, cf tokens 2&times;, xWiniwa 3&times; &mdash; up to
-                    5&times;
-                    for
-                    long-term holders.</div>
-            </div>
-            <!-- navigation -->
-            <div class="wt-dots">
-                <div class="wt-dot on" id="wtD0"></div>
-                <div class="wt-dot" id="wtD1"></div>
-                <div class="wt-dot" id="wtD2"></div>
-                <div class="wt-dot" id="wtD3"></div>
-                <div class="wt-dot" id="wtD4"></div>
-            </div>
-            <div class="wt-btns">
-                <button class="btn btn-g" onclick="closeWT()">Skip</button>
-                <button class="btn" id="wtNext" onclick="nextSlide()">Next &rarr;</button>
-            </div>
-        </div>
 
         <!-- MORE DRAWER -->
         <div class="dback" id="drawer" onclick="closeMore(event)">
@@ -3583,11 +3280,11 @@
                 <div class="ddiv"></div>
                 <div class="dsect">
                     <div class="dsect-t">Help</div>
-                    <div class="ditem" onclick="openWT();closeMoreNow()">
-                        <div class="dic">&#x2753;</div>
+                    <div class="ditem" onclick="openAgent();closeMoreNow()">
+                        <div class="dic" style="background:rgba(103,232,249,.15); color:var(--c); border-color:var(--c)">@</div>
                         <div class="dinfo">
-                            <div class="dname">App Guide</div>
-                            <div class="ddesc">5-step walkthrough of the app</div>
+                            <div class="dname">Stables Agent</div>
+                            <div class="ddesc">Get contextual help & support</div>
                         </div><span style="color:var(--m)">&rsaquo;</span>
                     </div>
                 </div>
@@ -3916,6 +3613,7 @@
                 else { document.getElementById('tab-more').classList.add('active'); }
                 curPage = p;
                 window.scrollTo(0, 0);
+                refreshAgentContextIfOpen();
             }
 
             function setCouncilTab(t) {
@@ -4133,19 +3831,48 @@
                 setInterval(updateBlock, 12000);
             })();
 
-            // Walkthrough
-            let wtSlide = 0;
-            const WT_TOTAL = 5;
-            function openWT() { wtSlide = 0; showSlide(0); document.getElementById('wtOverlay').classList.add('open'); }
-            function closeWT() { document.getElementById('wtOverlay').classList.remove('open'); }
-            function showSlide(n) {
-                for (let i = 0; i < WT_TOTAL; i++) {
-                    document.getElementById('wtS' + i).classList.toggle('show', i === n);
-                    document.getElementById('wtD' + i).classList.toggle('on', i === n);
-                }
-                document.getElementById('wtNext').textContent = n === WT_TOTAL - 1 ? 'Done \u2713' : 'Next \u2192';
+            // StablesAgent Integration
+            function getAgentContext() {
+                // Keep ctx simple (page id) and provide richer metadata separately.
+                const page = (curPage || 'wallet');
+                return {
+                    page,
+                    meta: {
+                        page,
+                        timestamp: Date.now(),
+                        userAgent: navigator.userAgent
+                    }
+                };
             }
-            function nextSlide() { if (wtSlide < WT_TOTAL - 1) { wtSlide++; showSlide(wtSlide); } else closeWT(); }
+
+            function buildAgentUrl() {
+                const ctx = getAgentContext();
+                const base = 'https://agent.stablescouncil.org/chat?embed=1';
+                const qp = `ctx=${encodeURIComponent(ctx.page)}&meta=${encodeURIComponent(JSON.stringify(ctx.meta))}`;
+                return `${base}&${qp}`;
+            }
+
+            function refreshAgentContextIfOpen() {
+                const modal = document.getElementById('agentModal');
+                if (!modal || !modal.classList.contains('open')) return;
+                const frame = document.getElementById('agentFrame');
+                if (!frame) return;
+                const url = buildAgentUrl();
+                if (frame.src !== url) frame.src = url;
+            }
+
+            function openAgent() {
+                const modal = document.getElementById('agentModal');
+                const frame = document.getElementById('agentFrame');
+                const agentUrl = buildAgentUrl();
+
+                if (frame.src !== agentUrl) frame.src = agentUrl;
+                modal.classList.add('open');
+            }
+
+            function closeAgent() {
+                document.getElementById('agentModal').classList.remove('open');
+            }
 
             // Vault calc - Winiwa
             function calcIssue() {

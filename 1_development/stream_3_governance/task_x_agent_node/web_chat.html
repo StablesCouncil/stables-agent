@@ -512,6 +512,20 @@
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
 
+    // Accept suggested questions from embedding parent (MiniDapp)
+    // Note: parent may be file:// (origin "null"), so we validate by message shape, not origin.
+    window.addEventListener("message", (event) => {
+      const d = event?.data;
+      if (!d || typeof d !== "object") return;
+      if (d.type !== "stablesagent:suggest") return;
+      const text = String(d.text || "").trim();
+      if (!text) return;
+      chatInput.value = text;
+      chatInput.focus();
+      if (d.autoSend) sendMessage();
+      try { event.source && event.source.postMessage({ type: "stablesagent:ack", ok: true }, "*"); } catch {}
+    });
+
     appendMessage(T.firstMsg, "agent");
     // Embed mode (?embed=1): strip chrome, let chat fill the popup
     if (new URLSearchParams(window.location.search).get('embed') === '1') {

@@ -31,6 +31,47 @@ const llm = new OpenAI({
     baseURL: "https://openrouter.ai/api/v1",
 });
 
+function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+}
+
+function extractReplyText(completion) {
+    const txt = completion?.choices?.[0]?.message?.content;
+    return typeof txt === "string" ? txt.trim() : null;
+}
+
+function isQuotaError(err) {
+    const msg = err?.message ? String(err.message) : "";
+    return (
+        err?.code === "rate_limit_exceeded" ||
+        err?.code === "insufficient_quota" ||
+        msg.includes("rate_limit") ||
+        msg.includes("quota")
+    );
+}
+
+function isBusyError(err) {
+    return err?.status === 429 || err?.code === 429;
+}
+
+async function chatCompletionWithRetry(payload) {
+    try {
+        const completion = await llm.chat.completions.create(payload);
+        const reply = extractReplyText(completion);
+        if (!reply) throw new Error("Empty completion content");
+        return reply;
+    } catch (err) {
+        if (isBusyError(err)) {
+            await sleep(1500);
+            const completion = await llm.chat.completions.create(payload);
+            const reply = extractReplyText(completion);
+            if (!reply) throw new Error("Empty completion content");
+            return reply;
+        }
+        throw err;
+    }
+}
+
 // 1. Initialize Embeddings & Vector DB
 async function initXenova() {
     const { pipeline } = await import("@xenova/transformers");
@@ -104,7 +145,7 @@ async function startAgent() {
 
             // 2. Call OpenRouter
             console.log("🤖 Calling OpenRouter...");
-            const completion = await llm.chat.completions.create({
+            const replyTextRaw = await chatCompletionWithRetry({
                 model: "openrouter/free",
                 temperature: 0.3,
                 max_tokens: 400,
@@ -127,8 +168,7 @@ RULES:
                 ]
             });
 
-            let replyText = completion.choices[0].message.content.trim();
-            replyText = replyText.replace(/"/g, "").trim();
+            let replyText = replyTextRaw.replace(/"/g, "").trim();
 
             console.log("✨ REPLY:");
             console.log(replyText);
@@ -150,13 +190,11 @@ RULES:
 
         } catch (error) {
             console.error("❌ Error generating response:", error);
-            const isRateLimit =
-                error?.code === "rate_limit_exceeded" ||
-                error?.code === "insufficient_quota" ||
-                (error?.message && (String(error.message).includes("rate_limit") || String(error.message).includes("quota")));
-            const errorMsg = isRateLimit
+            const errorMsg = isQuotaError(error)
                 ? "Sorry, I'm done for today. Heading for a break. Please come back a bit later."
-                : "I'm currently undergoing maintenance. Please try again shortly.";
+                : isBusyError(error)
+                    ? "Sorry, I'm handling multiple requests at the same time. Please try again in a minute."
+                    : "I'm currently undergoing maintenance. Please try again shortly.";
             const sendOptions = msg.message_thread_id ? { message_thread_id: msg.message_thread_id } : {};
             bot.sendMessage(chatId, errorMsg, sendOptions);
         }

@@ -24,6 +24,10 @@ $ErrorActionPreference = "Stop"
 
 function Log { param($Msg) $dt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"; Write-Host "[$dt] $Msg" }
 
+# Explicit OpenSSH paths (for Task Scheduler context)
+$SshExe = Join-Path $env:SystemRoot "System32\OpenSSH\ssh.exe"
+$ScpExe = Join-Path $env:SystemRoot "System32\OpenSSH\scp.exe"
+
 # Resolve project root: script is in task_dev_utils/tools/, so root is 4 levels up
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $ProjectRoot = (Get-Item $ScriptDir).Parent.Parent.Parent.Parent.FullName
@@ -32,9 +36,28 @@ Log "Project root: $ProjectRoot"
 if (-not (Test-Path (Join-Path $ProjectRoot "0_handshake"))) {
     throw "Project root not found. Expected 0_handshake at: $ProjectRoot"
 }
-
 $Timestamp = Get-Date -Format "yyyy-MM-dd_HHmm"
 $ZipName = "Stables_backup_$Timestamp.zip"
+
+# 1. Automated GitHub Sync
+Log "Starting GitHub Sync..."
+try {
+    Set-Location $ProjectRoot
+    $Changes = git status --porcelain
+    if ($Changes) {
+        Log "Changes detected. Committing and pushing..."
+        git add .
+        git commit -m "Automated Backup Sync: $Timestamp"
+        git push origin main
+        Log "GitHub sync complete."
+    } else {
+        Log "No changes to push to GitHub."
+    }
+} catch {
+    Log "WARNING: GitHub sync failed. Proceeding with zip backup. Error: $_"
+}
+
+# 2. Local/Vultr Backup Pipeline
 $LocalZipPath = Join-Path $env:TEMP $ZipName
 
 # Folders to backup (handshake Source of Truth + development + archive)
@@ -123,17 +146,21 @@ Log "Local copy saved to: $LocalCopyPath"
 
 # SCP to Vultr (optional)
 if (-not $SkipVultr) {
-    $RemoteDest = "${VultrUser}@${VultrHost}:${BackupBaseOnServer}/"
-    Log "Uploading to Vultr..."
-    ssh "${VultrUser}@${VultrHost}" "mkdir -p $BackupBaseOnServer" 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        Log "WARNING: Cannot reach Vultr (ssh failed). Is SSH key set up? Run: ssh root@$VultrHost"
+    if (-not (Test-Path $SshExe) -or -not (Test-Path $ScpExe)) {
+        Log "WARNING: OpenSSH client not found at $SshExe / $ScpExe - skipping Vultr upload."
     } else {
-        scp $LocalZipPath $RemoteDest
+        $RemoteDest = "${VultrUser}@${VultrHost}:${BackupBaseOnServer}/"
+        Log "Uploading to Vultr..."
+        & $SshExe "${VultrUser}@${VultrHost}" "mkdir -p $BackupBaseOnServer" 2>&1 | Out-Null
         if ($LASTEXITCODE -ne 0) {
-            Log "WARNING: SCP upload failed. Local backup saved at: $LocalCopyPath"
+            Log "WARNING: Cannot reach Vultr (ssh failed, exit code $LASTEXITCODE). Is SSH key set up? Run: ssh root@$VultrHost"
         } else {
-            Log "Backup complete. Stored at $BackupBaseOnServer/$ZipName on $VultrHost"
+            & $ScpExe $LocalZipPath $RemoteDest
+            if ($LASTEXITCODE -ne 0) {
+                Log "WARNING: SCP upload failed with exit code $LASTEXITCODE. Local backup saved at: $LocalCopyPath"
+            } else {
+                Log "Backup complete. Stored at $BackupBaseOnServer/$ZipName on $VultrHost"
+            }
         }
     }
 } else {

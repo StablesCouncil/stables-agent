@@ -1,0 +1,221 @@
+Chapter — Execution, Settlement, and Value Transfer Model
+1. General Principle
+
+Stables operates as a continuous economic system in which transactions are executed off-chain and settled on-chain.
+
+The system distinguishes between:
+
+execution, where economic activity occurs through signed state transitions between participants
+
+settlement, where the resulting state is committed to the base layer and becomes globally final
+
+This structure enables unrestricted economic activity while preserving deterministic integrity at the protocol level.
+
+2. Dual-Layer Finality
+
+Stables defines two complementary forms of finality:
+
+Economic Finality
+
+Economic finality is achieved when a transaction is accepted and represented by a valid signed state between participants.
+At this stage, value is considered usable within the system.
+
+Settlement Finality
+
+Settlement finality is achieved when the corresponding state is committed on-chain and validated by the base layer.
+At this stage, the state becomes globally indisputable and forms part of the canonical protocol record.
+
+Economic activity may proceed continuously under economic finality, while settlement occurs asynchronously.
+
+3. Nature of Off-Chain Value
+
+Off-chain transactions do not transfer on-chain tokens.
+They represent the transfer of enforceable claims on future settlement.
+
+Each claim:
+
+is derived from a signed and sequential state
+
+represents a right to a specific settlement outcome
+
+remains valid until replaced by a more recent state or settled on-chain
+
+Participants may:
+
+retain such claims until settlement
+
+or transfer them further through subsequent signed state transitions
+
+Only upon settlement do these claims convert into final on-chain balances.
+
+4. Off-Chain State Transitions
+
+Transactions between participants are expressed as sequential state updates.
+
+Each state update must:
+
+be cryptographically signed by all relevant parties
+
+include a strictly increasing sequence identifier
+
+define the resulting balances and allocations
+
+invalidate all prior states
+
+State transitions are deterministic and self-contained, allowing any valid state to be submitted for settlement.
+
+5. Spendability and Economic Use
+
+A recipient may consider value spendable upon economic finality, provided that:
+
+the state update is valid and signed
+
+the recipient can unilaterally enforce the state on-chain
+
+the state complies with protocol rules
+
+At this stage, the recipient holds a settlement claim, which may be:
+
+retained until settlement
+
+or used in subsequent transactions through new state updates
+
+Economic use does not require prior on-chain settlement.
+
+6. Transfer of Claims
+
+Value may circulate off-chain through the transfer of claims.
+
+Such transfers:
+
+extend the current state to include new participants
+
+preserve enforceability of the resulting state
+
+maintain strict sequencing and signature requirements
+
+The protocol ensures that all valid claims remain convertible into on-chain settlement.
+
+7. Settlement Policies
+
+Participants may define their own settlement strategies, including:
+
+time-based intervals
+
+value or exposure thresholds
+
+counterparty-specific conditions
+
+risk-adjusted criteria
+
+The protocol imposes no fixed settlement frequency, provided that all states remain valid and enforceable.
+
+This allows heterogeneous economic behavior, from high-frequency retail flows to near-immediate settlement for high-value transactions.
+
+8. Net Settlement
+
+Multiple off-chain transactions may be aggregated into a single settlement.
+
+Only the final net position between participants is committed on-chain.
+
+This mechanism:
+
+reduces on-chain load
+
+preserves full economic correctness
+
+enables scalable transaction throughput
+
+9. Unilateral Settlement
+
+Any participant holding a valid signed state may initiate settlement on-chain without requiring cooperation from other parties.
+
+This process:
+
+converts the latest agreed state into on-chain balances
+
+invalidates all prior states
+
+guarantees that no participant can block or delay settlement
+
+The base layer deterministically validates submitted states.
+
+10. Dispute Resolution
+
+The protocol supports resolution of conflicting or outdated state submissions.
+
+Where applicable:
+
+newer valid states supersede older ones
+
+invalid or replayed states are rejected
+
+participants may challenge submitted states within defined rules
+
+This ensures that the most recent valid agreement prevails.
+
+11. Fee Model for Off-Chain Transactions
+
+Fees may be embedded directly within off-chain state transitions.
+
+Each valid state update may allocate a portion of value to designated recipients, including:
+
+reserve pools
+
+protocol treasury
+
+service providers
+
+intermediaries
+
+Fees are:
+
+defined by protocol rules and wallet enforcement
+
+included in signed state transitions
+
+accumulated through successive updates
+
+realized upon settlement
+
+This enables deterministic fee capture without requiring each transaction to be recorded on-chain.
+
+12. Separation of Local State and Global Truth
+
+Off-chain state transitions represent local or bilateral economic agreements.
+
+Only on-chain state defines:
+
+total supply
+
+collateralization
+
+reserve positions
+
+final ownership
+
+No off-chain state may alter global protocol invariants without settlement.
+
+13. Deterministic Integrity
+
+All settlement outcomes must be:
+
+verifiable from submitted data
+
+independent of discretionary intervention
+
+consistent with protocol invariants
+
+The system maintains integrity by ensuring that every valid state can be resolved on-chain.
+
+14. Structural Outcome
+
+This model establishes Stables as:
+
+a continuous execution system operating off-chain
+
+a deterministic settlement system anchored on-chain
+
+a scalable economic layer where activity is compressed and finalized efficiently
+
+As adoption increases, system efficiency improves through aggregation and net settlement, while maintaining full verifiability and enforceability.

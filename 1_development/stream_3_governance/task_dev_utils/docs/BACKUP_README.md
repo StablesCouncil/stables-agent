@@ -21,7 +21,7 @@ The script **resolves the project root** from its own path (4 levels up from `to
 | Field | Value |
 |-------|-------|
 | **Program/script** | `powershell.exe` |
-| **Add arguments** | `-NoProfile -ExecutionPolicy Bypass -File "C:\Users\Charles\Documents\Stables\1_development\stream_3_governance\task_dev_utils\tools\backup-stables.ps1"` |
+| **Add arguments** | `-NoProfile -ExecutionPolicy Bypass -File "C:\Users\Charles\Documents\Stables\1_development\stream_3_governance\task_dev_utils\tools\backup-stables.ps1" *> "C:\Users\Charles\Documents\Backup\Stables\scheduler_backup_log.txt"` |
 | **Start in (optional)** | `C:\Users\Charles\Documents\Stables` |
 
 > **Critical:** Fill in "Start in" with the project root. An empty "Start in" can cause path resolution issues.
@@ -114,3 +114,11 @@ cd C:\Users\Charles\Documents\Stables
 - **OpenSSH:** `ssh` and `scp` in PATH (Windows 10+)
 - **SSH key auth** to `root@140.82.36.166` (or password when prompted)
 - **robocopy** (built-in on Windows)
+
+### 7b. Scheduler user context
+
+For Vultr upload to work (ssh keys available), configure the task to:
+
+- Use account: `LITETOP\Charles`
+- **Run only when user is logged on** (not “whether user is logged on or not”)
+- Do **not** change the `backup-stables.ps1` arguments in the XML; update them via Task Scheduler UI if needed.

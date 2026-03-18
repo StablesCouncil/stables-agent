@@ -25,6 +25,7 @@
   - [II.7 Mechanical Identity of the Core](stables_charter.md#ii7-mechanical-identity-of-the-core)  
   - [II.8 Three Structural Pillars of Soundness](stables_charter.md#ii8-three-structural-pillars-of-soundness)  
 - [Article III — Structural Layers and Modularity](stables_charter.md#article-iii--structural-layers-and-modularity)  
+-  - [III.3 Execution, Settlement, and Value Transfer Model](stables_charter.md#iii3-execution-settlement-and-value-transfer-model)  
 - [Article IV — Merchant Activation Doctrine (Growth Architecture)](stables_charter.md#article-iv--merchant-activation-doctrine-growth-architecture)  
 - [Article V — Oracle Framework](stables_charter.md#article-v--oracle-framework)  
 - [Article VI — Transparency Doctrine](stables_charter.md#article-vi--transparency-doctrine)  
@@ -97,6 +98,36 @@ Stables is:
 > A sovereign banking infrastructure protocol on Minima, with immutable monetary invariants governed by deterministic code, with a Council that stewards expansion and manages systemic risk within invariant boundaries, while acting as a bridge between current-world liabilities and Minima-native economic coordination across ecosystems.
 
 Stables is a mechanically continuous system. It does not suspend, pause, or switch regimes. It adjusts.
+
+### I.5 Treasury Allocation and Market Participant Mandate
+
+The Council stewards a protocol treasury to fund operations, growth, and systemic resilience. At a fixed cadence (e.g., every 3 months), the Council shall make an explicit budget allocation decision across defined buckets. The purpose is to keep spending transparent, prevent drift, and ensure that risk-bearing activities are chosen intentionally.
+
+#### I.5.1 Periodic Budget Allocation Buckets
+
+The Council budget allocation shall be expressed as percentages or amounts across the following categories:
+
+- **Operations**: infrastructure costs required to keep Stables running (servers, monitoring, hosting, tooling, maintenance).
+- **Growth and Business Development**: merchant acquisition, partnership outreach, distribution campaigns, and adoption initiatives.
+- **Community Incentives**: ambassador support, attribution and reward programs, on-chain or off-chain retribution pushes as approved by governance.
+- **Security and Assurance**: audits, formal verification, incident response preparation, and security tooling.
+- **Market Participant Allocation**: capital dedicated to acting as a market participant in support of system health and market efficiency.
+
+#### I.5.2 Market Participant Allocation (Purpose and Constraints)
+
+The market participant allocation exists to improve the stability and robustness of the system by participating in markets where doing so is beneficial. This mandate may include taking advantage of arbitrage opportunities, providing liquidity, and executing stabilising trades when appropriate.
+
+This mandate is bounded by the immutable monetary core. It must not override deterministic solvency rules, nor create discretionary monetary issuance. The Council may adjust parameters and thresholds only within the charter-defined governance process and within invariant boundaries.
+
+#### I.5.3 Structure-Level Simulation and Transparency
+
+To prevent governance decisions from being made blindly, Stables shall provide a structure-level simulator that allows participants to stress-test the system under Minima price changes and observe, at minimum:
+
+- the Coverage Ratio trajectory under price shocks,
+- conversion behaviour of the Coverage Fund into xMinima equity in crisis conditions, and
+- the impact and behaviour of the Council’s market participant allocation (treasury segment) under stress and potential arbitrage regimes.
+
+The simulator is a governance tool. It makes visible what budget allocation and threshold decisions imply before those decisions are enacted.
 
 ### I.3 Dual Destination Framework
 
@@ -299,6 +330,43 @@ The Stables architecture is layered to separate immutable foundations from evolv
 - Expansion remains modular
 
 This layering preserves sovereignty at each level and prevents doctrinal rigidity. Layer 1 does not change. Layer 2 evolves within the boundaries set by Layer 1. Layer 3 is unconstrained by the Council.
+
+### III.3 Execution, Settlement, and Value Transfer Model
+
+Stables operates as a continuous economic system in which transactions may be executed off-chain and settled on-chain. The protocol distinguishes between:
+
+- **Execution** — economic activity expressed as signed state transitions between participants
+- **Settlement** — finalisation of the resulting state on the Minima base layer, becoming globally final
+
+This structure enables high-frequency economic activity while preserving deterministic integrity at the protocol level.
+
+#### III.3.1 Dual-Layer Finality
+
+Stables recognises two complementary forms of finality:
+
+- **Economic finality**: a transaction is accepted and represented by a valid signed state between participants, making value usable within the system as an enforceable settlement claim.
+- **Settlement finality**: the corresponding state is committed on-chain and validated by the base layer, making it globally indisputable and part of the canonical record.
+
+Economic activity may proceed under economic finality while settlement occurs asynchronously.
+
+#### III.3.2 Off-Chain State Transitions (Claims)
+
+Off-chain transactions do not transfer on-chain tokens. They transfer **enforceable claims** on future settlement outcomes. Each state update must:
+
+- be cryptographically signed by all relevant parties
+- include a strictly increasing sequence identifier
+- define resulting balances and allocations
+- invalidate prior states
+
+Any participant holding a valid signed state may initiate settlement on-chain without requiring cooperation from other parties, ensuring that no counterparty can block exit from an off-chain state into global settlement.
+
+#### III.3.3 Net Settlement and Participant Policies
+
+Multiple off-chain transactions may be aggregated into a single on-chain settlement where only the final net positions are committed. Participants may adopt heterogeneous settlement strategies (time-based intervals, exposure thresholds, counterparty conditions, risk-adjusted criteria). The protocol imposes no fixed settlement frequency provided states remain valid and enforceable.
+
+#### III.3.4 Separation of Local State and Global Truth
+
+Off-chain states represent local agreements. Only on-chain settlement defines global truth, including total supply, core collateralisation, reserve positions, and final ownership. No off-chain state may alter global protocol invariants without settlement.
 
 ---
 

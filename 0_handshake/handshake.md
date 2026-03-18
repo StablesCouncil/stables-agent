@@ -1,6 +1,6 @@
 # STABLES: MANDATORY HANDSHAKE PROTOCOL (V10)
 **Status**: ACTIVE / Unified
-**Last Calibration**: 2026-03-03
+**Last Calibration**: 2026-03-19 (v11)
 
 ## 1. THE PERMANENT RULES (GOVERNANCE)
 - **Stables Protocol**: All project activities must occur in three dedicated streams:
@@ -68,6 +68,7 @@
     - Email: `charles@0xhorizon.xyz`
     - Website: `https://0xhorizon.xyz/`
     - **Rule**: Keep the personal account private/unlinked from the StablesCouncil Organization to maintain absolute independence.
+- **Automated Sync (MANDATORY)**: To prevent repository lag, all agents MUST run `sync-stables.ps1` at the end of every task or session. The daily Vultr backup task also performs an automated Git push to `origin/main`. If an agent is unable to push, it must warn the user immediately.
 - **Production Server (Vultr)**:
     - IP: `140.82.36.166`
     - User: `root`
@@ -104,7 +105,12 @@ Acknowledge the settled economic model (Do NOT re-debate unless requested):
 
 ### [Step 3] Vested Assets Indexing
 - **MANDATORY**: INDEX the `2_current\stream_1_app\prod_brand_masters\` directory.
-- **Golden Logic**: When branding (Logo/Icon) is required, perform an **On-Demand Extraction** (mask/composite/resize) from these masters. **NEVER** use AI generation.
+- **Brand Sovereignty (CRITICAL)**:
+  - **The ONLY allowed source** for *any* Stables logo/icon/symbol/wordmark is `2_current\stream_1_app\prod_brand_masters\`.
+  - If an app/presentation needs an icon (favicon, topbar, splash, etc), you must **derive/export** it from these masters (resize/composite) into `1_development/` for use.
+  - **Never** use ad-hoc icons from old bundles, archives, or external “app logos”.
+  - If the required master input is missing or unclear, **stop and ask Charles**. Do not substitute.
+- **Golden Logic**: When branding (Logo/Icon) is required, perform an **On-Demand Extraction** (mask/composite/resize) from the brand masters workflow. **NEVER** use AI generation.
 
 ### [Step 4] Visual Identity Calibration
 Acknowledge the specific design tokens:

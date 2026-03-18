@@ -11,6 +11,7 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "..", "task_stablesagent-brain-base", ".env") });
 const fs = require("fs");
+const crypto = require("crypto");
 const { MemoryVectorStore } = require("langchain/vectorstores/memory");
 const OpenAI = require("openai");
 
@@ -18,16 +19,50 @@ const API_BASE = "https://www.moltbook.com/api/v1";
 const DB_FILE = path.join(__dirname, "vector_db.json");
 const STATE_FILE = path.join(__dirname, "moltbook_state.json");
 
+function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+}
+
+function extractReplyText(completion) {
+    const txt = completion?.choices?.[0]?.message?.content;
+    return typeof txt === "string" ? txt.trim() : null;
+}
+
+function parseSuspendedUntil(message) {
+    if (!message || typeof message !== "string") return null;
+    const m = message.match(/suspended until\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)/i);
+    return m ? m[1] : null;
+}
+
+function normalizeForFingerprint(text) {
+    return String(text || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .replace(/[^\p{L}\p{N}\s]/gu, "")
+        .trim();
+}
+
+function commentFingerprint(text) {
+    const normalized = normalizeForFingerprint(text);
+    return crypto.createHash("sha256").update(normalized).digest("hex");
+}
+
 function loadState() {
-    if (!fs.existsSync(STATE_FILE)) return { lastPostAt: null, commentedPostIds: [] };
+    if (!fs.existsSync(STATE_FILE)) return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null };
     try {
-        return JSON.parse(fs.readFileSync(STATE_FILE, "utf-8"));
-    } catch { return { lastPostAt: null, commentedPostIds: [] }; }
+        const raw = JSON.parse(fs.readFileSync(STATE_FILE, "utf-8"));
+        return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null, commentFingerprints: [], ...raw };
+    } catch { return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null }; }
 }
 
 function saveState(state) {
     const kept = (state.commentedPostIds || []).slice(-100);
-    fs.writeFileSync(STATE_FILE, JSON.stringify({ ...state, commentedPostIds: kept }), "utf-8");
+    const keptFps = (state.commentFingerprints || []).slice(-200);
+    fs.writeFileSync(
+        STATE_FILE,
+        JSON.stringify({ ...state, commentedPostIds: kept, commentFingerprints: keptFps }),
+        "utf-8"
+    );
 }
 
 function checkEnv() {
@@ -43,15 +78,28 @@ function checkEnv() {
 
 async function moltbookFetch(endpoint, options = {}) {
     const url = endpoint.startsWith("http") ? endpoint : `${API_BASE}${endpoint}`;
-    const res = await fetch(url, {
-        ...options,
-        headers: {
-            Authorization: `Bearer ${process.env.MOLTBOOK_API_KEY}`,
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-    return res.json();
+    // Basic timeout + retry to reduce transient ETIMEDOUT failures.
+    for (let attempt = 1; attempt <= 2; attempt++) {
+        const controller = new AbortController();
+        const t = setTimeout(() => controller.abort(), 15000);
+        try {
+            const res = await fetch(url, {
+                ...options,
+                signal: controller.signal,
+                headers: {
+                    Authorization: `Bearer ${process.env.MOLTBOOK_API_KEY}`,
+                    "Content-Type": "application/json",
+                    ...options.headers,
+                },
+            });
+            return await res.json();
+        } catch (e) {
+            if (attempt === 2) throw e;
+            await sleep(1500);
+        } finally {
+            clearTimeout(t);
+        }
+    }
 }
 
 async function moltbookGet(path) {
@@ -96,7 +144,9 @@ async function generateReply(query, vectorStore, llm) {
             { role: "user", content: `Question: "${query}"\n\nContext:\n${context}` },
         ],
     });
-    return completion.choices[0].message.content.trim().replace(/^["']|["']$/g, "");
+    const txt = extractReplyText(completion);
+    if (!txt) throw new Error("Empty completion content");
+    return txt.replace(/^["']|["']$/g, "");
 }
 
 async function generatePost(vectorStore, llm) {
@@ -126,7 +176,8 @@ No emojis. No em-dashes. No "decentralized" or "DeFi". Title max 80 chars (no #)
             { role: "user", content: `Context:\n${context}\n\nWrite one post.` },
         ],
     });
-    let text = completion.choices[0].message.content.trim();
+    let text = extractReplyText(completion);
+    if (!text) throw new Error("Empty completion content");
     text = text.replace(/^#+\s*/, "");
     const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
     const title = (lines[0] || text).replace(/^#+\s*/, "").slice(0, 80);
@@ -159,7 +210,8 @@ Very strict rules:
             { role: "user", content: `Post: "${text}"\n\nCan we add a useful comment? If yes, write it. If no, reply NO.` },
         ],
     });
-    const out = completion.choices[0].message.content.trim();
+    const out = extractReplyText(completion);
+    if (!out) return null;
     return out.toUpperCase() === "NO" ? null : out.slice(0, 2000);
 }
 
@@ -210,7 +262,9 @@ async function solveVerification(llm, challengeText) {
             { role: "user", content: challengeText },
         ],
     });
-    const ans = completion.choices[0].message.content.trim().replace(/[^0-9.\-]/g, "");
+    const txt = extractReplyText(completion);
+    if (!txt) return null;
+    const ans = txt.replace(/[^0-9.\-]/g, "");
     const num = parseFloat(ans);
     return isNaN(num) ? null : num.toFixed(2);
 }
@@ -243,6 +297,12 @@ async function main() {
     const state = loadState();
     console.log("Loaded state:", JSON.stringify(state));
 
+    const suspendedUntilMs = state.suspendedUntil ? new Date(state.suspendedUntil).getTime() : 0;
+    if (suspendedUntilMs && Date.now() < suspendedUntilMs) {
+        console.log("Agent is suspended until", state.suspendedUntil, "Skipping all Moltbook actions.");
+        return;
+    }
+
     // 1. Create new post (rate-limited)
     const now = Date.now();
     const lastPost = state.lastPostAt ? new Date(state.lastPostAt).getTime() : 0;
@@ -262,6 +322,15 @@ async function main() {
                 console.log("Posted:", title);
             } else {
                 console.log("Post response without id:", JSON.stringify(postRes));
+                if (postRes?.statusCode === 403) {
+                    const until = parseSuspendedUntil(postRes?.message);
+                    if (until) {
+                        state.suspendedUntil = until;
+                        saveState(state);
+                        console.log("Recorded suspension until", until);
+                        return;
+                    }
+                }
             }
         } catch (e) {
             console.log("Post failed:", e.message);
@@ -295,6 +364,16 @@ async function main() {
         let reply = await generateReply(query, vectorStore, llm);
         if (reply.length > 2000) reply = reply.slice(0, 1997) + "...";
 
+        const fp = commentFingerprint(reply);
+        if ((state.commentFingerprints || []).includes(fp)) {
+            console.log("Skipping duplicate reply fingerprint.");
+            await moltbookPost(`/notifications/read-by-post/${item.post_id}`);
+            continue;
+        }
+
+        // Small jitter to avoid bot-like rhythm and reduce duplicate detection.
+        await sleep(10_000 + Math.floor(Math.random() * 25_000));
+
         const commentRes = await moltbookPost(`/posts/${item.post_id}/comments`, { content: reply });
         const v = commentRes?.verification || commentRes?.comment?.verification;
         if (v?.verification_code && v?.challenge_text) {
@@ -304,6 +383,9 @@ async function main() {
                 console.log("Verified comment.");
             }
         }
+
+        state.commentFingerprints = [...(state.commentFingerprints || []), fp];
+        saveState(state);
 
         await moltbookPost(`/notifications/read-by-post/${item.post_id}`);
     }
@@ -323,6 +405,18 @@ async function main() {
             const comment = await shouldCommentAndGenerate(post, vectorStore, llm);
             if (!comment) continue;
 
+            const fp = commentFingerprint(comment);
+            if ((state.commentFingerprints || []).includes(fp)) {
+                console.log("Skipping duplicate feed comment fingerprint.");
+                commented.add(postId);
+                state.commentedPostIds = [...commented];
+                saveState(state);
+                continue;
+            }
+
+            // Small jitter to avoid bot-like rhythm and reduce duplicate detection.
+            await sleep(10_000 + Math.floor(Math.random() * 25_000));
+
             const commentRes = await moltbookPost(`/posts/${postId}/comments`, { content: comment });
             const v = commentRes?.verification || commentRes?.comment?.verification;
             if (v?.verification_code && v?.challenge_text) {
@@ -331,8 +425,10 @@ async function main() {
             }
             commented.add(postId);
             state.commentedPostIds = [...commented];
+            state.commentFingerprints = [...(state.commentFingerprints || []), fp];
             commentsAdded++;
             console.log("Commented on", authorName, ":", comment.slice(0, 50) + "...");
+            saveState(state);
             await new Promise((r) => setTimeout(r, 25000));
         }
         saveState(state);

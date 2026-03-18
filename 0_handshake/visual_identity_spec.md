@@ -144,13 +144,10 @@ box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6),
 ## Brand Asset Integration
 
 ### Master Assets (MUST USE - NEVER RECREATE)
-- **Symbol**: `2_current/assets/brand_masters/master_symbol.png`
-  - 3D chrome "S" with cyan inner glow
-  - Always on transparent background
-  
-- **Wordmark**: `2_current/assets/brand_masters/master_wordmark_transparent.png`
-  - 3D "STABLES" text in metallic finish
-  - Always on transparent background
+- **Source of truth (ONLY allowed)**: `2_current/stream_1_app/prod_brand_masters/`
+  - This folder contains the Council-approved brand master workflow for icons/wordmarks (and any scripts/recipes used to export them).
+  - Any favicon/app icon used in `1_development/` must be an **export/derivative** from this source of truth.
+  - If the master inputs are missing, do not substitute from archives or third-party logos. Escalate to Charles.
 
 ### Usage Rules
 1. Use original PNG files - never regenerate
@@ -404,13 +401,9 @@ box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
 ## Brand Assets
 
 ### Required Elements
-- **Master Symbol**: `2_current/assets/brand_masters/master_symbol.png`
-  - 3D chrome "S" with cyan inner glow
-  - Use on transparent background
-  
-- **Master Wordmark**: `2_current/assets/brand_masters/master_wordmark_transparent.png`
-  - 3D "STABLES" text in metallic finish
-  - Use on transparent background
+- **Brand masters (ONLY allowed source)**: `2_current/stream_1_app/prod_brand_masters/`
+  - This folder is the Council-approved source of truth for the Stables symbol/wordmark workflow.
+  - Any favicon/app icon used in `1_development/` must be exported/derived from these masters (resize/composite), never substituted from archives or third-party logos.
 
 ### Integration Rules
 1. Always use master assets - never recreate
