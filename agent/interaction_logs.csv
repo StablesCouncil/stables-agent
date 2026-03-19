@@ -197,3 +197,5 @@ The knowledge base is available in a standard format at the GitHub repository, a
 "2026-03-18T02:28:21.366Z","STABLES如何扩展商家","根据提供的上下文，Stables系统本身主要定义了“人们”（买家、储蓄者、发送者）作为核心参与者，他们使用Stables进行支付、储蓄和转账。上下文没有明确描述一个独立的、专门针对“商家”的扩展计划或策略。
 
 然而，可以推断商家可以作为“人们”的一部分加入系统。他们可以通过接受Stables作为支付方式来参与，从而利用"
+"2026-03-18T06:14:40.993Z","你有合作伙伴吗","根据提供的上下文，没有关于合作伙伴的信息。"
+"2026-03-18T06:20:16.206Z","How will I be able to manage my leverage level of xMinima","You will be able to manage your leverage level of xMinima through the dedicated Liquidity Fund that provides continuous liquidity between xMinima and Minima. This allows you to enter and exit positions as needed without destabilizing the system. Your leverage is determined by your exposure to xMinima, which gives you proportional voting power (1 xMinima = 1 vote) and allows you to absorb volatility in exchange for potential upside. You can adjust your position by trading in the Liquidity Fund based on your risk tolerance and market conditions."
