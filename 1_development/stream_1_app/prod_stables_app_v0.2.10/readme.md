@@ -1,6 +1,6 @@
 # Stables — Documentation
 
-Stables is an experimental, protocol-focused research project built on Minima.
+Stables is an experimental, protocol-focused research project built on Winiwa.
 The project explores minting, burning, oracle, and collateralization mechanisms
 for a non-custodial, censorship-resistant monetary system.
 

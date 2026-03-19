@@ -24,6 +24,7 @@
   - [II.6 No Forced Conversion](stables_charter.md#ii6-no-forced-conversion)  
   - [II.7 Mechanical Identity of the Core](stables_charter.md#ii7-mechanical-identity-of-the-core)  
   - [II.8 Three Structural Pillars of Soundness](stables_charter.md#ii8-three-structural-pillars-of-soundness)  
+  - [II.9 Asset-Liability Structure and Risk Topology](stables_charter.md#ii9-asset-liability-structure-and-risk-topology)  
 - [Article III — Structural Layers and Modularity](stables_charter.md#article-iii--structural-layers-and-modularity)  
 -  - [III.3 Execution, Settlement, and Value Transfer Model](stables_charter.md#iii3-execution-settlement-and-value-transfer-model)  
 - [Article IV — Merchant Activation Doctrine (Growth Architecture)](stables_charter.md#article-iv--merchant-activation-doctrine-growth-architecture)  
@@ -306,6 +307,26 @@ The durability of the Stables monetary structure rests on three independent pill
 1. **Minima Non-Zero Value** — Minima functions as a scarce, neutral settlement asset on a sovereign base layer. Its value does not rely on a single jurisdiction's coercive power but on the cost of securing the network and the collective decision of participants to use it as their monetary substrate.
 2. **xMinima Recapitalisation Layer** — Losses under stress are structurally assigned to committed capital providers in the junior recapitalisation layer (xMinima and related instruments), not to unsuspecting holders of the monetary unit. When stress increases, the architecture is designed so that new capital can enter at more attractive terms.
 3. **Merchant-Based Physical Arbitrage** — Real-world merchant acceptance at par, combined with transparent redemption and pricing, creates a physical arbitrage channel: stablecoins trading below par can be used to obtain goods and services at a discount, generating corrective demand. The peg is supported by actual commerce, not by opaque discretionary defence.
+
+### II.9 Asset-Liability Structure and Risk Topology
+
+Stables is constructed around a deliberately simple and explicit balance sheet.
+
+At its foundation, the system is anchored on a single base asset: Minima. All collateral value originates from Minima, and therefore the sole external market risk on the asset side is the price of Minima. A decline in Minima introduces systemic stress through its direct effect on collateral value.
+
+All other risks arise endogenously from within the system. These include oracle behavior, liquidity conditions, liquidation dynamics, parameter configuration, and participant interactions. These are design- and execution-dependent risks, subject to engineering, observation, and continuous scrutiny.
+
+On the liability side, the protocol may issue multiple Stables denominated in different reference units. These liabilities are not homogeneous. Each Stable represents a distinct economic exposure that reflects the characteristics of its reference unit.
+
+Systemic risk therefore does not arise solely from the base asset. It also emerges from liability composition and concentration. A large share of issuance in a volatile or structurally unstable reference unit increases system exposure even when the base asset is unchanged.
+
+The protocol does not conceal or discretionary redistribute this exposure. It makes the structure visible.
+
+Liability distribution is continuously observable. Participants can see which Stables are in circulation, in what proportions, and how those proportions evolve through time. This transparency allows each participant to form an independent risk assessment and act accordingly.
+
+Within this structure, xMinima represents the residual risk-bearing layer. It retains value as long as Minima has value and the system remains solvent. Its role is not to mirror activity volume, but to absorb variability. Under stress, it is first-loss and recapitalisation-sensitive; in equilibrium, it represents the residual claim on the structure.
+
+Stables therefore operates as a transparent balance sheet in which a single collateral asset supports multiple economic realities. Stability is not imposed by discretionary intervention; it emerges from structure, visibility, and participant behavior.
 
 ---
 

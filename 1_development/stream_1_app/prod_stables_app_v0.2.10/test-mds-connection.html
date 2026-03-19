@@ -118,10 +118,10 @@
         <div id="results"></div>
     </div>
 
-    <!-- MDS Library (provided by MinimaOS) -->
+    <!-- MDS Library (provided by Winiwa OS) -->
     <script type="text/javascript" src="mds.js"></script>
 
-    <!-- Our Minima Integration -->
+    <!-- Our Winiwa Integration -->
     <script src="assets/minima-integration.js"></script>
 
     <script>
@@ -129,12 +129,12 @@
         window.addEventListener('load', function () {
             const statusEl = document.getElementById('mdsStatus');
 
-            if (typeof MDS !== 'undefined') {
+                if (typeof MDS !== 'undefined') {
                 statusEl.className = 'status success';
-                statusEl.innerHTML = '<strong>✅ MDS Available</strong><span class="badge ok">RUNNING IN MINIMAOS</span><br>You can now test blockchain functions!';
+                statusEl.innerHTML = '<strong>✅ MDS Available</strong><span class="badge ok">RUNNING IN WINIWA OS</span><br>You can now test blockchain functions!';
             } else {
                 statusEl.className = 'status error';
-                statusEl.innerHTML = '<strong>❌ MDS Not Available</strong><span class="badge fail">BROWSER MODE</span><br>Please install this MiniDapp in MinimaOS to test blockchain features.';
+                statusEl.innerHTML = '<strong>❌ MDS Not Available</strong><span class="badge fail">BROWSER MODE</span><br>Please install this MiniDapp in Winiwa OS to test blockchain features.';
             }
         });
 
@@ -153,7 +153,7 @@
 
         async function testConnection() {
             if (!Minima.isAvailable()) {
-                showResult('Connection Test', { error: 'MDS not available - not running in MinimaOS' }, true);
+                showResult('Connection Test', { error: 'MDS not available - not running in Winiwa OS' }, true);
                 return;
             }
 

@@ -213,7 +213,7 @@ function renderContactForm(contact = null) {
         </div>
 
         <div>
-          <label for="contactAddress">Minima Address *</label>
+          <label for="contactAddress">Winiwa Address *</label>
           <input type="text" id="contactAddress" placeholder="Mx..." value="${formData.address}" required />
         </div>
 

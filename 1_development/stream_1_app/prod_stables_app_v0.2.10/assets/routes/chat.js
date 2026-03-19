@@ -16,7 +16,7 @@ function loadChatContacts() {
   }
 }
 
-// Placeholder: Load messages from Minima transactions
+// Placeholder: Load messages from Winiwa transactions
 // In production, this would call MDS.cmd("coins") or MDS.cmd("history") 
 // and parse state variables for message data
 function loadMessagesFromTransactions() {

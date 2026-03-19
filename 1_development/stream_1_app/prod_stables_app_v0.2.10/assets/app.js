@@ -329,8 +329,8 @@ function close(backdropId) {
 }
 
 function openOnboard(force = false) {
-  const needsMinima = state.balances.minima <= 0;
-  if (force || needsMinima) open('onboardBackdrop');
+  const needsWiniwa = state.balances.minima <= 0;
+  if (force || needsWiniwa) open('onboardBackdrop');
 }
 
 $('phasePill').addEventListener('click', () => open('phaseBackdrop'));
@@ -357,7 +357,7 @@ $('onboardBackdrop').addEventListener('click', (e) => { if (e.target === $('onbo
 function faucetGrant(amount) {
   const granted = Number(amount || 10000);
   state.balances.minima += granted;
-  showToast('Faucet', `Granted ${fmt(granted)} test MINIMA.`);
+  showToast('Faucet', `Granted ${fmt(granted)} test WINIWA.`);
 }
 
 $('quickFaucet').addEventListener('click', () => {

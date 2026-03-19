@@ -433,7 +433,7 @@ function renderFactory(ctx) {
 
         <div class="hr"></div>
 
-        <label for="mintAmt">Total MINIMA you want to use for minting</label>
+        <label for="mintAmt">Total Winiwa you want to use for minting</label>
         <input id="mintAmt" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" value="${Math.floor(state.factory.mintAmount)}" />
         <div class="muted" style="margin-top:10px">This is the total collateral committed for this mint.</div>
       </div>
@@ -443,7 +443,7 @@ function renderFactory(ctx) {
         <div class="hr"></div>
 
         <div class="slider-wrap">
-          ${allocSlider(state, tokenQtyFromMinimaValue, fmt, 'x', '<span class="em">xMINIMA</span>', 'Beneficial owner of the protocol.')}
+          ${allocSlider(state, tokenQtyFromMinimaValue, fmt, 'x', '<span class="em">xWiniwa</span>', 'Beneficial owner of the protocol.')}
           ${allocSlider(state, tokenQtyFromMinimaValue, fmt, 'sm', 'smUSD', 'Protection layer for the protocol (more constrained).')}
           ${allocSlider(state, tokenQtyFromMinimaValue, fmt, 'm', 'mUSD', 'Day-to-day payment Stables unit.')}
         </div>
@@ -459,7 +459,7 @@ function renderFactory(ctx) {
       <div class="card">
         <div class="step-title">
           <div style="font-weight:900">Simulator</div>
-          <div class="muted">MINIMA price ±50%</div>
+          <div class="muted">Winiwa price ±50%</div>
         </div>
         <div class="hr"></div>
 
@@ -542,7 +542,7 @@ function renderFactory(ctx) {
 
       state.caps.mintedTotal += amt;
 
-      showToast('Mint', `Minted ${fmt(tokenQtyFromMinimaValue('x', state.factory.allocMinima.x))} xMINIMA, ${fmt(tokenQtyFromMinimaValue('sm', state.factory.allocMinima.sm))} smUSD, ${fmt(tokenQtyFromMinimaValue('m', state.factory.allocMinima.m))} mUSD.`);
+      showToast('Mint', `Minted ${fmt(tokenQtyFromMinimaValue('x', state.factory.allocMinima.x))} xWiniwa, ${fmt(tokenQtyFromMinimaValue('sm', state.factory.allocMinima.sm))} smUSD, ${fmt(tokenQtyFromMinimaValue('m', state.factory.allocMinima.m))} mUSD.`);
       safeRender();
     };
   }
