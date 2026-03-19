@@ -606,8 +606,12 @@
 
         /* BUTTONS */
         .btn {
-            padding: 13px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 220px;
             border-radius: 13px;
+            padding: 13px 18px;
             font-size: 14px;
             font-weight: 800;
             font-family: inherit;
@@ -1187,6 +1191,21 @@
             display: none;
             opacity: 0;
             transition: opacity .25s
+        }
+
+        /* Agent must stay reachable even when a modal is open */
+        #agentDrawer {
+            z-index: 360;
+            /* No backdrop blur: modals sit under this overlay (z 300 < 360) and looked smeared */
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+
+        /* Fill viewport — avoids a dead band under the panel (old max-height: 85dvh) */
+        #agentDrawer .agent-drawer-panel {
+            height: 100%;
+            min-height: 100dvh;
+            max-height: none;
         }
 
         .dback.open {
@@ -3085,7 +3104,7 @@
             <div class="stitle" style="margin-top:4px">
                 Cafés
                 &amp; Food</div>
-            <div class="mcard" onclick="openShopProfile('Ground Coffee Roasters')">
+            <div class="mcard" data-stables-shop="Ground Coffee Roasters" onclick="openShopProfile('Ground Coffee Roasters')">
                 <div class="mic">
                     ☕
                 </div>
@@ -3098,7 +3117,7 @@
                 </div>
                 <div class="badge b-gr">Open</div>
             </div>
-            <div class="mcard" onclick="openShopProfile('The Bread Collective')">
+            <div class="mcard" data-stables-shop="The Bread Collective" onclick="openShopProfile('The Bread Collective')">
                 <div class="mic">
                     🥖
                 </div>
@@ -3111,7 +3130,7 @@
                 <div class="badge b-gr">Open</div>
             </div>
             <div class="stitle">Retail</div>
-            <div class="mcard" onclick="openShopProfile('Open Pages Bookshop')">
+            <div class="mcard" data-stables-shop="Open Pages Bookshop" onclick="openShopProfile('Open Pages Bookshop')">
                 <div class="mic">
                     📚
                 </div>
@@ -3183,6 +3202,7 @@
                     <button class="ccy-pill on" id="actFilterAll" onclick="resetActivityFilters()">All</button>
                     <button class="ccy-pill" id="actFilterIn" onclick="setActivityFilter('in')">In</button>
                     <button class="ccy-pill" id="actFilterOut" onclick="setActivityFilter('out')">Out</button>
+                    <button class="ccy-pill" id="actFilterHidden" onclick="setActivityFilter('hidden')">Hidden</button>
                     <button class="ccy-pill" id="actCcyFilterUSDw" onclick="setActivityCcyFilter('USDw')">USDw</button>
                     <button class="ccy-pill" id="actCcyFilterEURw" onclick="setActivityCcyFilter('EURw')">EURw</button>
                     <button class="ccy-pill on" id="actSortDate" onclick="setActivitySort('date_desc')">Date</button>
@@ -3247,6 +3267,16 @@
             <div style="font-size:18px;font-weight:900;margin-bottom:3px">Council</div>
             <div class="xs mu" style="margin-bottom:12px">Public balance-sheet transparency
                 · Real-time liability visibility</div>
+            <div style="display:flex;gap:12px;align-items:center;margin:0 0 16px">
+                <div style="width:52px;height:52px;border-radius:14px;background:rgba(103,232,249,.06);border:1px solid rgba(103,232,249,.2);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
+                    <div id="councilMemberAvatarPh" style="font-size:18px;color:var(--m);font-weight:900">🪪</div>
+                    <img id="councilMemberAvatarImg" src="" alt="Council member avatar" style="display:none;width:100%;height:100%;object-fit:cover">
+                </div>
+                <div style="flex:1;min-width:0">
+                    <div style="font-size:14px;font-weight:900;margin-bottom:4px" id="councilMemberNameLabel">Council Member</div>
+                    <div class="xs mu" id="councilRoleLabel">Role: Executive (Multisig)</div>
+                </div>
+            </div>
 
             <!-- PROTOCOL LEVEL (Transplanted & Upgraded) -->
             <div class="card"
@@ -3653,7 +3683,65 @@
         <!-- SETTINGS PAGE -->
         <div class="page" id="page-settings">
             <div style="font-size:18px;font-weight:900;margin-bottom:3px">Settings</div>
-            <div class="xs mu" style="margin-bottom:16px">Settings saved in your Winiwa node</div>
+            <div class="xs mu" style="margin-bottom:16px">Council members vote, Executives execute via Multisig.</div>
+            <div class="stitle mt20">My Profile</div>
+            <div class="card" style="padding:14px 18px">
+                <div class="xs mu" style="margin-bottom:12px">This profile defines your council identity, including an NFT-style avatar preview, and the role allowed to execute council decision actions.</div>
+
+                <label class="flabel">Council Member Name</label>
+                <input class="finput" id="councilNameInput" placeholder="e.g. Council Executor" style="margin-bottom:12px">
+
+                <label class="flabel">Council Role</label>
+                <select class="fsel" id="councilExecRoleSel" style="width:100%;margin-bottom:14px">
+                    <option value="Executor">Executive (Multisig) (can execute council decisions)</option>
+                    <option value="Observer">Council Member (voting only)</option>
+                </select>
+                <div class="xs mu" style="margin-top:-6px;margin-bottom:14px">Executives execute council decisions via Multisig.</div>
+
+                <div style="height:1px;background:rgba(103,232,249,.08);margin:14px 0"></div>
+
+                <div class="fbet" style="margin-bottom:10px;align-items:flex-start">
+                    <div>
+                        <div style="font-size:14px;font-weight:900;margin-bottom:4px">NFT Avatar (local preview)</div>
+                        <div class="xs mu">Load a picture as if it were an NFT collectible image.</div>
+                    </div>
+                </div>
+
+                <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px">
+                    <div style="width:86px;height:86px;border-radius:16px;background:rgba(103,232,249,.06);border:1px solid rgba(103,232,249,.2);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
+                        <div id="councilAvatarPh" style="font-size:22px;color:var(--m);font-weight:900">NFT</div>
+                        <img id="councilAvatarPreviewImg" src="" alt="Council NFT avatar" style="display:none;width:100%;height:100%;object-fit:cover">
+                        <div style="position:absolute;right:6px;top:6px;font-size:11px;font-weight:900;color:rgba(255,255,255,.92);background:rgba(0,0,0,.35);border:1px solid rgba(103,232,249,.2);border-radius:999px;padding:3px 7px;backdrop-filter:blur(6px)">NFT</div>
+                    </div>
+                    <div style="flex:1;min-width:0">
+                        <label class="flabel">Load picture (NFT image file)</label>
+                        <input class="finput" type="file" id="councilAvatarFile" accept="image/*" onchange="onCouncilAvatarFile(this)" style="margin-bottom:10px">
+
+                        <div class="xs mu" style="margin-bottom:8px">Or use an image URL (http(s) or ipfs URL).</div>
+                        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px">
+                            <input class="finput" id="councilAvatarUrlInput" placeholder="https://... or ipfs://..." style="min-width:0;margin-bottom:0">
+                            <button class="btn" style="width:auto;padding:12px 14px" onclick="loadCouncilAvatarFromUrl()">Load</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+                    <div>
+                        <label class="flabel">NFT Contract (optional)</label>
+                        <input class="finput" id="councilNftContract" placeholder="0x... or minima collection" style="margin-bottom:0">
+                    </div>
+                    <div>
+                        <label class="flabel">Token ID (optional)</label>
+                        <input class="finput" id="councilNftTokenId" placeholder="123" style="margin-bottom:0">
+                    </div>
+                </div>
+
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
+                    <button class="btn btn-w btn-g" style="flex:1;min-width:220px" onclick="saveCouncilMemberProfile()">Save profile</button>
+                    <button class="btn" style="flex:1;min-width:220px" onclick="resetCouncilMemberProfile()">Reset</button>
+                </div>
+                <div class="xs mu" style="margin-top:10px">Stored locally in your Winiwa node.</div>
+            </div>
             <div class="card" style="padding:0 18px">
                 <div class="set-row">
                     <div>
@@ -3757,7 +3845,7 @@
                 </div>
                 <div class="xs mu mt8">Reminder appears if no backup was exported recently.</div>
             </div>
-            <div class="hint mt16">Settings are stored locally in your Winiwa node.</div>
+            <div class="hint mt16">Settings are stored locally on your device.</div>
         </div>
 
         <!-- MERCHANT INVOICE PAGE -->
@@ -3982,7 +4070,7 @@
                 <button class="tab-btn" style="flex:1" onclick="switchSendReceive('sendModal')">Send</button>
                 <button class="tab-btn active" style="flex:1">Receive</button>
             </div>
-            <div class="msub">Funds arrive instantly, anywhere</div>
+            <div class="msub">Funds arrive instantly, from anywhere</div>
             <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
                 <input class="finput" type="number" id="reqAmt" placeholder="Amount (optional)" inputmode="decimal"
                     style="min-width:0">
@@ -4004,10 +4092,7 @@
                     Auto: OFF</button>
             </div>
             <details style="margin-bottom:12px">
-                <summary style="cursor:pointer;font-size:12px;font-weight:700;color:var(--m);padding:8px 0">Add tip
-                    option
-                    ▾
-                </summary>
+                <summary style="cursor:pointer;font-size:12px;font-weight:700;color:var(--m);padding:8px 0">Add tip ▾</summary>
                 <div style="margin-top:8px">
                     <label class="flabel">Tip destination address</label>
                     <input class="finput" placeholder="Tip goes to this address..." style="margin-bottom:6px">
@@ -4079,7 +4164,7 @@
             </div>
             <label class="flabel" style="margin-top:2px;margin-bottom:4px">Primary currency</label>
             <select class="fsel" id="welcomePrimary" style="margin-bottom:14px"></select>
-            <button class="btn btn-w btn-lg" onclick="applyWelcomeSetup()">Save and continue</button>
+            <button class="btn btn-w" onclick="applyWelcomeSetup()">Save and continue</button>
         </div>
     </div>
 
@@ -4185,7 +4270,7 @@
 
     <!-- STABLESAGENT DRAWER -->
     <div class="dback" id="agentDrawer" onclick="closeAgent(event)">
-        <div class="drawer" style="padding:0; overflow:hidden; display:flex; flex-direction:column; max-height:85dvh;">
+        <div class="drawer agent-drawer-panel" style="padding:0; overflow:hidden; display:flex; flex-direction:column;">
             <div class="dhead"
                 style="padding:12px 14px; flex-shrink:0; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(103,232,249,.12)">
                 <div style="display:flex; align-items:center; gap:10px; min-width:0">
@@ -4200,8 +4285,12 @@
                 </div>
                 <div class="dclose" onclick="closeAgentNow()">✕</div>
             </div>
+            <div
+                style="flex-shrink:0;padding:10px 16px;background:rgba(0,0,0,.18);font-size:11px;font-weight:900;letter-spacing:.08em;color:var(--am);text-transform:uppercase;text-align:center;border-radius:0">
+                DO NOT SHARE PRIVATE OR SENSITIVE INFORMATION
+            </div>
             <iframe id="agentFrame" title="StablesAgent"
-                style="width:100%;height:70dvh;border:0;flex-grow:1;background:transparent"
+                style="width:100%;height:100%;border:0;flex:1;min-height:0;background:transparent;display:block"
                 allow="clipboard-read; clipboard-write"></iframe>
         </div>
     </div>
@@ -4246,6 +4335,7 @@
 
         // ----- STABLESAGENT (page-aware, persistent session) -----
         let lastAgentCtx = null;
+        let lastAgentSuggestKey = '';
         function getAgentContext() {
             return (curPage || 'wallet');
         }
@@ -4268,11 +4358,6 @@
             if (!frame.src || frame.src === 'about:blank') {
                 lastAgentCtx = ctx;
                 frame.src = buildAgentUrl(ctx);
-                return;
-            }
-            if (lastAgentCtx !== ctx) {
-                lastAgentCtx = ctx;
-                frame.src = buildAgentUrl(ctx);
             }
         }
         function openAgent() {
@@ -4290,40 +4375,105 @@
         }
         function openAgentExplain(boxName) {
             const name = String(boxName || '').trim();
-            const question = name ? `Explain me: ${name}` : '';
-            openAgent();
-            if (!question) return;
+            const lower = name.toLowerCase();
+            const promptCtx = lower === 'transaction details' ? 'transaction details' : lower;
+            let question = name ? `Explain me: ${name}` : '';
+            let contextLabel = ''; // rendered by agent UI using payload.ctx (no need to inject into message)
+            let detailsForPrompt = '';
+
+            // Higher granularity for transaction prompts: keep a more specific context label,
+            // but instruct the agent with the exact wording requested.
+            if (lower === 'transaction details') {
+                question = 'explain me: transaction details';
+                contextLabel = '';
+            }
+            const privacyDisclaimer = ''; // do not inject into message bubble; agent UI already shows it
+            if (lower === 'transaction details') {
+                // Pull only the visible, non-sensitive fields from the current transaction detail modal.
+                // (Agent iframe can't see your UI screenshot directly.)
+                const wrap = document.getElementById('agentActionContent');
+                const inner = wrap?.innerText || '';
+                const status = inner.includes('Confirmed') ? 'Confirmed' : inner.includes('Pending') ? 'Pending' : '';
+                const amtEl = wrap?.querySelector('.tx-amt');
+                const amt = amtEl?.textContent ? String(amtEl.textContent).trim() : '';
+                let fee = '';
+                const feeMatch = inner.match(/Fee\s+([0-9.,]+)\s+([A-Za-z0-9]+)/);
+                if (feeMatch) fee = `Fee: ${feeMatch[1]} ${feeMatch[2]}`;
+                let catDir = '';
+                const catDirMatch = inner.match(/([A-Za-z][A-Za-z0-9 ]+)\s+·\s+(Incoming|Outgoing)/);
+                if (catDirMatch) catDir = `${catDirMatch[1].trim()} · ${catDirMatch[2]}`;
+
+                const lines = [
+                    status ? `Status: ${status}` : '',
+                    amt ? `Amount: ${amt}` : '',
+                    fee,
+                    catDir ? `Category/Direction: ${catDir}` : ''
+                ].filter(Boolean);
+                detailsForPrompt = lines.join('\n');
+            }
+
+            const finalText = name ? `${question}${detailsForPrompt ? `\n\n${detailsForPrompt}` : ''}` : '';
             const frame = document.getElementById('agentFrame');
-            if (!frame || !frame.contentWindow) return;
+            if (!frame) return;
+            const suggestKey = `${promptCtx}::${finalText}`;
+            const needsLoad = !frame.src || frame.src === 'about:blank';
             const payload = {
                 type: 'stablesagent:suggest',
-                text: question,
-                ctx: getAgentContext(),
+                text: finalText,
+                ctx: promptCtx,
                 autoSend: true,
                 ts: Date.now()
             };
 
             // Important: first open can race against listener registration inside the iframe.
-            // We wait for iframe 'load' and also retry briefly.
-            let didSend = false;
-            const sendNow = () => {
-                if (didSend) return;
+            // We attach the 'load' handler before we set frame.src (inside openAgent).
+            const postSuggest = () => {
                 try {
                     if (!frame.contentWindow) return;
+                    if (frame.src === 'about:blank') return;
                     frame.contentWindow.postMessage(payload, '*');
-                    didSend = true;
                 } catch (e) {
                     // Silent failure; user can still type manually.
                 }
             };
 
-            // If the iframe is already loaded (not about:blank), attempt immediately.
-            if (frame.src && frame.src !== 'about:blank') sendNow();
+            if (needsLoad) {
+                frame.addEventListener('load', () => { postSuggest(); }, { once: true });
+            }
 
-            frame.addEventListener('load', () => { if (!didSend) sendNow(); }, { once: true });
-            setTimeout(() => { if (!didSend) sendNow(); }, 250);
-            setTimeout(() => { if (!didSend) sendNow(); }, 900);
-            setTimeout(() => { if (!didSend) sendNow(); }, 2200);
+            openAgent();
+
+            // Force the agent header context to match the exact button-triggered location.
+            const label = document.getElementById('agentCtxLabel');
+            if (label) label.textContent = promptCtx ? `Context: ${promptCtx}` : label.textContent;
+
+            // Do not resend when reopening the same context/button with identical prompt.
+            if (suggestKey && suggestKey === lastAgentSuggestKey) return;
+            lastAgentSuggestKey = suggestKey;
+
+            // Retry across slow iframe loads (removes “click twice” behavior).
+            let settled = false;
+            const timeouts = [];
+            const stopRetries = () => {
+                if (settled) return;
+                settled = true;
+                while (timeouts.length) clearTimeout(timeouts.pop());
+                window.removeEventListener('message', onAck);
+            };
+            const onAck = (event) => {
+                const d = event?.data;
+                if (!d || typeof d !== 'object') return;
+                if (d.type !== 'stablesagent:ack') return;
+                stopRetries();
+            };
+            window.addEventListener('message', onAck);
+            postSuggest();
+            timeouts.push(setTimeout(() => { if (!settled) postSuggest(); }, 500));
+            timeouts.push(setTimeout(() => { if (!settled) postSuggest(); }, 1500));
+            timeouts.push(setTimeout(() => { if (!settled) postSuggest(); }, 3500));
+            timeouts.push(setTimeout(() => { if (!settled) postSuggest(); }, 6500));
+            // Safety stop if no ack arrives (e.g., maintenance mode).
+            timeouts.push(setTimeout(() => { stopRetries(); }, 9000));
         }
         function closeAgent(e) { if (e && e.target !== document.getElementById('agentDrawer')) return; closeAgentNow(); }
         function closeAgentNow() {
@@ -5110,9 +5260,9 @@
                     <div class="xs mu" style="margin-top:6px">${eqTxt}</div>
                 </div>
                 <div class="flex gap8" style="flex-wrap:wrap;justify-content:center">
-                    <button class="btn" style="flex:1;min-width:130px" onclick="closeAgentActionModal();navigate('exchange')">Exchange</button>
-                    <button class="btn" style="flex:1;min-width:130px" onclick="closeAgentActionModal();openModalWithCurrency('sendModal','${c}')">Send</button>
-                    <button class="btn" style="flex:1;min-width:130px" onclick="closeAgentActionModal();openModalWithCurrency('recvModal','${c}')">Receive</button>
+                    <button class="btn" onclick="closeAgentActionModal();navigate('exchange')">Exchange</button>
+                    <button class="btn" onclick="closeAgentActionModal();openModalWithCurrency('sendModal','${c}')">Send</button>
+                    <button class="btn" onclick="closeAgentActionModal();openModalWithCurrency('recvModal','${c}')">Receive</button>
                 </div>
             `;
             modal.classList.add('open');
@@ -5595,6 +5745,8 @@
         }
 
         function executeMintXwm() {
+            const role = getCouncilExecutionRole();
+            if (role !== 'Executor') return showToast('Council execution locked — only Executive (Multisig) can execute council decisions.');
             const mintAmt = parseFloat(document.getElementById('xwmAmt').value) || 0;
             if (mintAmt <= 0 || mintAmt > WALLET_WINIWA) return showToast('Invalid amount or insufficient balance');
             const earnedXwm = (mintAmt * SIM_Winiwa_PRICE * SIM_LEVERAGE / SIM_XWM_PRICE);
@@ -5612,6 +5764,8 @@
         }
 
         function executeBurnXwm() {
+            const role = getCouncilExecutionRole();
+            if (role !== 'Executor') return showToast('Council execution locked — only Executive (Multisig) can execute council decisions.');
             const burnAmt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
             if (burnAmt <= 0 || burnAmt > WALLET_XWM) return showToast('Invalid amount or insufficient balance');
             const earnedWiniwa = (burnAmt * SIM_XWM_PRICE / SIM_Winiwa_PRICE);
@@ -5628,6 +5782,8 @@
         }
 
         function executeMintWables() {
+            const role = getCouncilExecutionRole();
+            if (role !== 'Executor') return showToast('Council execution locked — only Executive (Multisig) can execute council decisions.');
             const mintAmt = parseFloat(document.getElementById('issueAmt').value) || 0;
             if (mintAmt <= 0) return showToast('Enter valid amount');
             const winiwaCost = mintAmt / SIM_Winiwa_PRICE;
@@ -5645,6 +5801,8 @@
         }
 
         function executeBurnWables() {
+            const role = getCouncilExecutionRole();
+            if (role !== 'Executor') return showToast('Council execution locked — only Executive (Multisig) can execute council decisions.');
             const burnAmt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
             if (burnAmt <= 0 || burnAmt > WALLET_WABLES) return showToast('Invalid amount or insufficient balance');
             const earnedWiniwa = burnAmt / SIM_Winiwa_PRICE;
@@ -6011,6 +6169,172 @@
             updateGlobalUI();
         }
 
+        // Council member profile (local)
+        const COUNCIL_MEMBER_PROFILE_KEY = 'stables_council_member_profile_v1';
+        let councilAvatarDataUrl = '';
+        let councilAvatarUrl = '';
+        let councilExecutionRoleCache = 'Executor';
+
+        function getCouncilExecutionRole() {
+            return councilExecutionRoleCache || 'Executor';
+        }
+
+        function loadCouncilProfileFromStorage() {
+            try {
+                return JSON.parse(localStorage.getItem(COUNCIL_MEMBER_PROFILE_KEY) || '{}');
+            } catch {
+                return {};
+            }
+        }
+
+        function applyCouncilProfileToUI(profile) {
+            const role = profile?.role || 'Executor';
+            councilExecutionRoleCache = role;
+            councilAvatarDataUrl = profile?.avatarDataUrl || '';
+            councilAvatarUrl = profile?.avatarUrl || '';
+
+            // Settings page
+            const nameInput = document.getElementById('councilNameInput');
+            if (nameInput) nameInput.value = String(profile?.name || 'Council Member');
+
+            const roleSel = document.getElementById('councilExecRoleSel');
+            if (roleSel) roleSel.value = role;
+
+            const urlInput = document.getElementById('councilAvatarUrlInput');
+            if (urlInput) urlInput.value = String(councilAvatarUrl || '');
+
+            const contractInput = document.getElementById('councilNftContract');
+            if (contractInput) contractInput.value = String(profile?.nftContract || '');
+
+            const tokenInput = document.getElementById('councilNftTokenId');
+            if (tokenInput) tokenInput.value = String(profile?.nftTokenId || '');
+
+            const settingsImg = document.getElementById('councilAvatarPreviewImg');
+            const settingsPh = document.getElementById('councilAvatarPh');
+            if (settingsImg && settingsPh) {
+                const src = councilAvatarDataUrl || councilAvatarUrl;
+                settingsImg.src = src || '';
+                settingsImg.style.display = src ? 'block' : 'none';
+                settingsPh.style.display = src ? 'none' : 'block';
+            }
+
+            // Council page
+            const councilImg = document.getElementById('councilMemberAvatarImg');
+            const councilPh = document.getElementById('councilMemberAvatarPh');
+            if (councilImg && councilPh) {
+                const src = councilAvatarDataUrl || councilAvatarUrl;
+                councilImg.src = src || '';
+                councilImg.style.display = src ? 'block' : 'none';
+                councilPh.style.display = src ? 'none' : 'block';
+            }
+
+            const nameLabel = document.getElementById('councilMemberNameLabel');
+            if (nameLabel) nameLabel.textContent = String(profile?.name || 'Council Member');
+
+            const getCouncilRoleText = (r) => r === 'Executor' ? 'Executive (Multisig)' : 'Council Member (voting only)';
+            const roleLabel = document.getElementById('councilRoleLabel');
+            if (roleLabel) roleLabel.textContent = 'Role: ' + getCouncilRoleText(role);
+
+            // Execution button lock (demo)
+            const disable = role !== 'Executor';
+            ['executeMintXwm', 'executeBurnXwm', 'executeMintWables', 'executeBurnWables'].forEach(fn => {
+                const btn = document.querySelector('button[onclick*="' + fn + '"]');
+                if (!btn) return;
+                btn.disabled = disable;
+                if (disable) btn.title = 'Multisig execution requires Executive (Multisig) in Settings.';
+            });
+        }
+
+        function initCouncilMemberProfile() {
+            const profile = loadCouncilProfileFromStorage();
+            applyCouncilProfileToUI(profile);
+        }
+
+        function onCouncilAvatarFile(input) {
+            const file = input?.files?.[0];
+            if (!file) return;
+            if (!file.type || !file.type.startsWith('image/')) return showToast('Please select an image file');
+            const reader = new FileReader();
+            reader.onload = () => {
+                councilAvatarDataUrl = String(reader.result || '');
+                councilAvatarUrl = '';
+                const settingsImg = document.getElementById('councilAvatarPreviewImg');
+                const settingsPh = document.getElementById('councilAvatarPh');
+                if (settingsImg && settingsPh) {
+                    settingsImg.src = councilAvatarDataUrl;
+                    settingsImg.style.display = 'block';
+                    settingsPh.style.display = 'none';
+                }
+                const councilImg = document.getElementById('councilMemberAvatarImg');
+                const councilPh = document.getElementById('councilMemberAvatarPh');
+                if (councilImg && councilPh) {
+                    councilImg.src = councilAvatarDataUrl;
+                    councilImg.style.display = 'block';
+                    councilPh.style.display = 'none';
+                }
+                showToast('Avatar loaded (not saved yet)');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function loadCouncilAvatarFromUrl() {
+            const input = document.getElementById('councilAvatarUrlInput');
+            const url = String(input?.value || '').trim();
+            if (!url) return showToast('Paste an image URL first');
+            councilAvatarUrl = url;
+            councilAvatarDataUrl = '';
+
+            const settingsImg = document.getElementById('councilAvatarPreviewImg');
+            const settingsPh = document.getElementById('councilAvatarPh');
+            if (settingsImg && settingsPh) {
+                settingsImg.src = councilAvatarUrl;
+                settingsImg.style.display = 'block';
+                settingsPh.style.display = 'none';
+            }
+            const councilImg = document.getElementById('councilMemberAvatarImg');
+            const councilPh = document.getElementById('councilMemberAvatarPh');
+            if (councilImg && councilPh) {
+                councilImg.src = councilAvatarUrl;
+                councilImg.style.display = 'block';
+                councilPh.style.display = 'none';
+            }
+            showToast('Avatar URL loaded (not saved yet)');
+        }
+
+        function saveCouncilMemberProfile() {
+            const name = String(document.getElementById('councilNameInput')?.value || '').trim() || 'Council Member';
+            const role = String(document.getElementById('councilExecRoleSel')?.value || 'Executor').trim() || 'Executor';
+
+            const nftContract = String(document.getElementById('councilNftContract')?.value || '').trim();
+            const nftTokenId = String(document.getElementById('councilNftTokenId')?.value || '').trim();
+
+            const profile = {
+                name,
+                role,
+                avatarDataUrl: String(councilAvatarDataUrl || ''),
+                avatarUrl: String(councilAvatarUrl || ''),
+                nftContract,
+                nftTokenId
+            };
+
+            localStorage.setItem(COUNCIL_MEMBER_PROFILE_KEY, JSON.stringify(profile));
+            applyCouncilProfileToUI(profile);
+            showToast('Council profile saved');
+        }
+
+        function resetCouncilMemberProfile() {
+            const ok = typeof window.confirm === 'function'
+                ? window.confirm('Reset Council Member Profile? This removes local avatar, role and fields.')
+                : true;
+            if (!ok) return;
+            localStorage.removeItem(COUNCIL_MEMBER_PROFILE_KEY);
+            councilAvatarDataUrl = '';
+            councilAvatarUrl = '';
+            councilExecutionRoleCache = 'Executor';
+            applyCouncilProfileToUI({ name: 'Council Member', role: 'Executor' });
+            showToast('Council profile reset');
+        }
+
         // Toast
         let toastTimer;
         function showToast(msg) {
@@ -6042,6 +6366,7 @@
         runBootStep('initCcyReorder', initCcyReorder);
         runBootStep('initWalletCcyReorder', initWalletCcyReorder);
         runBootStep('syncWalletCurrenciesFromSettings', syncWalletCurrenciesFromSettings);
+        runBootStep('initCouncilMemberProfile', initCouncilMemberProfile);
         runBootStep('updateGlobalUI:final', updateGlobalUI);
         runBootStep('updateTreasuryCountdown', updateTreasuryCountdown);
         setInterval(updateTreasuryCountdown, 60000);
