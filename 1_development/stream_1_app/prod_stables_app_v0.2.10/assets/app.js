@@ -191,7 +191,7 @@ function updateTop() {
   const statusDot = isConnected ? '<span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #22c55e; margin-right: 6px; box-shadow: 0 0 6px #22c55e;"></span>' : '';
 
   $('blockStatus').innerHTML = `${statusDot}${fmt(state.chain?.height || 0)}`;
-  $('phaseText').textContent = state.phase === 'capped' ? 'Public Test — Capped' : 'Public Test — Uncapped';
+  $('phaseText').textContent = 'Prototype - no real functionality yet';
   $('phasePill').querySelector('.badge').style.background = state.phase === 'capped' ? 'var(--warn)' : 'var(--good)';
 }
 
@@ -340,14 +340,14 @@ $('phaseBackdrop').addEventListener('click', (e) => { if (e.target === $('phaseB
 $('setCapped').addEventListener('click', () => {
   state.phase = 'capped';
   close('phaseBackdrop');
-  showToast('Phase', 'Public Test — Capped');
+  showToast('Phase', 'Prototype - no real functionality yet');
   safeRender();
 });
 
 $('setUncapped').addEventListener('click', () => {
   state.phase = 'uncapped';
   close('phaseBackdrop');
-  showToast('Phase', 'Public Test — Uncapped');
+  showToast('Phase', 'Prototype - no real functionality yet');
   safeRender();
 });
 

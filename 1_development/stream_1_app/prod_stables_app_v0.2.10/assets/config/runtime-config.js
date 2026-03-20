@@ -4,6 +4,8 @@ window.STABLES_CONFIG = {
   BACKUP_REMINDER_HOURS: 48,
   BACKUP_STORAGE_KEY: 'stables_last_config_backup_ts',
   BACKUP_FIRST_SEEN_KEY: 'stables_backup_first_seen_ts',
+  /** Public demo: MinimaOS install package (MDS zip) link */
+  MDS_ZIP_URL: 'https://github.com/StablesCouncil/StablesCouncil.github.io/releases/latest/download/Stables.mds.zip',
   CONTACT_NOTES_KEY: 'stables_contact_notes_v1',
   SUSPICIOUS_TX_KEY: 'stables_suspicious_tx_ids_v1',
   HIDDEN_TX_KEY: 'stables_hidden_tx_ids_v1',

@@ -262,7 +262,7 @@
     window.closeAgentActionModal();
     window.renderActivity();
     window.renderWalletRecentActivity();
-    if (typeof window.showToast === 'function') window.showToast('Transaction soft-hidden — use Hidden filter to review');
+    if (typeof window.showToast === 'function') window.showToast('Transaction soft-hidden. Use Hidden filter to review');
   };
   window.unhideTransactionFromHistory = function () {
     if (!selectedTxId) return;
@@ -444,7 +444,7 @@
       <div style="padding:10px;border-radius:10px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.16);margin-bottom:10px"><div style="font-size:13px;font-weight:800;margin-bottom:6px">Current promotions</div><ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.4">${promos}</ul></div>
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(103,232,249,.12)">
         <div style="font-size:10px;font-weight:800;color:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">History &amp; list</div>
-        <div class="xs mu" style="margin-bottom:10px">Local demo only — soft-hidden items use the <strong>Hidden</strong> filter; deleted items stay removed until you reset local data.</div>
+        <div class="xs mu" style="margin-bottom:10px">Local demo only. Soft-hidden items use the <strong>Hidden</strong> filter; deleted items stay removed until you reset local data.</div>
         <div class="flex gap8" style="flex-wrap:wrap;justify-content:center">
           <button class="btn" onclick="shopHideAllTransactions(${sn})">Hide all transactions</button>
           <button class="btn" onclick="shopDeleteAllTransactions(${sn})">Delete all (local)</button>
@@ -555,7 +555,8 @@
     const wrap = document.getElementById('sendContactChips');
     if (!wrap) return;
     wrap.innerHTML = '';
-    const contacts = Array.from(CONTACTS_BOOK.values()).slice(0, 8);
+    // Send modal: show *all* contacts so the user has full access.
+    const contacts = Array.from(CONTACTS_BOOK.values());
     contacts.forEach(c => {
       const chip = document.createElement('button');
       chip.className = 'ccy-pill';
@@ -609,6 +610,40 @@
   window.closeWelcomeSetup = function () {
     const modal = document.getElementById('welcomeSetupModal');
     if (modal) modal.classList.remove('open');
+
+    // Reset steps when closing.
+    const stepLang = document.getElementById('welcomeStepLang');
+    const stepCurrencies = document.getElementById('welcomeStepCurrencies');
+    const stepTourChoice = document.getElementById('welcomeStepTourChoice');
+    const stepNerdTrack = document.getElementById('welcomeStepNerdTrack');
+    const stepShowcaseMsg = document.getElementById('welcomeStepShowcaseMsg');
+    const stepTourUseCase = document.getElementById('welcomeStepTourUseCase');
+    if (stepLang) stepLang.style.display = '';
+    if (stepCurrencies) stepCurrencies.style.display = 'none';
+    if (stepTourChoice) stepTourChoice.style.display = 'none';
+    if (stepNerdTrack) stepNerdTrack.style.display = 'none';
+    if (stepShowcaseMsg) stepShowcaseMsg.style.display = 'none';
+    if (stepTourUseCase) stepTourUseCase.style.display = 'none';
+  };
+
+  function showWelcomeStep(step) {
+    const stepLang = document.getElementById('welcomeStepLang');
+    const stepCurrencies = document.getElementById('welcomeStepCurrencies');
+    const stepTourChoice = document.getElementById('welcomeStepTourChoice');
+    const stepNerdTrack = document.getElementById('welcomeStepNerdTrack');
+    const stepShowcaseMsg = document.getElementById('welcomeStepShowcaseMsg');
+    const stepTourUseCase = document.getElementById('welcomeStepTourUseCase');
+    if (stepLang) stepLang.style.display = step === 'lang' ? '' : 'none';
+    if (stepCurrencies) stepCurrencies.style.display = step === 'currencies' ? '' : 'none';
+    if (stepTourChoice) stepTourChoice.style.display = step === 'tourChoice' ? '' : 'none';
+    if (stepNerdTrack) stepNerdTrack.style.display = step === 'nerdTrack' ? '' : 'none';
+    if (stepShowcaseMsg) stepShowcaseMsg.style.display = step === 'showcaseMsg' ? '' : 'none';
+    if (stepTourUseCase) stepTourUseCase.style.display = step === 'tourUseCase' ? '' : 'none';
+  }
+
+  window.goWelcomeToCurrencies = function () {
+    // In this demo flow, we show guided tour choice first.
+    showWelcomeStep('tourChoice');
   };
 
   window.applyWelcomeSetup = function () {
@@ -631,21 +666,300 @@
     });
 
     if (typeof window.setPrimary === 'function') window.setPrimary(primary, true);
-    window.closeWelcomeSetup();
-    if (typeof window.showToast === 'function') window.showToast('Setup saved');
+
+    // Continue inside the same modal to show the showcase disclaimer.
+    showWelcomeStep('showcaseMsg');
   };
 
   window.updateWelcomeLanguage = function () {
     const lang = document.getElementById('welcomeLang')?.value || 'en';
-    const title = document.getElementById('welcomeTitle');
-    if (!title) return;
+    const stepLangWrap = document.getElementById('welcomeStepLang');
+    const dir = lang === 'ar' ? 'rtl' : 'ltr';
+    if (stepLangWrap) stepLangWrap.setAttribute('dir', dir);
+
+    const elTitle = document.getElementById('welcomeTitle');
+    const elIntro = document.getElementById('welcomeIntroCopy');
+    const elShowcase = document.getElementById('welcomeShowcaseCopy');
+    const elTourTitle = document.getElementById('welcomeTourTitle');
+    const elTourBody = document.getElementById('welcomeTourBody');
+    const elTourMerchantBtn = document.getElementById('welcomeTourMerchantBtn');
+    const elTourPersonBtn = document.getElementById('welcomeTourPersonBtn');
+    const elTourNerdBtn = document.getElementById('welcomeTourNerdBtn');
+    const elExploreBtn = document.getElementById('welcomeExploreBtn');
+    const elUseTitle = document.getElementById('welcomeUseTitle');
+    const elUsePrompt = document.getElementById('welcomeUsePrompt');
+    const elPersonalBtn = document.getElementById('welcomePersonalBtn');
+    const elMerchantBtn = document.getElementById('welcomeMerchantBtn');
+    const elShowcaseHereBtn = document.getElementById('welcomeShowcaseHereBtn');
+    const elShowcaseNodeBtn = document.getElementById('welcomeShowcaseNodeBtn');
+    // This element may not exist after copy/layout updates.
+    const elShowcaseFinalMsg = document.getElementById('welcomeShowcaseFinalMsg');
+
+    const elNerdTrackTitle = document.getElementById('welcomeNerdTrackTitle');
+    const elNerdTrackBody = document.getElementById('welcomeNerdTrackBody');
+    const elNerdTrackTechBtn = document.getElementById('welcomeNerdTrackTechBtn');
+    const elNerdTrackFinanceBtn = document.getElementById('welcomeNerdTrackFinanceBtn');
+
+    if (!elTitle || !elIntro) return;
+
     const copy = {
-      en: 'Welcome to Stables, we are really please to have you joining',
-      fr: 'Bienvenue sur Stables, nous sommes ravis de vous accueillir',
-      es: 'Bienvenido a Stables, estamos muy contentos de que te unas',
-      de: 'Willkommen bei Stables, wir freuen uns sehr, dass du dabei bist'
+      en: {
+        title: 'We’re really happy you’re here.',
+        intro:
+          'Congratulations on becoming your own bank. This gives you great possibilities, and with it, real responsibilities. Don’t worry, we’re a community that supports each other. Look around now, and we’ll help you secure your setup properly.',
+        showcase:
+          'Showcase prototype.\n\nRelease objective (community first):\nTransparency with the Stables community.\nShow what the core dev team is working on.\nMost importantly, get your feedback.\n\nHave a look, then reach out to us on Telegram:\nOpen the Feedback section inside the app to access the Telegram link.\n\nPrototype note:\nGuided tours will be added in a following prototype version.\nFor now, everything in the app is plain English.\nYou can of course talk with the StablesAgent in the language of your choice.\nYou can also add this app to your node by downloading the MDS zip from GitHub.',
+        tourTitle: 'Pick your under the hood vibe',
+        tourBody: 'Choose how you want the StablesAgent to guide you in this demo.',
+        tourMerchantBtn: 'I\'m a merchant. I want to know how this will streamline my business process.',
+        tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
+        tourNerdBtn: 'I\'m a nerd. I want to understand how this holds together.',
+        nerdTrackTitle: 'Pick your nerd deep dive',
+        nerdTrackBody: 'Choose what you want to inspect first in this demo.',
+        nerdTrackTechBtn: 'Tech + blockchain',
+        nerdTrackFinanceBtn: 'Financial side: how Stables is structured and ensures the peg',
+        exploreBtn: 'I\'m a viewer. I want to look around.',
+        showcaseHereBtn: 'Continue the visit here',
+        showcaseNodeBtn: 'I can\'t wait to see it in my node',
+        showcaseFinalMsg: 'See you back in your node.',
+        useTitle: 'How will you mainly use the app?',
+        usePrompt: 'Personal or merchant?',
+        personalBtn: 'Personal',
+        merchantBtn: 'Merchant'
+      },
+      'en-edgy': {
+        title: 'You made it. We’re seriously stoked you’re here.',
+        intro:
+          'Congratulations on becoming your own bank. You get real possibilities, and yes, real responsibilities too. No worries, we’ve got your back. Look around, then we’ll help you secure your setup properly.',
+        showcase:
+          'Showcase prototype.\n\nRelease objective (no fluff):\nBe transparent with the Stables community.\nShow what the core dev team is working on.\nMost importantly, get your feedback.\n\nHave a look, then reach out to us on Telegram:\nOpen the Feedback section inside the app to access the Telegram link.\n\nPrototype note:\nGuided tours will be added in a following prototype version.\nFor now, everything in the app is plain English.\nYou can of course talk with the StablesAgent in the language of your choice.\nYou can also add this app to your node by downloading the MDS zip from GitHub.',
+        tourTitle: 'Pick your under the hood vibe',
+        tourBody: 'Choose how you want the StablesAgent to guide you in this demo.',
+        tourMerchantBtn: 'I\'m a merchant. I want to know how this shit will streamline my business process.',
+        tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
+        tourNerdBtn: 'I\'m a nerd. I want to know how this shit holds.',
+        nerdTrackTitle: 'Pick your nerd deep dive',
+        nerdTrackBody: 'Choose what you want to inspect first in this demo.',
+        nerdTrackTechBtn: 'Tech + blockchain',
+        nerdTrackFinanceBtn: 'Financial side: how Stables is structured and ensures the peg',
+        exploreBtn: 'I\'m a viewer. I want to look around.',
+        showcaseHereBtn: 'Continue the visit here',
+        showcaseNodeBtn: 'I can\'t wait to see it in my node',
+        showcaseFinalMsg: 'See you back in your node.',
+        useTitle: 'How will you mainly use the app?',
+        usePrompt: 'Personal or merchant?',
+        personalBtn: 'Personal',
+        merchantBtn: 'Merchant'
+      },
+      fr: {
+        title: 'On est vraiment heureux que vous soyez là.',
+        intro:
+          'Félicitations, vous devenez votre propre banque. Cela vous ouvre de grandes possibilités, avec de vraies responsabilités. Ne vous inquiétez pas: nous sommes une communauté qui se soutient. Jetez un coup d’œil, puis nous vous aiderons à sécuriser votre configuration correctement.',
+        showcase:
+          'Prototype vitrine. Pour l’instant, il n’y a pas de vraie fonctionnalité (c’est juste une démo). Ce n’est pas branché à la blockchain. Imaginez une voiture prototype au salon auto: vous pouvez regarder à travers les vitres et poser des questions, mais les portes ne s’ouvrent pas et il n’y a pas de moteur sous le capot. Par contre, StablesAgent est là… et il peut répondre à une bonne partie des questions. Les visites guidées seront ajoutées dans une prochaine version du prototype. Pour le moment, toute l’interface de l’app est en anglais simple. Tu peux bien sur parler avec le StablesAgent dans la langue de ton choix. Tu peux aussi ajouter cette app à ton node en téléchargeant le zip MDS depuis GitHub.',
+        tourTitle: 'Choisissez votre vibe sous le capot',
+        tourBody: 'Choisissez comment vous voulez être guidé par le StablesAgent dans cette démo.',
+        tourMerchantBtn: "Je suis un commerçant. Je veux savoir comment ça va révolutionner mes processus d’affaires.",
+        tourPersonBtn: "Je suis une personne. Je veux connaître la meilleure façon de faire tourner ma propre banque.",
+        tourNerdBtn: "Je suis un nerd. Je veux comprendre comment tout ça tient.",
+        nerdTrackTitle: 'Choisis ton deep dive de nerd',
+        nerdTrackBody: 'Qu’est-ce que tu veux inspecter en premier dans cette démo ?',
+        nerdTrackTechBtn: 'Tech + blockchain',
+        nerdTrackFinanceBtn: 'Côté financier: comment Stables est structuré et garde le peg',
+        exploreBtn: "Je suis juste un spectateur. Je veux regarder.",
+        showcaseHereBtn: 'Continuer la visite ici',
+        showcaseNodeBtn: "Je suis trop impatient de le voir dans mon node",
+        showcaseFinalMsg: 'A bientot dans ton node.',
+        useTitle: "Comment allez-vous surtout utiliser l’app?",
+        usePrompt: 'Personnel ou commerce?',
+        personalBtn: 'Personnel',
+        merchantBtn: 'Commerce'
+      },
+      'fr-CA': {
+        title: 'On est vraiment contents que tu sois là.',
+        intro:
+          'Félicitations d’être devenu ta propre banque. Ça te donne de grandes possibilités, et avec ça, des responsabilités bien réelles. Pas de stress: on est une communauté qui s’entraide. Jette un coup d’œil maintenant, puis on t’aide à sécuriser ton setup correctement.',
+        showcase:
+          'Prototype vitrine. Pour l’instant, il n’y a pas de vraie fonctionnalité (c’est juste une démo). Ce n’est pas branché à la blockchain. Imagine une voiture prototype au salon auto: tu peux regarder à travers les vitres et poser des questions, mais les portes ne s’ouvrent pas et y’a pas de moteur sous le capot. Par contre, StablesAgent est là… et il peut répondre à une bonne partie des questions. Les visites guidées seront ajoutées dans une prochaine version du prototype. Pour le moment, toute l’interface de l’app est en anglais simple. Tu peux bien sur parler avec le StablesAgent dans la langue de ton choix. Tu peux aussi ajouter cette app à ton node en téléchargeant le zip MDS depuis GitHub.',
+        tourTitle: 'Choisis ton vibe sous le capot',
+        tourBody: 'Choisis comment tu veux être guidé par le StablesAgent dans cette démo.',
+        tourMerchantBtn: "Je suis un commerçant. Je veux savoir comment ça va révolutionner mes processus d’affaires.",
+        tourPersonBtn: "Je suis une personne. Je veux connaître la meilleure façon de faire tourner ta propre banque.",
+        tourNerdBtn: "Je suis un nerd. Je veux comprendre comment tout ça tient.",
+        nerdTrackTitle: 'Choisis ton deep dive de nerd',
+        nerdTrackBody: 'Qu’est-ce que tu veux inspecter en premier dans cette démo ?',
+        nerdTrackTechBtn: 'Tech + blockchain',
+        nerdTrackFinanceBtn: 'Côté financier: comment Stables est structuré et garde le peg',
+        exploreBtn: "Je suis juste un spectateur. Je veux regarder.",
+        showcaseHereBtn: 'Continuer la visite ici',
+        showcaseNodeBtn: "Je suis trop impatient de le voir dans mon node",
+        showcaseFinalMsg: 'A bientot dans ton node.',
+        useTitle: "Comment tu vas surtout utiliser l’app?",
+        usePrompt: 'Plutôt personnel ou commerçant?',
+        personalBtn: 'Personnel',
+        merchantBtn: 'Commerçant'
+      },
+      es: {
+        title: 'Nos encanta que estés aquí.',
+        intro:
+          'Felicidades por convertirte en tu propia banca. Esto te da grandes posibilidades, y con ello, responsabilidades reales. No te preocupes: somos una comunidad que se apoya. Mira alrededor ahora y te ayudaremos a asegurar tu configuración correctamente.',
+        showcase:
+          'Prototipo de vitrina. Por ahora no hay funcionalidad real (solo es para demostración). No está conectada a la blockchain. Imagina un auto prototipo en una expo: puedes mirar por las ventanas y hacer preguntas, pero no hay motor bajo el capó y las puertas no se abren. El StablesAgent sí funciona y puede responder muchas preguntas sobre Stables. Las visitas guiadas se añadirán en una próxima versión de este prototipo. Por ahora, toda la interfaz de la app esta en inglés simple. Puedes por supuesto hablar con el StablesAgent en el idioma que elijas. También puedes agregar esta app a tu nodo descargando el zip MDS desde GitHub.',
+        tourTitle: 'Elige tu tour bajo el capó',
+        tourBody: 'Elige cómo quieres que el StablesAgent te guíe en esta demo.',
+        tourMerchantBtn: 'Soy un comerciante. Quiero saber cómo esto va a revolucionar mi proceso de negocio.',
+        tourPersonBtn: 'Soy una persona. Quiero saber la mejor manera de dirigir mi propia banca.',
+        tourNerdBtn: 'Soy un nerd. Quiero entender cómo todo se mantiene unido.',
+        nerdTrackTitle: 'Tu deep dive de nerd',
+        nerdTrackBody: 'Elige qué quieres inspeccionar primero en esta demo.',
+        nerdTrackTechBtn: 'Tech + blockchain',
+        nerdTrackFinanceBtn: 'Lado financiero: cómo Stables está estructurado y mantiene el peg',
+        exploreBtn: 'Soy solo un espectador. Quiero mirar.',
+        showcaseHereBtn: 'Continuar la visita aquí',
+        showcaseNodeBtn: 'No puedo esperar para verlo en mi nodo',
+        showcaseFinalMsg: 'Nos vemos de vuelta en tu nodo.',
+        useTitle: '¿Cómo usarás principalmente la app?',
+        usePrompt: '¿Personal o comercio?',
+        personalBtn: 'Personal',
+        merchantBtn: 'Comercio'
+      },
+      ar: {
+        title: 'يسعدنا أنك هنا.',
+        intro:
+          'مبروك على أن أصبحت بنكك الخاص. هذا يفتح أمامك إمكانيات كبيرة, ومعها مسؤوليات حقيقية. لا تقلق: نحن مجتمع يدعم بعضه. تفقّد كل شيء الآن وسنساعدك على تأمين حسابك بالشكل الصحيح.',
+        showcase:
+          'نسخة تجريبية للعرض فقط. لا توجد وظائف حقيقية حالياً (إنها مجرد عرض). وهذه النسخة غير متصلة بسلسلة البلوكشين. تخيّل سيارة نموذجية في معرض سيارات: يمكنك النظر من خلال النوافذ وطرح الأسئلة، لكن الأبواب لا تُفتح ولا يوجد محرك تحت الغطاء. لكن StablesAgent يعمل, ويمكنه الإجابة على مجموعة كبيرة من أسئلة Stables. ستتم إضافة الجولات الإرشادية في نسخة بروتوتايب قادمة. في الوقت الحالي، كل واجهة التطبيق باللغة الإنجليزية فقط. يمكنك بالطبع التحدث مع StablesAgent باللغة التي تختارها. يمكنك كذلك إضافة هذا التطبيق إلى عقدتك عن طريق تنزيل ملف MDS zip من GitHub.',
+        tourTitle: 'اختر جولة تحت الغطاء',
+        tourBody: 'اختر كيف تريد أن يوجهك StablesAgent في هذه التجربة.',
+        tourMerchantBtn: 'أنا صاحب متجر. أريد أن أعرف كيف سيثور هذا سير عملي.',
+        tourPersonBtn: 'أنا شخص. أريد أن أعرف أفضل طريقة لإدارة بنكي الخاص.',
+        tourNerdBtn: 'أنا شخص فضولي. أريد أن أفهم كيف يتماسك كل هذا.',
+        nerdTrackTitle: 'اختر غوصة نيرد',
+        nerdTrackBody: 'اختر ماذا تريد فحصه أولاً في هذه التجربة.',
+        nerdTrackTechBtn: 'التقنية + البلوكشين',
+        nerdTrackFinanceBtn: 'الجانب المالي: كيف يتم هيكلة Stables وكيف يحافظ على peg',
+        exploreBtn: 'أنا مجرد متفرج. أريد فقط أن ألقي نظرة.',
+        showcaseHereBtn: 'كمّل الزيارة هنا',
+        showcaseNodeBtn: 'لا أطيق الانتظار لرؤيته في عقدتي',
+        showcaseFinalMsg: 'أراك مرة أخرى في عقدتك.',
+        useTitle: 'كيف ستستخدم التطبيق غالباً؟',
+        usePrompt: 'شخصي أم متجر؟',
+        personalBtn: 'شخصي',
+        merchantBtn: 'متجر'
+      },
+      hi: {
+        title: 'आप आ गए. Stables में आपका स्वागत है!',
+        intro:
+          'बधाई हो, अब आप अपने खुद के बैंक बन गए हैं। इससे आपको शानदार संभावनाएँ मिलती हैं, और साथ में बड़ी जिम्मेदारियाँ भी। चिंता न करें, हम एक सपोर्टिंग कम्युनिटी हैं। इधर-उधर देखें, फिर हम आपकी सेटअप को सही तरीके से सुरक्षित करने में मदद करेंगे।',
+        showcase:
+          'यह एक शोकेस प्रोटोटाइप है। अभी वास्तविक कार्यक्षमता नहीं है (यह सिर्फ डेमो है)। यह ब्लॉकचेन से कनेक्टेड नहीं। कार शो में रखी एक प्रोटोटाइप कार जैसी कल्पना करें: आप खिड़कियों से देख सकते हैं और सवाल पूछ सकते हैं, लेकिन दरवाज़े नहीं खुलते और हुड के नीचे इंजन नहीं है। फिर भी StablesAgent काम करता है और Stables पर बहुत सारे सवालों के जवाब दे सकता है। अगले प्रोटोटाइप वर्जन में गाइडेड टूर जोड़े जाएंगे। अभी के लिए, ऐप की पूरी UI सिर्फ साधारण English में है। आप जरूर StablesAgent से अपनी पसंद की भाषा में बात कर सकते हैं। आप GitHub से MDS zip डाउनलोड करके इस ऐप को अपने नोड में भी जोड़ सकते हैं।',
+        tourTitle: 'हुड के नीचे वाला टूर चुनें',
+        tourBody: 'इस डेमो में आप चाहते हैं कि StablesAgent आपको कैसे गाइड करे, वो चुनें।',
+        tourMerchantBtn: 'मैं एक मर्चेंट हूं. मैं जानना चाहता हूं कि यह मेरे बिजनेस प्रोसेस को कैसे बदल देगा.',
+        tourPersonBtn: 'मैं एक इंसान हूं. मैं जानना चाहता हूं कि अपना खुद का बैंक चलाने का सबसे अच्छा तरीका क्या है.',
+        tourNerdBtn: 'मैं एक nerd हूं. मैं समझना चाहता हूं कि यह सब कैसे टिकता है.',
+        nerdTrackTitle: 'नर्ड वाला डीप डाइव चुनें',
+        nerdTrackBody: 'इस डेमो में आप पहले क्या समझना चाहते हैं?',
+        nerdTrackTechBtn: 'टेक + ब्लॉकचेन',
+        nerdTrackFinanceBtn: 'वित्तीय पक्ष: Stables कैसे structured है और peg कैसे सुनिश्चित करता है',
+        exploreBtn: 'मैं बस एक दर्शक हूं. मैं बस देखना चाहता हूं.',
+        showcaseHereBtn: 'यहीं विजिट जारी रखें',
+        showcaseNodeBtn: 'इंतजार नहीं कर सकता, इसे अपने नोड में देखना है',
+        showcaseFinalMsg: 'फिर मिलते हैं, अपने नोड में.',
+        useTitle: 'आप ऐप का मुख्य रूप से कैसे उपयोग करेंगे?',
+        usePrompt: 'पर्सनल या मर्चेंट?',
+        personalBtn: 'पर्सनल',
+        merchantBtn: 'मर्चेंट'
+      },
+      zh: {
+        title: '很高兴你来到 Stables。',
+        intro:
+          '恭喜你成为自己的银行。你将拥有很大的可能性，同时也要承担真实的责任。别担心，我们是一个互相支持的社区。现在先四处看看，我们会帮你把设置安全地完成好。',
+        showcase:
+          '展示用原型。当前没有真实功能（仅用于演示），并未连接到区块链。把它想象成车展上的原型车：你可以透过车窗看进去、提出问题，但车门不会打开，机舱下面也没有发动机。不过 StablesAgent 是可以用的，而且能回答一大批 Stables 相关问题。后续原型版本会加入导览功能。就目前而言，应用界面全部是简单英文。你当然可以选择你想用的语言来和 StablesAgent 交流。你也可以通过从 GitHub 下载 MDS zip 来把这个应用加入到你的节点。',
+        tourTitle: '选择你的“看机舱”方式',
+        tourBody: '在这个演示里，选择你想让 StablesAgent 怎么带你看。',
+        tourMerchantBtn: '我是商户。我想知道这会如何改变我的业务流程。',
+        tourPersonBtn: '我是个人。我想知道运营自己的银行的最佳方式。',
+        tourNerdBtn: '我是技术宅。我想弄明白这一切是怎么“撑住”的。',
+        nerdTrackTitle: '选择你的技术宅深度',
+        nerdTrackBody: '在这个演示里，你想先看什么？',
+        nerdTrackTechBtn: '技术 + 区块链',
+        nerdTrackFinanceBtn: '金融侧: Stables 的结构以及它如何确保 peg',
+        exploreBtn: '我是个观众。我想看看。',
+        showcaseHereBtn: '继续在这里参观',
+        showcaseNodeBtn: '迫不及待想在我的节点里看到它',
+        showcaseFinalMsg: '回到你的节点，我们再见。',
+        useTitle: '你主要会怎么使用这个应用？',
+        usePrompt: '个人还是商户？',
+        personalBtn: '个人',
+        merchantBtn: '商户'
+      }
     };
-    title.textContent = copy[lang] || copy.en;
+
+    const c = copy[lang] || copy.en;
+    elTitle.textContent = c.title;
+    elIntro.textContent = c.intro;
+    if (elShowcase) elShowcase.textContent = c.showcase;
+    if (elTourTitle) elTourTitle.textContent = c.tourTitle;
+    if (elTourBody) elTourBody.textContent = c.tourBody;
+    if (elExploreBtn) elExploreBtn.textContent = c.exploreBtn;
+    if (elTourMerchantBtn) elTourMerchantBtn.textContent = c.tourMerchantBtn;
+    if (elTourPersonBtn) elTourPersonBtn.textContent = c.tourPersonBtn;
+    if (elTourNerdBtn) elTourNerdBtn.textContent = c.tourNerdBtn;
+    if (elUseTitle) elUseTitle.textContent = c.useTitle;
+    if (elUsePrompt) elUsePrompt.textContent = c.usePrompt;
+    if (elPersonalBtn) elPersonalBtn.textContent = c.personalBtn;
+    if (elMerchantBtn) elMerchantBtn.textContent = c.merchantBtn;
+    if (elShowcaseHereBtn) elShowcaseHereBtn.textContent = c.showcaseHereBtn;
+    if (elShowcaseNodeBtn) elShowcaseNodeBtn.textContent = c.showcaseNodeBtn;
+    if (elShowcaseFinalMsg) elShowcaseFinalMsg.textContent = c.showcaseFinalMsg;
+
+    if (elNerdTrackTitle) elNerdTrackTitle.textContent = c.nerdTrackTitle;
+    if (elNerdTrackBody) elNerdTrackBody.textContent = c.nerdTrackBody;
+    if (elNerdTrackTechBtn) elNerdTrackTechBtn.textContent = c.nerdTrackTechBtn;
+    if (elNerdTrackFinanceBtn) elNerdTrackFinanceBtn.textContent = c.nerdTrackFinanceBtn;
+  };
+
+  window.setWelcomeTourChoice = function (choice) {
+    const c = String(choice || '').trim();
+    localStorage.setItem('stables_welcome_tour_choice_v1', c);
+    if (c === 'nerd') {
+      showWelcomeStep('nerdTrack');
+      return;
+    }
+
+    // Merchant, person, explore: go straight to the currency setup.
+    showWelcomeStep('currencies');
+  };
+
+  window.setWelcomeNerdTrack = function (track) {
+    const t = String(track || '').trim();
+    localStorage.setItem('stables_welcome_nerd_track_v1', t);
+    showWelcomeStep('currencies');
+  };
+
+  window.openStablesMdsZipFromWelcome = function () {
+    // Remember that the user took the fast path so the next real-node run can show a special message.
+    try {
+      localStorage.setItem('stables_showcase_install_intent_v1', '1');
+    } catch (_) {}
+
+    if (typeof window.closeWelcomeSetup === 'function') window.closeWelcomeSetup();
+
+    const url = window.STABLES_CONFIG?.MDS_ZIP_URL;
+    if (!url) {
+      if (typeof window.showToast === 'function') window.showToast('Download link not set', 'Ask Charles to set MDS_ZIP_URL in runtime-config.js.');
+      return;
+    }
+    window.open(url, '_blank');
+  };
+
+  window.setWelcomeUseCase = function (useCase) {
+    const u = String(useCase || '').trim();
+    localStorage.setItem('stables_welcome_use_case_v1', u);
+    window.closeWelcomeSetup();
+    if (typeof window.showToast === 'function') window.showToast('Setup saved');
   };
 
   // Initialize reminders once.
@@ -656,6 +970,8 @@
     window.updateWelcomePrimaryOptions();
     const modal = document.getElementById('welcomeSetupModal');
     if (modal) modal.classList.add('open');
+    showWelcomeStep('lang');
+    if (typeof window.updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
   }, 700);
 })();
 

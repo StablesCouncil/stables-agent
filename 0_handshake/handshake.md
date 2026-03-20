@@ -148,3 +148,7 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 
 **Last Verified by Assistant: ANTIGRAVITY**
 *(I have read and locked the above rules into my active state. I will consult the specifications before every turn.)*
+
+---
+## Pending UI Copy Review
+This welcome/person persona copy was updated for English only to speed up iteration. Other languages should be reviewed and synchronized in the next localization pass.

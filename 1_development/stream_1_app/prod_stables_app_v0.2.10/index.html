@@ -3208,7 +3208,7 @@
                     <button class="ccy-pill on" id="actSortDate" onclick="setActivitySort('date_desc')">Date</button>
                     <button class="ccy-pill" id="actSortAmount" onclick="setActivitySort('amount_desc')">Amount</button>
                 </div>
-                <input class="finput" id="activitySearchInput" placeholder="Search by contact or category..."
+                <input class="finput" id="activitySearchInput" placeholder="Search by contact, category or notes..."
                     style="margin-bottom:10px" oninput="setActivitySearch(this.value)">
                 <div class="tx-list" id="activityList"></div>
                 <div class="flex gap8" id="activityPagerWrap">
@@ -3260,6 +3260,18 @@
                     <button class="btn" id="contactShopBtn" style="flex:1;display:none" onclick="openSelectedContactShop()">Shop profile</button>
                 </div>
             </div>
+        </div>
+
+        <!-- FEEDBACK -->
+        <div class="page" id="page-feedback">
+            <div class="fbet" style="margin-bottom:12px;align-items:flex-end">
+                <div>
+                    <div style="font-size:18px;font-weight:900;margin-bottom:3px">Feedback</div>
+                    <div class="xs mu">Report bugs and share ideas</div>
+                </div>
+                <button class="btn btn-w btn-g" style="width:auto;padding:10px 12px" onclick="navigate('wallet')">Back</button>
+            </div>
+            <div id="feedbackApp"></div>
         </div>
 
         <!-- COUNCIL -->
@@ -3963,7 +3975,7 @@
                         <div class="ddesc">Play an active role</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
-                <div class="ditem" onclick="showToast('Feedback form coming soon')">
+                <div class="ditem" onclick="navigate('feedback');closeMoreNow()">
                     <div class="dic">
                         📝
                     </div>
@@ -4142,29 +4154,108 @@
             <div style="display:flex;justify-content:center;margin-bottom:14px">
                 <img src="stables_icon.png" alt="Stables" style="width:54px;height:54px;border-radius:14px">
             </div>
-            <div class="mttl" id="welcomeTitle" style="text-align:center;margin-bottom:14px">Welcome to Stables, we are really please to have you joining</div>
-            <label class="flabel" style="margin-top:4px;margin-bottom:4px">Language</label>
-            <select class="fsel" id="welcomeLang" style="margin-bottom:14px" onchange="updateWelcomeLanguage()">
-                <option value="en">English</option>
-                <option value="fr">French</option>
-                <option value="es">Spanish</option>
-                <option value="de">German</option>
-            </select>
-            <label class="flabel" style="margin-top:4px;margin-bottom:6px">Preferred currencies</label>
-            <div id="welcomeCurrencies" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
-                <span class="ccy-pill" data-ccy="AUDw" onclick="toggleWelcomeCcy(this)">AUDw</span>
-                <span class="ccy-pill" data-ccy="CADw" onclick="toggleWelcomeCcy(this)">CADw</span>
-                <span class="ccy-pill" data-ccy="CHFw" onclick="toggleWelcomeCcy(this)">CHFw</span>
-                <span class="ccy-pill" data-ccy="CNYw" onclick="toggleWelcomeCcy(this)">CNYw</span>
-                <span class="ccy-pill on" data-ccy="EURw" onclick="toggleWelcomeCcy(this)">EURw ✓</span>
-                <span class="ccy-pill on" data-ccy="GBPw" onclick="toggleWelcomeCcy(this)">GBPw ✓</span>
-                <span class="ccy-pill" data-ccy="JPYw" onclick="toggleWelcomeCcy(this)">JPYw</span>
-                <span class="ccy-pill on" data-ccy="USDw" onclick="toggleWelcomeCcy(this)">USDw ✓</span>
-                <span class="ccy-pill on" data-ccy="MINIMA" data-label="Winiwa" onclick="toggleWelcomeCcy(this)">Winiwa ✓</span>
+            <!-- Step 1: Language + intro only -->
+            <div id="welcomeStepLang">
+                <div class="mttl" id="welcomeTitle"
+                    style="text-align:center;margin-bottom:10px;font-size:24px;font-weight:900;line-height:1.25">Welcome to Stables</div>
+                <label class="flabel" style="margin-top:4px;margin-bottom:4px">Language</label>
+                <select class="fsel" id="welcomeLang" style="margin-bottom:14px" onchange="updateWelcomeLanguage()">
+                    <option value="en">English</option>
+                    <option value="en-edgy">English (Edgy)</option>
+                    <option value="fr">Français</option>
+                    <option value="fr-CA">Québécois</option>
+                    <option value="es">Spanish</option>
+                    <option value="ar">العربية</option>
+                    <option value="hi">हिन्दी</option>
+                    <option value="zh">中文</option>
+                </select>
+                <div class="xs mu" id="welcomeIntroCopy"
+                    style="text-align:center;margin-bottom:16px;font-size:20px;font-weight:900;line-height:1.45;color:var(--t)">
+                    Welcome to Stables.
+                </div>
+                <button class="btn btn-w btn-g" style="width:100%" onclick="goWelcomeToCurrencies()">Let's go</button>
             </div>
-            <label class="flabel" style="margin-top:2px;margin-bottom:4px">Primary currency</label>
-            <select class="fsel" id="welcomePrimary" style="margin-bottom:14px"></select>
-            <button class="btn btn-w" onclick="applyWelcomeSetup()">Save and continue</button>
+
+            <!-- Step 2: Currency selection (moved to the end via JS flow) -->
+            <div id="welcomeStepCurrencies" style="display:none">
+                <label class="flabel" style="margin-top:4px;margin-bottom:6px">Preferred currencies</label>
+                <div id="welcomeCurrencies" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+                    <span class="ccy-pill" data-ccy="AUDw" onclick="toggleWelcomeCcy(this)">AUDw</span>
+                    <span class="ccy-pill" data-ccy="CADw" onclick="toggleWelcomeCcy(this)">CADw</span>
+                    <span class="ccy-pill" data-ccy="CHFw" onclick="toggleWelcomeCcy(this)">CHFw</span>
+                    <span class="ccy-pill" data-ccy="CNYw" onclick="toggleWelcomeCcy(this)">CNYw</span>
+                    <span class="ccy-pill on" data-ccy="EURw" onclick="toggleWelcomeCcy(this)">EURw ✓</span>
+                    <span class="ccy-pill on" data-ccy="GBPw" onclick="toggleWelcomeCcy(this)">GBPw ✓</span>
+                    <span class="ccy-pill" data-ccy="JPYw" onclick="toggleWelcomeCcy(this)">JPYw</span>
+                    <span class="ccy-pill on" data-ccy="USDw" onclick="toggleWelcomeCcy(this)">USDw ✓</span>
+                    <span class="ccy-pill on" data-ccy="MINIMA" data-label="Winiwa" onclick="toggleWelcomeCcy(this)">Winiwa ✓</span>
+                </div>
+                <label class="flabel" style="margin-top:2px;margin-bottom:4px">Primary currency</label>
+                <select class="fsel" id="welcomePrimary" style="margin-bottom:14px"></select>
+                <button class="btn btn-w" style="width:100%" onclick="applyWelcomeSetup()">Save and continue</button>
+            </div>
+
+            <!-- Step 3: Showcase prototype message -->
+            <div id="welcomeStepShowcaseMsg" style="display:none">
+                <div id="welcomeShowcaseCopy"
+                    style="margin-bottom:16px;padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12);font-size:15px;font-weight:900;color:var(--am);line-height:1.6;text-align:center;white-space:pre-line">
+                    Showcase prototype...
+                </div>
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-bottom:10px">
+                    <button class="btn btn-w btn-g" id="welcomeShowcaseHereBtn" style="flex:1;min-width:220px"
+                        onclick="closeWelcomeSetup()">Continue the visit here</button>
+                    <button class="btn btn-w" id="welcomeShowcaseNodeBtn" style="flex:1;min-width:220px"
+                        onclick="openStablesMdsZipFromWelcome()">I can't wait to see it in my node</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Guided tour choice -->
+            <div id="welcomeStepTourChoice" style="display:none">
+                <div class="mttl" id="welcomeTourTitle"
+                    style="text-align:center;margin-bottom:12px;font-size:18px">Pick your under the hood vibe</div>
+                <div class="xs mu" id="welcomeTourBody"
+                    style="text-align:center;margin-bottom:16px;font-size:16px;font-weight:900;line-height:1.55">
+                    Choose how you want the StablesAgent to guide you in this demo.
+                </div>
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
+                    <button class="btn btn-w btn-g" id="welcomeTourPersonBtn" style="flex:1;min-width:220px;font-size:14px"
+                        onclick="setWelcomeTourChoice('person')">I'm a person. I want to understand what I'll be able to do with my own bank.</button>
+                    <button class="btn btn-w btn-g" id="welcomeTourMerchantBtn" style="flex:1;min-width:220px;font-size:14px"
+                        onclick="setWelcomeTourChoice('merchant')">I'm a merchant. I want to know how this shit will streamline my business process.</button>
+                    <button class="btn btn-w btn-g" id="welcomeTourNerdBtn" style="flex:1;min-width:220px;font-size:14px"
+                        onclick="setWelcomeTourChoice('nerd')">I'm a nerd. I want to know how this shit holds.</button>
+                    <button class="btn btn-w btn-g" id="welcomeExploreBtn" style="flex:1;min-width:220px;font-size:14px"
+                        onclick="setWelcomeTourChoice('explore')">I'm a viewer. I want to look around.</button>
+                </div>
+            </div>
+
+            <!-- Step 5: Nerd sub track choice -->
+            <div id="welcomeStepNerdTrack" style="display:none">
+                <div class="mttl" id="welcomeNerdTrackTitle"
+                    style="text-align:center;margin-bottom:12px;font-size:18px">Pick your nerd deep dive</div>
+                <div class="xs mu" id="welcomeNerdTrackBody"
+                    style="text-align:center;margin-bottom:16px;font-size:18px;font-weight:900;line-height:1.55;color:var(--t)">
+                    Choose what you want to inspect first in this demo.
+                </div>
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
+                    <button class="btn btn-w btn-g" id="welcomeNerdTrackTechBtn" style="flex:1;min-width:220px;font-size:14px"
+                        onclick="setWelcomeNerdTrack('tech')">Tech + blockchain</button>
+                    <button class="btn btn-w btn-g" id="welcomeNerdTrackFinanceBtn" style="flex:1;min-width:220px;font-size:14px"
+                        onclick="setWelcomeNerdTrack('finance')">Financial side: how Stables is structured and ensures the peg</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Use case -->
+            <div id="welcomeStepTourUseCase" style="display:none">
+                <div class="mttl" id="welcomeUseTitle" style="text-align:center;margin-bottom:12px;font-size:18px">How will you use it?</div>
+                <div class="xs mu" id="welcomeUsePrompt" style="text-align:center;margin-bottom:16px">
+                    How will you mainly use the app, as a personal or a merchant?
+                </div>
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
+                    <button class="btn btn-w btn-g" id="welcomePersonalBtn" style="flex:1;min-width:220px" onclick="setWelcomeUseCase('personal')">Personal</button>
+                    <button class="btn" id="welcomeMerchantBtn" style="flex:1;min-width:220px" onclick="setWelcomeUseCase('merchant')">Merchant</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -4310,7 +4401,7 @@
     </nav>
 
     <script>
-        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'chat', 'council', 'faucet', 'settings', 'invoice', 'activity', 'contacts'];
+        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'chat', 'council', 'faucet', 'settings', 'invoice', 'activity', 'contacts', 'feedback'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
         let privacyMode = false; lede = false;
@@ -4329,6 +4420,25 @@
             }
             if (p === 'contacts' && typeof renderContactsPage === 'function') renderContactsPage();
             if (p === 'chat' && typeof renderChatContext === 'function') renderChatContext();
+            if (p === 'feedback') {
+                try {
+                    if (typeof window.renderFeedbackPage === 'function') window.renderFeedbackPage();
+                    else if (window.StablesRoutes?.renderFeedback && typeof getContext === 'function') window.StablesRoutes.renderFeedback(getContext());
+                    const root = document.getElementById('feedbackApp');
+                    if (root && (!root.innerHTML || !root.innerHTML.includes('t.me/stablescommunity'))) {
+                        root.innerHTML = `
+                          <div style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
+                            <a href="https://t.me/stablescommunity" target="_blank" rel="noopener"
+                              style="display:block;text-align:center;padding:16px;font-size:16px;font-weight:900;width:100%;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.3), rgba(167,139,250,0.3));color:rgba(255,255,255,.95);text-decoration:none;box-shadow:0 0 18px rgba(103,232,249,0.15)">
+                              t.me/stablescommunity
+                            </a>
+                          </div>
+                        `;
+                    }
+                } catch (e) {
+                    console.error('[navigate] feedback render error', e);
+                }
+            }
             refreshAgentContextIfOpen();
             window.scrollTo(0, 0);
         }
@@ -6345,6 +6455,16 @@
             toastTimer = setTimeout(() => t.style.display = 'none', 3000);
         }
 
+        (function initNodeWowMessage() {
+            try {
+                const intent = localStorage.getItem('stables_showcase_install_intent_v1');
+                if (intent && typeof MDS !== 'undefined') {
+                    localStorage.removeItem('stables_showcase_install_intent_v1');
+                    showToast('Wow! You are quick. Stables is installed in your node. Talk to StablesAgent in any language. UI is plain English for now.');
+                }
+            } catch (_) { }
+        })();
+
         // Hash routing
         function routeFromHash() {
             const h = location.hash.replace('#', '');
@@ -6401,6 +6521,7 @@
     </script>
     <script src="assets/config/runtime-config.js"></script>
     <script src="assets/routes/activity-contacts.js"></script>
+    <script src="assets/routes/feedback.js"></script>
 </body>
 
 </html>
