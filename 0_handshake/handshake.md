@@ -150,5 +150,9 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 *(I have read and locked the above rules into my active state. I will consult the specifications before every turn.)*
 
 ---
+## MiniDapp typography baseline (v0.2.10+)
+- **Do not use body UI copy below 13px** in the main MiniDapp shell (`index.html`). The `.xs` utility class is the smallest tier and is set to **13px**; `.sm` is **14px**. Inline styles that were **11px** were raised to **13px** for consistency.
+- **Primary explanatory sentences** (for example Council communications and app version banners) should use **14px** where readability matters, not `.xs` alone.
+
 ## Pending UI Copy Review
 This welcome/person persona copy was updated for English only to speed up iteration. Other languages should be reviewed and synchronized in the next localization pass.

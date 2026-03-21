@@ -47,20 +47,66 @@ function commentFingerprint(text) {
     return crypto.createHash("sha256").update(normalized).digest("hex");
 }
 
+/** Diverse posting angles (id used for rotation / cooldown). */
+const POST_ANGLE_SEEDS = [
+    { id: "structure", prompt: "How Stables fits together structurally: stablecoins, validation, and banking mechanics in plain terms." },
+    { id: "cr", prompt: "Coverage Ratio: what it measures and why it matters for solvency." },
+    { id: "merchants", prompt: "Merchant network and the everyday price peg — how real commerce relates to the design." },
+    { id: "transition", prompt: "Transition doctrine and stages: how the system is meant to evolve over time." },
+    { id: "minima", prompt: "Why Minima and many validating nodes matter for this banking model." },
+    { id: "mint_burn", prompt: "Minting and burning USDs: when it happens and what backs it." },
+    { id: "oracle", prompt: "Oracle or price signals: how external prices feed into the protocol." },
+    { id: "self_custody", prompt: "Self-custody and keys: who controls funds in this setup." },
+    { id: "governance", prompt: "Governance or council: factual role, not a sales pitch." },
+    { id: "xminima", prompt: "xMinima and liquidity: factual bridge role, no jargon dump." },
+    { id: "balance_sheet", prompt: "Balance sheet or reserve picture in simple language." },
+    { id: "peg", prompt: "What keeps the peg credible in practice (mechanics, not hype)." },
+    { id: "minidapp", prompt: "MiniDapps or on-chain apps users might touch." },
+    { id: "pseudonymous", prompt: "Pseudonymous or privacy-oriented participation where the docs support it." },
+    { id: "stages_ops", prompt: "Operational stages: what is live vs planned, without promising dates." },
+    { id: "usd_vs_collateral", prompt: "How USDs relate to collateral or backing concepts in the docs." },
+    { id: "risk_limits", prompt: "Risk limits, thresholds, or guardrails described in the knowledge base." },
+    { id: "fees_coverage", prompt: "Where fee-like protocol revenue goes (e.g. Coverage Fund) — one factual sentence, no repetition of other posts." },
+];
+
+function pickPostAngle(state) {
+    const recent = state.recentPostAngleIds || [];
+    const lastN = recent.slice(-8);
+    let pool = POST_ANGLE_SEEDS.filter((s) => !lastN.includes(s.id));
+    if (!pool.length) pool = [...POST_ANGLE_SEEDS];
+    // Avoid fee-themed posts back-to-back or crowding the feed.
+    const feesInWindow = lastN.filter((id) => id === "fees_coverage").length;
+    if (feesInWindow >= 1) {
+        const noFee = pool.filter((s) => s.id !== "fees_coverage");
+        if (noFee.length) pool = noFee;
+    }
+    return pool[Math.floor(Math.random() * pool.length)];
+}
+
 function loadState() {
     if (!fs.existsSync(STATE_FILE)) return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null };
     try {
         const raw = JSON.parse(fs.readFileSync(STATE_FILE, "utf-8"));
-        return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null, commentFingerprints: [], ...raw };
-    } catch { return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null }; }
+        return {
+            lastPostAt: null,
+            commentedPostIds: [],
+            suspendedUntil: null,
+            commentFingerprints: [],
+            recentPostAngleIds: [],
+            ...raw,
+        };
+    } catch {
+        return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null };
+    }
 }
 
 function saveState(state) {
     const kept = (state.commentedPostIds || []).slice(-100);
     const keptFps = (state.commentFingerprints || []).slice(-200);
+    const keptAngles = (state.recentPostAngleIds || []).slice(-24);
     fs.writeFileSync(
         STATE_FILE,
-        JSON.stringify({ ...state, commentedPostIds: kept, commentFingerprints: keptFps }),
+        JSON.stringify({ ...state, commentedPostIds: kept, commentFingerprints: keptFps, recentPostAngleIds: keptAngles }),
         "utf-8"
     );
 }
@@ -149,16 +195,11 @@ async function generateReply(query, vectorStore, llm) {
     return txt.replace(/^["']|["']$/g, "");
 }
 
-async function generatePost(vectorStore, llm) {
-    const seed = [
-        "how Stables works structurally",
-        "Coverage Ratio what it means",
-        "merchant network why it matters",
-        "transition doctrine stages",
-        "why Minima was chosen",
-    ][Math.floor(Math.random() * 5)];
+async function generatePost(vectorStore, llm, angleEntry) {
+    const seed = angleEntry.prompt;
     const results = await vectorStore.similaritySearch(seed, 4);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
+    const feeAngle = angleEntry.id === "fees_coverage";
     const completion = await llm.chat.completions.create({
         model: "openrouter/free",
         temperature: 0.6,
@@ -166,14 +207,25 @@ async function generatePost(vectorStore, llm) {
         messages: [
             {
                 role: "system",
-                content: `You are StablesAgent. Write one short Moltbook post (title + 1-2 sentence body) about Stables, using ONLY the context.
+                content: `You are StablesAgent. Write one short Moltbook post (title + 1-2 sentence body), using ONLY the context.
 
-CRITICAL: Write like a brief factual reflection, neutral observation, or a simple question. NOT like an ad or promo.
+You will be given an ASSIGNED ANGLE. The title and body MUST stay on that angle. Do not drift into a different topic.
+${feeAngle ? "This angle may mention fees or the Coverage Fund briefly." : "Do NOT make the title or main point about transaction fees, miner fees, or 'what happens to fees' — pick another hook from the context (e.g. Coverage Ratio, merchants, mint/burn, self-custody)."}
+
+CRITICAL: Brief factual reflection, neutral observation, or a simple question. NOT an ad or promo.
 FORBIDDEN words and phrases: zero, instant, guarantee, rewards, yield-bearing, strengthens, backbone, 100% control, simple and powerful, secure transactions, superlatives, benefit-pitch. Never use markdown (#) in the title.
-OK: What Stables is, how it works, why Minima, structural concepts. Prefer plain descriptive sentences. A short question (e.g. "What happens to fees in Stables?") is fine and often better than a declarative pitch.
+Example of a good title when the angle is NOT about fees: "How does minting show up on the balance sheet?"
 No emojis. No em-dashes. No "decentralized" or "DeFi". Title max 80 chars (no #), body max 200 chars.`,
             },
-            { role: "user", content: `Context:\n${context}\n\nWrite one post.` },
+            {
+                role: "user",
+                content: `ASSIGNED ANGLE: ${angleEntry.prompt}
+
+Context:
+${context}
+
+Write one post: first line = title, following lines = body.`,
+            },
         ],
     });
     let text = extractReplyText(completion);
@@ -309,11 +361,14 @@ async function main() {
     if (now - lastPost >= 180 * 60 * 1000) {
         console.log("Post window open. lastPostAt=", state.lastPostAt, "now=", new Date().toISOString());
         try {
-            const { title, content } = await generatePost(vectorStore, llm);
+            const angleEntry = pickPostAngle(state);
+            console.log("Post angle:", angleEntry.id);
+            const { title, content } = await generatePost(vectorStore, llm, angleEntry);
             const postRes = await moltbookPost("/posts", { submolt_name: "general", title, content });
             const createdPost = postRes.post || postRes.data?.post || postRes;
             if (createdPost?.id) {
                 state.lastPostAt = new Date().toISOString();
+                state.recentPostAngleIds = [...(state.recentPostAngleIds || []), angleEntry.id].slice(-24);
                 const v = postRes?.verification || postRes?.post?.verification;
                 if (v?.verification_code && v?.challenge_text) {
                     const answer = await solveVerification(llm, v.challenge_text);

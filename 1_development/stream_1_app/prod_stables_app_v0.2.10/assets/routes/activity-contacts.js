@@ -371,6 +371,128 @@
   };
   window.openContactConversation = function () { if (!selectedContactName) return; chatContactName = selectedContactName; if (typeof window.navigate === 'function') window.navigate('chat'); window.renderChatContext(); };
   window.renderChatContext = function () { const label = document.getElementById('chatContactLabel'); if (!label) return; if (!chatContactName) { label.style.display = 'none'; return; } label.style.display = ''; label.textContent = `Conversation with ${chatContactName}`; };
+
+  function escCouncilHtml(s) {
+    return String(s ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function escAttr(s) {
+    return String(s ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function compareSemverLike(a, b) {
+    const pa = String(a || '0').split('.').map((n) => parseInt(n, 10) || 0);
+    const pb = String(b || '0').split('.').map((n) => parseInt(n, 10) || 0);
+    const len = Math.max(pa.length, pb.length, 3);
+    for (let i = 0; i < len; i++) {
+      const da = pa[i] || 0;
+      const db = pb[i] || 0;
+      if (da < db) return -1;
+      if (da > db) return 1;
+    }
+    return 0;
+  }
+
+  function criticalityPresentation(level) {
+    const x = String(level || 'medium').toLowerCase();
+    const map = {
+      low: { label: 'Low', border: 'rgba(103,232,249,.38)', bg: 'rgba(103,232,249,.08)' },
+      medium: { label: 'Medium', border: 'rgba(251,191,36,.45)', bg: 'rgba(251,191,36,.1)' },
+      high: { label: 'High', border: 'rgba(249,115,22,.5)', bg: 'rgba(249,115,22,.12)' },
+      critical: { label: 'Critical', border: 'rgba(248,113,113,.55)', bg: 'rgba(248,113,113,.14)' }
+    };
+    return map[x] || map.medium;
+  }
+
+  function buildAppVersionBannerHtml() {
+    const cfg = window.STABLES_CONFIG || {};
+    const current = String(cfg.APP_BUILD_VERSION || '0.0.0').trim();
+    const pol = cfg.APP_UPDATE_POLICY && typeof cfg.APP_UPDATE_POLICY === 'object' ? cfg.APP_UPDATE_POLICY : {};
+    const latest = String(pol.latestPublishedVersion || current).trim();
+    const cmp = compareSemverLike(current, latest);
+    const needsUpdate = cmp < 0;
+    const zipUrl = typeof cfg.MDS_ZIP_URL === 'string' ? cfg.MDS_ZIP_URL.trim() : '';
+
+    if (!needsUpdate) {
+      return `<div class="card" style="padding:14px;margin-bottom:12px;border:1px solid rgba(103,232,249,.28);background:rgba(103,232,249,.06)">
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <span style="font-size:22px;line-height:1;flex-shrink:0" aria-hidden="true">✅</span>
+          <div style="min-width:0">
+            <div style="font-size:14px;font-weight:900;color:var(--t);margin-bottom:6px">App version</div>
+            <div style="font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">You are using the latest app version (${escCouncilHtml(current)}).</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    const wu = pol.whenUpdateNeeded && typeof pol.whenUpdateNeeded === 'object' ? pol.whenUpdateNeeded : {};
+    const crit = criticalityPresentation(wu.criticality);
+    const what = escCouncilHtml(wu.whatChanged || 'See council release notes for this version.').replace(/\n/g, '<br>');
+    const detRaw = typeof wu.details === 'string' ? wu.details.trim() : '';
+    const det = detRaw ? escCouncilHtml(detRaw).replace(/\n/g, '<br>') : '';
+    const zipBtn = zipUrl
+      ? `<a class="btn btn-w" style="display:block;text-align:center;margin-top:14px;text-decoration:none;box-sizing:border-box;font-size:14px;font-weight:900;padding:14px 16px" href="${escAttr(zipUrl)}" target="_blank" rel="noopener">Download Stables.mds.zip</a>`
+      : '';
+
+    return `<div class="card" style="padding:14px;margin-bottom:12px;border:1px solid ${crit.border};background:${crit.bg}">
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
+        <span style="font-size:22px;line-height:1;flex-shrink:0" aria-hidden="true">⚠️</span>
+        <div style="min-width:0">
+          <div style="font-size:14px;font-weight:900;color:var(--t);margin-bottom:4px">App update available</div>
+          <div style="font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">Your build is <strong style="color:var(--t)">${escCouncilHtml(current)}</strong>. Latest published: <strong style="color:var(--t)">${escCouncilHtml(latest)}</strong>.</div>
+        </div>
+      </div>
+      <div style="display:inline-block;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;border:1px solid ${crit.border};color:var(--t);margin-bottom:10px">Criticality: ${escCouncilHtml(crit.label)}</div>
+      <div style="font-size:14px;font-weight:900;color:var(--t);margin-bottom:6px">What is updated</div>
+      <div style="font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">${what}</div>
+      ${det ? `<div style="margin-top:10px;font-size:14px;line-height:1.55;font-weight:700;color:var(--muted)">${det}</div>` : ''}
+      ${zipBtn}
+    </div>`;
+  }
+
+  function buildCouncilCommunicationsHtml() {
+    const raw = (window.STABLES_CONFIG || {}).COUNCIL_COMMUNICATIONS;
+    const block = raw && typeof raw === 'object' ? raw : {};
+    const items = Array.isArray(block.items) ? block.items : [];
+    const intro = typeof block.intro === 'string' && block.intro.trim()
+      ? block.intro.trim()
+      : 'This channel is for Stables Council only: security incidents, required updates, and other critical communication. It is not for casual chat.';
+    let itemsHtml = '';
+    if (!items.length) {
+      itemsHtml = '<div class="xs mu" style="margin-top:8px;opacity:.9;font-weight:800;line-height:1.45">No council bulletins in this build.</div>';
+    } else {
+      itemsHtml = items.map((it) => {
+        const title = escCouncilHtml(it.title || 'Notice');
+        const date = it.date ? escCouncilHtml(it.date) : '';
+        const body = escCouncilHtml(it.body || '').replace(/\n/g, '<br>');
+        return `<div style="margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
+          <div style="font-size:13px;font-weight:900;color:var(--t)">${title}</div>
+          ${date ? `<div class="xs mu" style="margin-top:2px;font-weight:700">${date}</div>` : ''}
+          <div class="xs mu" style="margin-top:6px;line-height:1.5;font-weight:700;color:var(--muted)">${body}</div>
+        </div>`;
+      }).join('');
+    }
+    return `<div class="card" style="padding:14px;margin-bottom:12px;border:1px solid rgba(167,139,250,.22);background:linear-gradient(135deg,rgba(103,232,249,.05),rgba(167,139,250,.06))">
+      <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
+        <span style="font-size:22px;line-height:1;flex-shrink:0" aria-hidden="true">🏛️</span>
+        <div style="min-width:0;font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">${escCouncilHtml(intro)}</div>
+      </div>
+      ${itemsHtml}
+    </div>`;
+  }
+
+  window.renderCouncilCommunicationPanels = function () {
+    const html = buildAppVersionBannerHtml() + buildCouncilCommunicationsHtml();
+    const el = document.getElementById('councilCommsPageMount');
+    if (el) el.innerHTML = html;
+  };
+
   window.openSelectedContactShop = function () { if (!selectedContactName) return; window.openShopProfile(selectedContactName); };
 
   window.refreshSpendShopCards = function () {
@@ -680,7 +802,6 @@
     const elTitle = document.getElementById('welcomeTitle');
     const elIntro = document.getElementById('welcomeIntroCopy');
     const elShowcase = document.getElementById('welcomeShowcaseCopy');
-    const elTourTitle = document.getElementById('welcomeTourTitle');
     const elTourBody = document.getElementById('welcomeTourBody');
     const elTourMerchantBtn = document.getElementById('welcomeTourMerchantBtn');
     const elTourPersonBtn = document.getElementById('welcomeTourPersonBtn');
@@ -708,8 +829,7 @@
         intro:
           'Congratulations on becoming your own bank. This gives you great possibilities, and with it, real responsibilities. Don’t worry, we’re a community that supports each other. Look around now, and we’ll help you secure your setup properly.',
         showcase:
-          'Showcase prototype.\n\nRelease objective (community first):\nTransparency with the Stables community.\nShow what the core dev team is working on.\nMost importantly, get your feedback.\n\nHave a look, then reach out to us on Telegram:\nOpen the Feedback section inside the app to access the Telegram link.\n\nPrototype note:\nGuided tours will be added in a following prototype version.\nFor now, everything in the app is plain English.\nYou can of course talk with the StablesAgent in the language of your choice.\nYou can also add this app to your node by downloading the MDS zip from GitHub.',
-        tourTitle: 'Pick your under the hood vibe',
+          'Showcase prototype.\n\nRelease objective (community first):\nTransparency with the Stables community.\nShow what the core dev team is working on.\nMost importantly, get your feedback.\n\nHave a look, then reach out to us on Telegram:\nOpen the Feedback section inside the app to access the Telegram link.\n\nPrototype note:\nGuided tours will be added in a following prototype version.\nFor now, everything in the app is plain English.\nYou can of course talk with the StablesAgent in the language of your choice.\nYou can also add this app to your node by downloading the MDS zip from GitHub.\n\nRelease notes and the MDS zip: in Settings, use the Settings and updates section at the top.',
         tourBody: 'Choose how you want the StablesAgent to guide you in this demo.',
         tourMerchantBtn: 'I\'m a merchant. I want to know how this will streamline my business process.',
         tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
@@ -732,8 +852,7 @@
         intro:
           'Congratulations on becoming your own bank. You get real possibilities, and yes, real responsibilities too. No worries, we’ve got your back. Look around, then we’ll help you secure your setup properly.',
         showcase:
-          'Showcase prototype.\n\nRelease objective (no fluff):\nBe transparent with the Stables community.\nShow what the core dev team is working on.\nMost importantly, get your feedback.\n\nHave a look, then reach out to us on Telegram:\nOpen the Feedback section inside the app to access the Telegram link.\n\nPrototype note:\nGuided tours will be added in a following prototype version.\nFor now, everything in the app is plain English.\nYou can of course talk with the StablesAgent in the language of your choice.\nYou can also add this app to your node by downloading the MDS zip from GitHub.',
-        tourTitle: 'Pick your under the hood vibe',
+          'Showcase prototype.\n\nRelease objective (no fluff):\nBe transparent with the Stables community.\nShow what the core dev team is working on.\nMost importantly, get your feedback.\n\nHave a look, then reach out to us on Telegram:\nOpen the Feedback section inside the app to access the Telegram link.\n\nPrototype note:\nGuided tours will be added in a following prototype version.\nFor now, everything in the app is plain English.\nYou can of course talk with the StablesAgent in the language of your choice.\nYou can also add this app to your node by downloading the MDS zip from GitHub.\n\nRelease notes and the MDS zip: in Settings, use the Settings and updates section at the top.',
         tourBody: 'Choose how you want the StablesAgent to guide you in this demo.',
         tourMerchantBtn: 'I\'m a merchant. I want to know how this shit will streamline my business process.',
         tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
@@ -757,7 +876,6 @@
           'Félicitations, vous devenez votre propre banque. Cela vous ouvre de grandes possibilités, avec de vraies responsabilités. Ne vous inquiétez pas: nous sommes une communauté qui se soutient. Jetez un coup d’œil, puis nous vous aiderons à sécuriser votre configuration correctement.',
         showcase:
           'Prototype vitrine. Pour l’instant, il n’y a pas de vraie fonctionnalité (c’est juste une démo). Ce n’est pas branché à la blockchain. Imaginez une voiture prototype au salon auto: vous pouvez regarder à travers les vitres et poser des questions, mais les portes ne s’ouvrent pas et il n’y a pas de moteur sous le capot. Par contre, StablesAgent est là… et il peut répondre à une bonne partie des questions. Les visites guidées seront ajoutées dans une prochaine version du prototype. Pour le moment, toute l’interface de l’app est en anglais simple. Tu peux bien sur parler avec le StablesAgent dans la langue de ton choix. Tu peux aussi ajouter cette app à ton node en téléchargeant le zip MDS depuis GitHub.',
-        tourTitle: 'Choisissez votre vibe sous le capot',
         tourBody: 'Choisissez comment vous voulez être guidé par le StablesAgent dans cette démo.',
         tourMerchantBtn: "Je suis un commerçant. Je veux savoir comment ça va révolutionner mes processus d’affaires.",
         tourPersonBtn: "Je suis une personne. Je veux connaître la meilleure façon de faire tourner ma propre banque.",
@@ -781,7 +899,6 @@
           'Félicitations d’être devenu ta propre banque. Ça te donne de grandes possibilités, et avec ça, des responsabilités bien réelles. Pas de stress: on est une communauté qui s’entraide. Jette un coup d’œil maintenant, puis on t’aide à sécuriser ton setup correctement.',
         showcase:
           'Prototype vitrine. Pour l’instant, il n’y a pas de vraie fonctionnalité (c’est juste une démo). Ce n’est pas branché à la blockchain. Imagine une voiture prototype au salon auto: tu peux regarder à travers les vitres et poser des questions, mais les portes ne s’ouvrent pas et y’a pas de moteur sous le capot. Par contre, StablesAgent est là… et il peut répondre à une bonne partie des questions. Les visites guidées seront ajoutées dans une prochaine version du prototype. Pour le moment, toute l’interface de l’app est en anglais simple. Tu peux bien sur parler avec le StablesAgent dans la langue de ton choix. Tu peux aussi ajouter cette app à ton node en téléchargeant le zip MDS depuis GitHub.',
-        tourTitle: 'Choisis ton vibe sous le capot',
         tourBody: 'Choisis comment tu veux être guidé par le StablesAgent dans cette démo.',
         tourMerchantBtn: "Je suis un commerçant. Je veux savoir comment ça va révolutionner mes processus d’affaires.",
         tourPersonBtn: "Je suis une personne. Je veux connaître la meilleure façon de faire tourner ta propre banque.",
@@ -805,7 +922,6 @@
           'Felicidades por convertirte en tu propia banca. Esto te da grandes posibilidades, y con ello, responsabilidades reales. No te preocupes: somos una comunidad que se apoya. Mira alrededor ahora y te ayudaremos a asegurar tu configuración correctamente.',
         showcase:
           'Prototipo de vitrina. Por ahora no hay funcionalidad real (solo es para demostración). No está conectada a la blockchain. Imagina un auto prototipo en una expo: puedes mirar por las ventanas y hacer preguntas, pero no hay motor bajo el capó y las puertas no se abren. El StablesAgent sí funciona y puede responder muchas preguntas sobre Stables. Las visitas guiadas se añadirán en una próxima versión de este prototipo. Por ahora, toda la interfaz de la app esta en inglés simple. Puedes por supuesto hablar con el StablesAgent en el idioma que elijas. También puedes agregar esta app a tu nodo descargando el zip MDS desde GitHub.',
-        tourTitle: 'Elige tu tour bajo el capó',
         tourBody: 'Elige cómo quieres que el StablesAgent te guíe en esta demo.',
         tourMerchantBtn: 'Soy un comerciante. Quiero saber cómo esto va a revolucionar mi proceso de negocio.',
         tourPersonBtn: 'Soy una persona. Quiero saber la mejor manera de dirigir mi propia banca.',
@@ -829,7 +945,6 @@
           'مبروك على أن أصبحت بنكك الخاص. هذا يفتح أمامك إمكانيات كبيرة, ومعها مسؤوليات حقيقية. لا تقلق: نحن مجتمع يدعم بعضه. تفقّد كل شيء الآن وسنساعدك على تأمين حسابك بالشكل الصحيح.',
         showcase:
           'نسخة تجريبية للعرض فقط. لا توجد وظائف حقيقية حالياً (إنها مجرد عرض). وهذه النسخة غير متصلة بسلسلة البلوكشين. تخيّل سيارة نموذجية في معرض سيارات: يمكنك النظر من خلال النوافذ وطرح الأسئلة، لكن الأبواب لا تُفتح ولا يوجد محرك تحت الغطاء. لكن StablesAgent يعمل, ويمكنه الإجابة على مجموعة كبيرة من أسئلة Stables. ستتم إضافة الجولات الإرشادية في نسخة بروتوتايب قادمة. في الوقت الحالي، كل واجهة التطبيق باللغة الإنجليزية فقط. يمكنك بالطبع التحدث مع StablesAgent باللغة التي تختارها. يمكنك كذلك إضافة هذا التطبيق إلى عقدتك عن طريق تنزيل ملف MDS zip من GitHub.',
-        tourTitle: 'اختر جولة تحت الغطاء',
         tourBody: 'اختر كيف تريد أن يوجهك StablesAgent في هذه التجربة.',
         tourMerchantBtn: 'أنا صاحب متجر. أريد أن أعرف كيف سيثور هذا سير عملي.',
         tourPersonBtn: 'أنا شخص. أريد أن أعرف أفضل طريقة لإدارة بنكي الخاص.',
@@ -853,7 +968,6 @@
           'बधाई हो, अब आप अपने खुद के बैंक बन गए हैं। इससे आपको शानदार संभावनाएँ मिलती हैं, और साथ में बड़ी जिम्मेदारियाँ भी। चिंता न करें, हम एक सपोर्टिंग कम्युनिटी हैं। इधर-उधर देखें, फिर हम आपकी सेटअप को सही तरीके से सुरक्षित करने में मदद करेंगे।',
         showcase:
           'यह एक शोकेस प्रोटोटाइप है। अभी वास्तविक कार्यक्षमता नहीं है (यह सिर्फ डेमो है)। यह ब्लॉकचेन से कनेक्टेड नहीं। कार शो में रखी एक प्रोटोटाइप कार जैसी कल्पना करें: आप खिड़कियों से देख सकते हैं और सवाल पूछ सकते हैं, लेकिन दरवाज़े नहीं खुलते और हुड के नीचे इंजन नहीं है। फिर भी StablesAgent काम करता है और Stables पर बहुत सारे सवालों के जवाब दे सकता है। अगले प्रोटोटाइप वर्जन में गाइडेड टूर जोड़े जाएंगे। अभी के लिए, ऐप की पूरी UI सिर्फ साधारण English में है। आप जरूर StablesAgent से अपनी पसंद की भाषा में बात कर सकते हैं। आप GitHub से MDS zip डाउनलोड करके इस ऐप को अपने नोड में भी जोड़ सकते हैं।',
-        tourTitle: 'हुड के नीचे वाला टूर चुनें',
         tourBody: 'इस डेमो में आप चाहते हैं कि StablesAgent आपको कैसे गाइड करे, वो चुनें।',
         tourMerchantBtn: 'मैं एक मर्चेंट हूं. मैं जानना चाहता हूं कि यह मेरे बिजनेस प्रोसेस को कैसे बदल देगा.',
         tourPersonBtn: 'मैं एक इंसान हूं. मैं जानना चाहता हूं कि अपना खुद का बैंक चलाने का सबसे अच्छा तरीका क्या है.',
@@ -877,7 +991,6 @@
           '恭喜你成为自己的银行。你将拥有很大的可能性，同时也要承担真实的责任。别担心，我们是一个互相支持的社区。现在先四处看看，我们会帮你把设置安全地完成好。',
         showcase:
           '展示用原型。当前没有真实功能（仅用于演示），并未连接到区块链。把它想象成车展上的原型车：你可以透过车窗看进去、提出问题，但车门不会打开，机舱下面也没有发动机。不过 StablesAgent 是可以用的，而且能回答一大批 Stables 相关问题。后续原型版本会加入导览功能。就目前而言，应用界面全部是简单英文。你当然可以选择你想用的语言来和 StablesAgent 交流。你也可以通过从 GitHub 下载 MDS zip 来把这个应用加入到你的节点。',
-        tourTitle: '选择你的“看机舱”方式',
         tourBody: '在这个演示里，选择你想让 StablesAgent 怎么带你看。',
         tourMerchantBtn: '我是商户。我想知道这会如何改变我的业务流程。',
         tourPersonBtn: '我是个人。我想知道运营自己的银行的最佳方式。',
@@ -901,7 +1014,6 @@
     elTitle.textContent = c.title;
     elIntro.textContent = c.intro;
     if (elShowcase) elShowcase.textContent = c.showcase;
-    if (elTourTitle) elTourTitle.textContent = c.tourTitle;
     if (elTourBody) elTourBody.textContent = c.tourBody;
     if (elExploreBtn) elExploreBtn.textContent = c.exploreBtn;
     if (elTourMerchantBtn) elTourMerchantBtn.textContent = c.tourMerchantBtn;
@@ -961,6 +1073,10 @@
     window.closeWelcomeSetup();
     if (typeof window.showToast === 'function') window.showToast('Setup saved');
   };
+
+  setTimeout(() => {
+    if (typeof window.renderCouncilCommunicationPanels === 'function') window.renderCouncilCommunicationPanels();
+  }, 50);
 
   // Initialize reminders once.
   setTimeout(() => window.checkBackupReminder(), 1600);
