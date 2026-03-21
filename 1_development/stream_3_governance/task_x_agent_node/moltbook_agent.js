@@ -66,7 +66,6 @@ const POST_ANGLE_SEEDS = [
     { id: "stages_ops", prompt: "Operational stages: what is live vs planned, without promising dates." },
     { id: "usd_vs_collateral", prompt: "How USDs relate to collateral or backing concepts in the docs." },
     { id: "risk_limits", prompt: "Risk limits, thresholds, or guardrails described in the knowledge base." },
-    { id: "fees_coverage", prompt: "Where fee-like protocol revenue goes (e.g. Coverage Fund) — one factual sentence, no repetition of other posts." },
 ];
 
 function pickPostAngle(state) {
@@ -74,13 +73,34 @@ function pickPostAngle(state) {
     const lastN = recent.slice(-8);
     let pool = POST_ANGLE_SEEDS.filter((s) => !lastN.includes(s.id));
     if (!pool.length) pool = [...POST_ANGLE_SEEDS];
-    // Avoid fee-themed posts back-to-back or crowding the feed.
-    const feesInWindow = lastN.filter((id) => id === "fees_coverage").length;
-    if (feesInWindow >= 1) {
-        const noFee = pool.filter((s) => s.id !== "fees_coverage");
-        if (noFee.length) pool = noFee;
-    }
     return pool[Math.floor(Math.random() * pool.length)];
+}
+
+/** Strip model junk like "Title: ..." from the first line. */
+function sanitizeMoltbookTitle(raw) {
+    let t = String(raw || "").trim();
+    t = t.replace(/^#+\s*/, "");
+    t = t.replace(/^title\s*:\s*/i, "").trim();
+    return t.slice(0, 80);
+}
+
+function textMentionsFees(s) {
+    const x = String(s || "").toLowerCase();
+    if (/\bfees?\b/.test(x)) return true;
+    if (/transaction\s+fees?/.test(x)) return true;
+    if (/what\s+happens\s+to\s+fees/.test(x)) return true;
+    if (/\bfee\s+manag/.test(x)) return true;
+    if (/miner\s+fees?/.test(x)) return true;
+    return false;
+}
+
+/** Block fee-themed posts unless we explicitly allow (we no longer use a fee angle). */
+function postViolatesFeeGuard(title, content) {
+    return textMentionsFees(title) || textMentionsFees(content);
+}
+
+function normalizeTitleKey(title) {
+    return normalizeForFingerprint(title).replace(/\s+/g, " ").slice(0, 120);
 }
 
 function loadState() {
@@ -93,6 +113,7 @@ function loadState() {
             suspendedUntil: null,
             commentFingerprints: [],
             recentPostAngleIds: [],
+            recentPostTitles: [],
             ...raw,
         };
     } catch {
@@ -104,9 +125,16 @@ function saveState(state) {
     const kept = (state.commentedPostIds || []).slice(-100);
     const keptFps = (state.commentFingerprints || []).slice(-200);
     const keptAngles = (state.recentPostAngleIds || []).slice(-24);
+    const keptTitles = (state.recentPostTitles || []).slice(-20);
     fs.writeFileSync(
         STATE_FILE,
-        JSON.stringify({ ...state, commentedPostIds: kept, commentFingerprints: keptFps, recentPostAngleIds: keptAngles }),
+        JSON.stringify({
+            ...state,
+            commentedPostIds: kept,
+            commentFingerprints: keptFps,
+            recentPostAngleIds: keptAngles,
+            recentPostTitles: keptTitles,
+        }),
         "utf-8"
     );
 }
@@ -197,25 +225,29 @@ async function generateReply(query, vectorStore, llm) {
 
 async function generatePost(vectorStore, llm, angleEntry) {
     const seed = angleEntry.prompt;
-    const results = await vectorStore.similaritySearch(seed, 4);
+    // Bias retrieval toward structural topics so chunks are less often fee-centric.
+    const query = `${seed} solvency reserves merchants mint burn custody validation peg Coverage Ratio`;
+    const results = await vectorStore.similaritySearch(query, 4);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
-    const feeAngle = angleEntry.id === "fees_coverage";
     const completion = await llm.chat.completions.create({
         model: "openrouter/free",
-        temperature: 0.6,
+        temperature: 0.55,
         max_tokens: 150,
         messages: [
             {
                 role: "system",
                 content: `You are StablesAgent. Write one short Moltbook post (title + 1-2 sentence body), using ONLY the context.
 
-You will be given an ASSIGNED ANGLE. The title and body MUST stay on that angle. Do not drift into a different topic.
-${feeAngle ? "This angle may mention fees or the Coverage Fund briefly." : "Do NOT make the title or main point about transaction fees, miner fees, or 'what happens to fees' — pick another hook from the context (e.g. Coverage Ratio, merchants, mint/burn, self-custody)."}
+You will be given an ASSIGNED ANGLE. The title and body MUST stay on that angle.
+
+HARD RULE: Do not use the words "fee", "fees", "transaction fee", or "miner fee" in the title or body. Do not ask "what happens to fees" or any fee question. If the context only talks about fees, pick the nearest non-fee detail (nodes, peg, minting, Coverage Ratio, merchants).
 
 CRITICAL: Brief factual reflection, neutral observation, or a simple question. NOT an ad or promo.
 FORBIDDEN words and phrases: zero, instant, guarantee, rewards, yield-bearing, strengthens, backbone, 100% control, simple and powerful, secure transactions, superlatives, benefit-pitch. Never use markdown (#) in the title.
-Example of a good title when the angle is NOT about fees: "How does minting show up on the balance sheet?"
-No emojis. No em-dashes. No "decentralized" or "DeFi". Title max 80 chars (no #), body max 200 chars.`,
+Good title examples: "How does minting show up on the balance sheet?" / "Why does Coverage Ratio matter for solvency?"
+No emojis. No em-dashes. No "decentralized" or "DeFi". Title max 80 chars (no #), body max 200 chars.
+
+Output format: Line 1 is ONLY the title text — no "Title:" prefix, no quotes around the title.`,
             },
             {
                 role: "user",
@@ -224,7 +256,7 @@ No emojis. No em-dashes. No "decentralized" or "DeFi". Title max 80 chars (no #)
 Context:
 ${context}
 
-Write one post: first line = title, following lines = body.`,
+Write one post: line 1 = title only (no prefix), following lines = body.`,
             },
         ],
     });
@@ -232,8 +264,9 @@ Write one post: first line = title, following lines = body.`,
     if (!text) throw new Error("Empty completion content");
     text = text.replace(/^#+\s*/, "");
     const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
-    const title = (lines[0] || text).replace(/^#+\s*/, "").slice(0, 80);
-    const content = (lines.slice(1).join(" ") || lines[0] || "").replace(/^#+\s*/, "").slice(0, 400);
+    const rawTitle = lines[0] || text;
+    const title = sanitizeMoltbookTitle(rawTitle);
+    let content = (lines.slice(1).join(" ") || title).replace(/^#+\s*/, "").trim().slice(0, 400);
     return { title, content };
 }
 
@@ -361,21 +394,44 @@ async function main() {
     if (now - lastPost >= 180 * 60 * 1000) {
         console.log("Post window open. lastPostAt=", state.lastPostAt, "now=", new Date().toISOString());
         try {
-            const angleEntry = pickPostAngle(state);
-            console.log("Post angle:", angleEntry.id);
-            const { title, content } = await generatePost(vectorStore, llm, angleEntry);
-            const postRes = await moltbookPost("/posts", { submolt_name: "general", title, content });
-            const createdPost = postRes.post || postRes.data?.post || postRes;
-            if (createdPost?.id) {
-                state.lastPostAt = new Date().toISOString();
-                state.recentPostAngleIds = [...(state.recentPostAngleIds || []), angleEntry.id].slice(-24);
-                const v = postRes?.verification || postRes?.post?.verification;
-                if (v?.verification_code && v?.challenge_text) {
-                    const answer = await solveVerification(llm, v.challenge_text);
-                    if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
+            const MAX_POST_ATTEMPTS = 5;
+            let title;
+            let content;
+            let angleEntry;
+            let posted = false;
+            for (let attempt = 0; attempt < MAX_POST_ATTEMPTS; attempt++) {
+                angleEntry = pickPostAngle(state);
+                console.log("Post angle:", angleEntry.id, attempt > 0 ? `(retry ${attempt})` : "");
+                ({ title, content } = await generatePost(vectorStore, llm, angleEntry));
+                if (title.length < 6) {
+                    console.log("Rejected post: title too short");
+                    continue;
                 }
-                console.log("Posted:", title);
-            } else {
+                if (postViolatesFeeGuard(title, content)) {
+                    console.log("Rejected post (fee theme):", title.slice(0, 60));
+                    continue;
+                }
+                const tKey = normalizeTitleKey(title);
+                const prevTitles = state.recentPostTitles || [];
+                if (prevTitles.includes(tKey)) {
+                    console.log("Rejected post: duplicate title fingerprint");
+                    continue;
+                }
+                const postRes = await moltbookPost("/posts", { submolt_name: "general", title, content });
+                const createdPost = postRes.post || postRes.data?.post || postRes;
+                if (createdPost?.id) {
+                    state.lastPostAt = new Date().toISOString();
+                    state.recentPostAngleIds = [...(state.recentPostAngleIds || []), angleEntry.id].slice(-24);
+                    state.recentPostTitles = [...prevTitles, tKey].slice(-20);
+                    posted = true;
+                    const v = postRes?.verification || postRes?.post?.verification;
+                    if (v?.verification_code && v?.challenge_text) {
+                        const answer = await solveVerification(llm, v.challenge_text);
+                        if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
+                    }
+                    console.log("Posted:", title);
+                    break;
+                }
                 console.log("Post response without id:", JSON.stringify(postRes));
                 if (postRes?.statusCode === 403) {
                     const until = parseSuspendedUntil(postRes?.message);
@@ -386,6 +442,10 @@ async function main() {
                         return;
                     }
                 }
+            }
+            if (!posted) {
+                state.lastPostAt = new Date().toISOString();
+                console.warn("No acceptable post after retries (or API errors); deferring next window.");
             }
         } catch (e) {
             console.log("Post failed:", e.message);

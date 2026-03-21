@@ -35,7 +35,7 @@ window.STABLES_CONFIG = {
         title: 'Prototype build',
         date: '2026-03-19',
         body:
-          'No live signed council feed is wired in this prototype. In production, verified council messages will appear on the Council communications page (More, Messages and Contacts).'
+          'No live signed council feed is wired in this prototype. In production, verified council messages will appear on the Council communications page (More, Community).'
       }
     ]
   },

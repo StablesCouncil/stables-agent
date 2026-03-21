@@ -3275,42 +3275,20 @@
             <div class="fbet" style="margin-bottom:12px;align-items:center">
                 <div>
                     <div style="font-size:18px;font-weight:900;margin-bottom:3px">Feedback</div>
-                    <div class="xs mu">Report bugs and share ideas</div>
+                    <div class="xs mu">Reach us on Telegram, community or core team</div>
                 </div>
             </div>
             <div id="feedbackApp">
-                <div style="display:grid; gap:14px;">
-                    <div style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
-                        <div class="xs mu" style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:6px">Telegram community feedback</div>
-                        <div class="xs mu" style="margin:0 0 10px;color:var(--muted);line-height:1.45;font-size:13px;font-weight:800;text-align:left">
-                            Join the Stables community on Telegram and share your feedback with everyone.
-                        </div>
-                        <a href="https://t.me/stablescommunity" target="_blank" rel="noopener"
-                            style="display:block;text-align:center;padding:16px;font-size:16px;font-weight:900;width:100%;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.3), rgba(167,139,250,0.3));color:rgba(255,255,255,.95);text-decoration:none;box-shadow:0 0 18px rgba(103,232,249,0.15);margin-bottom:10px">
-                            t.me/stablescommunity
-                        </a>
-                        <div class="xs mu" style="margin:0 0 6px;color:var(--muted);line-height:1.45;font-size:13px;font-weight:800;text-align:left">
-                            Or reach the core dev team directly:
-                        </div>
-                        <a href="https://t.me/stablescouncil" target="_blank" rel="noopener"
-                            style="display:block;text-align:center;padding:16px;font-size:16px;font-weight:900;width:100%;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.3), rgba(167,139,250,0.3));color:rgba(255,255,255,.95);text-decoration:none;box-shadow:0 0 18px rgba(103,232,249,0.15)">
-                            https://t.me/stablescouncil
-                        </a>
-                    </div>
-
-                    <div>
-                        <label for="bug" style="display: block; color: var(--muted); font-size: 12px; margin-bottom: 6px;">Report Issue</label>
-                        <textarea id="bug" placeholder="Describe the issue and steps to reproduce..." style="min-height: 120px;"></textarea>
-                        <button class="primary" id="sendBug" style="padding: 16px; font-size: 16px; font-weight: 900; width: 100%; margin-top: 10px;">Submit</button>
-                    </div>
-
-                    <div class="hr"></div>
-
-                    <div>
-                        <label for="scenario" style="display: block; color: var(--muted); font-size: 12px; margin-bottom: 6px;">Suggest Test Scenario</label>
-                        <textarea id="scenario" placeholder="Example: deposit, mint near cap, burn, then send mUSD..." style="min-height: 120px;"></textarea>
-                        <button class="primary" id="sendScenario" style="padding: 16px; font-size: 16px; font-weight: 900; width: 100%; margin-top: 10px;">Submit</button>
-                    </div>
+                <div style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
+                    <div style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:12px">Telegram</div>
+                    <p style="margin:0 0 16px;font-size:14px;line-height:1.6;font-weight:800;color:var(--muted)">
+                        There are two ways to reach us, both on Telegram. Use the button below to open the Stables community: share feedback there with everyone and join the discussion. To contact the core dev team in private, open Telegram and start a chat with <strong style="color:var(--t)">@stablescouncil</strong>.
+                    </p>
+                    <a href="https://t.me/stablescommunity" id="feedbackTelegramMain" target="_blank" rel="noopener"
+                        class="btn btn-w"
+                        style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box;padding:16px 18px;font-size:15px;font-weight:900;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.35), rgba(167,139,250,0.35));color:rgba(255,255,255,.96);box-shadow:0 0 20px rgba(103,232,249,0.18)">
+                        Open Stables on Telegram: t.me/stablescommunity
+                    </a>
                 </div>
             </div>
         </div>
@@ -3966,7 +3944,6 @@
     <!-- MORE DRAWER -->
     <div class="dback" id="drawer" onclick="closeMore(event)">
         <div class="drawer">
-            <div class="dhead" style="padding:16px 16px"></div>
             <div class="dsect">
                 <div class="dsect-t">Payments &amp; Trade</div>
                 <div class="ditem" onclick="navigate('exchange');closeMoreNow()">
@@ -3984,32 +3961,20 @@
                     </div>
                     <div class="dinfo">
                         <div class="dname">Create Invoice</div>
-                        <div class="ddesc">Request payment
-                            ·
-                            merchant QR
-                        </div>
+                        <div class="ddesc">Request payment with a merchant QR</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
             <div class="ddiv"></div>
             <div class="dsect">
                 <div class="dsect-t">Messages &amp; Contacts</div>
-                <div class="ditem" onclick="navigate('council-comms');closeMoreNow()">
-                    <div class="dic">
-                        📢
-                    </div>
-                    <div class="dinfo">
-                        <div class="dname">Council communications</div>
-                        <div class="ddesc">Security, updates, critical notices</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
                 <div class="ditem" onclick="navigate('chat');closeMoreNow()">
                     <div class="dic">
                         💬
                     </div>
                     <div class="dinfo">
                         <div class="dname">Chat</div>
-                        <div class="ddesc">Private encrypted messages</div>
+                        <div class="ddesc">Send private encrypted messages</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
                 <div class="ditem" onclick="navigate('contacts');closeMoreNow()">
@@ -4018,29 +3983,29 @@
                     </div>
                     <div class="dinfo">
                         <div class="dname">Contacts</div>
-                        <div class="ddesc">Your address book</div>
+                        <div class="ddesc">Browse your contacts and notes</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
             <div class="ddiv"></div>
             <div class="dsect">
                 <div class="dsect-t">Community</div>
+                <div class="ditem" onclick="navigate('council-comms');closeMoreNow()">
+                    <div class="dic">
+                        📢
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">Council communications</div>
+                        <div class="ddesc">Read security, updates, and critical notices</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
                 <div class="ditem" onclick="navigate('council');closeMoreNow()">
                     <div class="dic">
                         🏛️
                     </div>
                     <div class="dinfo">
                         <div class="dname">Council</div>
-                        <div class="ddesc">Play an active role</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
-                <div class="ditem" onclick="navigate('feedback');closeMoreNow()">
-                    <div class="dic">
-                        📝
-                    </div>
-                    <div class="dinfo">
-                        <div class="dname">Feedback</div>
-                        <div class="ddesc">Report bugs, share ideas</div>
+                        <div class="ddesc">Explore council transparency and tools</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4054,14 +4019,16 @@
                     </div>
                     <div class="dinfo">
                         <div class="dname">StablesAgent</div>
-                        <div class="ddesc">Contextual help &amp; support</div>
+                        <div class="ddesc">Ask StablesAgent for contextual help</div>
                     </div><span style="color:var(--m)">&rsaquo;</span>
                 </div>
-                <div class="ditem" onclick="goAppUpdates();closeMoreNow()">
-                    <div class="dic">📦</div>
+                <div class="ditem" onclick="navigate('feedback');closeMoreNow()">
+                    <div class="dic">
+                        📝
+                    </div>
                     <div class="dinfo">
-                        <div class="dname">Settings and updates</div>
-                        <div class="ddesc">Latest build and MDS zip</div>
+                        <div class="dname">Feedback</div>
+                        <div class="ddesc">Reach the team on Telegram</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4073,8 +4040,8 @@
                         ⚙️
                     </div>
                     <div class="dinfo">
-                        <div class="dname">Settings</div>
-                        <div class="ddesc">Theme, currency &amp; privacy</div>
+                        <div class="dname">Settings and updates</div>
+                        <div class="ddesc">Manage updates, theme, currency, and privacy</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4089,10 +4056,7 @@
                     </div>
                     <div class="dinfo">
                         <div class="dname" style="color:var(--am)">Get Test Wiwina</div>
-                        <div class="ddesc">Faucet
-                            —
-                            no real
-                            value</div>
+                        <div class="ddesc">Claim test tokens (no real value)</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4491,14 +4455,6 @@
             if (label) label.textContent = url || '';
         }
 
-        function goAppUpdates() {
-            navigate('settings');
-            setTimeout(function () {
-                const el = document.getElementById('settings-app-updates');
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 100);
-        }
-
         function navigate(p) {
             PAGES.forEach(id => { const el = document.getElementById('page-' + id); if (el) el.classList.remove('active'); });
             const pg = document.getElementById('page-' + p);
@@ -4520,26 +4476,18 @@
                     if (typeof window.renderFeedbackPage === 'function') window.renderFeedbackPage();
                     else if (window.StablesRoutes?.renderFeedback && typeof getContext === 'function') window.StablesRoutes.renderFeedback(getContext());
                     const root = document.getElementById('feedbackApp');
-                    if (root && (!root.innerHTML || !root.innerHTML.includes('https://t.me/stablescouncil'))) {
+                    if (root && (!root.innerHTML || !root.innerHTML.includes('id="feedbackTelegramMain"'))) {
                         root.innerHTML = `
-                          <div style="display:grid; gap:14px;">
-                            <div style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
-                              <div class="xs mu" style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:6px">Telegram community feedback</div>
-                              <div class="xs mu" style="margin:0 0 10px;color:var(--muted);line-height:1.45;font-size:13px;font-weight:800;text-align:left">
-                                Join the Stables community on Telegram and share your feedback with everyone.
-                              </div>
-                              <a href="https://t.me/stablescommunity" target="_blank" rel="noopener"
-                                style="display:block;text-align:center;padding:16px;font-size:16px;font-weight:900;width:100%;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.3), rgba(167,139,250,0.3));color:rgba(255,255,255,.95);text-decoration:none;box-shadow:0 0 18px rgba(103,232,249,0.15);margin-bottom:10px">
-                                t.me/stablescommunity
-                              </a>
-                              <div class="xs mu" style="margin:0 0 6px;color:var(--muted);line-height:1.45;font-size:13px;font-weight:800;text-align:left">
-                                Or reach the core dev team directly:
-                              </div>
-                              <a href="https://t.me/stablescouncil" target="_blank" rel="noopener"
-                                style="display:block;text-align:center;padding:16px;font-size:16px;font-weight:900;width:100%;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.3), rgba(167,139,250,0.3));color:rgba(255,255,255,.95);text-decoration:none;box-shadow:0 0 18px rgba(103,232,249,0.15)">
-                                https://t.me/stablescouncil
-                              </a>
-                            </div>
+                          <div style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
+                            <div style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:12px">Telegram</div>
+                            <p style="margin:0 0 16px;font-size:14px;line-height:1.6;font-weight:800;color:var(--muted)">
+                              There are two ways to reach us, both on Telegram. Use the button below to open the Stables community: share feedback there with everyone and join the discussion. To contact the core dev team in private, open Telegram and start a chat with <strong style="color:var(--t)">@stablescouncil</strong>.
+                            </p>
+                            <a href="https://t.me/stablescommunity" id="feedbackTelegramMain" target="_blank" rel="noopener"
+                              class="btn btn-w"
+                              style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box;padding:16px 18px;font-size:15px;font-weight:900;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.35), rgba(167,139,250,0.35));color:rgba(255,255,255,.96);box-shadow:0 0 20px rgba(103,232,249,0.18)">
+                              Open Stables on Telegram: t.me/stablescommunity
+                            </a>
                           </div>
                         `;
                     }
