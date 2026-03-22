@@ -70,12 +70,47 @@
     });
   }
 
+  const EXCHANGE_PAIR_ROWS = [
+    ['USDw', 'EURw', 0.918],
+    ['EURw', 'GBPw', 0.872],
+    ['GBPw', 'USDw', 1.286],
+    ['USDw', 'JPYw', 151.4],
+    ['EURw', 'USDw', 1.089],
+    ['USDw', 'CADw', 1.36],
+    ['EURw', 'JPYw', 165.2],
+    ['Winiwa', 'USDw', 0.00846],
+    ['CNYw', 'USDw', 0.138],
+    ['CHFw', 'EURw', 1.052]
+  ];
+  const DEMO_EXCHANGES = [];
+  for (let i = 0; i < 14; i++) {
+    const [fromCcy, toCcy, rate] = EXCHANGE_PAIR_ROWS[i % EXCHANGE_PAIR_ROWS.length];
+    const fromAmt = Number((42 + i * 23.17 + (i % 4) * 55).toFixed(2));
+    const toAmt = Number((fromAmt * rate).toFixed(2));
+    const dt = new Date(BASE_DATE.getTime() - (i * 33 * 60 * 60 * 1000));
+    const dateText = dt.toLocaleString('en-GB', { month: 'short', day: '2-digit' }) + ' · ' + dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+    const rateDec = rate < 0.02 ? 6 : 4;
+    DEMO_EXCHANGES.push({
+      id: `EX-${String(90001 + i)}`,
+      fromCcy,
+      toCcy,
+      fromAmt,
+      toAmt,
+      rateLabel: `1 ${fromCcy} ≈ ${rate.toFixed(rateDec)} ${toCcy} (indicative)`,
+      date: dateText,
+      fee: 0,
+      status: i % 17 === 0 ? 'Pending' : 'Confirmed',
+      note: 'Instant conversion · demo preview'
+    });
+  }
+
   let activityFilter = 'all';
   let activityCcyFilter = 'all';
   let activitySearch = '';
   let activitySort = 'date_desc';
   let activityPage = 0;
   let selectedTxId = null;
+  let selectedExchangeId = null;
   let selectedContactName = '';
   let chatContactName = '';
   const CONTACTS_BOOK = new Map(DEMO_CONTACTS.map(c => [c.name, { ...c, saved: false }]));
@@ -96,6 +131,7 @@
   function persistNotes() { localStorage.setItem(CONTACT_NOTES_KEY, JSON.stringify(contactNotes)); }
   function persistTxNotes() { localStorage.setItem(TX_NOTES_KEY, JSON.stringify(txNotes)); }
   function getTxById(id) { return DEMO_ACTIVITY.find(x => x.id === id); }
+  function getExchangeById(id) { return DEMO_EXCHANGES.find(x => x.id === id); }
   function getTxNote(tx) {
     if (!tx || !tx.id) return '';
     const saved = String(txNotes[tx.id] || '').trim();
@@ -216,6 +252,64 @@
       row.addEventListener('click', () => window.openActivityDetail(x.id));
       list.appendChild(row);
     });
+  };
+
+  window.renderExchangeRecentList = function () {
+    const list = document.getElementById('exchangeRecentList');
+    if (!list) return;
+    list.innerHTML = '';
+    DEMO_EXCHANGES.forEach(x => {
+      const row = document.createElement('div');
+      row.className = 'tx-row';
+      row.style.cursor = 'pointer';
+      row.innerHTML = `<div class="tx-ic" style="background:rgba(103,232,249,.1)">⇄</div><div class="tx-info"><div class="tx-t">${x.fromCcy} → ${x.toCcy}</div><div class="tx-d">${x.date}${x.status === 'Pending' ? ' · Pending' : ''}</div></div><div class="tx-amt bal-amount" style="color:var(--c)">${x.fromAmt.toFixed(2)} → ${x.toAmt.toFixed(2)}</div>`;
+      row.addEventListener('click', () => window.openExchangeDetail(x.id));
+      list.appendChild(row);
+    });
+  };
+
+  window.openExchangeDetail = function (id) {
+    const ex = getExchangeById(id);
+    if (!ex) return;
+    selectedExchangeId = id;
+    const statusColor = ex.status === 'Confirmed' ? 'var(--gr)' : 'var(--am)';
+    const body = `<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:${statusColor};display:inline-block"></span><span class="xs mu">${ex.status}</span></div>
+      <div style="padding:12px;border-radius:12px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.16);margin-bottom:10px">
+        <div class="fbet"><div><div style="font-size:16px;font-weight:900;color:var(--t)">${ex.fromCcy} → ${ex.toCcy}</div><div class="xs mu">Currency conversion</div></div><div style="text-align:right"><div class="tx-amt bal-amount" style="color:var(--t)">−${ex.fromAmt.toFixed(2)} ${ex.fromCcy}</div><div class="xs mu" style="color:var(--gr)">+${ex.toAmt.toFixed(2)} ${ex.toCcy}</div></div></div>
+      </div>
+      <div class="flex gap8" style="margin-bottom:10px;flex-wrap:wrap;justify-content:center">
+        <button class="btn" onclick="repeatExchangeFromDetail()">Use same pair</button>
+      </div>
+      <details>
+        <summary style="cursor:pointer;font-size:13px;font-weight:800;color:var(--m);margin-bottom:8px">Details</summary>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+          <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Exchange ID</div><div style="font-size:12px;font-weight:800;margin-top:4px;word-break:break-all">${ex.id}</div></div>
+          <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Date</div><div style="font-size:12px;font-weight:800;margin-top:4px">${ex.date}</div></div>
+          <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);grid-column:1 / -1"><div class="xs mu">Quote</div><div style="font-size:12px;font-weight:800;margin-top:4px">${ex.rateLabel}</div></div>
+          <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);grid-column:1 / -1"><div class="xs mu">Fee</div><div style="font-size:12px;font-weight:800;margin-top:4px">${ex.fee === 0 ? 'No fee (demo)' : String(ex.fee)}</div></div>
+        </div>
+        <div class="xs mu">${ex.note}</div>
+      </details>`;
+    document.getElementById('agentActionTitle').textContent = 'Exchange details';
+    const titleRight = document.getElementById('agentActionTitleRight');
+    if (titleRight) titleRight.innerHTML = '<button class="btn" title="Ask StablesAgent" style="width:auto;padding:6px 10px;font-size:12px" onclick="openAgentExplain(\'Exchange details\')"><img src="agent.png" alt="Agent" style="width:14px;height:14px;border-radius:4px;vertical-align:-2px"></button>';
+    document.getElementById('agentActionContent').innerHTML = body;
+    document.getElementById('agentActionModal').classList.add('open');
+  };
+
+  window.repeatExchangeFromDetail = function () {
+    const ex = getExchangeById(selectedExchangeId);
+    if (!ex) return;
+    const fromEl = document.getElementById('exFrom');
+    const fromSel = document.getElementById('exFromCcy');
+    const toSel = document.getElementById('exToCcy');
+    if (fromEl) fromEl.value = String(ex.fromAmt);
+    if (fromSel) fromSel.value = ex.fromCcy;
+    if (toSel) toSel.value = ex.toCcy;
+    if (typeof calcRate === 'function') calcRate();
+    window.closeAgentActionModal();
+    if (typeof window.navigate === 'function') window.navigate('exchange');
+    if (typeof window.showToast === 'function') window.showToast('Amounts filled — review and tap Exchange Now');
   };
 
   window.openActivityDetail = function (id) {
@@ -828,70 +922,26 @@
   };
 
   let seedModalWaitAttempts = 0;
-  let vaultSecurityCountdownInterval = null;
-  let vaultSecurityCountdownTimeout = null;
-  /** True only when `scheduleSeedPhraseSecurityModal` runs right after the post-welcome countdown. */
-  let vaultSecurityModalAfterWelcomeCountdown = false;
-
-  function clearVaultSecurityCountdownUI() {
-    if (vaultSecurityCountdownInterval) {
-      clearInterval(vaultSecurityCountdownInterval);
-      vaultSecurityCountdownInterval = null;
-    }
-    if (vaultSecurityCountdownTimeout) {
-      clearTimeout(vaultSecurityCountdownTimeout);
-      vaultSecurityCountdownTimeout = null;
-    }
-    const banner = document.getElementById('vaultSecurityReminderCountdown');
-    if (banner && banner.parentNode) banner.parentNode.removeChild(banner);
-  }
+  let vaultSecurityModalTimer = null;
 
   /**
-   * After welcome closes: show a countdown, then open the Vault backup modal.
-   * Delay from STABLES_CONFIG.VAULT_SECURITY_MODAL_DELAY_MS (default 15s).
+   * After welcome closes: wait (no visible timer), then open the Vault backup modal.
+   * Delay: STABLES_CONFIG.VAULT_SECURITY_MODAL_DELAY_MS (default 1 minute).
    */
   window.startVaultSecurityModalCountdown = function () {
     try {
       if (localStorage.getItem(SEED_PHRASE_SAVED_CONFIRMED_KEY) === '1') return;
     } catch (_) {}
-    clearVaultSecurityCountdownUI();
+    if (vaultSecurityModalTimer) {
+      clearTimeout(vaultSecurityModalTimer);
+      vaultSecurityModalTimer = null;
+    }
     const delayMs = Math.max(
-      3000,
-      Number((window.STABLES_CONFIG || {}).VAULT_SECURITY_MODAL_DELAY_MS) || 15000
+      5000,
+      Number((window.STABLES_CONFIG || {}).VAULT_SECURITY_MODAL_DELAY_MS) || 60000
     );
-    const totalSec = Math.max(1, Math.ceil(delayMs / 1000));
-
-    const el = document.createElement('div');
-    el.id = 'vaultSecurityReminderCountdown';
-    el.setAttribute('role', 'status');
-    el.setAttribute('aria-live', 'polite');
-    el.style.cssText =
-      'position:fixed;left:50%;bottom:calc(var(--nh,64px) + 88px);transform:translateX(-50%);z-index:400;' +
-      'padding:10px 18px;border-radius:14px;background:rgba(16,24,38,.96);border:1px solid rgba(251,191,36,.4);' +
-      'color:#fbbf24;font-size:13px;font-weight:800;box-shadow:0 8px 28px rgba(0,0,0,.4);pointer-events:none;' +
-      'max-width:min(360px,92vw);text-align:center;line-height:1.35';
-    el.textContent = `Vault key backup check in ${totalSec}s…`;
-    document.body.appendChild(el);
-
-    const endAt = Date.now() + delayMs;
-    vaultSecurityCountdownInterval = setInterval(() => {
-      const left = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
-      if (!document.getElementById('vaultSecurityReminderCountdown')) {
-        clearInterval(vaultSecurityCountdownInterval);
-        vaultSecurityCountdownInterval = null;
-        return;
-      }
-      if (left <= 0) {
-        clearInterval(vaultSecurityCountdownInterval);
-        vaultSecurityCountdownInterval = null;
-        return;
-      }
-      el.textContent = `Vault key backup check in ${left}s…`;
-    }, 250);
-
-    vaultSecurityCountdownTimeout = setTimeout(() => {
-      clearVaultSecurityCountdownUI();
-      vaultSecurityModalAfterWelcomeCountdown = true;
+    vaultSecurityModalTimer = setTimeout(() => {
+      vaultSecurityModalTimer = null;
       if (typeof window.scheduleSeedPhraseSecurityModal === 'function') {
         window.scheduleSeedPhraseSecurityModal();
       }
@@ -900,10 +950,7 @@
 
   window.scheduleSeedPhraseSecurityModal = function () {
     try {
-      if (localStorage.getItem(SEED_PHRASE_SAVED_CONFIRMED_KEY) === '1') {
-        vaultSecurityModalAfterWelcomeCountdown = false;
-        return;
-      }
+      if (localStorage.getItem(SEED_PHRASE_SAVED_CONFIRMED_KEY) === '1') return;
     } catch (_) {}
     const welcome = document.getElementById('welcomeSetupModal');
     if (welcome && welcome.classList.contains('open')) return;
@@ -921,23 +968,7 @@
     }
     seedModalWaitAttempts = 0;
     const modal = document.getElementById('seedPhraseSecurityModal');
-    if (!modal || modal.classList.contains('open')) {
-      vaultSecurityModalAfterWelcomeCountdown = false;
-      return;
-    }
-    const meta = document.getElementById('vaultBackupReminderMeta');
-    if (meta) {
-      if (vaultSecurityModalAfterWelcomeCountdown) {
-        vaultSecurityModalAfterWelcomeCountdown = false;
-        const delayMs = Number((window.STABLES_CONFIG || {}).VAULT_SECURITY_MODAL_DELAY_MS) || 15000;
-        const sec = Math.max(1, Math.round(delayMs / 1000));
-        meta.textContent = `This reminder was scheduled ${sec} seconds after you closed the welcome flow so you could use the app first.`;
-        meta.style.display = '';
-      } else {
-        meta.textContent = '';
-        meta.style.display = 'none';
-      }
-    }
+    if (!modal || modal.classList.contains('open')) return;
     modal.classList.add('open');
   };
 
@@ -1364,6 +1395,7 @@
   // Initialize reminders once.
   setTimeout(() => window.checkBackupReminder(), 1600);
   setTimeout(() => window.renderWalletRecentActivity(), 650);
+  setTimeout(() => { if (typeof window.renderExchangeRecentList === 'function') window.renderExchangeRecentList(); }, 660);
   setTimeout(() => { if (typeof window.refreshSpendShopCards === 'function') window.refreshSpendShopCards(); }, 400);
   setTimeout(() => {
     window.updateWelcomePrimaryOptions();

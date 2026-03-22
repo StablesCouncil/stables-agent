@@ -23,8 +23,8 @@ window.STABLES_CONFIG = {
   BACKUP_FIRST_SEEN_KEY: 'stables_backup_first_seen_ts',
   /** User confirmed Vault key is safely stored. Stops the first-run Vault key prompt. */
   SEED_PHRASE_SAVED_CONFIRMED_KEY: 'stables_seedphrase_saved_confirmed_v1',
-  /** After the welcome flow closes, wait this long (ms) before the Vault backup modal; a countdown is shown. */
-  VAULT_SECURITY_MODAL_DELAY_MS: 15000,
+  /** After the welcome flow closes, wait this long (ms) before the Vault backup modal (no on-screen timer). */
+  VAULT_SECURITY_MODAL_DELAY_MS: 60000,
   /**
    * When true, clears the Vault-key “I have stored it safely” flag on every full page load so the
    * amber security modal can appear again after each refresh (showcase / web demo).
@@ -45,8 +45,13 @@ window.STABLES_CONFIG = {
    */
   STABLES_CHARTER_URL:
     'https://github.com/StablesCouncil/StablesCouncil.github.io/blob/main/governance/stables_charter.md',
-  /** Public MEXC spot ticker for MINIMA/USDT (browser CORS must allow your app origin). */
+  /** MEXC spot ticker for MINIMA/USDT. In MiniDapp, `MDS.net.GET` is used (no CORS issue). */
   MEXC_TICKER_URL: 'https://api.mexc.com/api/v3/ticker/price?symbol=MINIMAUSDT',
+  /**
+   * Optional override for CoinGecko simple price (Minima id). Default is built into `index.html`;
+   * set here if you need a different endpoint or query.
+   */
+  COINGECKO_MINIMA_URL: '',
   /** How often to refresh spot price for Treasury stress slider (ms). */
   WINIWA_PRICE_POLL_MS: 120000,
   /**

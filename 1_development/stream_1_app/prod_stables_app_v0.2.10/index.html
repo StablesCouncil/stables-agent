@@ -169,6 +169,95 @@
             animation: pulse 2s ease-in-out infinite
         }
 
+        .sync-pill--placeholder {
+            color: var(--m);
+            border-color: rgba(103, 232, 249, .22);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .02em;
+        }
+
+        .sync-pill--placeholder .dot {
+            display: none;
+        }
+
+        /* Treasury stress slider: anchor USD row above track, % row below track */
+        .treasury-slider-price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            font-variant-numeric: tabular-nums;
+            color: var(--t);
+            margin-bottom: 10px;
+        }
+
+        .treasury-slider-pct-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--m);
+            margin-top: 10px;
+        }
+
+        .treasury-slider-track-wrap {
+            position: relative;
+            margin-bottom: 0;
+            padding-bottom: 26px;
+        }
+
+        .treasury-slider-input-shell {
+            position: relative;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .treasury-slider-thumb-price {
+            position: absolute;
+            left: 50%;
+            bottom: 100%;
+            margin-bottom: 6px;
+            transform: translateX(-50%);
+            z-index: 2;
+            pointer-events: none;
+            white-space: nowrap;
+            font-size: 11px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            color: var(--c);
+            padding: 3px 8px;
+            border-radius: 8px;
+            background: rgba(16, 24, 38, .94);
+            border: 1px solid rgba(103, 232, 249, .28);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .35);
+        }
+
+        .treasury-slider-thumb-pct {
+            position: absolute;
+            left: 50%;
+            top: 100%;
+            margin-top: 6px;
+            transform: translateX(-50%);
+            z-index: 2;
+            pointer-events: none;
+            white-space: nowrap;
+            font-size: 11px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            color: var(--m);
+            padding: 2px 6px;
+            border-radius: 6px;
+            background: rgba(16, 24, 38, .85);
+            border: 1px solid rgba(255, 255, 255, .08);
+        }
+
         @keyframes pulse {
 
             0%,
@@ -655,6 +744,20 @@
             flex: 1;
             min-width: 0;
             text-align: left;
+        }
+
+        .stitle.stitle--with-emoji {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .stitle.stitle--with-emoji .stitle-emoji {
+            font-size: 1.2em;
+            line-height: 1;
+            flex-shrink: 0;
+            text-transform: none;
+            letter-spacing: normal;
         }
 
         /* Proposal / in-card title row at top of box */
@@ -2204,11 +2307,19 @@
             box-shadow: 0 0 12px rgba(103, 232, 249, .2);
         }
 
-        .wallet-ccy-tools {
+        .stitle-row-actions {
             display: flex;
-            justify-content: flex-end;
             align-items: center;
-            margin: 0 2px 8px;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        /* Match agent-mini-btn footprint when pen sits in .stitle-row */
+        .ccy-edit-pen.ccy-edit-pen--stitle {
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            font-size: 15px;
         }
 
         .ccy-row-toggle {
@@ -2230,6 +2341,46 @@
 
         body.wallet-edit-on #ccyList .ccy-row-toggle {
             display: inline-flex;
+        }
+
+        .ccy-row-star {
+            display: none;
+            flex-shrink: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 9px;
+            border: 1px solid rgba(103, 232, 249, .22);
+            background: rgba(16, 24, 38, .55);
+            color: var(--m);
+            font-size: 16px;
+            line-height: 1;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .ccy-row-star.is-primary {
+            color: var(--c);
+            border-color: rgba(103, 232, 249, .4);
+            box-shadow: 0 0 10px rgba(103, 232, 249, .12);
+        }
+
+        body.wallet-edit-on #ccyList .ccy-row-star {
+            display: inline-flex;
+        }
+
+        .ccy-sec-row .ccy-row-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .ccy-sec-row-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
         }
 
         .ccy-sec-row.dragover {
@@ -3094,8 +3245,8 @@
         🧪 Test Phase - No real value
     </div>
     <!-- Column 3: Sync Pill (Right) -->
-    <div class="sync-pill" title="Current block" style="justify-self: end;">
-        <div class="dot"></div><span id="syncNum">1,968,096</span>
+    <div class="sync-pill sync-pill--placeholder" title="Block height appears when you open Stables in the MiniDapp host (node)." style="justify-self: end;">
+        <div class="dot"></div><span id="syncNum">Only in node</span>
     </div>
     </div>
 
@@ -3168,16 +3319,16 @@
             <div class="app-section app-section--caption-bottom">
             <div class="stitle-row">
                 <div class="stitle">Currencies</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Wallet: currencies and ordering')" title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
+                <div class="stitle-row-actions">
+                    <button type="button" class="ccy-edit-pen ccy-edit-pen--stitle" id="ccyEditPen" title="Edit currencies: order, main ★, show all"
+                        onclick="toggleWalletEditMode(event)">✎</button>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Wallet: currencies and ordering')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
             </div>
-            <div class="card app-section-card" style="padding:0">
-                <div class="cb" style="padding-top:0">
-                    <div class="wallet-ccy-tools">
-                        <button class="ccy-edit-pen" id="ccyEditPen" title="Edit currency order"
-                            onclick="toggleWalletEditMode(event)">✎</button>
-                    </div>
+            <div class="card app-section-card" style="padding:14px 18px">
+                <div class="cb" style="padding:0">
                     <!-- Primary currency card -->
                     <div class="ccy-primary" data-ccy="USDw" draggable="true">
                         <div class="ccy-pri-flex">
@@ -3845,25 +3996,7 @@
                 </button>
             </div>
             <div class="card app-section-card" style="padding:14px 18px">
-                <div class="tx-list">
-                    <div class="tx-row">
-                        <div class="tx-ic" style="background:rgba(103,232,249,.1)">
-                            ⇄
-                        </div>
-                        <div class="tx-info">
-                            <div class="tx-t">USDw
-                                →
-                                EURw</div>
-                            <div class="tx-d">Feb 22
-                                ·
-                                18:02</div>
-                        </div>
-                        <div class="tx-amt" style="color:var(--c)">200
-                            →
-                            183.60
-                        </div>
-                    </div>
-                </div>
+                <div class="tx-list" id="exchangeRecentList"></div>
             </div>
             </div>
         </div>
@@ -3880,30 +4013,33 @@
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('Ambassador: onboard shops, Big Mac-indexed fees, 50/50 split')"
+                        onclick="openAgentExplain('Ambassador: register with 10 Big Macs or via first shop onboarding; regional listing help; merchant listing 20 Big Macs 50/50')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
                 <div class="card app-section-card" style="padding:18px 16px">
                     <p class="sec-body" style="margin:0 0 14px;line-height:1.55">
-                        Ambassadors set up what they need to <strong>onboard shops</strong> to Stables: profiles, QR
-                        flows, and local support. Merchants use <strong>My shop</strong> for listings and
-                        <strong>Create Invoice</strong>; use <strong>Exchange</strong> (under <strong>Shops &amp;
-                            Exchange</strong> in More) when you need instant conversion between Wables balances.
+                        Ambassadors help merchants in <strong>their region</strong> get fully <strong>listed</strong> on
+                        Stables: profiles, QR flows, and local support. Merchants who only run a storefront use
+                        <strong>My shop</strong> for their listing and <strong>Create Invoice</strong>; use
+                        <strong>Exchange</strong> (under <strong>Shops &amp; Exchange</strong> in More) when you need
+                        instant conversion between Wables balances.
                     </p>
-                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">Proposed fee (showcase):</strong> merchant pays
-                        <strong style="color:var(--t)">20 Big Macs</strong> (value indexed by country using the
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--c)">How you register (preview):</strong> join by paying
+                        <strong style="color:var(--t)">10 Big Macs</strong> (value indexed by country using the
                         <a href="https://worldpopulationreview.com/country-rankings/big-mac-index-by-country"
                             target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">Big
-                            Mac Index</a>), split <strong style="color:var(--t)">50% protocol</strong> /
-                        <strong style="color:var(--t)">50% ambassador</strong>. Exact launch terms will follow Council
-                        governance.
+                            Mac Index</a>) as a direct Ambassador registration, <strong style="color:var(--t)">or</strong>
+                        start by <strong style="color:var(--t)">onboarding your first shop</strong>—registration can align
+                        with that flow. Exact launch terms will follow Council governance.
                     </p>
-                    <p class="sec-body" style="margin:0;line-height:1.5;font-size:var(--fz-caption);color:var(--m)">
-                        Cashback framing: <strong style="color:var(--t)">10 Big Mac</strong> ambassador incentive is a
-                        working headline for community feedback, not a live ledger rule in this preview.
+                    <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--c)">Proposed merchant listing fee (showcase):</strong> when a shop is
+                        onboarded through this pathway, the merchant pays <strong style="color:var(--t)">20 Big Macs</strong>
+                        (same index), split <strong style="color:var(--t)">50% protocol</strong> /
+                        <strong style="color:var(--t)">50% ambassador</strong>.
                     </p>
                 </div>
             </div>
@@ -3923,7 +4059,7 @@
                 <div class="stitle-row">
                     <div class="stitle">Your shop on Stables</div>
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('My shop: merchant listing, Create Invoice, link to Ambassador program')"
+                        onclick="openAgentExplain('My shop: listing, regional Ambassador for help, fully listed equals Ambassador privileges, Create Invoice, webshop QR and merchant API kit')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
@@ -3933,9 +4069,15 @@
                         Set up how customers find you and pay with Wables. In this preview, listing flows are
                         illustrative; production will tie to your Vault identity and Council rules.
                     </p>
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--c)">Need help getting listed?</strong> Work with an
+                        <strong style="color:var(--t)">Ambassador</strong> in <strong style="color:var(--t)">your
+                            region</strong>—open <strong style="color:var(--t)">Ambassador</strong> under
+                        <strong style="color:var(--t)">Shops &amp; Exchange</strong> in More so a local onboarding contact
+                        can guide you.
+                    </p>
                     <p class="sec-body" style="margin:0;line-height:1.55;font-size:var(--fz-caption);color:var(--m)">
-                        Want to onboard other merchants? Open <strong style="color:var(--t)">Ambassador</strong> under
-                        <strong style="color:var(--t)">Shops &amp; Exchange</strong> in More.
+                        <strong style="color:var(--c)">Fully listed:</strong> when your shop is <strong style="color:var(--t)">fully listed</strong>, you gain the <strong style="color:var(--t)">same privileges as an Ambassador</strong>, including <strong style="color:var(--t)">onboarding other merchants</strong>. Registration paths for Ambassadors (direct fee or via first shop) are described on the <strong style="color:var(--t)">Ambassador</strong> page.
                     </p>
                 </div>
             </div>
@@ -3959,6 +4101,90 @@
                     </div>
                 </div>
             </div>
+
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Webshop linking &amp; QR</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('My shop webshop: QR and payment links open the app with address and amount; Merchant API kit on GitHub')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:18px 16px">
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55">
+                        Online shops can point customers to Stables the same way as a physical checkout: a
+                        <strong style="color:var(--t)">QR code</strong> or
+                        <strong style="color:var(--t)">payment link</strong> encodes your
+                        <strong style="color:var(--t)">receive address</strong>, <strong style="color:var(--t)">amount</strong>,
+                        <strong style="color:var(--t)">currency</strong>, and an <strong style="color:var(--t)">order or
+                            invoice reference</strong>. Scanning or opening the link starts (or deep-links) the Stables
+                        MiniDapp so the payer confirms in one flow—mirroring what you build in
+                        <strong style="color:var(--t)">Create Invoice</strong>.
+                    </p>
+                    <div
+                        style="max-width:200px;margin:0 auto 14px;padding:14px;border-radius:16px;border:2px dashed rgba(103,232,249,.35);background:rgba(103,232,249,.06);text-align:center">
+                        <div style="font-size:42px;line-height:1;margin-bottom:8px" aria-hidden="true">▦</div>
+                        <div class="xs mu" style="font-weight:700;color:var(--m)">QR preview (demo)</div>
+                        <div class="xs mu" style="margin-top:6px;line-height:1.45">Address · amount · order ID</div>
+                    </div>
+                    <p class="sec-body" style="margin:0;line-height:1.55;font-size:var(--fz-caption);color:var(--m)">
+                        Your webshop or POS generates this QR from the <strong style="color:var(--t)">Merchant API kit</strong>
+                        (below) or from a static “Pay with Stables” page that calls the same payload format the Council
+                        documents.
+                    </p>
+                </div>
+            </div>
+
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Merchant API kit</div>
+                </div>
+                <div class="card app-section-card" style="padding:18px 16px">
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        The Council will ship a small <strong style="color:var(--t)">integration kit</strong> so developers
+                        can add “Pay with Stables” without re‑implementing crypto details: helpers to build signed or
+                        canonical payment requests, render QR images, validate callbacks, and copy‑paste examples (e.g. Node,
+                        PHP, or serverless). Watch the public org for the published repo and versioned docs.
+                    </p>
+                    <a href="https://github.com/StablesCouncil" target="_blank" rel="noopener noreferrer" class="btn btn-w"
+                        style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box;margin-bottom:10px">StablesCouncil on GitHub</a>
+                    <p class="sec-body" style="margin:0;line-height:1.45;font-size:var(--fz-caption);color:var(--m)">
+                        This preview does not call a live API yet; the button opens the organisation where the kit will
+                        land.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Webhooks & callbacks: kept in markup; hidden until merchant settings ship (remove display:none to show). -->
+            <div class="app-section app-section--caption-bottom" style="display:none" aria-hidden="true">
+                <div class="stitle-row">
+                    <div class="stitle">Webhooks &amp; callbacks</div>
+                </div>
+                <div class="card app-section-card" style="padding:18px 16px">
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55">
+                        <strong style="color:var(--c)">Is &ldquo;webhook&rdquo; the right word?</strong> Yes, for
+                        <strong style="color:var(--t)">your server</strong>: a <strong style="color:var(--t)">webhook</strong>
+                        is an <strong style="color:var(--t)">HTTPS endpoint you host</strong> that Stables (or a Council
+                        notifier) can <strong style="color:var(--t)">POST</strong> to when a payment is
+                        <strong style="color:var(--t)">confirmed</strong>, so your webshop can mark an order paid, send email,
+                        or restock—without polling the chain. The same idea is often called a
+                        <strong style="color:var(--t)">callback URL</strong> or <strong style="color:var(--t)">IPN</strong>
+                        (instant payment notification) in other gateways.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55;font-size:var(--fz-caption);color:var(--m)">
+                        You will register the URL in merchant settings, verify signatures with a <strong style="color:var(--t)">shared secret</strong> or public key, and respond quickly with <code style="font-size:11px">200 OK</code>.
+                        Exact payload and headers will ship with the API kit.
+                    </p>
+                    <label class="flabel" for="merchantWebhookPreview">Webhook URL (preview — not saved)</label>
+                    <input class="finput" id="merchantWebhookPreview" readonly
+                        value="https://your-store.example/stables/payment-notify"
+                        style="margin-bottom:10px;font-size:12px;opacity:.95;cursor:default">
+                    <label class="flabel" for="merchantWebhookSecretPreview">Signing secret (preview placeholder)</label>
+                    <input class="finput" id="merchantWebhookSecretPreview" readonly value="whsec_••••••••••••••••"
+                        style="margin-bottom:0;font-size:12px;opacity:.95;cursor:default;font-family:ui-monospace,monospace">
+                </div>
+            </div>
         </div>
 
         <!-- WHERE TO SPEND -->
@@ -3970,9 +4196,12 @@
                     <div class="app-page-header__sub">Merchants accepting Wables</div>
                 </div>
             </header>
-            <div style="display:flex;justify-content:center;margin:0 0 20px;padding:0 12px;box-sizing:border-box">
-                <button type="button" class="btn btn-lg" style="width:100%;max-width:340px"
-                    onclick="navigate('my-shop')">List my shop / Become an ambassador</button>
+            <div
+                style="display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:10px;margin:0 auto 20px;padding:0 12px;box-sizing:border-box;max-width:420px;width:100%">
+                <button type="button" class="btn btn-lg" style="width:100%;min-height:64px;line-height:1.25;white-space:normal"
+                    onclick="navigate('my-shop')">List my shop</button>
+                <button type="button" class="btn btn-lg" style="width:100%;min-height:64px;line-height:1.25;white-space:normal"
+                    onclick="navigate('ambassador')">Become an ambassador</button>
             </div>
             <input class="finput" placeholder="🔍 Search merchants..." style="margin-bottom:14px">
             <div class="app-section app-section--caption-bottom" style="margin-top:4px">
@@ -4258,7 +4487,10 @@
             <!-- STABLES CHARTER (GitHub) -->
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
-                <div class="stitle">Stables Charter</div>
+                <div class="stitle stitle--with-emoji">
+                    <span class="stitle-emoji" aria-hidden="true">&#x1F4DC;</span>
+                    <span>Stables Charter</span>
+                </div>
                 <button type="button" class="agent-mini-btn"
                     onclick="openAgentExplain('Stables Charter: first GitHub draft coming in the coming weeks; members should read it for roles, process, and community rules')"
                     title="StablesAgent">
@@ -4690,31 +4922,37 @@
                 </div>
 
                 <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.05)">
-                    <div style="font-size:13px;font-weight:800;margin-bottom:10px">Stress Test Winiwa Price</div>
-                    <div class="fbet" style="margin:0 0 8px;align-items:flex-start">
-                        <div class="xs mu">Winiwa price (USD)</div>
-                        <div style="text-align:right">
-                            <div style="font-size:13px;font-weight:900;font-variant-numeric:tabular-nums">
-                                <span id="minimaPriceNow">-</span>
-                                <span style="opacity:.55">→</span>
-                                <span id="minimaPriceSim">-</span>
+                    <div style="font-size:13px;font-weight:800;margin-bottom:12px">Stress Test Winiwa Price</div>
+                    <div style="margin-bottom:12px">
+                        <div class="xs mu" style="margin-bottom:6px">Winiwa price (USD)</div>
+                        <div style="font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.35;color:var(--t)">
+                            <span id="minimaPriceNow">-</span>
+                            <span style="opacity:.55">→</span>
+                            <span id="minimaPriceSim">-</span>
+                        </div>
+                        <div id="winiwaSpotPriceSource" class="xs mu" style="margin-top:6px;color:var(--m)">—</div>
+                    </div>
+                    <div class="xs mu" style="margin-bottom:8px;font-weight:800;color:var(--m)">Price change (slider)</div>
+                    <div class="treasury-slider-price-row" aria-hidden="false">
+                        <span id="treasuryPriceAtMin30">$0.000000</span>
+                        <span id="treasuryPriceAtZero">$0.000000</span>
+                        <span id="treasuryPriceAtPlus30">$0.000000</span>
+                    </div>
+                    <div class="treasury-slider-track-wrap">
+                        <div class="treasury-slider-input-shell">
+                            <div id="treasurySliderThumbPrice" class="treasury-slider-thumb-price">$0.000000</div>
+                            <div id="treasurySliderThumbPct" class="treasury-slider-thumb-pct">0%</div>
+                            <input type="range" id="protocolSlider" min="-30" max="30" value="0" step="1" class="sim-slider"
+                                oninput="syncSliders(this.value)" style="width:100%;accent-color:var(--pu);position:relative;z-index:3">
+                            <div
+                                style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.2);pointer-events:none;z-index:2">
                             </div>
-                            <div id="winiwaSpotPriceSource" class="xs mu" style="margin-top:4px;color:var(--m)">—</div>
                         </div>
                     </div>
-                    <div style="position:relative;height:32px;display:flex;align-items:center;margin-bottom:6px">
-                        <input type="range" id="protocolSlider" min="-30" max="30" value="0" class="sim-slider"
-                            oninput="syncSliders(this.value)" style="width:100%;accent-color:var(--pu)">
-                        <div
-                            style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.2);pointer-events:none">
-                        </div>
-                    </div>
-                    <div class="fbet xs mu" style="margin-top:4px">
-                        <span>-30%</span><span>0%</span><span>+30%</span>
-                    </div>
-                    <div class="fbet xs mu" style="margin-top:10px">
-                        <span>Price change (slider)</span>
-                        <span id="protocolSliderPct" style="font-size:16px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--c)">0%</span>
+                    <div class="treasury-slider-pct-row" aria-hidden="false">
+                        <span>&#x2212;30%</span>
+                        <span>0%</span>
+                        <span>+30%</span>
                     </div>
                 </div>
             </div>
@@ -5043,6 +5281,129 @@
             </div>
         </div>
 
+        <!-- LEGAL & NOTICES (More → Community; Council IP, privacy summary, official presences) -->
+        <div class="page" id="page-settings-legal">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x2696;&#xFE0F;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Legal &amp; notices</div>
+                    <div class="app-page-header__sub">Terms, privacy, data, security · Council property</div>
+                </div>
+            </header>
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+                <div class="stitle-row">
+                    <div class="stitle">Terms of Service (summary)</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Legal: Council owns Stables IP; reproduction must credit StablesCouncil; preview not legal advice')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55">
+                        The <strong style="color:var(--t)">Stables</strong> name, wordmarks, logos, UI, copy, and related
+                        materials in this app are the <strong style="color:var(--t)">property of the Stables Council</strong>.
+                        No other person or entity acquires any ownership or exclusive right in those properties, names, or
+                        marks by using this preview.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        If you reproduce or redistribute this app or a substantial part of it, you must accompany that
+                        reproduction with a <strong style="color:var(--t)">clear reference to StablesCouncil</strong> and
+                        <strong style="color:var(--t)">cite StablesCouncil as the original author</strong> (for example a
+                        visible credit and link to an official Council property below). This does not grant a licence to
+                        remove branding, imply endorsement where none exists, or misrepresent origin.
+                    </p>
+                    <p class="sec-body" style="margin:0;line-height:1.5;font-size:var(--fz-caption);color:var(--m)">
+                        This MiniDapp is provided as a <strong style="color:var(--t)">preview</strong>. It is offered
+                        &ldquo;as is&rdquo; without warranties. For binding terms, follow Council governance and published
+                        policies on official channels as they are updated.
+                    </p>
+                </div>
+            </div>
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Privacy Policy (summary)</div>
+                </div>
+                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
+                    <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
+                        This preview stores some choices on <strong style="color:var(--t)">your device</strong> (for example
+                        layout and preferences in browser storage). We do not sell personal data from this static preview.
+                        Do not send secrets or Vault keys through unofficial channels; use only the official Council and
+                        security contacts listed below and on <strong style="color:var(--t)">Security</strong> in this app.
+                    </p>
+                </div>
+            </div>
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Data use (summary)</div>
+                </div>
+                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
+                    <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
+                        Demo flows may use <strong style="color:var(--t)">fixed or simulated figures</strong>. Nothing in this
+                        preview should be read as live ledger or production accounting. When the Council ships networked
+                        features, data practices will be described in the governing documents and release notes on official
+                        properties.
+                    </p>
+                </div>
+            </div>
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Security (summary)</div>
+                </div>
+                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        Your <strong style="color:var(--t)">Vault key</strong> controls access to your funds. Never share it.
+                        For Vault-key help, use the official security Telegram listed below (and <strong style="color:var(--t)">Security</strong> in Preferences).
+                    </p>
+                    <button type="button" class="btn btn-w btn-g" style="width:100%"
+                        onclick="navigate('settings-security')">Open Security (Vault key)</button>
+                </div>
+            </div>
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Official Council properties</div>
+                </div>
+                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:24px;border:1px solid rgba(103,232,249,.12)">
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.5;font-size:var(--fz-caption);color:var(--m)">
+                        Domains, accounts, and repos below are <strong style="color:var(--t)">operated for the Council</strong>.
+                        The live directory may also appear at
+                        <a href="https://stablescouncil.github.io/links.html" target="_blank" rel="noopener noreferrer"
+                            style="color:var(--c);text-decoration:underline">stablescouncil.github.io/links.html</a>.
+                    </p>
+                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Domains &amp; sites</div>
+                    <ul style="margin:0 0 14px;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
+                        <li><a href="https://stablescouncil.org/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">stablescouncil.org</a> — public site · Be your own bank</li>
+                        <li><a href="https://stablescouncil.github.io/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">stablescouncil.github.io</a> — GitHub Pages presentation &amp; resources</li>
+                        <li><a href="https://agent.stablescouncil.org/chat" target="_blank" rel="noopener noreferrer" style="color:var(--c)">agent.stablescouncil.org</a> — StablesAgent web chat</li>
+                    </ul>
+                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Code &amp; email</div>
+                    <ul style="margin:0 0 14px;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
+                        <li><a href="https://github.com/StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">github.com/StablesCouncil</a> — public organisation</li>
+                        <li><a href="https://github.com/StablesCouncilExec" target="_blank" rel="noopener noreferrer" style="color:var(--c)">github.com/StablesCouncilExec</a> — Council admin account</li>
+                        <li><a href="mailto:StablesCouncil@protonmail.com" style="color:var(--c)">StablesCouncil@protonmail.com</a></li>
+                        <li><a href="mailto:StablesCouncil@gmail.com" style="color:var(--c)">StablesCouncil@gmail.com</a></li>
+                    </ul>
+                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Social &amp; community (handles)</div>
+                    <ul style="margin:0;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
+                        <li><a href="https://x.com/StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">X / Twitter — @StablesCouncil</a></li>
+                        <li><a href="https://www.instagram.com/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Instagram — @stablescouncil</a></li>
+                        <li><a href="https://www.tiktok.com/@stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">TikTok — @stablescouncil</a></li>
+                        <li><a href="https://www.youtube.com/@StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">YouTube — @StablesCouncil</a></li>
+                        <li><a href="https://www.twitch.tv/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Twitch — stablescouncil</a></li>
+                        <li><a href="https://rumble.com/user/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Rumble — @stablescouncil</a></li>
+                        <li><a href="https://www.facebook.com/share/16nCLsLHkg/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables official page</a></li>
+                        <li><a href="https://www.facebook.com/groups/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables Community group</a></li>
+                        <li><a href="https://discord.gg/cFq4hHAc" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Discord — Stables server</a></li>
+                        <li><a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @stablescommunity</a> (community)</li>
+                        <li><a href="https://t.me/StablesCouncilOfficial" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — StablesCouncilOfficial</a> (announcements)</li>
+                        <li><a href="https://t.me/StablesSecuritySupport" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — StablesSecuritySupport</a> (Vault key / security)</li>
+                        <li><a href="https://t.me/StablesAgentBot" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @StablesAgentBot</a></li>
+                        <li><a href="https://www.moltbook.com/u/stablesagent" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Moltbook — u/stablesagent</a> (StablesAgent)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
         <!-- MERCHANT INVOICE PAGE -->
         <div class="page" id="page-invoice">
             <div class="fbet" style="margin-bottom:14px;align-items:flex-start">
@@ -5143,14 +5504,14 @@
                     <div class="dic" aria-hidden="true">&#x1F91D;</div>
                     <div class="dinfo">
                         <div class="dname">Ambassador</div>
-                        <div class="ddesc">Open ambassador program &amp; showcase fees</div>
+                        <div class="ddesc">Merchant onboarding, earn 10 Big Mac</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
                 <div class="ditem" onclick="navigate('my-shop');closeMoreNow()">
                     <div class="dic" aria-hidden="true">&#x1F3EA;</div>
                     <div class="dinfo">
                         <div class="dname">My shop</div>
-                        <div class="ddesc">List your business · Create Invoice</div>
+                        <div class="ddesc">List your business · Invoice · Webshop kit (preview)</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
                 <div class="ditem" onclick="navigate('exchange');closeMoreNow()">
@@ -5189,6 +5550,36 @@
                     <div class="dinfo">
                         <div class="dname">Council communications</div>
                         <div class="ddesc">Read security, updates, and critical notices</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+            </div>
+            <div class="ddiv"></div>
+            <div class="dsect">
+                <div class="dsect-t">Community</div>
+                <div class="ditem" onclick="navigate('council');closeMoreNow()">
+                    <div class="dic">
+                        🏛️
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">Council</div>
+                        <div class="ddesc">Explore council transparency and tools</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('settings-legal');closeMoreNow()">
+                    <div class="dic">&#x2696;&#xFE0F;</div>
+                    <div class="dinfo">
+                        <div class="dname">Legal &amp; notices</div>
+                        <div class="ddesc">Terms, privacy, data, Council properties</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('treasury');closeMoreNow()">
+                    <div class="dic">
+                        <img src="treasure-chest.svg" alt="" width="20" height="20"
+                            style="width:20px;height:20px;border-radius:7px;flex-shrink:0;display:block;object-fit:contain">
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">Treasury</div>
+                        <div class="ddesc">Analyse the community's treasury</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -5250,29 +5641,6 @@
                     <div class="dinfo">
                         <div class="dname">Feedback</div>
                         <div class="ddesc">Reach the team on Telegram</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
-            </div>
-            <div class="ddiv"></div>
-            <div class="dsect">
-                <div class="dsect-t">Community</div>
-                <div class="ditem" onclick="navigate('council');closeMoreNow()">
-                    <div class="dic">
-                        🏛️
-                    </div>
-                    <div class="dinfo">
-                        <div class="dname">Council</div>
-                        <div class="ddesc">Explore council transparency and tools</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
-                <div class="ditem" onclick="navigate('treasury');closeMoreNow()">
-                    <div class="dic">
-                        <img src="treasure-chest.svg" alt="" width="20" height="20"
-                            style="width:20px;height:20px;border-radius:7px;flex-shrink:0;display:block;object-fit:contain">
-                    </div>
-                    <div class="dinfo">
-                        <div class="dname">Treasury</div>
-                        <div class="ddesc">Analyse the community's treasury</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -5384,33 +5752,36 @@
         </div>
     </div>
 
-    <!-- OPEN NODE SECURITY APP (seed phrase) - safety styling -->
-    <div class="mback centered" id="seedSecurityAppModal" onclick="if(event.target===this)closeModal('seedSecurityAppModal')">
+    <!-- Minima Security app: combined safety + coming-version notice (single step, OK / backdrop) -->
+    <div class="mback centered" id="seedSecurityAppModal" style="z-index:640" aria-modal="true" role="dialog"
+        aria-labelledby="seedSecurityAppTitle"
+        onclick="if(event.target===this)closeModal('seedSecurityAppModal')">
         <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.1),rgba(11,15,20,.94));padding:20px 18px 22px">
             <div class="mhandle" style="background:rgba(251,191,36,.35)"></div>
             <div class="type-eyebrow" style="color:#fbbf24;margin-bottom:10px">Safety</div>
-            <div class="mttl" style="text-align:center;margin-bottom:12px">Open Minima Security app</div>
+            <div class="mttl" id="seedSecurityAppTitle" style="text-align:center;margin-bottom:12px">Minima Security app</div>
             <div style="margin:0 0 18px;line-height:var(--lh-body);text-align:center;color:var(--t);font-size:var(--fz-body);font-weight:500">
-                This opens the <strong style="color:#fbbf24">Minima Security app</strong> on your node so you can view or check your <strong style="color:#fbbf24">Vault key</strong>, also called <strong style="color:#fbbf24">Seed phrase</strong>, which is a series of 24 words. Only do this in a private place.
+                <p style="margin:0 0 14px">Opening the <strong style="color:#fbbf24">Minima Security app</strong> from Stables will be added in a <strong style="color:#fbbf24">coming version</strong>. When it is available, it will open the app on your node so you can view or check your <strong style="color:#fbbf24">Vault key</strong>, also called <strong style="color:#fbbf24">Seed phrase</strong> (24 words). Only do this in a private place.</p>
+                <p style="margin:0;color:var(--m);font-size:calc(var(--fz-body) - 1px)">The Stables community is there to help with questions.</p>
             </div>
-            <button type="button" class="btn btn-w btn-lg"
-                onclick="closeModal('seedSecurityAppModal');openSeedPhrase()">Continue</button>
+            <button type="button" class="btn btn-w btn-lg" onclick="closeModal('seedSecurityAppModal')">OK</button>
         </div>
     </div>
 
-    <!-- Minima Security: coming-soon notice (same amber treatment as seedSecurityAppModal; dismiss OK / backdrop) -->
-    <div class="mback centered" id="seedSecurityComingModal" style="z-index:640" aria-modal="true" role="dialog"
-        aria-labelledby="seedSecurityComingTitle"
-        onclick="if(event.target===this)closeModal('seedSecurityComingModal')">
+    <!-- Stables Charter: GitHub draft coming soon (same amber modal pattern as Minima Security notice) -->
+    <div class="mback centered" id="stablesCharterComingModal" style="z-index:640" aria-modal="true" role="dialog"
+        aria-labelledby="stablesCharterComingTitle"
+        onclick="if(event.target===this)closeModal('stablesCharterComingModal')">
         <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.1),rgba(11,15,20,.94));padding:20px 18px 22px">
             <div class="mhandle" style="background:rgba(251,191,36,.35)"></div>
-            <div class="type-eyebrow" style="color:#fbbf24;margin-bottom:10px">Stables</div>
-            <div class="mttl" id="seedSecurityComingTitle" style="text-align:center;margin-bottom:14px">Minima Security app</div>
-            <div style="margin:0 0 20px;line-height:1.55;text-align:center;color:var(--t);font-size:var(--fz-body);font-weight:500">
-                <p style="margin:0 0 12px">Opening the <strong style="color:#fbbf24">Minima Security app</strong> from Stables will be added in a <strong style="color:#fbbf24">coming version</strong>.</p>
-                <p style="margin:0;color:var(--m)">The Stables community is there to help with questions.</p>
+            <div style="text-align:center;margin-bottom:14px">
+                <span aria-hidden="true" style="display:block;font-size:2.5rem;line-height:1;margin-bottom:10px">&#x1F4DC;</span>
+                <div class="mttl" id="stablesCharterComingTitle" style="margin:0">Stables Charter</div>
             </div>
-            <button type="button" class="btn btn-w btn-lg" onclick="closeModal('seedSecurityComingModal')">OK</button>
+            <div style="margin:0 0 18px;line-height:var(--lh-body);text-align:center;color:var(--t);font-size:var(--fz-body);font-weight:500">
+                <p style="margin:0">First draft of the <strong style="color:#fbbf24">Stables Charter</strong> will be published on <strong style="color:#fbbf24">GitHub</strong> over the <strong style="color:#fbbf24">coming weeks</strong>.</p>
+            </div>
+            <button type="button" class="btn btn-w btn-lg" onclick="closeModal('stablesCharterComingModal')">OK</button>
         </div>
     </div>
 
@@ -5596,8 +5967,6 @@
             <div class="mttl" style="text-align:center;margin-bottom:12px">
                 Is your <strong style="color:#fbbf24">Vault key</strong> backed up?
             </div>
-            <p id="vaultBackupReminderMeta" class="xs mu"
-                style="display:none;text-align:center;margin:-4px 12px 12px;line-height:1.45;color:var(--m)"></p>
             <div style="text-align:center;margin-bottom:14px;line-height:1.55;color:var(--t);font-weight:600">
                 <p style="margin:0 0 12px 0">Your <strong style="color:var(--t)">Vault key</strong> is your access to your bank. Without it, you can <strong style="color:var(--t)">lose your money</strong>. <strong style="color:var(--t)">No one can recover it for you</strong>, including Stables.</p>
                 <p style="margin:0;color:var(--m);font-weight:500">The Stables community can help with questions; <strong style="color:var(--t)">only you</strong> can keep your key safe.</p>
@@ -5776,7 +6145,7 @@
 
     <script src="assets/config/runtime-config.js"></script>
     <script>
-        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'invoice', 'activity', 'contacts', 'feedback'];
+        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
         let privacyMode = false; lede = false;
@@ -5802,11 +6171,7 @@
         }
 
         function showStablesCharterComingNotice() {
-            if (typeof showToast !== 'function') return;
-            showToast(
-                'First draft of the Stables Charter will be published on GitHub over the coming weeks.',
-                { prose: true, tone: 'amber', durationMs: 8000 }
-            );
+            if (typeof openModal === 'function') openModal('stablesCharterComingModal');
         }
 
         function navigate(p) {
@@ -5821,6 +6186,7 @@
                 syncAppUpdatesSection();
                 if (typeof window.refreshSettingsBackupCopy === 'function') window.refreshSettingsBackupCopy();
             }
+            if (p === 'exchange' && typeof window.renderExchangeRecentList === 'function') window.renderExchangeRecentList();
             if (p === 'activity') {
                 if (typeof setActivityFilter === 'function') setActivityFilter('all');
                 if (typeof setActivityCcyFilter === 'function') setActivityCcyFilter('all');
@@ -6497,6 +6863,31 @@
                 if (r.dataset.walletDragBound === '1') return;
                 r.dataset.walletDragBound = '1';
 
+                const leftCell = r.firstElementChild;
+                if (leftCell && !leftCell.querySelector('.ccy-row-star')) {
+                    leftCell.classList.add('ccy-sec-row-left');
+                    const star = document.createElement('button');
+                    star.className = 'ccy-row-star';
+                    star.type = 'button';
+                    star.dataset.role = 'primary-star';
+                    star.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        if (!walletEditMode) return;
+                        const code = r.dataset ? r.dataset.ccy : '';
+                        if (!code || code === BASE_CCY) return;
+                        const pill = document.querySelector('#ccyDisplayPills .ccy-pill[data-ccy="' + code + '"]');
+                        if (pill && !pill.classList.contains('on')) toggleCcyPill(pill);
+                        setPrimary(code, false);
+                    });
+                    star.addEventListener('mousedown', (e) => e.stopPropagation());
+                    const textWrap = document.createElement('div');
+                    textWrap.className = 'ccy-row-text';
+                    while (leftCell.firstChild) textWrap.appendChild(leftCell.firstChild);
+                    leftCell.appendChild(star);
+                    leftCell.appendChild(textWrap);
+                }
+
                 const rightCell = r.lastElementChild;
                 if (rightCell && !rightCell.querySelector('.ccy-row-toggle')) {
                     const t = document.createElement('button');
@@ -6743,6 +7134,8 @@
                     }
                 });
             }
+
+            refreshWalletCcyPrimaryStars();
         }
 
         let pendingModalCurrency = '';
@@ -6799,7 +7192,7 @@
         }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
         window.addEventListener('click', e => {
-            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'seedSecurityComingModal', 'vaultHelpChoiceModal'].forEach(id => {
+            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'stablesCharterComingModal', 'vaultHelpChoiceModal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el && e.target === el) el.classList.remove('open');
             });
@@ -6827,6 +7220,40 @@
         // Currency show/hide
         let ccyExpanded = false;
         let walletEditMode = false;
+
+        function persistWalletSecondaryOrder() {
+            const list = document.getElementById('ccyList');
+            if (!list) return;
+            const order = Array.from(list.querySelectorAll('.ccy-sec-row'))
+                .map(r => (r.dataset ? r.dataset.ccy : ''))
+                .filter(Boolean);
+            localStorage.setItem(WALLET_CCY_ORDER_KEY, JSON.stringify(order));
+        }
+
+        function sortWalletCcyRowsForEdit() {
+            if (!walletEditMode) return;
+            const list = document.getElementById('ccyList');
+            if (!list) return;
+            const rows = Array.from(list.querySelectorAll('.ccy-sec-row'));
+            const enabled = rows.filter(r => r.dataset && r.dataset.walletEnabled === '1');
+            const disabled = rows.filter(r => !r.dataset || r.dataset.walletEnabled !== '1');
+            enabled.forEach(r => list.appendChild(r));
+            disabled.forEach(r => list.appendChild(r));
+        }
+
+        function refreshWalletCcyPrimaryStars() {
+            getWalletCcyRows().forEach(r => {
+                const star = r.querySelector('.ccy-row-star');
+                if (!star) return;
+                const code = r.dataset.ccy;
+                const isPrimary = code === BASE_CCY;
+                star.textContent = isPrimary ? '\u2605' : '\u2606';
+                star.classList.toggle('is-primary', isPrimary);
+                star.setAttribute('aria-pressed', isPrimary ? 'true' : 'false');
+                star.title = isPrimary ? 'Main currency' : 'Set as main currency';
+            });
+        }
+
         function toggleWalletEditMode(event) {
             if (event) {
                 event.preventDefault();
@@ -6860,6 +7287,9 @@
             const enabledRows = rows.filter(r => r.dataset.walletEnabled === '1');
 
             if (walletEditMode) {
+                // Active (enabled) currencies first, inactive below; persist order for next visit.
+                sortWalletCcyRowsForEdit();
+                persistWalletSecondaryOrder();
                 // In edit mode, show all currencies so user can add/remove directly.
                 rows.forEach(r => {
                     r.style.display = 'flex';
@@ -6871,6 +7301,7 @@
                         toggleBtn.title = on ? 'Remove currency' : 'Add currency';
                     }
                 });
+                refreshWalletCcyPrimaryStars();
             } else {
                 rows.forEach(r => r.classList.remove('dimmed'));
                 // Show/hide based on expansion state and limit
@@ -7024,20 +7455,75 @@
             calcSlider();
         }
 
-        // Live block counter - anchored to 1968296 at 2026-02-26T07:34:00 UTC (~12s per block)
-        (function () {
-            const ANCHOR_BLOCK = 1968296;
-            const ANCHOR_TIME = new Date('2026-02-26T07:34:00Z').getTime();
-            const BLOCK_TIME_MS = 12000;
-            function updateBlock() {
-                const elapsed = Date.now() - ANCHOR_TIME;
-                const blocks = Math.floor(elapsed / BLOCK_TIME_MS);
-                const current = ANCHOR_BLOCK + blocks;
-                const el = document.getElementById('syncNum');
-                if (el) el.textContent = current.toLocaleString();
+        // Top bar block height: real from MDS in MiniDapp host; otherwise label only (no fake height)
+        (function initHeaderBlockHeight() {
+            const syncEl = document.getElementById('syncNum');
+            const pill = syncEl && syncEl.closest('.sync-pill');
+            if (!syncEl) return;
+
+            let liveTimer = null;
+
+            function setNonNodeLabel() {
+                if (liveTimer) { clearInterval(liveTimer); liveTimer = null; }
+                syncEl.textContent = 'Only in node';
+                if (pill) {
+                    pill.classList.add('sync-pill--placeholder');
+                    pill.setAttribute('title', 'Block height appears when you open Stables in the MiniDapp host (node).');
+                }
             }
-            updateBlock();
-            setInterval(updateBlock, 12000);
+
+            function setHeaderBlockDisplay(n) {
+                const num = Number(n);
+                if (!Number.isFinite(num) || num <= 0) {
+                    setNonNodeLabel();
+                    return;
+                }
+                syncEl.textContent = num.toLocaleString();
+                if (pill) {
+                    pill.classList.remove('sync-pill--placeholder');
+                    pill.setAttribute('title', 'Block height from your node (MDS)');
+                }
+            }
+
+            function startLiveBlockFromMds() {
+                if (typeof MDS === 'undefined') return false;
+                MDS.init(function (msg) {
+                    if (msg.event !== 'inited') return;
+                    function pull() {
+                        MDS.cmd('status', function (response) {
+                            try {
+                                const ch = response && response.status && response.response && response.response.chain;
+                                const blk = ch ? ch.block : null;
+                                if (blk != null && Number(blk) > 0) {
+                                    setHeaderBlockDisplay(blk);
+                                } else {
+                                    setNonNodeLabel();
+                                }
+                            } catch (e) { /* ignore */ }
+                        });
+                    }
+                    pull();
+                    if (liveTimer) clearInterval(liveTimer);
+                    liveTimer = setInterval(pull, 2200);
+                });
+                return true;
+            }
+
+            let tries = 0;
+            const maxTries = 25;
+            function tryMdsThenFallback() {
+                if (typeof MDS !== 'undefined') {
+                    startLiveBlockFromMds();
+                    return;
+                }
+                tries += 1;
+                if (tries >= maxTries) {
+                    setNonNodeLabel();
+                    return;
+                }
+                setTimeout(tryMdsThenFallback, 200);
+            }
+            tryMdsThenFallback();
         })();
 
         // Vault calc - Winiwa
@@ -7199,28 +7685,67 @@
         const SIM_XWM_PRICE = 10.49;
         const SIM_LEVERAGE = 4.2;
 
-        /** Optional: live MINIMA/USDT from MEXC public API (CORS must allow your origin). */
+        /**
+         * Live Winiwa / MINIMA USD spot for Treasury + sim labels (`#minimaPriceNow`, rates).
+         * Order: MEXC via MDS.net (MiniDapp, no CORS issue) → browser fetch MEXC → CoinGecko (browser-CORS-safe).
+         */
         function refreshWiniwaSpotFromMexc() {
             const cfg = window.STABLES_CONFIG || {};
-            const url = cfg.MEXC_TICKER_URL || 'https://api.mexc.com/api/v3/ticker/price?symbol=MINIMAUSDT';
+            const mexcUrl = cfg.MEXC_TICKER_URL || 'https://api.mexc.com/api/v3/ticker/price?symbol=MINIMAUSDT';
+            const cgUrl = cfg.COINGECKO_MINIMA_URL ||
+                'https://api.coingecko.com/api/v3/simple/price?ids=minima&vs_currencies=usd';
             const srcEl = document.getElementById('winiwaSpotPriceSource');
             const setSrc = (t) => { if (srcEl) srcEl.textContent = t; };
-            fetch(url, { method: 'GET', cache: 'no-store' })
+
+            function applySpot(p, label) {
+                const n = Number(p);
+                if (!Number.isFinite(n) || n <= 0 || n > 1e7) return false;
+                SIM_Winiwa_PRICE = n;
+                try {
+                    if (RATES.Winiwa) RATES.Winiwa.USDw = n;
+                } catch (_) {}
+                setSrc(label);
+                if (typeof calcSlider === 'function') calcSlider();
+                if (typeof updateGlobalUI === 'function') updateGlobalUI();
+                return true;
+            }
+
+            function tryCoinGecko() {
+                fetch(cgUrl, { method: 'GET', cache: 'no-store' })
+                    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+                    .then(j => {
+                        const row = j && j.minima;
+                        const p = row && (typeof row.usd === 'number' ? row.usd : parseFloat(row.usd));
+                        if (applySpot(p, 'Live · CoinGecko')) return;
+                        setSrc('Demo rate (spot APIs unavailable)');
+                    })
+                    .catch(() => {
+                        setSrc('Demo rate (spot APIs unavailable)');
+                    });
+            }
+
+            if (typeof MDS !== 'undefined' && MDS.net && typeof MDS.net.GET === 'function') {
+                MDS.net.GET(mexcUrl, function (response) {
+                    try {
+                        if (response && response.status && response.response) {
+                            const j = JSON.parse(response.response);
+                            const p = parseFloat(j && j.price);
+                            if (applySpot(p, 'Live · MEXC spot (MDS)')) return;
+                        }
+                    } catch (_) { /* fall through */ }
+                    tryCoinGecko();
+                });
+                return;
+            }
+
+            fetch(mexcUrl, { method: 'GET', cache: 'no-store' })
                 .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
                 .then(j => {
                     const p = parseFloat(j && j.price);
-                    if (!Number.isFinite(p) || p <= 0 || p > 1e7) throw new Error('bad price');
-                    SIM_Winiwa_PRICE = p;
-                    try {
-                        if (RATES.Winiwa) RATES.Winiwa.USDw = p;
-                    } catch (_) {}
-                    setSrc('Live · MEXC spot');
-                    if (typeof calcSlider === 'function') calcSlider();
-                    if (typeof updateGlobalUI === 'function') updateGlobalUI();
+                    if (applySpot(p, 'Live · MEXC spot')) return;
+                    tryCoinGecko();
                 })
-                .catch(() => {
-                    setSrc('Demo rate (spot API unavailable)');
-                });
+                .catch(() => { tryCoinGecko(); });
         }
 
         function syncSliders(val) {
@@ -7308,6 +7833,8 @@
             const wCcy = document.querySelector('.w-ccy');
             if (wCcy) wCcy.textContent = `${BASE_CCY} equivalent`;
             if (wTotal && Number.isFinite(totalBase)) wTotal.textContent = fmt2(totalBase);
+
+            if (walletEditMode) refreshWalletCcyPrimaryStars();
 
             // If CR reaches 100% and below, staked stables convert into xMinima (liability shrinks, equity increases)
             const liabUSD_raw = LIAB_STABLES_CIRC + LIAB_REBAL_STAKED;
@@ -7572,12 +8099,19 @@
             showToast(`Successfully reclaimed ${earnedWiniwa.toLocaleString('en-US', { maximumFractionDigits: 0 })} Winiwa`);
         }
 
-        function calcSlider() {
-            const sliderEl = document.getElementById('priceSlider');
-            if (!sliderEl) return;
-            const pct = parseInt(sliderEl.value);
+        /** Winiwa / MINIMA USD in Treasury + stress UI: exactly 6 digits after the decimal point. */
+        function fmtWiniwaUSD6(v) {
+            const n = Number(v);
+            if (!Number.isFinite(n)) return '$0.000000';
+            return '$' + n.toFixed(6);
+        }
 
-            // Sync both labels
+        function calcSlider() {
+            const sliderEl = document.getElementById('priceSlider') || document.getElementById('protocolSlider');
+            if (!sliderEl) return;
+            const pct = parseInt(sliderEl.value, 10);
+
+            // Mint simulator % label only (Treasury uses thumb tooltip + tick prices)
             const label1 = document.getElementById('sliderPct');
             const label2 = document.getElementById('protocolSliderPct');
             const sign = pct > 0 ? '+' : '';
@@ -7739,16 +8273,36 @@
 
             syncTreasurySnapshot(simTotalAssets, liabEffective, Number(newCR));
 
-            // Price labels
+            // Price labels (6 fractional digits); simulated → tracks slider in real time
             const pNow = document.getElementById('minimaPriceNow');
             const pSim = document.getElementById('minimaPriceSim');
-            const fmtWiniwaSpot = (v) => {
-                const n = Number(v) || 0;
-                const mx = n >= 1 ? 4 : n >= 0.01 ? 6 : 8;
-                return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: mx });
-            };
-            if (pNow) pNow.textContent = fmtWiniwaSpot(SIM_Winiwa_PRICE);
-            if (pSim) pSim.textContent = fmtWiniwaSpot(simWiniwaPrice);
+            if (pNow) pNow.textContent = fmtWiniwaUSD6(SIM_Winiwa_PRICE);
+            if (pSim) pSim.textContent = fmtWiniwaUSD6(simWiniwaPrice);
+
+            const baseSpot = Number(SIM_Winiwa_PRICE) || 0;
+            const elMin = document.getElementById('treasuryPriceAtMin30');
+            const elMid = document.getElementById('treasuryPriceAtZero');
+            const elMax = document.getElementById('treasuryPriceAtPlus30');
+            if (elMin) elMin.textContent = fmtWiniwaUSD6(baseSpot * 0.7);
+            if (elMid) elMid.textContent = fmtWiniwaUSD6(baseSpot);
+            if (elMax) elMax.textContent = fmtWiniwaUSD6(baseSpot * 1.3);
+            const thumbP = document.getElementById('treasurySliderThumbPrice');
+            const thumbPctEl = document.getElementById('treasurySliderThumbPct');
+            const ps = document.getElementById('protocolSlider');
+            if (thumbP && thumbPctEl && ps) {
+                const minS = parseFloat(ps.min);
+                const maxS = parseFloat(ps.max);
+                const valS = parseFloat(ps.value);
+                const tr = (maxS > minS) ? (valS - minS) / (maxS - minS) : 0.5;
+                const pctPos = Math.max(0, Math.min(100, tr * 100));
+                thumbP.style.left = pctPos + '%';
+                thumbPctEl.style.left = pctPos + '%';
+                const deltaPct = Math.round(valS);
+                const pctPart = deltaPct > 0 ? ('+' + deltaPct + '%') : deltaPct < 0 ? (deltaPct + '%') : '0%';
+                thumbP.textContent = fmtWiniwaUSD6(baseSpot * (1 + valS / 100));
+                thumbPctEl.textContent = pctPart;
+                thumbPctEl.style.color = deltaPct > 0 ? 'var(--gr)' : deltaPct < 0 ? 'var(--rd)' : 'var(--c)';
+            }
 
             // Treasury moves with Minima price (demo)
             updateTreasuryUI(pct);
@@ -7914,7 +8468,7 @@
             showToast(merchantMode ? 'Merchant Mode ON' : 'Merchant Mode off');
         }
         function openSeedPhrase() {
-            openModal('seedSecurityComingModal');
+            openModal('seedSecurityAppModal');
             /* MiniDapp: MDS.ui.open("security-app") */
         }
         function toggleCcyPill(el) {

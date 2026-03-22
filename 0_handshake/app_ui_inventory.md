@@ -33,7 +33,7 @@
 |--|--|
 | **Nav** | More / Shops & Exchange · **Ambassador** |
 | **Page header** | Ambassador (no subline) |
-| **Sections** | Agent row (right-aligned `agent-mini-btn` only) → card (copy, 20 Big Mac fee 50/50 protocol/ambassador, Big Mac Index link, 10 Big Mac cashback note) |
+| **Sections** | Agent row → card: regional onboarding; **register** 10 Big Macs **or** via first shop (preview); merchant listing **20 Big Macs** 50/50 + Big Mac Index link |
 
 ---
 
@@ -62,7 +62,7 @@
 | **Nav** | More |
 | **Page header** | Council · Explore council transparency and tools |
 | **Extra** | — |
-| **Sections** | **Stables Charter** → card; `#councilCharterLink` button → `showStablesCharterComingNotice()` (amber toast: draft on GitHub soon); Council budget → card |
+| **Sections** | **Stables Charter** (📜 scroll icon in `stitle--with-emoji`) → card; `#councilCharterLink` button → `showStablesCharterComingNotice()` → `stablesCharterComingModal` (amber sheet; 📜 + title, no brand eyebrow); Council budget → card |
 | **In-card / other** | Voting power (tinted box + `stitle-row--in-card`); Current Protocol Decisions (tinted box + in-card title); **Current resolutions** plain heading; `prop-card` items (budget vote, proposals) with in-card titles; **Past resolutions** + closed `prop-card` |
 
 ---
@@ -81,7 +81,7 @@
 |--|--|
 | **Nav** | More / Shops & Exchange · **Exchange**; `#exchange` |
 | **Page header** | Exchange · Exchange currencies instantly |
-| **Sections** | New conversion → `ex-card`; Recent exchanges → card |
+| **Sections** | New conversion → `ex-card`; **Recent exchanges** → `#exchangeRecentList` filled by **`activity-contacts.js`** (`DEMO_EXCHANGES`); rows open **`openExchangeDetail`** → `agentActionModal` (same pattern as transaction details; **Use same pair** → `repeatExchangeFromDetail`) |
 
 ---
 
@@ -119,7 +119,7 @@
 ### `page-invoice` — Create Invoice
 | | |
 |--|--|
-| **Nav** | **My shop** → section **Create Invoice**; merchant flow; Receive modal CTA; `#invoice` |
+| **Nav** | **My shop** → **Create Invoice** + **Webshop linking & QR**, **Merchant API kit** (webhooks block hidden for now); merchant flow; Receive modal CTA; `#invoice` |
 | **Page header** | Create Invoice · Request payment with a merchant QR (+ Merchant Display) |
 | **Sections** | Invoice details → card |
 
@@ -164,12 +164,21 @@
 
 ---
 
+### `page-settings-legal` — Legal & notices
+| | |
+|--|--|
+| **Nav** | **Community** (More drawer) · ⚖️ **Legal & notices** |
+| **Page header** | Legal & notices · Terms, privacy, data, security · Council property |
+| **Sections** | Terms of Service (summary): Council IP, reproduction must credit **StablesCouncil** as original author; Privacy (summary); Data use (summary); Security (summary) + CTA → `settings-security`; **Official Council properties**: domains (**stablescouncil.org**, `stablescouncil.github.io`, `agent.stablescouncil.org`), GitHub orgs, emails (**StablesCouncil@protonmail.com**, **StablesCouncil@gmail.com**), social/telegram/discord list + link to `stablescouncil.github.io/links.html` |
+
+---
+
 ### `page-my-shop` — My shop
 | | |
 |--|--|
 | **Nav** | More / Shops & Exchange · **My shop**; Shops tab CTA → `my-shop`; legacy hash `#shop-ambassador` → `my-shop` |
 | **Page header** | My shop · List your business, invoices, and merchant tools |
-| **Sections** | Your shop on Stables → card; **Create Invoice** → card (🧾 row → `invoice`) |
+| **Sections** | Your shop on Stables → card (regional **Ambassador** for listing help; **fully listed** → same privileges as Ambassador + onboard others; pointer to Ambassador page for registration paths); **Create Invoice** → card (🧾 row → `invoice`); **Webshop linking & QR** → card (QR/payment link payload: address, amount, currency, order ref; demo QR box; StablesAgent mini); **Merchant API kit** → card (integration kit copy + **StablesCouncil** GitHub link; preview, no live API); **Webhooks & callbacks** → in `index.html` but **hidden** (`display:none` on section) until merchant settings; re-enable by removing that style |
 
 ---
 
@@ -178,7 +187,7 @@
 |--|--|
 | **Nav** | Bottom tab |
 | **Page header** | Shops · Merchants accepting Wables |
-| **Extra** | Centered CTA · List my shop / Become an ambassador → `my-shop`; search input |
+| **Extra** | Two CTAs · **List my shop** → `my-shop` · **Become an ambassador** → `ambassador`; search input |
 | **Sections** | Cafés & Food → card (merchant rows); Retail → card |
 
 ---
@@ -188,7 +197,7 @@
 |--|--|
 | **Nav** | More |
 | **Page header** | Treasury · Analyse the community's treasury (chest icon) |
-| **Sections** | How the protocol stands → `treasury-snap-card`; **System liability structure** → card (`liabDist*`); Simply ALM + stress test → card (stress slider: Winiwa USD price **above** slider, **MEXC** spot via `refreshWiniwaSpotFromMexc` / `MEXC_TICKER_URL`, `#winiwaSpotPriceSource`; `%` row under slider) |
+| **Sections** | How the protocol stands → `treasury-snap-card`; **System liability structure** → card (`liabDist*`); Simply ALM + stress test → card (stress: **Winiwa price (USD)** `#minimaPriceNow` → `#minimaPriceSim` (6 dp) + `#winiwaSpotPriceSource`; **Price change (slider)** line only (no side `%`); row `#treasuryPriceAtMin30` / `#treasuryPriceAtZero` / `#treasuryPriceAtPlus30` **above** the track; `#treasurySliderThumbPrice` **above** thumb on track, `#treasurySliderThumbPct` **below**; `.treasury-slider-pct-row` (‑30% / 0 / +30%) **below** track; `#protocolSlider` in `.treasury-slider-input-shell`; `calcSlider` uses `priceSlider` \|\| `protocolSlider`; live spot via `refreshWiniwaSpotFromMexc` / config) |
 
 ---
 
@@ -231,11 +240,12 @@ Keep `SectionWithCaption` and shared CSS aligned with this inventory and `web_co
 
 | Surface | `id` / mechanism | Role |
 |---------|------------------|------|
+| Top bar sync pill | `#syncNum` inside `.sync-pill` | **MDS**: `MDS.init` → `MDS.cmd('status')` every ~2.2s → `response.response.chain.block` (real height); `.sync-pill--placeholder` removed. **No MDS** (after short wait): text **Only in node** (no fake height); `.sync-pill--placeholder` (muted, no green dot). Tooltip explains MiniDapp host. |
 | Floating actions | (FAB `<button>` nodes have **no** stable `id`) | Wallet / scanner — wired in JS |
-| More menu | `drawer` (`dback`) | `openMore()` / `closeMore`; **Shops & Exchange**: Ambassador (“Open ambassador program & showcase fees”), My shop, Exchange (3 rows); **Test tools**: single `.drawer-test-faucet-card` (Testing Phase Only + Get Test Wiwina → `navigate('faucet')`); top `drawer-lang-bar` + globe |
+| More menu | `drawer` (`dback`) | `openMore()` / `closeMore`; **Shops & Exchange**: Ambassador, My shop, Exchange; **Messages & Contacts**: Chat, Contacts, Council communications; **Community**: Council, **Legal & notices** ⚖️ (`settings-legal`), Treasury; **Preferences**: My profile, Settings and updates, Security; **Help**: Guided tours, StablesAgent, Feedback; **Test tools**: `.drawer-test-faucet-card` (Testing Phase Only + Get Test Wiwina → `faucet`); top `drawer-lang-bar` + globe |
 | Merchant fullscreen | `merchantDisplay` | Pay display; close sets `display='none'` |
 | Portfolio simulator | `simDrawer` (`dback`) | `closeSim`; opened from Invest (JS) |
-| Toast | `toast` | `showToast()`; optional `{ prose: true }`; `tone: 'amber'` (charter notice); optional `centerScreen` |
+| Toast | `toast` | `showToast()`; optional `{ prose: true }`; `tone: 'amber'`; optional `centerScreen` |
 
 ---
 
@@ -257,7 +267,7 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | `actSortDate` | `page-activity` | `setActivitySort('date_desc')` |
 | `balHideBtn` | `page-wallet` | `toggleBalHide()` |
 | `budgetVoteBtn` | `page-council` | `submitBudgetVote()` (starts disabled) |
-| `ccyEditPen` | `page-wallet` | Edit currency order (pen control) |
+| `ccyEditPen` | `page-wallet` `stitle-row-actions` (beside agent) | Edit currencies: reorder (drag), enable/disable (`+`/`−`), set main currency (★ on each row); active currencies sorted to top while editing |
 | `contactShopBtn` | `page-contacts` | `openSelectedContactShop()` · Shop profile |
 | `iTabCF` | `page-invest` | `setInvestTab('cf')` · Coverage Fund |
 | `iTabLP` | `page-invest` | `setInvestTab('lp')` · Liquidity Fund |
@@ -294,19 +304,19 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 |------|------|---------|--------------|---------------|
 | `sendModal` | `mback` | Send payment | Wallet / `openSendModal` (JS) | `closeModal('sendModal')` |
 | `recvModal` | `mback` | Receive + address + privacy toggle | `openReceiveModal` / `switchSendReceive` | `closeModal` / leave flow |
-| `seedSecurityAppModal` | `mback` | Warn before Minima Security app | `openModal('seedSecurityAppModal')` (Security) | `closeModal('seedSecurityAppModal')` · backdrop |
-| `seedSecurityComingModal` | `mback` `z-index:640` | Amber “coming version” notice after **Continue** | `openSeedPhrase()` → `openModal` | **OK** · backdrop |
+| `seedSecurityAppModal` | `mback` `z-index:640` | **Combined** amber modal: coming version + Vault key / Seed phrase safety + community line | `openModal('seedSecurityAppModal')` (Security) · `openSeedPhrase()` | **OK** · backdrop |
+| `stablesCharterComingModal` | `mback` `z-index:640` | Amber modal (same chrome as `seedSecurityAppModal`); header 📜 + **Stables Charter** (no “Stables” eyebrow); first draft on **GitHub** over **coming weeks** | `showStablesCharterComingNotice()` · Council **Read the Charter on GitHub** | **OK** · backdrop |
 | `qrModal` | `mback` | Scan to pay (demo) | From send modal QR / scan helpers | `closeModal('qrModal')` |
 | `agentActionModal` | `mback` | Activity / transaction detail shell | `openAgentActionModal` (JS) | `closeAgentActionModal()` · backdrop |
 | `welcomeSetupModal` | `mback` | Steps: showcase intro → lang/welcome → tour (or nerd sub-step) → **web vs MiniDapp** → **currencies** + Save (`applyWelcomeSetup` closes; node path opens zip after) | Auto-open on load / Help → tours | `closeWelcomeSetup()` · backdrop |
-| `seedPhraseSecurityModal` | `mback` | Vault key backup gate | ~300ms after welcome close → **`startVaultSecurityModalCountdown()`** (amber `#vaultSecurityReminderCountdown` + `VAULT_SECURITY_MODAL_DELAY_MS`, default 15s) → `scheduleSeedPhraseSecurityModal()`; `#vaultBackupReminderMeta` explains delay | `closeSeedPhraseSecurityModal()` · backdrop |
+| `seedPhraseSecurityModal` | `mback` | Vault key backup gate | ~300ms after welcome close → **`startVaultSecurityModalCountdown()`** (silent delay `VAULT_SECURITY_MODAL_DELAY_MS`, default 60s) → `scheduleSeedPhraseSecurityModal()` | `closeSeedPhraseSecurityModal()` · backdrop |
 | `vaultHelpChoiceModal` | `mback` | Agent vs Telegram security help | `openVaultHelpChooser()` | `closeModal('vaultHelpChoiceModal')` |
 | `merchantDisplay` | fullscreen `div` | Merchant pay screen | JS toggles display | Close Display |
 | `drawer` | `dback` | More menu | `openMore()` | `closeMore` |
 | `simDrawer` | `dback` | Portfolio simulator | Invest (JS) | `closeSim` |
 | `toast` | `.toast` / `.toast--prose` / `.toast--center-screen` | Short messages; prose + `centerScreen` = viewport-centred multi-line | `showToast(...)` | implicit timeout |
 
-**Injected UI**: Council comms / wallet activity cards may add markup from `assets/routes/activity-contacts.js` — not in static `index.html`. When that script defines modals or id’d controls, add rows here.
+**Injected UI**: Council comms / wallet activity / **exchange recent list** (`#exchangeRecentList`) may be filled from `assets/routes/activity-contacts.js` — not all rows live in static `index.html`. When that script defines modals or id’d controls, add rows here.
 
 ---
 
@@ -324,17 +334,25 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 
 | Date | Change |
 |------|--------|
+| 2026-03-19 | **Legal & notices** (`page-settings-legal`): More → **Community** (⚖️); **stablescouncil.org** + github.io + agent subdomain in-app. **Exchange** recent list: `activity-contacts.js` → `openExchangeDetail` / `repeatExchangeFromDetail`. |
+| 2026-03-19 | **Ambassador** / **My shop** copy: regional Ambassadors for listing; fully listed → same privileges + onboard others; Ambassador registration **10 Big Macs** or via **first shop** (preview); merchant **20 Big Mac** 50/50 kept on Ambassador page. |
 | 2026-03-19 | Shops & Exchange (was Payments & Trade): `page-ambassador`, `page-my-shop`, `exchange`; Create Invoice section on **My shop**; `#shop-ambassador` → `my-shop`. |
+| 2026-03-19 | **My shop**: **Webshop linking & QR**, **Merchant API kit** (GitHub org link); **Webhooks & callbacks** markup retained but **hidden** (`display:none`); drawer **My shop** ddesc: webshop kit (preview). |
 | 2026-03-19 | Welcome language: globe + `appLangMenuWelcome` (no “Language” label); hidden `#welcomeLang` select; drawer top `drawer-lang-bar` + `#drawerLangGlobeBtn`. |
 | 2026-03-19 | `welcome-modal-showcase-intro` pattern row; amber + `--fz-showcase-intro` (see `web_component_spec.md` v1.3). |
 | 2026-03-19 | Welcome flow: `welcomeStepShowcaseIntro` + `welcomeUnderstandBtn` before `welcomeStepLang`. |
 | 2026-03-19 | Showcase step: `#welcomeShowcaseCopy` amber (`welcome-modal-showcase-intro`); action-oriented MiniDapp button + copy; Ambassador page/drawer headlines trimmed. |
 | 2026-03-19 | Welcome order: web/MiniDapp choice **before** currency step; `#welcomeCurrencyIntro` (body copy, not amber); `goWelcomeFromShowcaseRoute`; `applyWelcomeSetup` opens zip only when node route was chosen. |
-| 2026-03-19 | Vault: Minima Security modal copy uses you/your; `seedSecurityComingModal` (amber, OK + backdrop) replaces toast for “coming version” after Continue. |
+| 2026-03-19 | Vault: `seedSecurityAppModal` single combined message (coming version + seed safety + community); `seedSecurityComingModal` removed. Wallet: `ccyEditPen` in `stitle-row-actions` beside agent. |
 | 2026-03-19 | Council: **Stables Charter** section + GitHub link via `STABLES_CHARTER_URL` (`runtime-config.js`); `syncCouncilCharterLink()` on boot and when opening Council. |
-| 2026-03-19 | Vault backup modal: `VAULT_SECURITY_MODAL_DELAY_MS` (15s) + `startVaultSecurityModalCountdown` banner + `#vaultBackupReminderMeta` on the modal. |
+| 2026-03-19 | Vault backup modal: `VAULT_SECURITY_MODAL_DELAY_MS` (default 60s); no countdown banner; no `#vaultBackupReminderMeta` line. |
 | 2026-03-19 | Council: drop Treasury hint + liability block (moved to **Treasury**); charter → amber toast (draft soon). Treasury: MEXC spot for stress price (`MEXC_TICKER_URL`, `SIM_Winiwa_PRICE`); simulator copy tweaks. |
 | 2026-03-19 | More drawer: `.drawer-test-faucet-card` merges “Testing Phase Only” banner + Get Test Wiwina row into one tappable amber card. |
 | 2026-03-19 | Invest tabs: **Liquidity Fund** (was Provide Liquidity); LP panel `pool-section-title` **Liquidity fund**; primary LP CTA **Deposit to Liquidity Fund**. |
 | 2026-03-19 | Full tables: every `<button id>`, every modal/overlay root `id`, global chrome, settings toggles. |
 | 2026-03-22 | Initial inventory + handshake link to single `<style>` source. |
+| 2026-03-22 | Top bar `#syncNum`: **live** `chain.block` via `MDS.init` + `status` poll when MDS present; else showcase anchored estimate after brief wait. |
+| 2026-03-22 | Treasury Winiwa spot: `refreshWiniwaSpotFromMexc` tries **MEXC** via `MDS.net.GET` (MiniDapp), then browser MEXC, then **CoinGecko** (`COINGECKO_MINIMA_URL` optional); updates `#minimaPriceNow` / `SIM_Winiwa_PRICE` / `RATES.Winiwa.USDw`. |
+| 2026-03-22 | More drawer: **Community** section moved to immediately follow **Messages & Contacts** (before Preferences, Help, Test tools). |
+| 2026-03-22 | Top bar: **Only in node** when no MDS (no simulated block); `.sync-pill--placeholder`. Treasury stress: Winiwa price stack **above** `%` row, then slider. |
+| 2026-03-22 | Treasury stress: Winiwa **6 dp** (`fmtWiniwaUSD6`); USD tick row above track; **%** tick row (`.treasury-slider-pct-row`) below track; thumb `#treasurySliderThumbPrice` above axis / `#treasurySliderThumbPct` below; removed `#protocolSliderPct`; `calcSlider` falls back to `#protocolSlider`. |

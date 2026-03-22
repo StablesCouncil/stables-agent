@@ -177,7 +177,7 @@ To start any new session, use this exact phrase:
 | **GitHub (Public)** | [StablesCouncil](https://github.com/StablesCouncil) | Official Organization (Public Assets) |
 | **GitHub (Dev)** | [Charles0xhorizonxyz](https://github.com/Charles0xhorizonxyz) | Private Dev account (Sandbox) |
 | **Personal Site** | [0xHorizon](https://0xhorizon.xyz/) | Independent Founder Identity |
-| **Contact Email** | StablesCouncil@protonmail.com | Direct contact |
+| **Contact Email** | StablesCouncil@protonmail.com · StablesCouncil@gmail.com | Direct contact |
 | **Moltbook (StablesAgent)** | [u/stablesagent](https://www.moltbook.com/u/stablesagent) | StablesAgent profile on the agent social network |
 
 > **Note**: All models must read this section during the handshake and acknowledge the external references.

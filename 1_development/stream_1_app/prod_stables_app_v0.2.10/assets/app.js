@@ -190,7 +190,13 @@ function updateTop() {
   const isConnected = state.chain?.height > 0 && state.wallet.address && !state.wallet.address.includes('Loading');
   const statusDot = isConnected ? '<span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #22c55e; margin-right: 6px; box-shadow: 0 0 6px #22c55e;"></span>' : '';
 
-  $('blockStatus').innerHTML = `${statusDot}${fmt(state.chain?.height || 0)}`;
+  const bh = Number(state.chain?.height || 0);
+  const blockLabel = bh > 0 ? `${statusDot}${fmt(bh)}` : '\u2014';
+  const blockEl = $('blockStatus');
+  blockEl.innerHTML = blockLabel;
+  blockEl.title = bh > 0
+    ? 'Block height from your node (MDS)'
+    : 'Showcase: live block height appears when you open Stables in Winiwa / MiniDapp (MDS).';
   $('phaseText').textContent = 'Prototype - no real functionality yet';
   $('phasePill').querySelector('.badge').style.background = state.phase === 'capped' ? 'var(--warn)' : 'var(--good)';
 }
@@ -503,9 +509,9 @@ async function initializeRealData() {
 
   // Check if MDS is available
   if (typeof MDS === 'undefined') {
-    console.warn('[Init] MDS not available - using mock data');
+    console.warn('[Init] MDS not available - wallet/block from chain unavailable; price via CoinGecko in browser');
     state.wallet.address = 'MxG0…DEMO (No MDS)';
-    state.chain.height = 2140000;
+    state.chain.height = 0;
     state.chain.synced = false;
     safeRender();
     return;

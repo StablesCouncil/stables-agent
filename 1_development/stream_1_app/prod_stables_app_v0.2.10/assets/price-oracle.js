@@ -11,6 +11,9 @@ const PriceOracle = {
     config: {
         mexcApiBase: 'https://api.mexc.com/api/v3',
         symbol: 'MINIMAUSDT',
+        /** CoinGecko id for native Minima; CORS allows browser fetch (MEXC does not). */
+        coinGeckoSimpleUrl:
+            'https://api.coingecko.com/api/v3/simple/price?ids=minima&vs_currencies=usd&include_24hr_change=true',
         updateInterval: 30000, // 30 seconds
         volatilityMultiplier: 1.0, // Default: no amplification
     },
@@ -56,20 +59,30 @@ const PriceOracle = {
                 });
             }
 
-            // Fallback to regular fetch (will hit CORS in browser)
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`MEXC API error: ${response.status}`);
+            // No MDS: MEXC public API does not send CORS headers — browser fetch fails.
+            // CoinGecko simple/price allows * origin and tracks Minima (id: minima).
+            const cgResponse = await fetch(this.config.coinGeckoSimpleUrl);
+            if (!cgResponse.ok) {
+                throw new Error(`CoinGecko API error: ${cgResponse.status}`);
             }
-
-            const data = await response.json();
-            const price = parseFloat(data.price);
-
-            // Update cache
+            const cgData = await cgResponse.json();
+            const row = cgData && cgData.minima;
+            const price = row && typeof row.usd === 'number' ? row.usd : parseFloat(row && row.usd);
+            if (!Number.isFinite(price)) {
+                throw new Error('CoinGecko: invalid minima.usd');
+            }
             this.cache.price = price;
             this.cache.timestamp = Date.now();
-
+            if (row && typeof row.usd_24h_change === 'number') {
+                this.cache.stats = {
+                    high: 0,
+                    low: 0,
+                    volume: 0,
+                    change: row.usd_24h_change,
+                    lastUpdate: Date.now(),
+                };
+            }
+            console.log('[Oracle] MINIMA price fetched via CoinGecko (browser / no MDS):', price);
             return price;
         } catch (error) {
             console.error('Failed to fetch MINIMA price:', error);
@@ -123,26 +136,21 @@ const PriceOracle = {
                 });
             }
 
-            // Fallback to regular fetch
-            const response = await fetch(url);
-
-            if (!response.ok) {
-                throw new Error(`MEXC API error: ${response.status}`);
+            const cgResponse = await fetch(this.config.coinGeckoSimpleUrl);
+            if (!cgResponse.ok) {
+                throw new Error(`CoinGecko API error: ${cgResponse.status}`);
             }
-
-            const data = await response.json();
-
+            const cgData = await cgResponse.json();
+            const row = cgData && cgData.minima;
+            const change = row && typeof row.usd_24h_change === 'number' ? row.usd_24h_change : 0;
             const stats = {
-                high: parseFloat(data.highPrice),
-                low: parseFloat(data.lowPrice),
-                volume: parseFloat(data.volume),
-                change: parseFloat(data.priceChangePercent),
+                high: 0,
+                low: 0,
+                volume: 0,
+                change,
                 lastUpdate: Date.now(),
             };
-
-            // Update cache
             this.cache.stats = stats;
-
             return stats;
         } catch (error) {
             console.error('Failed to fetch 24h stats:', error);
