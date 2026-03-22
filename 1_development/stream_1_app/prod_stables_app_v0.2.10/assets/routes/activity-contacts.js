@@ -336,7 +336,12 @@
 
   window.renderSelectedContact = function () {
     const card = document.getElementById('contactDetailCard'); if (!card) return;
-    if (!selectedContactName || !CONTACTS_BOOK.has(selectedContactName)) { card.style.display = 'none'; return; }
+    const stitle = document.getElementById('contactDetailStitle');
+    if (!selectedContactName || !CONTACTS_BOOK.has(selectedContactName)) {
+      card.style.display = 'none';
+      if (stitle) stitle.style.display = 'none';
+      return;
+    }
     const c = CONTACTS_BOOK.get(selectedContactName);
     const txCount = DEMO_ACTIVITY.filter(x => !deletedTx.has(x.id) && x.counterparty === c.name).length;
     const latestOut = latestContactTx(c.name, 'out');
@@ -354,6 +359,7 @@
     const shopBtn = document.getElementById('contactShopBtn');
     if (shopBtn) shopBtn.style.display = SHOP_PROFILES[c.name] ? '' : 'none';
     card.style.display = '';
+    if (stitle) stitle.style.display = '';
   };
 
   window.saveContactNotes = function () {
@@ -424,12 +430,12 @@
     const zipUrl = typeof cfg.MDS_ZIP_URL === 'string' ? cfg.MDS_ZIP_URL.trim() : '';
 
     if (!needsUpdate) {
-      return `<div class="card" style="padding:14px;margin-bottom:12px;border:1px solid rgba(103,232,249,.28);background:rgba(103,232,249,.06)">
+      return `<div class="stitle mt20">App version</div><div class="card app-section-card" style="padding:14px;margin-bottom:8px;border:1px solid rgba(103,232,249,.28);background:rgba(103,232,249,.06)">
+        <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council communications: app version status')" title="StablesAgent"><img src="agent.png" alt="StablesAgent"></button>
         <div style="display:flex;align-items:flex-start;gap:10px">
           <span style="font-size:22px;line-height:1;flex-shrink:0" aria-hidden="true">✅</span>
           <div style="min-width:0">
-            <div style="font-size:14px;font-weight:900;color:var(--t);margin-bottom:6px">App version</div>
-            <div style="font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">You are using the latest app version (${escCouncilHtml(current)}).</div>
+            <div style="font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">This install is on the latest app version (${escCouncilHtml(current)}).</div>
           </div>
         </div>
       </div>`;
@@ -444,12 +450,13 @@
       ? `<a class="btn btn-w" style="display:block;text-align:center;margin-top:14px;text-decoration:none;box-sizing:border-box;font-size:14px;font-weight:900;padding:14px 16px" href="${escAttr(zipUrl)}" target="_blank" rel="noopener">Download Stables.mds.zip</a>`
       : '';
 
-    return `<div class="card" style="padding:14px;margin-bottom:12px;border:1px solid ${crit.border};background:${crit.bg}">
+    return `<div class="stitle mt20">App version</div><div class="card app-section-card" style="padding:14px;margin-bottom:8px;border:1px solid ${crit.border};background:${crit.bg}">
+      <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council communications: app update available and what changed')" title="StablesAgent"><img src="agent.png" alt="StablesAgent"></button>
       <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:10px">
         <span style="font-size:22px;line-height:1;flex-shrink:0" aria-hidden="true">⚠️</span>
         <div style="min-width:0">
           <div style="font-size:14px;font-weight:900;color:var(--t);margin-bottom:4px">App update available</div>
-          <div style="font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">Your build is <strong style="color:var(--t)">${escCouncilHtml(current)}</strong>. Latest published: <strong style="color:var(--t)">${escCouncilHtml(latest)}</strong>.</div>
+          <div style="font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">This install is <strong style="color:var(--t)">${escCouncilHtml(current)}</strong>. Latest published: <strong style="color:var(--t)">${escCouncilHtml(latest)}</strong>.</div>
         </div>
       </div>
       <div style="display:inline-block;padding:6px 12px;border-radius:999px;font-size:13px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;border:1px solid ${crit.border};color:var(--t);margin-bottom:10px">Criticality: ${escCouncilHtml(crit.label)}</div>
@@ -482,7 +489,8 @@
         </div>`;
       }).join('');
     }
-    return `<div class="card" style="padding:14px;margin-bottom:12px;border:1px solid rgba(167,139,250,.22);background:linear-gradient(135deg,rgba(103,232,249,.05),rgba(167,139,250,.06))">
+    return `<div class="stitle mt20">Official notices</div><div class="card app-section-card" style="padding:14px;margin-bottom:8px;border:1px solid rgba(167,139,250,.22);background:linear-gradient(135deg,rgba(103,232,249,.05),rgba(167,139,250,.06))">
+      <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council communications: official bulletins and critical notices')" title="StablesAgent"><img src="agent.png" alt="StablesAgent"></button>
       <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:8px">
         <span style="font-size:22px;line-height:1;flex-shrink:0" aria-hidden="true">🏛️</span>
         <div style="min-width:0;font-size:14px;line-height:1.55;font-weight:800;color:var(--muted)">${escCouncilHtml(intro)}</div>
@@ -520,7 +528,7 @@
   window.shopDeleteAllTransactions = function (shopName) {
     const n = String(shopName || '').trim();
     if (!n) return;
-    const msg = `Remove every transaction with ${n} from your local history? This stays on device only; use backup if you export settings.`;
+    const msg = `Remove every transaction with ${n} from my local history? This stays on device only; use backup if I export settings.`;
     if (typeof window.confirm === 'function' && !window.confirm(msg)) return;
     txsForShop(n).forEach(x => { deletedTx.add(x.id); hiddenTx.delete(x.id); });
     persistHiddenTx();
@@ -782,15 +790,15 @@
       const bodyEl = document.getElementById('agentActionContent');
       const modal = document.getElementById('agentActionModal');
       if (titleEl && bodyEl && modal) {
-        titleEl.textContent = 'Critical: your Vault key';
+        titleEl.textContent = 'Critical: my Vault key';
         const titleRight = document.getElementById('agentActionTitleRight');
         if (titleRight) titleRight.innerHTML = '';
         bodyEl.innerHTML =
           '<div style="padding:12px;border-radius:12px;border:1px solid rgba(251,191,36,.42);background:rgba(251,191,36,.09);margin-bottom:12px">'
           + '<div style="font-size:11px;font-weight:900;color:#fbbf24;margin-bottom:8px;text-transform:uppercase;letter-spacing:.07em">Protect on-chain assets</div>'
-          + '<div class="xs mu" style="line-height:1.55;margin:0">If you lose your <strong style="color:var(--t)">Vault key</strong>, you can lose <strong style="color:var(--t)">everything</strong>. No preference file replaces it: not notes, not hidden lists, not flags.</div>'
+          + '<div class="xs mu" style="line-height:1.55;margin:0">If I lose my <strong style="color:var(--t)">Vault key</strong>, I can lose <strong style="color:var(--t)">everything</strong>. No preference file replaces it: not notes, not hidden lists, not flags.</div>'
           + '</div>'
-          + '<div class="xs mu" style="margin-bottom:14px;line-height:1.5">Saving labels or hidden lists is handy, but <strong>far less important</strong> than your Vault key. Open Security to check your Vault key; use Export only if you want to copy preferences to another device.</div>'
+          + '<div class="xs mu" style="margin-bottom:14px;line-height:1.5">Saving labels or hidden lists is handy, but <strong>far less important</strong> than my Vault key. Open Security to check my Vault key; use Export only if I want to copy preferences to another device.</div>'
           + '<button type="button" class="btn btn-w btn-g" style="width:100%;margin-bottom:10px" onclick="openBackupSettings()">Open Security: Vault key and preferences</button>'
           + '<div class="xs mu" style="text-align:center"><button type="button" class="btn" style="width:auto;padding:6px 12px;font-size:11px" onclick="runConfigBackupNow()">Export preferences only</button></div>';
         modal.classList.add('open');
@@ -814,7 +822,7 @@
     }
     const keysEl = document.getElementById('settingsExportJsonKeysNote');
     if (keysEl) {
-      keysEl.innerHTML = 'The file is for Stables only. It never contains your Vault key.';
+      keysEl.innerHTML = 'The file is for Stables only. It never contains my Vault key.';
     }
   };
 
@@ -1064,23 +1072,23 @@
         title: '',
         introParas: [
           'Being your own bank brings great possibilities, and real responsibilities too.',
-          'Don’t worry: we are a community that supports each other. You will be able to find all the information you need in order to set your bank securely.'
+          'Don’t worry: we are a community that supports each other. I will be able to find all the information I need in order to set my bank securely.'
         ],
         showcase:
-          'A guided demo tour will be added in a coming version.\n\nFor now you can keep exploring this preview in the web app, or install it as a MiniDapp on your Minima node.',
+          'A guided demo tour will be added in a coming version.\n\nFor now I can keep exploring this preview in the web app, or install it as a MiniDapp on my Minima node.',
         tourChoiceHint: 'Pick one path for the StablesAgent guided tour.',
         tourMerchantBtn: 'I\'m a merchant. I want to know how this will streamline my business process.',
         tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
         tourNerdBtn: 'I\'m a nerd. I want to understand how this holds together.',
-        nerdTrackTitle: 'Pick your nerd deep dive',
-        nerdTrackBody: 'Choose what you want to inspect first in this demo.',
+        nerdTrackTitle: 'Pick my nerd deep dive',
+        nerdTrackBody: 'Choose what I want to inspect first in this demo.',
         nerdTrackTechBtn: 'Tech + blockchain',
         nerdTrackFinanceBtn: 'Financial side: how Stables is structured and ensures the peg',
         exploreBtn: 'I\'m a viewer. I want to look around.',
         showcaseHereBtn: 'Continue in this web app',
         showcaseNodeBtn: 'MiniDapp package for my node',
-        showcaseFinalMsg: 'See you back in your node.',
-        useTitle: 'How will you mainly use the app?',
+        showcaseFinalMsg: 'See you back on my node.',
+        useTitle: 'How will I mainly use the app?',
         usePrompt: 'Personal or merchant?',
         personalBtn: 'Personal',
         merchantBtn: 'Merchant'

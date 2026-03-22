@@ -1613,6 +1613,18 @@
             white-space: nowrap
         }
 
+        /* Multi-line, centered notices (e.g. test-build disclaimers) */
+        .toast.toast--prose {
+            white-space: pre-line;
+            text-align: center;
+            max-width: min(360px, 92vw);
+            border-radius: 16px;
+            padding: 14px 20px;
+            font-size: var(--fz-caption);
+            line-height: 1.5;
+            font-weight: 700;
+        }
+
         /* CHAT */
         .msg-row {
             display: flex;
@@ -2087,6 +2099,211 @@
             font-weight: 700;
         }
 
+        /*
+         * Screen header: same icon + title + subtitle as the More menu (and bottom nav where used).
+         * Keep drawer `.dic` / `.dname` / `.ddesc` strings in sync when you rename a destination.
+         */
+        .app-page-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 0 0 16px 0;
+        }
+
+        .app-page-header__text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .app-page-header__title {
+            font-size: var(--fz-title);
+            font-weight: 900;
+            margin: 0;
+            color: var(--t);
+            line-height: var(--lh-title);
+        }
+
+        .app-page-header__sub {
+            font-size: var(--fz-caption);
+            line-height: var(--lh-caption);
+            color: var(--m);
+            margin: 4px 0 0 0;
+            font-weight: 700;
+        }
+
+        .app-page-header .dic img {
+            width: 20px;
+            height: 20px;
+            border-radius: 7px;
+            display: block;
+        }
+
+        .app-page-header--faucet .dic {
+            background: rgba(251, 191, 36, .08);
+            border-color: rgba(251, 191, 36, .2);
+        }
+
+        .app-page-header--faucet .app-page-header__title {
+            color: var(--am);
+        }
+
+        /* Treasury: at-a-glance balance sheet */
+        .treasury-snap-card {
+            padding: 16px 16px 18px;
+            margin-bottom: 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(103, 232, 249, .18);
+            background: linear-gradient(165deg, rgba(103, 232, 249, .06), rgba(11, 15, 20, .5));
+        }
+
+        .treasury-snap-title {
+            font-size: var(--fz-caption);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            color: var(--m);
+            margin: 0 0 12px 0;
+            text-align: center;
+        }
+
+        .treasury-snap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .treasury-snap-metric {
+            text-align: center;
+            padding: 10px 6px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, .22);
+            border: 1px solid rgba(255, 255, 255, .06);
+        }
+
+        .treasury-snap-metric .lbl {
+            font-size: var(--fz-label);
+            font-weight: 800;
+            color: var(--m);
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            margin-bottom: 6px;
+        }
+
+        .treasury-snap-metric .treasury-snap-token {
+            display: block;
+            text-transform: none;
+            letter-spacing: .03em;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--t);
+            margin-top: 4px;
+        }
+
+        .treasury-snap-metric.eq .treasury-snap-token {
+            color: var(--pu);
+        }
+
+        .treasury-snap-metric .val {
+            font-size: var(--fz-ui);
+            font-weight: 900;
+            color: var(--t);
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .treasury-snap-metric.eq .val {
+            color: var(--pu);
+        }
+
+        .treasury-snap-metric.eq.neg .val {
+            color: var(--rd);
+        }
+
+        .treasury-snap-bar-label {
+            font-size: var(--fz-label);
+            font-weight: 800;
+            color: var(--m);
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .treasury-snap-bar-wrap {
+            height: 32px;
+            border-radius: 14px;
+            overflow: hidden;
+            display: flex;
+            background: rgba(0, 0, 0, .3);
+            border: 1px solid rgba(103, 232, 249, .12);
+            margin-bottom: 8px;
+        }
+
+        .treasury-snap-bar-liab {
+            height: 100%;
+            min-width: 0;
+            background: linear-gradient(90deg, rgba(52, 211, 153, .85), rgba(103, 232, 249, .55));
+            transition: width .28s ease;
+        }
+
+        .treasury-snap-bar-liab.shortfall {
+            background: linear-gradient(90deg, rgba(248, 113, 113, .9), rgba(251, 191, 36, .65));
+        }
+
+        .treasury-snap-bar-eq {
+            height: 100%;
+            min-width: 0;
+            background: linear-gradient(90deg, rgba(167, 139, 250, .9), rgba(167, 139, 250, .45));
+            transition: width .28s ease;
+        }
+
+        .treasury-snap-legend {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-size: var(--fz-label);
+            font-weight: 700;
+            color: var(--m);
+            margin-bottom: 14px;
+        }
+
+        .treasury-snap-legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .treasury-snap-legend-mark {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+
+        .treasury-snap-cr {
+            text-align: center;
+            padding-top: 4px;
+            border-top: 1px solid rgba(103, 232, 249, .1);
+        }
+
+        .treasury-snap-cr .cr-num {
+            font-size: clamp(36px, 12vw, 52px);
+            font-weight: 900;
+            line-height: 1.05;
+            letter-spacing: -.02em;
+        }
+
+        .treasury-snap-cr .cr-sub {
+            font-size: var(--fz-caption);
+            font-weight: 700;
+            color: var(--m);
+            margin-top: 6px;
+            max-width: 22rem;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.45;
+        }
+
         /* Narrative / CTA cards: centered copy (forms and toggle rows stay left-aligned) */
         .card.card--prose-centered {
             text-align: center;
@@ -2400,11 +2617,15 @@
             color: var(--c)
         }
 
-        /* COVERAGE POOL (Invest) */
+        /* Invest: use same section label as .stitle (kept class for any legacy hooks) */
         .pool-section-title {
-            font-size: 14px;
-            font-weight: 800;
-            margin: 18px 0 8px
+            font-size: var(--fz-label);
+            line-height: var(--lh-label);
+            font-weight: 700;
+            color: var(--m);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin: 18px 0 10px
         }
 
         .cp-card {
@@ -2546,6 +2767,25 @@
             border-radius: 6px;
         }
 
+        /* Section pattern: .stitle (outside) + .app-section-card (box + StablesAgent top-right) */
+        .card.app-section-card,
+        .ex-card.app-section-card,
+        .xwm-card.app-section-card,
+        .cp-card.app-section-card,
+        .lp-card.app-section-card {
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .treasury-snap-card.app-section-card {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .card.app-section-card .wallet-ccy-tools {
+            padding-right: 44px;
+        }
+
 
         /* (walkthrough removed; replaced by StablesAgent drawer) */
     </style>
@@ -2604,11 +2844,15 @@
     <!-- SCROLL AREA -->
     <div class="scroll-area">
 
-        <!-- WALLET PAGE -->
+        <!-- WALLET PAGE (no app-page-header: hero card is the focal entry) -->
         <div class="page active" id="page-wallet">
-            <div class="card">
+            <div class="stitle">Balance &amp; actions</div>
+            <div class="card app-section-card">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Wallet: balance, send and receive')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="w-hero">
-                    <div class="fbet" style="align-items:center;justify-content:flex-end;margin-bottom:2px">
+                    <div class="fbet" style="align-items:center;justify-content:flex-end;margin-bottom:2px;padding-right:46px">
                         <button id="balHideBtn" onclick="toggleBalHide()"
                             style="background:none;border:none;cursor:pointer;color:var(--m);padding:4px 6px;line-height:0;opacity:.8;display:flex;align-items:center;justify-content:center"
                             title="Hide amounts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -2630,6 +2874,12 @@
                         </button>
                     </div>
                 </div>
+            </div>
+            <div class="stitle">Currencies</div>
+            <div class="card app-section-card" style="padding:0">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Wallet: currencies and ordering')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="cb" style="padding-top:0">
                     <div class="wallet-ccy-tools">
                         <button class="ccy-edit-pen" id="ccyEditPen" title="Edit currency order"
@@ -2758,18 +3008,30 @@
                         </div>
                     </div>
                     <button class="show-more-btn" id="showMoreCcy" onclick="toggleMoreCcy()">Show more currencies ▾</button>
-                    <div class="stitle">Recent Activity</div>
-                    <div class="tx-list" id="walletRecentList"></div>
-                    <button class="show-more-btn" onclick="navigate('activity')">View all activity ▸</button>
                 </div>
+            </div>
+            <div class="stitle">Recent activity</div>
+            <div class="card app-section-card" style="padding:14px 18px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Wallet: recent activity')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+                <div class="tx-list" id="walletRecentList"></div>
+                <button class="show-more-btn" onclick="navigate('activity')">View all activity ▸</button>
             </div>
         </div>
 
         <!-- INVEST PAGE -->
         <div class="page" id="page-invest">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F4C8;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Invest</div>
+                    <div class="app-page-header__sub">My holdings, pools, and protocol tools</div>
+                </div>
+            </header>
 
             <!-- TOTAL PORTFOLIO HOLDINGS -->
-            <div class="pool-section-title">Your Holdings</div>
+            <div class="pool-section-title">My holdings</div>
             <div class="card"
                 style="padding:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
                 <div class="fbet" style="margin-bottom:14px">
@@ -2806,12 +3068,12 @@
 
             <!-- SECTION 2: COVERAGE FUND -->
             <div id="panelCF">
-                <div class="pool-section-title">Coverage Fund - Deposit your Stables to earn all transaction fees while
-                    strengthening the protocol.</div>
-                <div class="cp-card" style="position:relative">
+                <div class="pool-section-title">Coverage fund</div>
+                <div class="cp-card app-section-card">
                     <button class="agent-mini-btn" onclick="openAgentExplain('Coverage Fund')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
+                    <div class="xs mu" style="margin-bottom:12px;line-height:1.5;font-weight:800">Deposit my Stables to earn all transaction fees while strengthening the protocol.</div>
                     <div class="fbet" style="margin-bottom:10px">
                         <div style="font-size:15px;font-weight:900">cf tokens</div>
                         <div class="apy"
@@ -2851,11 +3113,12 @@
 
             <!-- SECTION 3: WINIWA/xWINIWA LP PAIR (CONCENTRATED LIQUIDITY) -->
             <div id="panelLP" style="display:none">
-                <div class="pool-section-title">Liquidity Pool</div>
-                <div class="lp-card" style="position:relative">
+                <div class="pool-section-title">Liquidity pool</div>
+                <div class="lp-card app-section-card">
                     <button class="agent-mini-btn" onclick="openAgentExplain('Liquidity Pool')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
+                    <div class="xs mu" style="margin-bottom:12px;line-height:1.5;font-weight:800">Provide liquidity on the xWiniwa secondary market and earn from trades.</div>
                     <div class="fbet" style="margin-bottom:10px">
                         <div style="font-size:15px;font-weight:900">xWiniwa Secondary Market</div>
                         <div class="apy"
@@ -2952,13 +3215,24 @@
 
         <!-- MINT PAGE -->
         <div class="page" id="page-mint">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F3E6;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Mint</div>
+                    <div class="app-page-header__sub">Mint and burn xWiniwa and Wables</div>
+                </div>
+            </header>
             <div class="tab-row">
                 <button class="tab-btn active" id="vXwm" onclick="setVTab('xwm')">Mint xWiniwa</button>
                 <button class="tab-btn" id="vIssue" onclick="setVTab('issue')">Mint Wables</button>
             </div>
             <!-- MINT xWINIWA panel (default active) -->
             <div id="panelXwm">
-                <div class="xwm-card">
+                <div class="stitle mt20">Mint &amp; burn xWiniwa</div>
+                <div class="xwm-card app-section-card">
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Mint and burn xWiniwa: lock Winiwa, coverage ratio, reclaim')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
                     <div class="cb">
                         <div style="margin-bottom:14px">
                             <div style="font-size:16px;font-weight:900">&#x26CF;&#xFE0F; Mint xWiniwa</div>
@@ -2986,7 +3260,7 @@
                                 <span style="font-weight:700">$0.00846</span>
                             </div>
                             <div class="calc-row">
-                                <span class="mu">xWiniwa you receive</span>
+                                <span class="mu">xWiniwa received</span>
                                 <span id="xwmCalcR" style="font-weight:800;color:var(--pu)">&mdash;</span>
                             </div>
                             <div class="calc-row" style="margin-bottom:0">
@@ -3014,7 +3288,7 @@
                                         xWiniwa</div>
                                 </div>
                                 <div class="calc-box" style="margin-bottom:10px">
-                                    <div class="calc-row"><span class="mu">Winiwa you receive</span><span
+                                    <div class="calc-row"><span class="mu">Winiwa received</span><span
                                             id="xwmBurnCalc" style="font-weight:800">&mdash;</span></div>
                                     <div class="calc-row"><span class="mu">CR after burn</span><span
                                             style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
@@ -3029,7 +3303,11 @@
             </div>
             <!-- ISSUE Wables panel -->
             <div id="panelIssue" style="display:none">
-                <div class="card">
+                <div class="stitle mt20">Mint &amp; burn Wables</div>
+                <div class="card app-section-card">
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Mint and burn Wables: issue stables against Winiwa, reclaim Winiwa')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
                     <div class="cb">
                         <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x26CF;&#xFE0F; Mint Wables
                         </div>
@@ -3061,7 +3339,7 @@
                                 <span id="iCalcM" style="font-weight:800">&mdash;</span>
                             </div>
                             <div class="calc-row">
-                                <span class="mu">You receive</span>
+                                <span class="mu">Stables received</span>
                                 <span id="iCalcR" style="font-weight:800;color:var(--gr)">&mdash;</span>
                             </div>
                             <div class="calc-row">
@@ -3159,7 +3437,7 @@
                                     </select>
                                 </div>
                                 <div class="calc-box" style="margin-bottom:10px">
-                                    <div class="calc-row"><span class="mu">Winiwa you receive</span><span id="rCalcM"
+                                    <div class="calc-row"><span class="mu">Winiwa received</span><span id="rCalcM"
                                             style="font-weight:800">&mdash;</span></div>
                                     <div class="calc-row"><span class="mu">CR after reclaim</span><span id="rCalcCR"
                                             style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
@@ -3178,11 +3456,22 @@
         </div>
         <!-- EXCHANGE PAGE -->
         <div class="page" id="page-exchange">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F504;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Exchange</div>
+                    <div class="app-page-header__sub">Exchange currencies instantly</div>
+                </div>
+            </header>
 
-            <div class="ex-card" style="overflow:hidden">
+            <div class="stitle mt20">New conversion</div>
+            <div class="ex-card app-section-card" style="overflow:hidden">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Exchange: convert between Wables and other balances')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="xs mu"
                     style="margin-bottom:7px;font-weight:700;text-transform:uppercase;letter-spacing:.06em">
-                    You send
+                    Send
                 </div>
                 <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
                     <input class="ex-input" type="number" id="exFrom" value="100" oninput="calcRate()"
@@ -3205,7 +3494,7 @@
                 </div>
                 <div class="xs mu"
                     style="margin-bottom:7px;font-weight:700;text-transform:uppercase;letter-spacing:.06em">
-                    You receive
+                    Receive
                 </div>
                 <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
                     <input class="ex-input" type="number" id="exTo" value="91.80" readonly
@@ -3228,23 +3517,28 @@
                     onclick="showToast('✓ Exchange confirmed - funds arrive instantly')">Exchange
                     Now</button>
             </div>
-            <div class="stitle mt20">Recent</div>
-            <div class="tx-list">
-                <div class="tx-row">
-                    <div class="tx-ic" style="background:rgba(103,232,249,.1)">
-                        ⇄
-                    </div>
-                    <div class="tx-info">
-                        <div class="tx-t">USDw
+            <div class="stitle mt20">Recent exchanges</div>
+            <div class="card app-section-card" style="padding:14px 18px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Exchange: recent conversion history')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+                <div class="tx-list">
+                    <div class="tx-row">
+                        <div class="tx-ic" style="background:rgba(103,232,249,.1)">
+                            ⇄
+                        </div>
+                        <div class="tx-info">
+                            <div class="tx-t">USDw
+                                →
+                                EURw</div>
+                            <div class="tx-d">Feb 22
+                                ·
+                                18:02</div>
+                        </div>
+                        <div class="tx-amt" style="color:var(--c)">200
                             →
-                            EURw</div>
-                        <div class="tx-d">Feb 22
-                            ·
-                            18:02</div>
-                    </div>
-                    <div class="tx-amt" style="color:var(--c)">200
-                        →
-                        183.60
+                            183.60
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3253,17 +3547,25 @@
 
         <!-- WHERE TO SPEND -->
         <div class="page" id="page-spend">
-            <div class="fbet" style="margin-bottom:20px;align-items:center">
-                <div>
-                    <div class="app-screen-title">&#x1F3EA; Where to Spend</div>
-                    <div class="xs mu mt8">Merchants accepting Wables</div>
-                </div><button class="btn btn-g" style="width:auto;padding:8px 12px;font-size:12px">+ List My
+            <div class="fbet" style="margin-bottom:20px;align-items:flex-start">
+                <header class="app-page-header" style="margin-bottom:0;flex:1;min-width:0">
+                    <div class="dic" aria-hidden="true">&#x1F3EA;</div>
+                    <div class="app-page-header__text">
+                        <div class="app-page-header__title">Shops</div>
+                        <div class="app-page-header__sub">Merchants accepting Wables</div>
+                    </div>
+                </header>
+                <button class="btn btn-g" style="width:auto;padding:8px 12px;font-size:12px;flex-shrink:0">+ List My
                     Business</button>
             </div>
             <input class="finput" placeholder="🔍 Search merchants..." style="margin-bottom:14px">
             <div class="stitle" style="margin-top:4px">
                 Cafés
                 &amp; Food</div>
+            <div class="card app-section-card" style="padding:14px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Shops: cafés and food merchants accepting Wables')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
             <div class="mcard" data-stables-shop="Ground Coffee Roasters" onclick="openShopProfile('Ground Coffee Roasters')">
                 <div class="mic">
                     ☕
@@ -3289,7 +3591,12 @@
                 </div>
                 <div class="badge b-gr">Open</div>
             </div>
+            </div>
             <div class="stitle">Retail</div>
+            <div class="card app-section-card" style="padding:14px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Shops: retail merchants accepting Wables')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
             <div class="mcard" data-stables-shop="Open Pages Bookshop" onclick="openShopProfile('Open Pages Bookshop')">
                 <div class="mic">
                     📚
@@ -3302,18 +3609,24 @@
                 </div>
                 <div class="badge b-cy">New</div>
             </div>
+            </div>
         </div>
 
         <!-- CHAT -->
         <div class="page" id="page-chat">
-            <div class="app-screen-title">Chat</div>
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F4AC;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Chat</div>
+                    <div class="app-page-header__sub">Send private encrypted messages</div>
+                </div>
+            </header>
             <div class="xs mu" id="chatContactLabel" style="margin-bottom:8px;display:none"></div>
-            <div class="xs mu" style="margin-bottom:14px">Private
-                ·
-                Encrypted
-                · No
-                servers</div>
-            <div class="card" style="padding:14px;margin-bottom:12px">
+            <div class="stitle mt20">Conversation</div>
+            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Chat: encrypted conversation with a contact')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="msg-row">
                     <div class="mavatar">A</div>
                     <div>
@@ -3344,27 +3657,45 @@
                     </div>
                 </div>
             </div>
-            <div class="flex gap8"><input class="finput" placeholder="Message..." style="flex:1"><button class="btn"
-                    style="width:auto;padding:13px 16px">↗</button>
+            <div class="stitle">Send a message</div>
+            <div class="card app-section-card" style="padding:10px 12px;margin-bottom:12px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Chat: compose and send a message')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+                <div class="flex gap8" style="align-items:center">
+                    <input class="finput" placeholder="Message..." style="flex:1;margin-bottom:0">
+                    <button class="btn" style="width:auto;padding:13px 16px;flex-shrink:0">↗</button>
+                </div>
             </div>
         </div>
 
         <!-- COUNCIL COMMUNICATIONS (official notices) -->
         <div class="page" id="page-council-comms">
-            <div class="app-screen-title">Council communications</div>
-            <div class="xs mu" style="margin-bottom:14px">Security, required updates, and other critical notices from Stables Council</div>
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F4E2;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Council communications</div>
+                    <div class="app-page-header__sub">Read security, updates, and critical notices</div>
+                </div>
+            </header>
             <div id="councilCommsPageMount" aria-live="polite"></div>
         </div>
 
         <!-- ACTIVITY -->
         <div class="page" id="page-activity">
-            <div class="fbet" style="margin-bottom:12px;align-items:flex-end">
-                <div>
-                    <div class="app-screen-title">All Transactions</div>
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F4CB;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">My transactions</div>
+                    <div class="app-page-header__sub">Search, filter, and browse my history</div>
                 </div>
-            </div>
+            </header>
 
-            <div class="card" style="padding:14px;margin-bottom:12px">
+            <div class="stitle mt20">Filters &amp; history</div>
+            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Activity: filters, search, and my transaction history')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="flex gap8" style="margin-bottom:10px;flex-wrap:wrap">
                     <button class="ccy-pill on" id="actFilterAll" onclick="resetActivityFilters()">All</button>
                     <button class="ccy-pill" id="actFilterIn" onclick="setActivityFilter('in')">In</button>
@@ -3375,7 +3706,7 @@
                     <button class="ccy-pill on" id="actSortDate" onclick="setActivitySort('date_desc')">Date</button>
                     <button class="ccy-pill" id="actSortAmount" onclick="setActivitySort('amount_desc')">Amount</button>
                 </div>
-                <input class="finput" id="activitySearchInput" placeholder="Search by contact, category or notes..."
+                <input class="finput" id="activitySearchInput" placeholder="Search my activity by contact, category or notes..."
                     style="margin-bottom:10px" oninput="setActivitySearch(this.value)">
                 <div class="tx-list" id="activityList"></div>
                 <div class="flex gap8" id="activityPagerWrap">
@@ -3389,19 +3720,30 @@
 
         <!-- CONTACTS -->
         <div class="page" id="page-contacts">
-            <div class="fbet" style="margin-bottom:12px;align-items:flex-end">
-                <div>
-                    <div class="app-screen-title">Contacts</div>
-                    <div class="xs mu">Counterparties and conversation links</div>
-                </div>
-                <button class="btn btn-w btn-g" style="width:auto;padding:10px 12px" onclick="navigate('wallet')">Back</button>
+            <div class="fbet" style="margin-bottom:12px;align-items:flex-start">
+                <header class="app-page-header" style="margin-bottom:0;flex:1;min-width:0">
+                    <div class="dic" aria-hidden="true">&#x1F465;</div>
+                    <div class="app-page-header__text">
+                        <div class="app-page-header__title">Contacts</div>
+                        <div class="app-page-header__sub">Browse my contacts and notes</div>
+                    </div>
+                </header>
+                <button class="btn btn-w btn-g" style="width:auto;padding:10px 12px;flex-shrink:0" onclick="navigate('wallet')">Back</button>
             </div>
-            <div class="card" style="padding:14px;margin-bottom:12px">
+            <div class="stitle mt20">My contacts</div>
+            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('My contacts: search and open a contact')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <input class="finput" id="contactsSearchInput" placeholder="Search contacts..." style="margin-bottom:10px"
                     oninput="renderContactsPage()">
                 <div class="tx-list" id="contactsList"></div>
             </div>
-            <div class="card" id="contactDetailCard" style="padding:14px;display:none">
+            <div class="stitle" id="contactDetailStitle" style="display:none">Contact detail</div>
+            <div class="card app-section-card" id="contactDetailCard" style="padding:14px;display:none">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('My contacts: notes, history, and actions for this contact')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="fbet" style="margin-bottom:8px">
                     <div style="font-size:16px;font-weight:900" id="contactDetailName">Contact</div>
                     <div class="xs mu" id="contactDetailMeta">-</div>
@@ -3431,15 +3773,20 @@
 
         <!-- FEEDBACK -->
         <div class="page" id="page-feedback">
-            <div class="fbet" style="margin-bottom:12px;align-items:center">
-                <div>
-                    <div class="app-screen-title">Feedback</div>
-                    <div class="xs mu">Reach us on Telegram, community or core team</div>
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F4DD;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Feedback</div>
+                    <div class="app-page-header__sub">Reach the team on Telegram</div>
                 </div>
-            </div>
+            </header>
             <div id="feedbackApp">
-                <div style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
-                    <div style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:12px">Telegram</div>
+                <div class="stitle mt20">Telegram</div>
+                <div class="card app-section-card" style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Feedback: reach Stables on Telegram (community and core team)')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+                    <div style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:12px">Community &amp; team</div>
                     <p style="margin:0 0 16px;font-size:14px;line-height:1.6;font-weight:800;color:var(--muted)">
                         There are two ways to reach us, both on Telegram. Use the button below to open the Stables community: share feedback there with everyone and join the discussion. To contact the core dev team in private, open Telegram and start a chat with <strong style="color:var(--t)">@stablescouncil</strong>.
                     </p>
@@ -3454,149 +3801,21 @@
 
         <!-- COUNCIL -->
         <div class="page" id="page-council">
-            <div class="app-screen-title">Council</div>
-            <div class="xs mu" style="margin-bottom:12px">Public balance-sheet transparency
-                · Real-time liability visibility</div>
-            <div style="display:flex;gap:12px;align-items:center;margin:0 0 16px">
-                <div style="width:52px;height:52px;border-radius:14px;background:rgba(103,232,249,.06);border:1px solid rgba(103,232,249,.2);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
-                    <div id="councilMemberAvatarPh" style="font-size:18px;color:var(--m);font-weight:900">🪪</div>
-                    <img id="councilMemberAvatarImg" src="" alt="Council member avatar" style="display:none;width:100%;height:100%;object-fit:cover">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F3DB;&#xFE0F;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Council</div>
+                    <div class="app-page-header__sub">Explore council transparency and tools</div>
                 </div>
-                <div style="flex:1;min-width:0">
-                    <div style="font-size:14px;font-weight:900;margin-bottom:4px" id="councilMemberNameLabel">Council Member</div>
-                    <div class="xs mu" id="councilRoleLabel">Role: Executive (Multisig)</div>
-                </div>
-            </div>
-
-            <!-- PROTOCOL LEVEL (Transplanted & Upgraded) -->
-            <div class="card"
-                style="position:relative;padding:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Simply ALM + Stress test')" title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
-                <div style="font-size:16px;font-weight:900;margin-bottom:12px">Simply ALM + Stress test</div>
-                <div class="fbet" style="margin-bottom:12px;align-items:flex-end">
-                    <div>
-                        <div style="font-size:14px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Protocol status</div>
-                        <div id="protocolSimStateBig" style="font-size:18px;font-weight:900;margin-top:6px;color:var(--gr)">Healthy</div>
-                    </div>
-                    <div style="text-align:right">
-                        <div style="font-size:14px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Coverage Ratio</div>
-                        <div id="protocolCRBig" style="font-size:44px;font-weight:900;line-height:1.05;margin-top:4px;color:var(--gr)">-</div>
-                    </div>
-                </div>
-                <div class="fbet" style="margin-bottom:16px;padding:12px;border-radius:14px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.06)">
-                    <div>
-                        <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Assets</div>
-                        <div id="assetTotalBig" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--t)">-</div>
-                    </div>
-                    <div style="text-align:right">
-                        <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Liabilities</div>
-                        <div id="liabTotalBig" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--t)">-</div>
-                    </div>
-                </div>
-
-                <div class="cr-stack">
-                    <div class="cr-row">
-                        <div class="cr-lbl">Assets</div>
-                        <div class="cr-bar" title="Assets cover liabilities. Fill shows coverage; the 100% mark is the liabilities baseline.">
-                            <div class="fill" id="assetsFillFixed" style="width:100%;background:rgba(103,232,249,.10)">
-                                <div class="seg" id="assetMinima" style="width:0%;background:rgba(103,232,249,.55)" title="Winiwa"></div>
-                                <div class="seg" id="assetRebalanceMinima" style="width:30%;background:rgba(251,191,36,.75)" title="Winiwa (rebalance pool)"></div>
-                                <div class="seg" id="assetXMinima" style="width:70%;background:rgba(167,139,250,.75)" title="xWiniwa"></div>
-                            </div>
-                            <div class="mark" title="100% liabilities baseline"></div>
-                        </div>
-                        <div class="cr-val" id="assetsRowVal">-</div>
-                    </div>
-                    <div class="cr-row">
-                        <div class="cr-lbl">Liabilities</div>
-                        <div class="cr-bar" title="Liabilities baseline (100%). Split into circulating stables and staked stables (rebalance pool).">
-                            <div class="fill" style="width:100%;background:rgba(52,211,153,.22)">
-                                <div class="seg" id="liabCircSeg" style="width:80%;background:rgba(52,211,153,.60)" title="Circulating stables"></div>
-                                <div class="seg" id="liabStakedSeg" style="width:20%;background:rgba(52,211,153,.35)" title="Staked stables (rebalance fund)"></div>
-                            </div>
-                            <div class="mark" title="100% baseline"></div>
-                        </div>
-                        <div class="cr-val" id="liabRowVal">-</div>
-                    </div>
-                </div>
-
-                <div class="cr-stack" style="margin-top:10px">
-                    <div class="cr-row" style="margin-bottom:0">
-                        <div class="cr-lbl">Council treasury</div>
-                        <div class="cr-bar" title="Council treasury held in Winiwa. If liabilities exceed assets and equity is wiped, part of this can be pledged (converted) into coverage.">
-                            <div class="fill" id="councilTreasFill" style="width:0%;background:rgba(103,232,249,.12)">
-                                <div class="seg" id="councilTreasW" style="width:100%;background:rgba(103,232,249,.45)" title="Winiwa"></div>
-                                <div class="seg" id="councilTreasConv" style="width:0%;background:rgba(167,139,250,.65)" title="Converted to xWiniwa"></div>
-                            </div>
-                            <div class="mark" title="100% liabilities baseline"></div>
-                        </div>
-                        <div class="cr-val" id="treasuryRowVal">-</div>
-                    </div>
-                </div>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 18px">
-                    <div style="padding:12px;border-radius:14px;background:rgba(16,24,38,.35);border:1px solid rgba(255,255,255,.06)">
-                        <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Assets</div>
-                        <div class="fbet" style="font-size:14px;font-weight:900">
-                            <span style="color:var(--m)">Winiwa (rebalance)</span>
-                            <span id="protocolRebWVal" style="color:var(--am)">-</span>
-                        </div>
-                        <div class="fbet" style="font-size:14px;font-weight:900;margin-top:10px">
-                            <span style="color:var(--m)">xWiniwa (equity)</span>
-                            <span id="protocolXwmVal" style="color:var(--pu)">-</span>
-                        </div>
-                    </div>
-                    <div style="padding:12px;border-radius:14px;background:rgba(16,24,38,.35);border:1px solid rgba(255,255,255,.06)">
-                        <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Liabilities</div>
-                        <div class="fbet" style="font-size:14px;font-weight:900">
-                            <span style="color:var(--m)">Stables</span>
-                            <span id="protocolLiabVal" style="color:var(--gr)">-</span>
-                        </div>
-                        <div class="fbet" style="font-size:14px;font-weight:900;margin-top:10px">
-                            <span style="color:var(--m)">Staked (rebalance)</span>
-                            <span id="protocolStakedVal" style="color:var(--gr)">-</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Slider for Stress Testing -->
-                <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.05)">
-                    <div class="fbet" style="margin-bottom:12px">
-                        <div style="font-size:13px;font-weight:800">Stress Test Winiwa Price</div>
-                        <div id="protocolSliderPct" style="font-size:16px;font-weight:900;color:var(--c)">0%</div>
-                    </div>
-                    <div class="fbet" style="margin:-4px 0 10px">
-                        <div class="xs mu">Winiwa price</div>
-                        <div style="font-size:13px;font-weight:900;font-variant-numeric:tabular-nums">
-                            <span id="minimaPriceNow">-</span>
-                            <span style="opacity:.55">→</span>
-                            <span id="minimaPriceSim">-</span>
-                        </div>
-                    </div>
-                    <div style="position:relative;height:32px;display:flex;align-items:center">
-                        <input type="range" id="protocolSlider" min="-30" max="30" value="0" class="sim-slider"
-                            oninput="syncSliders(this.value)" style="width:100%;accent-color:var(--pu)">
-                        <div
-                            style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.2);pointer-events:none">
-                        </div>
-                    </div>
-                    <div class="fbet xs mu" style="margin-top:6px">
-                        <span>-30%</span><span>0%</span><span>+30%</span>
-                    </div>
-                    <div class="fbet xs mu" style="margin-top:8px">
-                        <span>Price change</span>
-                        <span id="priceChangePct" style="font-weight:900;font-variant-numeric:tabular-nums">0%</span>
-                    </div>
-
-                    <!-- removed duplicate CR/state box -->
-                </div>
-            </div>
+            </header>
+            <p class="hint" style="margin:-8px 0 16px;font-weight:700;color:var(--m)">Protocol balance sheet and stress simulator: open <strong style="color:var(--t)">Treasury</strong> in the menu.</p>
 
             <!-- LIABILITY STRUCTURE VIEW -->
-            <div class="card" style="padding:16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
-                <div style="font-size:16px;font-weight:900;margin-bottom:4px">System Liability Structure</div>
+            <div class="stitle mt20">System liability structure</div>
+            <div class="card app-section-card" style="padding:16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council: system liability structure by reference unit')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="xs mu" style="margin-bottom:10px">Live distribution of Stables by reference unit</div>
 
                 <div class="liab-visual-card">
@@ -3626,11 +3845,12 @@
             </div>
 
             <!-- TREASURY -->
-            <div class="card" style="position:relative;padding:16px;margin-bottom:24px;border:1px solid rgba(103,232,249,0.1)">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Treasury')" title="StablesAgent">
+            <div class="stitle mt20">Council budget</div>
+            <div class="card app-section-card" style="padding:16px;margin-bottom:24px;border:1px solid rgba(103,232,249,0.1)">
+                <button class="agent-mini-btn" onclick="openAgentExplain('Council budget')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
-                <div style="font-size:16px;font-weight:900;margin-bottom:12px">Treasury</div>
+                <div class="xs mu" style="margin:0 0 12px;font-weight:700">Council votes on allocation buckets. Protocol ALM and stress tests are under <strong style="color:var(--t)">Treasury</strong> in the menu.</div>
                 <div class="fbet" style="margin-bottom:10px">
                     <div>
                         <div class="xs mu" style="font-weight:800;text-transform:uppercase;letter-spacing:.05em">Total treasury</div>
@@ -3834,8 +4054,186 @@
             </div>
         </div>
 
+        <!-- TREASURY: protocol ALM + stress -->
+        <div class="page" id="page-treasury">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">
+                    <img src="treasure-chest.svg" alt="" width="24" height="24"
+                        style="width:24px;height:24px;display:block;object-fit:contain">
+                </div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Treasury</div>
+                    <div class="app-page-header__sub">Analyse the community's treasury</div>
+                </div>
+            </header>
+
+            <div class="stitle mt20">How the protocol stands</div>
+            <div class="treasury-snap-card app-section-card">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Treasury snapshot: Winiwa assets, Stables liabilities, xWiniwa equity, coverage ratio')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+                <div class="treasury-snap-grid">
+                    <div class="treasury-snap-metric">
+                        <div class="lbl">Assets<span class="treasury-snap-token">Winiwa</span></div>
+                        <div class="val" id="treasurySnapAssets">-</div>
+                    </div>
+                    <div class="treasury-snap-metric">
+                        <div class="lbl">Liabilities<span class="treasury-snap-token">Stables</span></div>
+                        <div class="val" id="treasurySnapLiab">-</div>
+                    </div>
+                    <div class="treasury-snap-metric eq" id="treasurySnapEqCell">
+                        <div class="lbl">Equity<span class="treasury-snap-token">xWiniwa</span></div>
+                        <div class="val" id="treasurySnapEq">-</div>
+                    </div>
+                </div>
+                <div class="treasury-snap-bar-label">Full bar = Winiwa-side assets (and related). Green = stables owed. Purple = xWiniwa equity buffer.</div>
+                <div class="treasury-snap-bar-wrap" aria-hidden="true">
+                    <div class="treasury-snap-bar-liab" id="treasurySnapBarLiab" style="width:0%"></div>
+                    <div class="treasury-snap-bar-eq" id="treasurySnapBarEq" style="width:0%"></div>
+                </div>
+                <div class="treasury-snap-legend">
+                    <span><span class="treasury-snap-legend-mark" style="background:linear-gradient(90deg,rgba(52,211,153,.85),rgba(103,232,249,.55))"></span> Stables (owed)</span>
+                    <span><span class="treasury-snap-legend-mark" style="background:linear-gradient(90deg,rgba(167,139,250,.9),rgba(167,139,250,.45))"></span> xWiniwa (equity)</span>
+                </div>
+                <div class="treasury-snap-cr">
+                    <div class="xs mu" style="font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Coverage ratio</div>
+                    <div class="cr-num" id="treasurySnapCR">-</div>
+                    <div class="cr-sub">Winiwa-side assets divided by stables liabilities. 100% means assets match stables owed.</div>
+                </div>
+            </div>
+
+            <div class="stitle mt20">Simply ALM + stress test</div>
+            <div class="card app-section-card"
+                style="padding:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
+                <button class="agent-mini-btn" onclick="openAgentExplain('Simply ALM + Stress test')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+                <div class="fbet" style="margin-bottom:12px;align-items:flex-end">
+                    <div>
+                        <div style="font-size:14px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Protocol status</div>
+                        <div id="protocolSimStateBig" style="font-size:18px;font-weight:900;margin-top:6px;color:var(--gr)">Healthy</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div style="font-size:14px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Coverage Ratio</div>
+                        <div id="protocolCRBig" style="font-size:44px;font-weight:900;line-height:1.05;margin-top:4px;color:var(--gr)">-</div>
+                    </div>
+                </div>
+                <div class="fbet" style="margin-bottom:16px;padding:12px;border-radius:14px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.06)">
+                    <div>
+                        <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Assets</div>
+                        <div id="assetTotalBig" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--t)">-</div>
+                    </div>
+                    <div style="text-align:right">
+                        <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Liabilities</div>
+                        <div id="liabTotalBig" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--t)">-</div>
+                    </div>
+                </div>
+
+                <div class="cr-stack">
+                    <div class="cr-row">
+                        <div class="cr-lbl">Assets</div>
+                        <div class="cr-bar" title="Assets cover liabilities. Fill shows coverage; the 100% mark is the liabilities baseline.">
+                            <div class="fill" id="assetsFillFixed" style="width:100%;background:rgba(103,232,249,.10)">
+                                <div class="seg" id="assetMinima" style="width:0%;background:rgba(103,232,249,.55)" title="Winiwa"></div>
+                                <div class="seg" id="assetRebalanceMinima" style="width:30%;background:rgba(251,191,36,.75)" title="Winiwa (rebalance pool)"></div>
+                                <div class="seg" id="assetXMinima" style="width:70%;background:rgba(167,139,250,.75)" title="xWiniwa"></div>
+                            </div>
+                            <div class="mark" title="100% liabilities baseline"></div>
+                        </div>
+                        <div class="cr-val" id="assetsRowVal">-</div>
+                    </div>
+                    <div class="cr-row">
+                        <div class="cr-lbl">Liabilities</div>
+                        <div class="cr-bar" title="Liabilities baseline (100%). Split into circulating stables and staked stables (rebalance pool).">
+                            <div class="fill" style="width:100%;background:rgba(52,211,153,.22)">
+                                <div class="seg" id="liabCircSeg" style="width:80%;background:rgba(52,211,153,.60)" title="Circulating stables"></div>
+                                <div class="seg" id="liabStakedSeg" style="width:20%;background:rgba(52,211,153,.35)" title="Staked stables (rebalance fund)"></div>
+                            </div>
+                            <div class="mark" title="100% baseline"></div>
+                        </div>
+                        <div class="cr-val" id="liabRowVal">-</div>
+                    </div>
+                </div>
+
+                <div class="cr-stack" style="margin-top:10px">
+                    <div class="cr-row" style="margin-bottom:0">
+                        <div class="cr-lbl">Council treasury</div>
+                        <div class="cr-bar" title="Council treasury held in Winiwa. If liabilities exceed assets and equity is wiped, part of this can be pledged (converted) into coverage.">
+                            <div class="fill" id="councilTreasFill" style="width:0%;background:rgba(103,232,249,.12)">
+                                <div class="seg" id="councilTreasW" style="width:100%;background:rgba(103,232,249,.45)" title="Winiwa"></div>
+                                <div class="seg" id="councilTreasConv" style="width:0%;background:rgba(167,139,250,.65)" title="Converted to xWiniwa"></div>
+                            </div>
+                            <div class="mark" title="100% liabilities baseline"></div>
+                        </div>
+                        <div class="cr-val" id="treasuryRowVal">-</div>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 18px">
+                    <div style="padding:12px;border-radius:14px;background:rgba(16,24,38,.35);border:1px solid rgba(255,255,255,.06)">
+                        <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Assets</div>
+                        <div class="fbet" style="font-size:14px;font-weight:900">
+                            <span style="color:var(--m)">Winiwa (rebalance)</span>
+                            <span id="protocolRebWVal" style="color:var(--am)">-</span>
+                        </div>
+                        <div class="fbet" style="font-size:14px;font-weight:900;margin-top:10px">
+                            <span style="color:var(--m)">xWiniwa (equity)</span>
+                            <span id="protocolXwmVal" style="color:var(--pu)">-</span>
+                        </div>
+                    </div>
+                    <div style="padding:12px;border-radius:14px;background:rgba(16,24,38,.35);border:1px solid rgba(255,255,255,.06)">
+                        <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Liabilities</div>
+                        <div class="fbet" style="font-size:14px;font-weight:900">
+                            <span style="color:var(--m)">Stables</span>
+                            <span id="protocolLiabVal" style="color:var(--gr)">-</span>
+                        </div>
+                        <div class="fbet" style="font-size:14px;font-weight:900;margin-top:10px">
+                            <span style="color:var(--m)">Staked (rebalance)</span>
+                            <span id="protocolStakedVal" style="color:var(--gr)">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.05)">
+                    <div class="fbet" style="margin-bottom:12px">
+                        <div style="font-size:13px;font-weight:800">Stress Test Winiwa Price</div>
+                        <div id="protocolSliderPct" style="font-size:16px;font-weight:900;color:var(--c)">0%</div>
+                    </div>
+                    <div class="fbet" style="margin:-4px 0 10px">
+                        <div class="xs mu">Winiwa price</div>
+                        <div style="font-size:13px;font-weight:900;font-variant-numeric:tabular-nums">
+                            <span id="minimaPriceNow">-</span>
+                            <span style="opacity:.55">→</span>
+                            <span id="minimaPriceSim">-</span>
+                        </div>
+                    </div>
+                    <div style="position:relative;height:32px;display:flex;align-items:center">
+                        <input type="range" id="protocolSlider" min="-30" max="30" value="0" class="sim-slider"
+                            oninput="syncSliders(this.value)" style="width:100%;accent-color:var(--pu)">
+                        <div
+                            style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.2);pointer-events:none">
+                        </div>
+                    </div>
+                    <div class="fbet xs mu" style="margin-top:6px">
+                        <span>-30%</span><span>0%</span><span>+30%</span>
+                    </div>
+                    <div class="fbet xs mu" style="margin-top:8px">
+                        <span>Price change</span>
+                        <span id="priceChangePct" style="font-weight:900;font-variant-numeric:tabular-nums">0%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- FAUCET (Test Tools) -->
         <div class="page" id="page-faucet">
+            <header class="app-page-header app-page-header--faucet">
+                <div class="dic" aria-hidden="true">&#x1F6B0;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Get Test Wiwina</div>
+                    <div class="app-page-header__sub">Claim test tokens (no real value)</div>
+                </div>
+            </header>
             <div class="test-banner" style="margin:0 0 16px">
                 🧪
                 Testing Phase Only
@@ -3844,10 +4242,13 @@
                 exist in
                 the
                 final app. Winiwa and all of the token created here have no real-world value.</div>
-            <div class="card">
+            <div class="stitle mt20">Claim test Winiwa</div>
+            <div class="card app-section-card">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Faucet: test Winiwa has no real value; for demos only')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="cb">
-                    <div style="font-size:16px;font-weight:800;margin-bottom:5px">Get Test Winiwa</div>
-                    <div class="xs mu" style="margin-bottom:4px">Winiwa is the testnet token. It has <strong
+                    <div class="xs mu" style="margin-bottom:10px">Winiwa is the testnet token. It has <strong
                             style="color:var(--am)">zero real-world value</strong>. In production, this will be
                         Winiwa.
                     </div>
@@ -3856,11 +4257,17 @@
                         <option>50,000 Winiwa (stress test)</option>
                         <option>1,000 Winiwa (small)</option>
                     </select>
-                    <button class="btn btn-w btn-lg" onclick="showToast('✓ Test Winiwa sent to your Vault!')">Get
+                    <button class="btn btn-w btn-lg" onclick="showToast('✓ Test Winiwa sent to my Vault!')">Get
                         Test
                         Winiwa</button>
-                    <div class="hr"></div>
-                    <div style="font-size:14px;font-weight:800;margin-bottom:5px">Reset Test State</div>
+                </div>
+            </div>
+            <div class="stitle mt20">Reset test state</div>
+            <div class="card app-section-card">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Faucet: reset clears local demo balances')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+                <div class="cb">
                     <div class="xs mu" style="margin-bottom:10px">Clear all balances and start fresh. Useful for
                         testing
                         mission scenarios.</div>
@@ -3872,43 +4279,46 @@
 
         <!-- PREFERENCES: MY PROFILE -->
         <div class="page" id="page-settings-profile">
-            <div class="app-screen-title">My profile</div>
-            <div class="app-screen-lede">Council members vote, Executives execute via Multisig.</div>
-            <div class="card" style="padding:14px 18px">
-                <div class="xs mu" style="margin-bottom:12px">This profile defines your council identity, including an NFT-style avatar preview, and the role allowed to execute council decision actions.</div>
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F464;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">My profile</div>
+                    <div class="app-page-header__sub">Council identity and avatar</div>
+                </div>
+            </header>
+            <p class="hint" style="margin:-8px 0 16px;font-weight:700;color:var(--m);line-height:var(--lh-caption)">
+                The Stables community is there to help with questions. For this screen, ask <strong style="color:var(--t)">StablesAgent</strong>.
+            </p>
+            <div class="stitle mt20">Council profile</div>
+            <div class="card app-section-card" style="padding:14px 18px">
+                <button class="agent-mini-btn" onclick="openAgentExplain('My profile')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
 
-                <label class="flabel">Council Member Name</label>
-                <input class="finput" id="councilNameInput" placeholder="e.g. Council Executor" style="margin-bottom:12px">
+                <label class="flabel">Name</label>
+                <input class="finput" id="councilNameInput" placeholder="Display name" style="margin-bottom:12px">
 
-                <label class="flabel">Council Role</label>
+                <label class="flabel">Role</label>
                 <select class="fsel" id="councilExecRoleSel" style="width:100%;margin-bottom:14px">
-                    <option value="Executor">Executive (Multisig) (can execute council decisions)</option>
-                    <option value="Observer">Council Member (voting only)</option>
+                    <option value="Executor">Executive (Multisig)</option>
+                    <option value="Observer">Council member (vote only)</option>
                 </select>
-                <div class="xs mu" style="margin-top:-6px;margin-bottom:14px">Executives execute council decisions via Multisig.</div>
 
                 <div style="height:1px;background:rgba(103,232,249,.08);margin:14px 0"></div>
-
-                <div class="fbet" style="margin-bottom:10px;align-items:flex-start">
-                    <div>
-                        <div style="font-size:14px;font-weight:900;margin-bottom:4px">NFT Avatar (local preview)</div>
-                        <div class="xs mu">Load a picture as if it were an NFT collectible image.</div>
-                    </div>
-                </div>
 
                 <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px">
                     <div style="width:86px;height:86px;border-radius:16px;background:rgba(103,232,249,.06);border:1px solid rgba(103,232,249,.2);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0;position:relative">
                         <div id="councilAvatarPh" style="font-size:22px;color:var(--m);font-weight:900">NFT</div>
                         <img id="councilAvatarPreviewImg" src="" alt="Council NFT avatar" style="display:none;width:100%;height:100%;object-fit:cover">
-                        <div style="position:absolute;right:6px;top:6px;font-size:13px;font-weight:900;color:rgba(255,255,255,.92);background:rgba(0,0,0,.35);border:1px solid rgba(103,232,249,.2);border-radius:999px;padding:3px 7px;backdrop-filter:blur(6px)">NFT</div>
+                        <div style="position:absolute;right:6px;top:6px;font-size:11px;font-weight:900;color:rgba(255,255,255,.92);background:rgba(0,0,0,.35);border:1px solid rgba(103,232,249,.2);border-radius:999px;padding:2px 6px;backdrop-filter:blur(6px)">NFT</div>
                     </div>
                     <div style="flex:1;min-width:0">
-                        <label class="flabel">Load picture (NFT image file)</label>
+                        <label class="flabel">Picture</label>
                         <input class="finput" type="file" id="councilAvatarFile" accept="image/*" onchange="onCouncilAvatarFile(this)" style="margin-bottom:10px">
 
-                        <div class="xs mu" style="margin-bottom:8px">Or use an image URL (http(s) or ipfs URL).</div>
+                        <label class="flabel">Image URL</label>
                         <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px">
-                            <input class="finput" id="councilAvatarUrlInput" placeholder="https://... or ipfs://..." style="min-width:0;margin-bottom:0">
+                            <input class="finput" id="councilAvatarUrlInput" placeholder="https:// or ipfs://" style="min-width:0;margin-bottom:0">
                             <button class="btn" style="width:auto;padding:12px 14px" onclick="loadCouncilAvatarFromUrl()">Load</button>
                         </div>
                     </div>
@@ -3916,8 +4326,8 @@
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
                     <div>
-                        <label class="flabel">NFT Contract (optional)</label>
-                        <input class="finput" id="councilNftContract" placeholder="0x... or minima collection" style="margin-bottom:0">
+                        <label class="flabel">Contract (optional)</label>
+                        <input class="finput" id="councilNftContract" placeholder="0x..." style="margin-bottom:0">
                     </div>
                     <div>
                         <label class="flabel">Token ID (optional)</label>
@@ -3929,25 +4339,37 @@
                     <button class="btn btn-w btn-g" style="flex:1;min-width:220px" onclick="saveCouncilMemberProfile()">Save profile</button>
                     <button class="btn" style="flex:1;min-width:220px" onclick="resetCouncilMemberProfile()">Reset</button>
                 </div>
-                <div class="xs mu" style="margin-top:10px">Stored locally in your Winiwa node.</div>
+                <p class="hint" style="margin:12px 0 0;text-align:center">Saved on this device only.</p>
             </div>
         </div>
 
         <!-- PREFERENCES: SETTINGS AND UPDATES -->
         <div class="page" id="page-settings-updates">
-            <div class="app-screen-title">Settings and updates</div>
-            <div class="app-screen-lede">MiniDapp package, theme, display, wallet addresses, and syncing preferences between devices. Your <strong style="color:var(--t)">Vault key</strong> is only on <strong style="color:var(--t)">Security</strong>.</div>
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x2699;&#xFE0F;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Settings and updates</div>
+                    <div class="app-page-header__sub">Package, theme, display, addresses, sync</div>
+                </div>
+            </header>
+            <p class="hint" style="margin:-8px 0 16px">My <strong style="color:var(--t)">Vault key</strong> is only under <strong style="color:var(--t)">Security</strong>.</p>
             <div class="stitle mt20">App updates</div>
-            <div class="card card--prose-centered" id="settings-app-updates" style="padding:14px 18px;margin-bottom:8px">
+            <div class="card card--prose-centered app-section-card" id="settings-app-updates" style="padding:14px 18px;margin-bottom:8px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: app updates and MiniDapp package download')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="xs mu" style="margin-bottom:12px;line-height:1.55;font-weight:800;color:var(--t)">
-                    Release notes and new prototype drops will show up here as we ship. For now, use the link below to download the latest Stables MiniDapp package for your Minima node (MDS zip on GitHub).
+                    Release notes and new prototype drops will show up here as we ship. For now, use the link below to download the latest Stables MiniDapp package for my Minima node (MDS zip on GitHub).
                 </div>
                 <a id="settingsMdsZipLink" class="btn btn-w" style="flex:1;min-width:220px;font-size:14px;font-weight:900;display:block;text-align:center;width:100%;text-decoration:none;box-sizing:border-box"
                     href="#" target="_blank" rel="noopener">Download Stables.mds.zip</a>
                 <div class="xs mu" id="settingsMdsZipUrlLabel" style="margin-top:10px;word-break:break-all;line-height:1.45;opacity:.9"></div>
             </div>
             <div class="stitle mt20">Appearance &amp; behaviour</div>
-            <div class="card" style="padding:0 18px">
+            <div class="card app-section-card" style="padding:0 18px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: appearance, light mode, merchant mode, address privacy')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="set-row">
                     <div>
                         <div class="set-label">
@@ -3978,11 +4400,14 @@
                 </div>
             </div>
             <div class="stitle mt20">Display</div>
-            <div class="card" style="padding:0 18px">
+            <div class="card app-section-card" style="padding:0 18px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: primary currency and which balances show on my Wallet')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="set-row">
                     <div>
                         <div class="set-label">Primary Currency</div>
-                        <div class="set-sub">Shown prominently on Wallet</div>
+                        <div class="set-sub">Shown prominently on my Wallet</div>
                     </div>
                     <select class="fsel" style="width:90px;padding:8px 10px">
                         <option>USDw</option>
@@ -4016,10 +4441,13 @@
                 </div>
             </div>
             <div class="stitle mt20">Wallet addresses</div>
-            <div class="card" style="padding:0 18px">
+            <div class="card app-section-card" style="padding:0 18px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: labelled receive addresses (Vault key is under Security)')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div style="padding:14px 0 14px">
                     <div class="set-label" style="margin-bottom:8px">My addresses</div>
-                    <div class="xs mu" style="margin-bottom:10px">Receive and label addresses here. Your Vault key is managed under <strong style="color:var(--t)">Preferences → Security</strong>.</div>
+                    <div class="xs mu" style="margin-bottom:10px">Receive and label addresses here. My Vault key is managed under <strong style="color:var(--t)">Preferences → Security</strong>.</div>
                     <div class="addr-box" style="margin-top:0" onclick="showToast('Address copied!')">
                         Mx688...f3b2a1c9d4e7f0123456789abcdef <span style="color:var(--c)">
                             ·
@@ -4032,20 +4460,23 @@
                 </div>
             </div>
             <div class="stitle mt20">Sync preferences</div>
-            <div class="card" style="padding:14px 18px">
+            <div class="card app-section-card" style="padding:14px 18px">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: export and import preferences between devices')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="xs mu" style="margin-bottom:8px" id="backupStatusLabel">Last backup: never</div>
                 <div class="xs mu" style="margin-bottom:12px;line-height:1.5">
-                    Save a small file to <strong style="color:var(--t)">copy your Stables preferences to another device</strong> (another phone or node). This is separate from your Vault key. Use <strong style="color:var(--t)">Security</strong> for that.
+                    Save a small file to <strong style="color:var(--t)">copy my Stables preferences to another device</strong> (another phone or node). This is separate from my Vault key. Use <strong style="color:var(--t)">Security</strong> for that.
                 </div>
                 <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px">
                     <div style="padding:12px;border-radius:12px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22)">
-                        <div style="font-size:11px;font-weight:900;color:var(--gr);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Comes back with your Vault key</div>
+                        <div style="font-size:11px;font-weight:900;color:var(--gr);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Comes back with my Vault key</div>
                         <div class="xs mu" style="margin-bottom:8px">These return when that device uses the same Vault key:</div>
                         <ul id="settingsNotInExportList" style="margin:0;padding-left:18px;font-size:13px;line-height:1.45;color:var(--t)"></ul>
                     </div>
                     <div style="padding:12px;border-radius:12px;background:rgba(103,232,249,.06);border:1px solid rgba(103,232,249,.2)">
                         <div style="font-size:11px;font-weight:900;color:var(--c);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Only in this backup</div>
-                        <div class="xs mu" style="margin-bottom:8px">These move only if you export and import (or type them again):</div>
+                        <div class="xs mu" style="margin-bottom:8px">These move only if I export and import (or type them again):</div>
                         <ul id="settingsInExportList" style="margin:0;padding-left:18px;font-size:13px;line-height:1.45;color:var(--t)"></ul>
                     </div>
                 </div>
@@ -4055,15 +4486,25 @@
                     <button type="button" class="btn btn-w btn-g" style="flex:1;min-width:160px" onclick="runConfigBackupNow()">Export</button>
                     <button type="button" class="btn btn-w" style="flex:1;min-width:160px" onclick="triggerConfigBackupImport()">Import</button>
                 </div>
-                <div class="xs mu mt8">After you choose a file, pick <strong>Replace</strong> (make this device match the file) or <strong>Combine</strong> (merge lists and notes; the file wins when both have a note for the same item). We may remind you if you have not exported in a while.</div>
+                <div class="xs mu mt8">After I choose a file, pick <strong>Replace</strong> (make this device match the file) or <strong>Combine</strong> (merge lists and notes; the file wins when both have a note for the same item). Stables may remind me if I have not exported in a while.</div>
             </div>
         </div>
 
         <!-- PREFERENCES: SECURITY (Vault key only, critical) -->
         <div class="page" id="page-settings-security">
-            <div class="app-screen-title">Security</div>
-            <div class="card card--prose-centered" id="settingsSeedPhraseSection" style="padding:22px 20px 20px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.2))">
-                <p class="sec-body" style="margin-bottom:12px">Your <strong>Vault key</strong> is your access to your bank. <strong>Lose it and you can lose your money.</strong> Use the Minima Security app to view or manage it.</p>
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F510;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Security</div>
+                    <div class="app-page-header__sub">Vault key only: access to my bank</div>
+                </div>
+            </header>
+            <div class="stitle mt20">Vault key</div>
+            <div class="card card--prose-centered app-section-card" id="settingsSeedPhraseSection" style="padding:22px 20px 20px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.2))">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Security: my Vault key is sole access to my bank; never share it')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+                <p class="sec-body" style="margin-bottom:12px">My <strong>Vault key</strong> is my access to my bank. <strong>Without it, I risk losing my money.</strong> Use the Minima Security app to view or manage it.</p>
                 <p class="sec-body">Never share it with anyone.</p>
                 <div class="sec-key-icon" aria-hidden="true">🔑</div>
                 <button type="button" class="btn btn-w btn-lg" onclick="openModal('seedSecurityAppModal')">Open Minima Security app</button>
@@ -4072,22 +4513,36 @@
 
         <!-- MERCHANT INVOICE PAGE -->
         <div class="page" id="page-invoice">
-            <div class="fbet" style="margin-bottom:14px">
-                <div>
-                    <div class="app-screen-title">Create Invoice</div>
-                    <div class="xs mu mt8">Generate a payment QR for your customer</div>
-                </div>
-                <button class="btn btn-g" style="width:auto;padding:8px 12px;font-size:12px"
+            <div class="fbet" style="margin-bottom:14px;align-items:flex-start">
+                <header class="app-page-header" style="margin-bottom:0;flex:1;min-width:0">
+                    <div class="dic" aria-hidden="true">&#x1F9FE;</div>
+                    <div class="app-page-header__text">
+                        <div class="app-page-header__title">Create Invoice</div>
+                        <div class="app-page-header__sub">Request payment with a merchant QR</div>
+                    </div>
+                </header>
+                <button class="btn btn-g" style="width:auto;padding:8px 12px;font-size:12px;flex-shrink:0"
                     onclick="toggleMerchantDisplay()">💻
                     Merchant Display</button>
             </div>
-            <div class="card">
+            <div class="stitle mt20">Invoice details</div>
+            <div class="card app-section-card">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Invoice: amount, note, tip address, and merchant QR')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
                 <div class="cb">
                     <label class="flabel">Amount</label>
-                    <option>AUDw</option>
-                    <option>CHFw</option>
-                    <option>CNYw</option>
-                    </select>
+                    <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px">
+                        <input class="finput" type="number" placeholder="0.00" style="margin-bottom:0">
+                        <select class="fsel" style="width:96px;margin-bottom:0">
+                            <option>USDw</option>
+                            <option>EURw</option>
+                            <option>GBPw</option>
+                            <option>AUDw</option>
+                            <option>CHFw</option>
+                            <option>CNYw</option>
+                        </select>
+                    </div>
                 </div>
                 <label class="flabel">Note / Item description</label>
                 <input class="finput" placeholder="e.g. Coffee + pastry" style="margin-bottom:12px" id="invNote"
@@ -4165,13 +4620,9 @@
                     </div>
                     <div class="dinfo">
                         <div class="dname">Contacts</div>
-                        <div class="ddesc">Browse your contacts and notes</div>
+                        <div class="ddesc">Browse my contacts and notes</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
-            </div>
-            <div class="ddiv"></div>
-            <div class="dsect">
-                <div class="dsect-t">Community</div>
                 <div class="ditem" onclick="navigate('council-comms');closeMoreNow()">
                     <div class="dic">
                         📢
@@ -4181,13 +4632,35 @@
                         <div class="ddesc">Read security, updates, and critical notices</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
-                <div class="ditem" onclick="navigate('council');closeMoreNow()">
+            </div>
+            <div class="ddiv"></div>
+            <div class="dsect">
+                <div class="dsect-t">Preferences</div>
+                <div class="ditem" onclick="navigate('settings-profile');closeMoreNow()">
                     <div class="dic">
-                        🏛️
+                        👤
                     </div>
                     <div class="dinfo">
-                        <div class="dname">Council</div>
-                        <div class="ddesc">Explore council transparency and tools</div>
+                        <div class="dname">My profile</div>
+                        <div class="ddesc">Council identity and avatar</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('settings-updates');closeMoreNow()">
+                    <div class="dic">
+                        ⚙️
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">Settings and updates</div>
+                        <div class="ddesc">Package, theme, display, addresses, sync</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('settings-security');closeMoreNow()">
+                    <div class="dic">
+                        🔐
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">Security</div>
+                        <div class="ddesc">Vault key only: access to my bank</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4223,32 +4696,24 @@
             </div>
             <div class="ddiv"></div>
             <div class="dsect">
-                <div class="dsect-t">Preferences</div>
-                <div class="ditem" onclick="navigate('settings-profile');closeMoreNow()">
+                <div class="dsect-t">Community</div>
+                <div class="ditem" onclick="navigate('council');closeMoreNow()">
                     <div class="dic">
-                        👤
+                        🏛️
                     </div>
                     <div class="dinfo">
-                        <div class="dname">My profile</div>
-                        <div class="ddesc">Council identity and avatar</div>
+                        <div class="dname">Council</div>
+                        <div class="ddesc">Explore council transparency and tools</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
-                <div class="ditem" onclick="navigate('settings-updates');closeMoreNow()">
+                <div class="ditem" onclick="navigate('treasury');closeMoreNow()">
                     <div class="dic">
-                        ⚙️
+                        <img src="treasure-chest.svg" alt="" width="20" height="20"
+                            style="width:20px;height:20px;border-radius:7px;flex-shrink:0;display:block;object-fit:contain">
                     </div>
                     <div class="dinfo">
-                        <div class="dname">Settings and updates</div>
-                        <div class="ddesc">Package, theme, display, addresses, sync</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
-                <div class="ditem" onclick="navigate('settings-security');closeMoreNow()">
-                    <div class="dic">
-                        🔐
-                    </div>
-                    <div class="dinfo">
-                        <div class="dname">Security</div>
-                        <div class="ddesc">Vault key only: access to your bank</div>
+                        <div class="dname">Treasury</div>
+                        <div class="ddesc">Analyse the community's treasury</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4281,7 +4746,7 @@
             <div class="msub">Funds arrive instantly, anywhere</div>
             <label class="flabel">Recipient (name or account ID)</label>
             <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px">
-                <input class="finput" id="sendToInput" placeholder="Search contacts or paste ID..." style="min-width:0">
+                <input class="finput" id="sendToInput" placeholder="Search my contacts or paste ID..." style="min-width:0">
                 <button class="btn" style="width:auto;padding:12px 14px"
                     onclick="closeModal('sendModal');openModal('qrModal')" title="Scan QR">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -4304,7 +4769,7 @@
             </div>
             <div class="hint" style="margin-bottom:14px">Fee: $0.01 max
                 ·
-                Your recipient gets the full amount.</div>
+                The recipient gets the full amount.</div>
             <button class="btn btn-w btn-lg"
                 onclick="showToast('✓ Sent! Funds arrived instantly');closeModal('sendModal')">Confirm
                 Send</button>
@@ -4361,7 +4826,7 @@
             <div class="type-eyebrow" style="color:#fbbf24;margin-bottom:10px">Safety</div>
             <div class="mttl" style="text-align:center;margin-bottom:12px">Open Minima Security app</div>
             <div style="margin:0 0 18px;line-height:var(--lh-body);text-align:center;color:var(--t);font-size:var(--fz-body);font-weight:500">
-                This opens the <strong style="color:#fbbf24">Minima Security app</strong> on your node so you can view or check your <strong style="color:#fbbf24">Vault key</strong>, also called <strong style="color:#fbbf24">Seed phrase</strong>, which is a series of 24 words. Only do this in a private place.
+                This opens the <strong style="color:#fbbf24">Minima Security app</strong> on my node so I can view or check my <strong style="color:#fbbf24">Vault key</strong>, also called <strong style="color:#fbbf24">Seed phrase</strong>, which is a series of 24 words. Only do this in a private place.
             </div>
             <button type="button" class="btn btn-w btn-lg"
                 onclick="closeModal('seedSecurityAppModal');openSeedPhrase()">Continue</button>
@@ -4402,11 +4867,11 @@
     <!-- FIRST INSTALL SETUP -->
     <div class="mback centered" id="welcomeSetupModal" onclick="if(event.target===this)closeWelcomeSetup()">
         <div class="modal welcome">
-            <div style="display:flex;justify-content:center;margin-bottom:14px">
-                <img src="stables_icon.png" alt="Stables" style="width:54px;height:54px;border-radius:14px">
-            </div>
             <!-- Step 1: Welcome first (congratulations, language, intro) -->
             <div id="welcomeStepLang">
+                <div style="display:flex;justify-content:center;margin-bottom:14px">
+                    <img src="stables_icon.png" alt="Stables" style="width:54px;height:54px;border-radius:14px">
+                </div>
                 <div id="welcomeCongrats" class="type-hero"
                     style="text-align:center;margin-bottom:12px;color:var(--t)">
                     Congratulations on becoming your own bank.
@@ -4465,6 +4930,13 @@
 
             <!-- Guided tour path (persona buttons) -->
             <div id="welcomeStepTourChoice" style="display:none">
+                <div style="display:flex;justify-content:center;margin-bottom:16px" aria-hidden="true">
+                    <div
+                        style="width:68px;height:68px;border-radius:50%;background:rgba(103,232,249,.12);border:1px solid rgba(103,232,249,.35);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.3),0 0 20px rgba(103,232,249,.12)">
+                        <img src="agent.png" alt="" width="40" height="40"
+                            style="width:40px;height:40px;border-radius:10px;object-fit:cover;display:block">
+                    </div>
+                </div>
                 <div id="welcomeTourChoiceHead" class="welcome-modal-body-copy"
                     style="text-align:center;margin-bottom:16px">
                     Pick one path for the StablesAgent guided tour.
@@ -4484,7 +4956,7 @@
             <!-- Step 5: Nerd sub track choice -->
             <div id="welcomeStepNerdTrack" style="display:none">
                 <div class="mttl" id="welcomeNerdTrackTitle"
-                    style="text-align:center;margin-bottom:12px">Pick your nerd deep dive</div>
+                    style="text-align:center;margin-bottom:12px">Pick my nerd deep dive</div>
                 <div id="welcomeNerdTrackBody" class="msub"
                     style="text-align:center;margin-bottom:16px;color:var(--t)">
                     Choose what you want to inspect first in this demo.
@@ -4499,9 +4971,9 @@
 
             <!-- Step 4: Use case -->
             <div id="welcomeStepTourUseCase" style="display:none">
-                <div class="mttl" id="welcomeUseTitle" style="text-align:center;margin-bottom:12px">How will you use it?</div>
+                <div class="mttl" id="welcomeUseTitle" style="text-align:center;margin-bottom:12px">How will I use it?</div>
                 <div class="xs mu" id="welcomeUsePrompt" style="text-align:center;margin-bottom:16px">
-                    How will you mainly use the app, as a personal or a merchant?
+                    How will I mainly use the app, as a personal user or a merchant?
                 </div>
                 <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
                     <button class="btn btn-w btn-g" id="welcomePersonalBtn" style="flex:1;min-width:220px" onclick="setWelcomeUseCase('personal')">Personal</button>
@@ -4515,11 +4987,11 @@
     <div class="mback centered" id="seedPhraseSecurityModal" style="z-index:620" aria-modal="true" role="dialog" onclick="if(event.target===this)closeSeedPhraseSecurityModal()">
         <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.92));padding:20px 18px 22px">
             <div class="mttl" style="text-align:center;margin-bottom:12px">
-                Have you saved your <strong style="color:#fbbf24">Vault key</strong>?
+                Is my <strong style="color:#fbbf24">Vault key</strong> backed up?
             </div>
             <div style="text-align:center;margin-bottom:14px;line-height:1.55;color:var(--t);font-weight:600">
-                <p style="margin:0 0 12px 0">Your <strong style="color:var(--t)">Vault key</strong> is your access to your bank. Lose it and you can <strong style="color:var(--t)">lose your money</strong>. <strong style="color:var(--t)">No one can recover it for you</strong>, including Stables.</p>
-                <p style="margin:0;color:var(--m);font-weight:500">The Stables community can help with questions; <strong style="color:var(--t)">only you</strong> can keep your key safe.</p>
+                <p style="margin:0 0 12px 0">My <strong style="color:var(--t)">Vault key</strong> is my access to my bank. Without it, I can <strong style="color:var(--t)">lose my money</strong>. <strong style="color:var(--t)">No one can recover it for me</strong>, including Stables.</p>
+                <p style="margin:0;color:var(--m);font-weight:500">The Stables community can help with questions; <strong style="color:var(--t)">only I</strong> can keep my key safe.</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:10px">
                 <button type="button" class="btn btn-w"
@@ -4542,7 +5014,7 @@
                 How do you want help?
             </div>
             <div style="text-align:center;margin-bottom:16px;line-height:1.55;color:var(--m);font-weight:600">
-                Talk to StablesAgent (starts with a question about your Vault key), or open the security support channel on Telegram.
+                Talk to StablesAgent (starts with a question about my Vault key), or open the security support channel on Telegram.
             </div>
             <div style="display:flex;flex-direction:column;gap:10px">
                 <button type="button" class="btn btn-w btn-g" onclick="vaultHelpChooseStablesAgent()">Talk to StablesAgent</button>
@@ -4695,7 +5167,7 @@
 
     <script src="assets/config/runtime-config.js"></script>
     <script>
-        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'chat', 'council-comms', 'council', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'invoice', 'activity', 'contacts', 'feedback'];
+        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'invoice', 'activity', 'contacts', 'feedback'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
         let privacyMode = false; lede = false;
@@ -4739,6 +5211,7 @@
             if (p === 'contacts' && typeof renderContactsPage === 'function') renderContactsPage();
             if (p === 'chat' && typeof renderChatContext === 'function') renderChatContext();
             if (p === 'council-comms' && typeof window.renderCouncilCommunicationPanels === 'function') window.renderCouncilCommunicationPanels();
+            if (p === 'treasury' && typeof updateGlobalUI === 'function') updateGlobalUI();
             if (p === 'feedback') {
                 try {
                     if (typeof window.renderFeedbackPage === 'function') window.renderFeedbackPage();
@@ -6156,6 +6629,8 @@
                 stateBig.style.color = crNow >= 110 ? 'var(--gr)' : crNow >= 100 ? 'var(--am)' : 'var(--rd)';
             }
 
+            syncTreasurySnapshot(assetsUSD, liabUSD, crNow);
+
             calcSlider();
         }
 
@@ -6173,6 +6648,52 @@
             const scaled = v * rate;
             const num = scaled.toLocaleString('en-US', { maximumFractionDigits: 0 });
             return sym ? `${sym}${num}` : `${num} ${BASE_CCY}`;
+        }
+
+        /** Treasury page: simple assets / liabilities / equity + bar + CR (updates with stress slider). */
+        function syncTreasurySnapshot(assetsUSD, liabUSD, crPctRaw) {
+            const a = Number(assetsUSD) || 0;
+            const l = Number(liabUSD) || 0;
+            const equity = a - l;
+            let crPct = Number(crPctRaw);
+            if (!Number.isFinite(crPct)) {
+                crPct = l > 0 ? (a / l) * 100 : 999;
+            }
+
+            const aEl = document.getElementById('treasurySnapAssets');
+            const lEl = document.getElementById('treasurySnapLiab');
+            const eqEl = document.getElementById('treasurySnapEq');
+            const eqCell = document.getElementById('treasurySnapEqCell');
+            if (aEl) aEl.textContent = fmtBase(a);
+            if (lEl) lEl.textContent = fmtBase(l);
+            if (eqEl) eqEl.textContent = fmtBase(equity);
+            if (eqCell) eqCell.classList.toggle('neg', equity < 0);
+
+            const barL = document.getElementById('treasurySnapBarLiab');
+            const barE = document.getElementById('treasurySnapBarEq');
+            if (a > 0 && l >= 0) {
+                const liabPct = Math.min(100, (l / a) * 100);
+                const eqPct = Math.max(0, 100 - liabPct);
+                if (barL) {
+                    barL.style.width = liabPct + '%';
+                    barL.classList.toggle('shortfall', l > a);
+                }
+                if (barE) barE.style.width = eqPct + '%';
+            } else {
+                if (barL) {
+                    barL.style.width = '0%';
+                    barL.classList.remove('shortfall');
+                }
+                if (barE) barE.style.width = '0%';
+            }
+
+            const crEl = document.getElementById('treasurySnapCR');
+            if (crEl) {
+                const crRounded = Math.round(crPct);
+                crEl.textContent = (l <= 0 && a > 0) ? '999%+' : (crRounded + '%');
+                const n = Number.isFinite(crPct) ? crPct : 0;
+                crEl.style.color = n >= 110 ? 'var(--gr)' : n >= 100 ? 'var(--am)' : 'var(--rd)';
+            }
         }
 
         function updateTreasuryUI(priceMovePct) {
@@ -6496,6 +7017,8 @@
             if (liabRowVal) liabRowVal.textContent = fmtBase(liabEffective);
             if (treasuryRowVal) treasuryRowVal.textContent = fmtBase(treasuryUSD);
 
+            syncTreasurySnapshot(simTotalAssets, liabEffective, Number(newCR));
+
             // Price labels
             const pNow = document.getElementById('minimaPriceNow');
             const pSim = document.getElementById('minimaPriceSim');
@@ -6668,7 +7191,10 @@
             showToast(merchantMode ? 'Merchant Mode ON' : 'Merchant Mode off');
         }
         function openSeedPhrase() {
-            showToast('Opening Minima Security app\u2026');
+            showToast(
+                'Opening the Minima Security app from Stables will be added in an upcoming test version.\n\nThe Stables community is there to help with questions.',
+                { prose: true }
+            );
             /* MiniDapp: MDS.ui.open("security-app") */
         }
         function toggleCcyPill(el) {
@@ -6731,23 +7257,6 @@
                 settingsPh.style.display = src ? 'none' : 'block';
             }
 
-            // Council page
-            const councilImg = document.getElementById('councilMemberAvatarImg');
-            const councilPh = document.getElementById('councilMemberAvatarPh');
-            if (councilImg && councilPh) {
-                const src = councilAvatarDataUrl || councilAvatarUrl;
-                councilImg.src = src || '';
-                councilImg.style.display = src ? 'block' : 'none';
-                councilPh.style.display = src ? 'none' : 'block';
-            }
-
-            const nameLabel = document.getElementById('councilMemberNameLabel');
-            if (nameLabel) nameLabel.textContent = String(profile?.name || 'Council Member');
-
-            const getCouncilRoleText = (r) => r === 'Executor' ? 'Executive (Multisig)' : 'Council Member (voting only)';
-            const roleLabel = document.getElementById('councilRoleLabel');
-            if (roleLabel) roleLabel.textContent = 'Role: ' + getCouncilRoleText(role);
-
             // Execution button lock (demo)
             const disable = role !== 'Executor';
             ['executeMintXwm', 'executeBurnXwm', 'executeMintWables', 'executeBurnWables'].forEach(fn => {
@@ -6778,13 +7287,6 @@
                     settingsImg.style.display = 'block';
                     settingsPh.style.display = 'none';
                 }
-                const councilImg = document.getElementById('councilMemberAvatarImg');
-                const councilPh = document.getElementById('councilMemberAvatarPh');
-                if (councilImg && councilPh) {
-                    councilImg.src = councilAvatarDataUrl;
-                    councilImg.style.display = 'block';
-                    councilPh.style.display = 'none';
-                }
                 showToast('Avatar loaded (not saved yet)');
             };
             reader.readAsDataURL(file);
@@ -6803,13 +7305,6 @@
                 settingsImg.src = councilAvatarUrl;
                 settingsImg.style.display = 'block';
                 settingsPh.style.display = 'none';
-            }
-            const councilImg = document.getElementById('councilMemberAvatarImg');
-            const councilPh = document.getElementById('councilMemberAvatarPh');
-            if (councilImg && councilPh) {
-                councilImg.src = councilAvatarUrl;
-                councilImg.style.display = 'block';
-                councilPh.style.display = 'none';
             }
             showToast('Avatar URL loaded (not saved yet)');
         }
@@ -6848,14 +7343,22 @@
             showToast('Council profile reset');
         }
 
-        // Toast
+        // Toast (optional opts: { prose: true } for centered multi-line; durationMs)
         let toastTimer;
-        function showToast(msg) {
+        function showToast(msg, opts) {
             const t = document.getElementById('toast');
+            if (!t) return;
+            const o = opts && typeof opts === 'object' ? opts : {};
             t.textContent = msg;
+            if (o.prose) t.classList.add('toast--prose');
+            else t.classList.remove('toast--prose');
             t.style.display = 'block';
             clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => t.style.display = 'none', 3000);
+            const dur = typeof o.durationMs === 'number' ? o.durationMs : o.prose ? 5500 : 3000;
+            toastTimer = setTimeout(() => {
+                t.style.display = 'none';
+                t.classList.remove('toast--prose');
+            }, dur);
         }
 
         (function initNodeWowMessage() {
@@ -6863,7 +7366,7 @@
                 const intent = localStorage.getItem('stables_showcase_install_intent_v1');
                 if (intent && typeof MDS !== 'undefined') {
                     localStorage.removeItem('stables_showcase_install_intent_v1');
-                    showToast('Wow! You are quick. Stables is installed in your node. Talk to StablesAgent in any language. UI is plain English for now.');
+                    showToast('Wow! You are quick. Stables is installed on my node. Talk to StablesAgent in any language. UI is plain English for now.');
                 }
             } catch (_) { }
         })();

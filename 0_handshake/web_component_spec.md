@@ -24,6 +24,35 @@ Every Stables web page MUST:
 
 ---
 
+## MINIDAPP / IN-APP SCREEN HEADER (prod Stables app)
+
+**Rule**: At the top of every in-app screen, use the **same icon, title, and subtitle** as the **More** drawer row (`.ditem`) for that destination. For primary tabs that are **not** in the drawer, use the **bottom nav** icon + label, plus one short subtitle line that matches the screen purpose.
+
+**Markup** (implemented in `prod_stables_app_v0.2.10/index.html`):
+
+- Wrapper: `header.app-page-header`
+- Icon: `div.dic` with the same emoji (or `agent.png` inside `.dic` if the menu row uses the agent image)
+- Title: `div.app-page-header__title` — must match `.dname` (or the bottom-tab label)
+- Subtitle: `div.app-page-header__sub` — must match `.ddesc` (or the agreed tab subtitle)
+
+**Governance**: When you rename a destination in the More menu, update the matching page header in the same edit so they never drift.
+
+**Exception**: The **Wallet** home screen has **no** `app-page-header`; the balance hero card is the primary focal layout.
+
+---
+
+## MINIDAPP SECTION + BOX + STABLESAGENT (prod Stables app)
+
+**Rule**: Match **Settings and updates**: each logical block uses a **section label outside** the panel, then **one glass card** for the content.
+
+1. **Section label**: `div.stitle` (optional `mt20` when more air is needed after a header or prior block). Short, uppercase, muted — same typography as existing `.stitle` in the MiniDapp.
+2. **Content box**: `div.card` (or purpose-specific shells such as `.ex-card`, `.xwm-card`, `.cp-card`, `.lp-card`, `.treasury-snap-card`) **plus** `app-section-card` so the box is `position: relative` and picks up consistent bottom spacing.
+3. **StablesAgent context**: First element inside the card (or immediately after open): `button.agent-mini-btn` with `onclick="openAgentExplain('…')"` and `<img src="agent.png" alt="StablesAgent">` — same affordance as Council cards.
+
+**Reference**: `1_development/stream_1_app/prod_stables_app_v0.2.10/index.html` (see `.app-section-card` in the page `<style>` block).
+
+---
+
 ## NEW PAGE SHELL TEMPLATE
 
 Every new Stables HTML page starts from this shell. Copy verbatim, change nothing except content.

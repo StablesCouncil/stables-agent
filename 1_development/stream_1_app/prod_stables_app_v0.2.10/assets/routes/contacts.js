@@ -93,7 +93,7 @@ function renderContactsListView(contacts) {
       <div style="text-align: center; padding: 40px; color: var(--muted);">
         <div style="font-size: 48px; margin-bottom: 12px;">👥</div>
         <div style="font-size: 16px; font-weight: 700;">No contacts yet</div>
-        <div style="margin-top: 8px;">Add your first contact to get started</div>
+        <div style="margin-top: 8px;">Add my first contact to get started</div>
       </div>
     `;
   }
@@ -147,7 +147,7 @@ function renderContactsCardView(contacts) {
       <div style="text-align: center; padding: 40px; color: var(--muted);">
         <div style="font-size: 48px; margin-bottom: 12px;">👥</div>
         <div style="font-size: 16px; font-weight: 700;">No contacts yet</div>
-        <div style="margin-top: 8px;">Add your first contact to get started</div>
+        <div style="margin-top: 8px;">Add my first contact to get started</div>
       </div>
     `;
   }

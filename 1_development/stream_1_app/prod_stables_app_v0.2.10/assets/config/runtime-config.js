@@ -14,7 +14,7 @@ window.STABLES_CONFIG = {
       whatChanged:
         'Example when an update ships: security fixes, mandatory protocol UI changes, or critical Minima MDS fixes.',
       details:
-        'Install the new Stables.mds.zip on your node from the link below, or use Settings and updates.'
+        'Install the new Stables.mds.zip on my node from the link below, or use Settings and updates.'
     }
   },
   ACTIVITY_PAGE_SIZE: 25,
