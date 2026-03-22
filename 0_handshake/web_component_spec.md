@@ -43,13 +43,14 @@ Every Stables web page MUST:
 
 ## MINIDAPP SECTION + BOX + STABLESAGENT (prod Stables app)
 
-**Rule**: Match **Settings and updates**: each logical block uses a **section label outside** the panel, then **one glass card** for the content.
+**Rule**: Each logical block is a **glass card first**, with the **section label + StablesAgent** as a **caption row underneath** (dedicated area below the card).
 
-1. **Section label**: `div.stitle` (optional `mt20` when more air is needed after a header or prior block). Short, uppercase, muted — same typography as existing `.stitle` in the MiniDapp.
-2. **Content box**: `div.card` (or purpose-specific shells such as `.ex-card`, `.xwm-card`, `.cp-card`, `.lp-card`, `.treasury-snap-card`) **plus** `app-section-card` so the box is `position: relative` and picks up consistent bottom spacing.
-3. **StablesAgent context**: First element inside the card (or immediately after open): `button.agent-mini-btn` with `onclick="openAgentExplain('…')"` and `<img src="agent.png" alt="StablesAgent">` — same affordance as Council cards.
+1. **Wrapper**: `div.app-section.app-section--caption-bottom` around the pair. Uses `flex-direction: column-reverse` so **DOM order stays** `stitle-row` then card, but **visually** the card is on top and the caption row below. After a page header, add `app-section--caption-bottom--mt20` on the wrapper instead of `mt20` on `stitle-row`.
+2. **Title row**: `div.stitle-row` inside the wrapper. Inside it: `div.stitle` (label text) **and** `button.agent-mini-btn` with `onclick="openAgentExplain('…')"` and `<img src="agent.png" alt="StablesAgent">`, side by side (title flexes; agent stays at the end of the caption row).
+3. **Content box**: `div.card` (or `.ex-card`, `.xwm-card`, `.cp-card`, `.lp-card`, `.treasury-snap-card`, etc.) **plus** `app-section-card`. **Do not** put `agent-mini-btn` inside the card when a section title exists in the caption row.
+4. **In-card captions** (e.g. proposal / voting cards): `div.stitle-row.stitle-row--in-card` **last inside the box** (footer), with `div.stitle-inline` (or `stitle-inline--sm`) plus the same `agent-mini-btn`.
 
-**Reference**: `1_development/stream_1_app/prod_stables_app_v0.2.10/index.html` (see `.app-section-card` in the page `<style>` block).
+**Reference**: `1_development/stream_1_app/prod_stables_app_v0.2.10/index.html` (`.app-section--caption-bottom`, `.stitle-row`, `.agent-mini-btn`, `.app-section-card` in the page `<style>` block).
 
 ---
 

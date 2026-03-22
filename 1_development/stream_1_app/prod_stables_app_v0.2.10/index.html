@@ -596,6 +596,93 @@
             margin: 18px 0 10px
         }
 
+        /* Section stack: card on top, caption row (title + agent) below */
+        .app-section--caption-bottom {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .app-section--caption-bottom > .stitle-row {
+            margin: 0 !important;
+        }
+
+        .app-section--caption-bottom > .stitle-row.mt20 {
+            margin: 0 !important;
+        }
+
+        .app-section--caption-bottom > .card.app-section-card,
+        .app-section--caption-bottom > .ex-card.app-section-card,
+        .app-section--caption-bottom > .xwm-card.app-section-card,
+        .app-section--caption-bottom > .cp-card.app-section-card,
+        .app-section--caption-bottom > .lp-card.app-section-card,
+        .app-section--caption-bottom > .treasury-snap-card.app-section-card {
+            margin-bottom: 0;
+        }
+
+        .app-section--caption-bottom > .pool-section-title {
+            margin: 0;
+        }
+
+        .app-section--caption-bottom--mt20 {
+            margin-top: 20px;
+        }
+
+        #page-wallet > .app-section--caption-bottom:first-of-type {
+            margin-top: 18px;
+        }
+
+        /* Section label + StablesAgent on one line (caption under the card) */
+        .stitle-row {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 18px 0 10px;
+        }
+
+        .stitle-row.mt20 {
+            margin-top: 20px;
+        }
+
+        .stitle-row .stitle,
+        .stitle-row .pool-section-title {
+            margin: 0;
+            flex: 1;
+            min-width: 0;
+            text-align: left;
+        }
+
+        /* Proposal / in-card caption row at bottom of box (footer) */
+        .stitle-row--in-card {
+            margin: 14px 0 0 0;
+            padding-top: 12px;
+            border-top: 1px solid rgba(103, 232, 249, .12);
+            align-items: center;
+        }
+
+        .stitle-row--in-card .stitle-inline {
+            font-size: 16px;
+            font-weight: 900;
+            color: var(--t);
+            text-transform: none;
+            letter-spacing: normal;
+            line-height: var(--lh-label);
+            margin: 0;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .prop-card > .stitle-row--in-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .stitle-row--in-card .stitle-inline--sm {
+            font-size: 14px;
+            font-weight: 900;
+        }
+
         .hr {
             height: 1px;
             background: rgba(103, 232, 249, .1);
@@ -2737,13 +2824,12 @@
             min-height: 200px;
         }
 
-        /* Agent micro affordance (official icon only) */
+        /* Agent micro affordance (official icon only) — sits in .stitle-row beside the section title */
         .agent-mini-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
+            position: static;
             width: 34px;
             height: 34px;
+            flex-shrink: 0;
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -2767,23 +2853,17 @@
             border-radius: 6px;
         }
 
-        /* Section pattern: .stitle (outside) + .app-section-card (box + StablesAgent top-right) */
+        /* Section pattern: .stitle-row (title + agent) + .app-section-card (box) */
         .card.app-section-card,
         .ex-card.app-section-card,
         .xwm-card.app-section-card,
         .cp-card.app-section-card,
         .lp-card.app-section-card {
-            position: relative;
             margin-bottom: 8px;
         }
 
         .treasury-snap-card.app-section-card {
-            position: relative;
             margin-bottom: 16px;
-        }
-
-        .card.app-section-card .wallet-ccy-tools {
-            padding-right: 44px;
         }
 
 
@@ -2846,13 +2926,16 @@
 
         <!-- WALLET PAGE (no app-page-header: hero card is the focal entry) -->
         <div class="page active" id="page-wallet">
-            <div class="stitle">Balance &amp; actions</div>
-            <div class="card app-section-card">
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Balance &amp; actions</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Wallet: balance, send and receive')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card">
                 <div class="w-hero">
-                    <div class="fbet" style="align-items:center;justify-content:flex-end;margin-bottom:2px;padding-right:46px">
+                    <div class="fbet" style="align-items:center;justify-content:flex-end;margin-bottom:2px">
                         <button id="balHideBtn" onclick="toggleBalHide()"
                             style="background:none;border:none;cursor:pointer;color:var(--m);padding:4px 6px;line-height:0;opacity:.8;display:flex;align-items:center;justify-content:center"
                             title="Hide amounts"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"
@@ -2875,11 +2958,15 @@
                     </div>
                 </div>
             </div>
-            <div class="stitle">Currencies</div>
-            <div class="card app-section-card" style="padding:0">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Currencies</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Wallet: currencies and ordering')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:0">
                 <div class="cb" style="padding-top:0">
                     <div class="wallet-ccy-tools">
                         <button class="ccy-edit-pen" id="ccyEditPen" title="Edit currency order"
@@ -3010,13 +3097,18 @@
                     <button class="show-more-btn" id="showMoreCcy" onclick="toggleMoreCcy()">Show more currencies ▾</button>
                 </div>
             </div>
-            <div class="stitle">Recent activity</div>
-            <div class="card app-section-card" style="padding:14px 18px">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Recent activity</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Wallet: recent activity')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px 18px">
                 <div class="tx-list" id="walletRecentList"></div>
                 <button class="show-more-btn" onclick="navigate('activity')">View all activity ▸</button>
+            </div>
             </div>
         </div>
 
@@ -3031,9 +3123,10 @@
             </header>
 
             <!-- TOTAL PORTFOLIO HOLDINGS -->
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="pool-section-title">My holdings</div>
             <div class="card"
-                style="padding:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
+                style="padding:16px;margin-bottom:0;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
                 <div class="fbet" style="margin-bottom:14px">
                     <span class="xs mu" style="font-weight:700;text-transform:uppercase;letter-spacing:0.04em">Combined
                         Net Worth</span>
@@ -3059,6 +3152,7 @@
                     </div>
                 </div>
             </div>
+            </div>
 
             <!-- INVEST TABS -->
             <div class="tab-row" style="margin-bottom:24px">
@@ -3068,11 +3162,14 @@
 
             <!-- SECTION 2: COVERAGE FUND -->
             <div id="panelCF">
-                <div class="pool-section-title">Coverage fund</div>
-                <div class="cp-card app-section-card">
-                    <button class="agent-mini-btn" onclick="openAgentExplain('Coverage Fund')" title="StablesAgent">
+                <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="pool-section-title">Coverage fund</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Coverage Fund')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
+                </div>
+                <div class="cp-card app-section-card">
                     <div class="xs mu" style="margin-bottom:12px;line-height:1.5;font-weight:800">Deposit my Stables to earn all transaction fees while strengthening the protocol.</div>
                     <div class="fbet" style="margin-bottom:10px">
                         <div style="font-size:15px;font-weight:900">cf tokens</div>
@@ -3109,15 +3206,19 @@
                         <button class="btn" onclick="showToast('Deposit to Coverage Fund coming soon')">Deposit</button>
                     </div>
                 </div>
+                </div>
             </div> <!-- end panelCF -->
 
             <!-- SECTION 3: WINIWA/xWINIWA LP PAIR (CONCENTRATED LIQUIDITY) -->
             <div id="panelLP" style="display:none">
-                <div class="pool-section-title">Liquidity pool</div>
-                <div class="lp-card app-section-card">
-                    <button class="agent-mini-btn" onclick="openAgentExplain('Liquidity Pool')" title="StablesAgent">
+                <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="pool-section-title">Liquidity pool</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Liquidity Pool')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
+                </div>
+                <div class="lp-card app-section-card">
                     <div class="xs mu" style="margin-bottom:12px;line-height:1.5;font-weight:800">Provide liquidity on the xWiniwa secondary market and earn from trades.</div>
                     <div class="fbet" style="margin-bottom:10px">
                         <div style="font-size:15px;font-weight:900">xWiniwa Secondary Market</div>
@@ -3206,6 +3307,7 @@
                         onclick="showToast('\u2713 Liquidity successfully deployed to targeted bucket')">Deposit
                         Liquidity</button>
                 </div>
+                </div>
             </div>
 
 
@@ -3228,11 +3330,14 @@
             </div>
             <!-- MINT xWINIWA panel (default active) -->
             <div id="panelXwm">
-                <div class="stitle mt20">Mint &amp; burn xWiniwa</div>
-                <div class="xwm-card app-section-card">
+                <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+                <div class="stitle-row">
+                    <div class="stitle">Mint &amp; burn xWiniwa</div>
                     <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Mint and burn xWiniwa: lock Winiwa, coverage ratio, reclaim')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
+                </div>
+                <div class="xwm-card app-section-card">
                     <div class="cb">
                         <div style="margin-bottom:14px">
                             <div style="font-size:16px;font-weight:900">&#x26CF;&#xFE0F; Mint xWiniwa</div>
@@ -3300,14 +3405,18 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
             <!-- ISSUE Wables panel -->
             <div id="panelIssue" style="display:none">
-                <div class="stitle mt20">Mint &amp; burn Wables</div>
-                <div class="card app-section-card">
+                <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+                <div class="stitle-row">
+                    <div class="stitle">Mint &amp; burn Wables</div>
                     <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Mint and burn Wables: issue stables against Winiwa, reclaim Winiwa')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
+                </div>
+                <div class="card app-section-card">
                     <div class="cb">
                         <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x26CF;&#xFE0F; Mint Wables
                         </div>
@@ -3450,6 +3559,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
 
 
@@ -3464,11 +3574,14 @@
                 </div>
             </header>
 
-            <div class="stitle mt20">New conversion</div>
-            <div class="ex-card app-section-card" style="overflow:hidden">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">New conversion</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Exchange: convert between Wables and other balances')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="ex-card app-section-card" style="overflow:hidden">
                 <div class="xs mu"
                     style="margin-bottom:7px;font-weight:700;text-transform:uppercase;letter-spacing:.06em">
                     Send
@@ -3517,11 +3630,15 @@
                     onclick="showToast('✓ Exchange confirmed - funds arrive instantly')">Exchange
                     Now</button>
             </div>
-            <div class="stitle mt20">Recent exchanges</div>
-            <div class="card app-section-card" style="padding:14px 18px">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Recent exchanges</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Exchange: recent conversion history')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px 18px">
                 <div class="tx-list">
                     <div class="tx-row">
                         <div class="tx-ic" style="background:rgba(103,232,249,.1)">
@@ -3542,6 +3659,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
 
 
@@ -3559,13 +3677,15 @@
                     Business</button>
             </div>
             <input class="finput" placeholder="🔍 Search merchants..." style="margin-bottom:14px">
-            <div class="stitle" style="margin-top:4px">
-                Cafés
+            <div class="app-section app-section--caption-bottom" style="margin-top:4px">
+            <div class="stitle-row">
+                <div class="stitle">Cafés
                 &amp; Food</div>
-            <div class="card app-section-card" style="padding:14px">
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Shops: cafés and food merchants accepting Wables')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px">
             <div class="mcard" data-stables-shop="Ground Coffee Roasters" onclick="openShopProfile('Ground Coffee Roasters')">
                 <div class="mic">
                     ☕
@@ -3592,11 +3712,15 @@
                 <div class="badge b-gr">Open</div>
             </div>
             </div>
-            <div class="stitle">Retail</div>
-            <div class="card app-section-card" style="padding:14px">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Retail</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Shops: retail merchants accepting Wables')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px">
             <div class="mcard" data-stables-shop="Open Pages Bookshop" onclick="openShopProfile('Open Pages Bookshop')">
                 <div class="mic">
                     📚
@@ -3608,6 +3732,7 @@
                         London, UK</div>
                 </div>
                 <div class="badge b-cy">New</div>
+            </div>
             </div>
             </div>
         </div>
@@ -3622,11 +3747,14 @@
                 </div>
             </header>
             <div class="xs mu" id="chatContactLabel" style="margin-bottom:8px;display:none"></div>
-            <div class="stitle mt20">Conversation</div>
-            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Conversation</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Chat: encrypted conversation with a contact')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
                 <div class="msg-row">
                     <div class="mavatar">A</div>
                     <div>
@@ -3657,15 +3785,20 @@
                     </div>
                 </div>
             </div>
-            <div class="stitle">Send a message</div>
-            <div class="card app-section-card" style="padding:10px 12px;margin-bottom:12px">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Send a message</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Chat: compose and send a message')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:10px 12px;margin-bottom:12px">
                 <div class="flex gap8" style="align-items:center">
                     <input class="finput" placeholder="Message..." style="flex:1;margin-bottom:0">
                     <button class="btn" style="width:auto;padding:13px 16px;flex-shrink:0">↗</button>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -3691,11 +3824,14 @@
                 </div>
             </header>
 
-            <div class="stitle mt20">Filters &amp; history</div>
-            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Filters &amp; history</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Activity: filters, search, and my transaction history')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
                 <div class="flex gap8" style="margin-bottom:10px;flex-wrap:wrap">
                     <button class="ccy-pill on" id="actFilterAll" onclick="resetActivityFilters()">All</button>
                     <button class="ccy-pill" id="actFilterIn" onclick="setActivityFilter('in')">In</button>
@@ -3716,6 +3852,7 @@
                         onclick="showNextActivityPage()">See next 25 ▸</button>
                 </div>
             </div>
+            </div>
         </div>
 
         <!-- CONTACTS -->
@@ -3730,20 +3867,27 @@
                 </header>
                 <button class="btn btn-w btn-g" style="width:auto;padding:10px 12px;flex-shrink:0" onclick="navigate('wallet')">Back</button>
             </div>
-            <div class="stitle mt20">My contacts</div>
-            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">My contacts</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('My contacts: search and open a contact')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px;margin-bottom:12px">
                 <input class="finput" id="contactsSearchInput" placeholder="Search contacts..." style="margin-bottom:10px"
                     oninput="renderContactsPage()">
                 <div class="tx-list" id="contactsList"></div>
             </div>
-            <div class="stitle" id="contactDetailStitle" style="display:none">Contact detail</div>
-            <div class="card app-section-card" id="contactDetailCard" style="padding:14px;display:none">
+            </div>
+            <div class="app-section app-section--caption-bottom" id="contactDetailSection" style="display:none">
+            <div class="stitle-row" id="contactDetailHead">
+                <div class="stitle" id="contactDetailStitle">Contact detail</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('My contacts: notes, history, and actions for this contact')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" id="contactDetailCard" style="padding:14px">
                 <div class="fbet" style="margin-bottom:8px">
                     <div style="font-size:16px;font-weight:900" id="contactDetailName">Contact</div>
                     <div class="xs mu" id="contactDetailMeta">-</div>
@@ -3769,6 +3913,7 @@
                     <button class="btn" id="contactShopBtn" style="flex:1;display:none" onclick="openSelectedContactShop()">Shop profile</button>
                 </div>
             </div>
+            </div>
         </div>
 
         <!-- FEEDBACK -->
@@ -3781,11 +3926,14 @@
                 </div>
             </header>
             <div id="feedbackApp">
-                <div class="stitle mt20">Telegram</div>
+                <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+                <div class="stitle-row">
+                    <div class="stitle">Telegram</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Feedback: reach Stables on Telegram (community and core team)')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
                 <div class="card app-section-card" style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Feedback: reach Stables on Telegram (community and core team)')" title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
                     <div style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:12px">Community &amp; team</div>
                     <p style="margin:0 0 16px;font-size:14px;line-height:1.6;font-weight:800;color:var(--muted)">
                         There are two ways to reach us, both on Telegram. Use the button below to open the Stables community: share feedback there with everyone and join the discussion. To contact the core dev team in private, open Telegram and start a chat with <strong style="color:var(--t)">@stablescouncil</strong>.
@@ -3795,6 +3943,7 @@
                         style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box;padding:16px 18px;font-size:15px;font-weight:900;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.35), rgba(167,139,250,0.35));color:rgba(255,255,255,.96);box-shadow:0 0 20px rgba(103,232,249,0.18)">
                         Open Stables on Telegram: t.me/stablescommunity
                     </a>
+                </div>
                 </div>
             </div>
         </div>
@@ -3811,11 +3960,14 @@
             <p class="hint" style="margin:-8px 0 16px;font-weight:700;color:var(--m)">Protocol balance sheet and stress simulator: open <strong style="color:var(--t)">Treasury</strong> in the menu.</p>
 
             <!-- LIABILITY STRUCTURE VIEW -->
-            <div class="stitle mt20">System liability structure</div>
-            <div class="card app-section-card" style="padding:16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">System liability structure</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council: system liability structure by reference unit')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
                 <div class="xs mu" style="margin-bottom:10px">Live distribution of Stables by reference unit</div>
 
                 <div class="liab-visual-card">
@@ -3843,13 +3995,17 @@
                 <div id="liabRiskRows" style="display:grid;gap:8px"></div>
                 <div class="xs mu mt8">Transparency replaces control: the protocol exposes the structure, participants decide actions.</div>
             </div>
+            </div>
 
             <!-- TREASURY -->
-            <div class="stitle mt20">Council budget</div>
-            <div class="card app-section-card" style="padding:16px;margin-bottom:24px;border:1px solid rgba(103,232,249,0.1)">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Council budget')" title="StablesAgent">
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Council budget</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council budget')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:16px;margin-bottom:24px;border:1px solid rgba(103,232,249,0.1)">
                 <div class="xs mu" style="margin:0 0 12px;font-weight:700">Council votes on allocation buckets. Protocol ALM and stress tests are under <strong style="color:var(--t)">Treasury</strong> in the menu.</div>
                 <div class="fbet" style="margin-bottom:10px">
                     <div>
@@ -3894,16 +4050,13 @@
                     market efficiency (e.g., arbitrage and liquidity support) within invariant boundaries.
                 </div>
             </div>
+            </div>
 
             <!-- Voting Power Card -->
             <div style="margin-bottom:16px">
                 <!-- My Voting Power - time-weighted breakdown -->
                 <div
                     style="position:relative;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:14px;padding:14px;margin-bottom:12px">
-                    <button class="agent-mini-btn" onclick="openAgentExplain('My Voting Power')" title="StablesAgent">
-                        <img src="agent.png" alt="StablesAgent">
-                    </button>
-                    <div style="font-size:16px;font-weight:900;margin-bottom:10px">My Voting Power</div>
                     <div class="vp-row">
                         <span class="vp-tag">3,450 USDw</span>
                         <span class="vp-calc">×1x
@@ -3930,15 +4083,17 @@
                         <span style="font-size:13px;font-weight:900;color:var(--pu)">Total: 15,491</span>
                         <span class="xs mu" style="align-self:center">Top 18% of voters</span>
                     </div>
+                    <div class="stitle-row stitle-row--in-card">
+                        <div class="stitle-inline">My Voting Power</div>
+                        <button type="button" class="agent-mini-btn" onclick="openAgentExplain('My Voting Power')" title="StablesAgent">
+                            <img src="agent.png" alt="StablesAgent">
+                        </button>
+                    </div>
                 </div>
             </div>
             <!-- CURRENT PROTOCOL DECISIONS -->
             <div
                 style="position:relative;margin-bottom:16px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.18);border-radius:14px;padding:14px">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Current Protocol Decisions')" title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
-                <div style="font-size:16px;font-weight:900;margin-bottom:12px">&#x2696;&#xFE0F; Current Protocol Decisions</div>
                 <div class="ph-row"><span class="ph-label">Stablecoin tx fee</span><span class="ph-val">0%</span>
                 </div>
                 <div class="ph-row"><span class="ph-label">Coverage Fund fee share</span><span class="ph-val"
@@ -3951,14 +4106,16 @@
                         cf 2x
                         ·
                         xWiniwa 3x</span></div>
+                <div class="stitle-row stitle-row--in-card">
+                    <div class="stitle-inline">&#x2696;&#xFE0F; Current Protocol Decisions</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Current Protocol Decisions')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
             </div>
             <div style="font-size:16px;font-weight:900;margin:16px 0 10px">Current resolutions</div>
             <!-- BUDGET ALLOCATION VOTE -->
             <div class="prop-card" id="budgetVoteCard" style="position:relative;border-color:rgba(103,232,249,.22)">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Budget allocation (next 3 months)')" title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
-                <div style="font-size:14px;font-weight:900;margin-bottom:6px">Budget allocation (next 3 months)</div>
                 <div class="xs mu" style="margin-bottom:12px">Set the treasury allocation across categories. Total must equal 100%.</div>
 
                 <div class="xs mu" style="margin-bottom:6px;font-weight:800">Operations</div>
@@ -3990,13 +4147,14 @@
                     <button class="btn vfor" id="budgetVoteBtn" disabled onclick="submitBudgetVote()"
                         style="opacity:.5;cursor:not-allowed">✓ Vote budget</button>
                 </div>
+                <div class="stitle-row stitle-row--in-card">
+                    <div class="stitle-inline stitle-inline--sm">Budget allocation (next 3 months)</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Budget allocation (next 3 months)')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
             </div>
             <div class="prop-card" style="position:relative">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Add Turkish Lira (TRYs) as a supported currency')" title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
-                <div style="font-size:14px;font-weight:800;margin-bottom:5px">Add Turkish Lira (TRYs) as a supported
-                    currency</div>
                 <div class="xs mu" style="margin-bottom:8px">Proposed by cluster champion @istanbul_cluster
                     · 3
                     days
@@ -4011,14 +4169,15 @@
                         For</button><button class="btn vag" onclick="showToast('Vote recorded - thank you!')">✗
                         Vote
                         Against</button></div>
+                <div class="stitle-row stitle-row--in-card">
+                    <div class="stitle-inline stitle-inline--sm">Add Turkish Lira (TRYs) as a supported
+                    currency</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Add Turkish Lira (TRYs) as a supported currency')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
             </div>
             <div class="prop-card" style="position:relative">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Increase Savings Pool fee share from 80% to 85%')" title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
-                <div style="font-size:14px;font-weight:800;margin-bottom:5px">Increase Savings Pool fee share from
-                    80%
-                    to 85%</div>
                 <div class="xs mu" style="margin-bottom:8px">Proposed by Council
                     · 1
                     week ago</div>
@@ -4031,14 +4190,18 @@
                         For</button><button class="btn vag" onclick="showToast('Vote recorded - thank you!')">✗
                         Vote
                         Against</button></div>
+                <div class="stitle-row stitle-row--in-card">
+                    <div class="stitle-inline stitle-inline--sm">Increase Savings Pool fee share from
+                    80%
+                    to 85%</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Increase Savings Pool fee share from 80% to 85%')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
             </div>
 
             <div style="font-size:16px;font-weight:900;margin:18px 0 10px">Past resolutions</div>
             <div class="prop-card" style="position:relative;border-color:rgba(167,139,250,.22)">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Budget allocation (Q4 2026)')" title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
-                <div style="font-size:14px;font-weight:900;margin-bottom:6px">Budget allocation (Q4 2026)</div>
                 <div class="xs mu" style="margin-bottom:10px">Closed 2026-01-31 · Effective 2026-02-15</div>
                 <div class="xs mu" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
                     <div>
@@ -4050,6 +4213,12 @@
                         <div class="fbet"><span>Security / Audits</span><span style="font-weight:900;color:var(--rd)">8%</span></div>
                         <div class="fbet mt8"><span>Protocol participation</span><span style="font-weight:900;color:var(--pu)">50%</span></div>
                     </div>
+                </div>
+                <div class="stitle-row stitle-row--in-card">
+                    <div class="stitle-inline stitle-inline--sm">Budget allocation (Q4 2026)</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Budget allocation (Q4 2026)')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
                 </div>
             </div>
         </div>
@@ -4067,11 +4236,14 @@
                 </div>
             </header>
 
-            <div class="stitle mt20">How the protocol stands</div>
-            <div class="treasury-snap-card app-section-card">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">How the protocol stands</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Treasury snapshot: Winiwa assets, Stables liabilities, xWiniwa equity, coverage ratio')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="treasury-snap-card app-section-card">
                 <div class="treasury-snap-grid">
                     <div class="treasury-snap-metric">
                         <div class="lbl">Assets<span class="treasury-snap-token">Winiwa</span></div>
@@ -4101,13 +4273,17 @@
                     <div class="cr-sub">Winiwa-side assets divided by stables liabilities. 100% means assets match stables owed.</div>
                 </div>
             </div>
+            </div>
 
-            <div class="stitle mt20">Simply ALM + stress test</div>
-            <div class="card app-section-card"
-                style="padding:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
-                <button class="agent-mini-btn" onclick="openAgentExplain('Simply ALM + Stress test')" title="StablesAgent">
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Simply ALM + stress test</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Simply ALM + Stress test')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card"
+                style="padding:16px;margin-bottom:24px;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
                 <div class="fbet" style="margin-bottom:12px;align-items:flex-end">
                     <div>
                         <div style="font-size:14px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Protocol status</div>
@@ -4223,6 +4399,7 @@
                     </div>
                 </div>
             </div>
+            </div>
         </div>
 
         <!-- FAUCET (Test Tools) -->
@@ -4242,11 +4419,14 @@
                 exist in
                 the
                 final app. Winiwa and all of the token created here have no real-world value.</div>
-            <div class="stitle mt20">Claim test Winiwa</div>
-            <div class="card app-section-card">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Claim test Winiwa</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Faucet: test Winiwa has no real value; for demos only')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card">
                 <div class="cb">
                     <div class="xs mu" style="margin-bottom:10px">Winiwa is the testnet token. It has <strong
                             style="color:var(--am)">zero real-world value</strong>. In production, this will be
@@ -4262,11 +4442,15 @@
                         Winiwa</button>
                 </div>
             </div>
-            <div class="stitle mt20">Reset test state</div>
-            <div class="card app-section-card">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Reset test state</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Faucet: reset clears local demo balances')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card">
                 <div class="cb">
                     <div class="xs mu" style="margin-bottom:10px">Clear all balances and start fresh. Useful for
                         testing
@@ -4274,6 +4458,7 @@
                     <button class="btn btn-w btn-g" onclick="showToast('Test state reset - Vault cleared')">Reset
                         Everything</button>
                 </div>
+            </div>
             </div>
         </div>
 
@@ -4289,11 +4474,14 @@
             <p class="hint" style="margin:-8px 0 16px;font-weight:700;color:var(--m);line-height:var(--lh-caption)">
                 The Stables community is there to help with questions. For this screen, ask <strong style="color:var(--t)">StablesAgent</strong>.
             </p>
-            <div class="stitle mt20">Council profile</div>
-            <div class="card app-section-card" style="padding:14px 18px">
-                <button class="agent-mini-btn" onclick="openAgentExplain('My profile')" title="StablesAgent">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Council profile</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('My profile')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px 18px">
 
                 <label class="flabel">Name</label>
                 <input class="finput" id="councilNameInput" placeholder="Display name" style="margin-bottom:12px">
@@ -4341,6 +4529,7 @@
                 </div>
                 <p class="hint" style="margin:12px 0 0;text-align:center">Saved on this device only.</p>
             </div>
+            </div>
         </div>
 
         <!-- PREFERENCES: SETTINGS AND UPDATES -->
@@ -4353,11 +4542,14 @@
                 </div>
             </header>
             <p class="hint" style="margin:-8px 0 16px">My <strong style="color:var(--t)">Vault key</strong> is only under <strong style="color:var(--t)">Security</strong>.</p>
-            <div class="stitle mt20">App updates</div>
-            <div class="card card--prose-centered app-section-card" id="settings-app-updates" style="padding:14px 18px;margin-bottom:8px">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">App updates</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: app updates and MiniDapp package download')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card card--prose-centered app-section-card" id="settings-app-updates" style="padding:14px 18px;margin-bottom:8px">
                 <div class="xs mu" style="margin-bottom:12px;line-height:1.55;font-weight:800;color:var(--t)">
                     Release notes and new prototype drops will show up here as we ship. For now, use the link below to download the latest Stables MiniDapp package for my Minima node (MDS zip on GitHub).
                 </div>
@@ -4365,11 +4557,15 @@
                     href="#" target="_blank" rel="noopener">Download Stables.mds.zip</a>
                 <div class="xs mu" id="settingsMdsZipUrlLabel" style="margin-top:10px;word-break:break-all;line-height:1.45;opacity:.9"></div>
             </div>
-            <div class="stitle mt20">Appearance &amp; behaviour</div>
-            <div class="card app-section-card" style="padding:0 18px">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Appearance &amp; behaviour</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: appearance, light mode, merchant mode, address privacy')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:0 18px">
                 <div class="set-row">
                     <div>
                         <div class="set-label">
@@ -4399,11 +4595,15 @@
                     <div class="toggle" id="privacyToggle" onclick="togglePrivacy()"></div>
                 </div>
             </div>
-            <div class="stitle mt20">Display</div>
-            <div class="card app-section-card" style="padding:0 18px">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Display</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: primary currency and which balances show on my Wallet')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:0 18px">
                 <div class="set-row">
                     <div>
                         <div class="set-label">Primary Currency</div>
@@ -4440,11 +4640,15 @@
                     </div>
                 </div>
             </div>
-            <div class="stitle mt20">Wallet addresses</div>
-            <div class="card app-section-card" style="padding:0 18px">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Wallet addresses</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: labelled receive addresses (Vault key is under Security)')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:0 18px">
                 <div style="padding:14px 0 14px">
                     <div class="set-label" style="margin-bottom:8px">My addresses</div>
                     <div class="xs mu" style="margin-bottom:10px">Receive and label addresses here. My Vault key is managed under <strong style="color:var(--t)">Preferences → Security</strong>.</div>
@@ -4459,11 +4663,15 @@
                         new address</button>
                 </div>
             </div>
-            <div class="stitle mt20">Sync preferences</div>
-            <div class="card app-section-card" style="padding:14px 18px">
+            </div>
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Sync preferences</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: export and import preferences between devices')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px 18px">
                 <div class="xs mu" style="margin-bottom:8px" id="backupStatusLabel">Last backup: never</div>
                 <div class="xs mu" style="margin-bottom:12px;line-height:1.5">
                     Save a small file to <strong style="color:var(--t)">copy my Stables preferences to another device</strong> (another phone or node). This is separate from my Vault key. Use <strong style="color:var(--t)">Security</strong> for that.
@@ -4488,6 +4696,7 @@
                 </div>
                 <div class="xs mu mt8">After I choose a file, pick <strong>Replace</strong> (make this device match the file) or <strong>Combine</strong> (merge lists and notes; the file wins when both have a note for the same item). Stables may remind me if I have not exported in a while.</div>
             </div>
+            </div>
         </div>
 
         <!-- PREFERENCES: SECURITY (Vault key only, critical) -->
@@ -4499,15 +4708,19 @@
                     <div class="app-page-header__sub">Vault key only: access to my bank</div>
                 </div>
             </header>
-            <div class="stitle mt20">Vault key</div>
-            <div class="card card--prose-centered app-section-card" id="settingsSeedPhraseSection" style="padding:22px 20px 20px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.2))">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Vault key</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Security: my Vault key is sole access to my bank; never share it')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card card--prose-centered app-section-card" id="settingsSeedPhraseSection" style="padding:22px 20px 20px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.2))">
                 <p class="sec-body" style="margin-bottom:12px">My <strong>Vault key</strong> is my access to my bank. <strong>Without it, I risk losing my money.</strong> Use the Minima Security app to view or manage it.</p>
                 <p class="sec-body">Never share it with anyone.</p>
                 <div class="sec-key-icon" aria-hidden="true">🔑</div>
                 <button type="button" class="btn btn-w btn-lg" onclick="openModal('seedSecurityAppModal')">Open Minima Security app</button>
+            </div>
             </div>
         </div>
 
@@ -4525,11 +4738,14 @@
                     onclick="toggleMerchantDisplay()">💻
                     Merchant Display</button>
             </div>
-            <div class="stitle mt20">Invoice details</div>
-            <div class="card app-section-card">
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Invoice details</div>
                 <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Invoice: amount, note, tip address, and merchant QR')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
+            </div>
+            <div class="card app-section-card">
                 <div class="cb">
                     <label class="flabel">Amount</label>
                     <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px">
@@ -4551,6 +4767,7 @@
                 <input class="finput" placeholder="Leave blank to disable tips..." style="margin-bottom:4px"
                     id="invTip">
                 <div class="xs mu" style="margin-bottom:4px">Payer can add optional tip to this address</div>
+            </div>
             </div>
         </div>
 
