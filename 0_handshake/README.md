@@ -42,6 +42,7 @@ The model must acknowledge calibration before doing any work.
 | **`visual_identity_spec.md`** | Every model doing visual work | Exact colours, typography, background formula, glassmorphism rules, image generation prompt template. LOCKED. Never generate a visual without reading this first. |
 | **`web_component_spec.md`** | Every model doing web/UI work | Every reusable HTML/CSS component. Buttons, badges, layouts, glassmorphism panels, page shell template. The UI building law. Links to `stables.css`. |
 | **`app_ui_inventory.md`** | Every model doing MiniDapp UI | Page-by-page map: every `page-*` screen, sections, patterns. Update when screens change. |
+| **`minidapp_version.md`** | Every model editing the MiniDapp or shipping `.mds.zip` | Active `prod_stables_app_*` folder, frozen snapshots, zip paths. Prevents agents editing the wrong version. |
 | **`protocol_mechanics_spec.md`** | Every model discussing economics | Mint/burn/redemption rules, CR threshold logic, coverage fund mechanics. Settled decisions — do not re-debate. |
 | **`restoration_protocol.md`** | Every model, when reverting changes | How to restore any file or the full project using Git and the Project Ledger. Point-in-Time restoration model. |
 | **`cursor_welcome_package.md`** | Cursor/Claude specifically | Cursor-specific onboarding. Project relocation notice, confirmation format, co-pilot protocol. |

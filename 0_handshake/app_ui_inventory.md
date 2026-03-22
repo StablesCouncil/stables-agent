@@ -1,6 +1,6 @@
 # Stables MiniDapp — UI inventory
 **Status**: MANDATORY reference when adding/removing screens or sections.  
-**Source**: `1_development/stream_1_app/prod_stables_app_v0.2.10/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted).  
+**Source**: `1_development/stream_1_app/prod_stables_app_v0.2.11/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Active folder**: `0_handshake/minidapp_version.md`.  
 **Companion**: `web_component_spec.md` (patterns), `handshake.md` (single executable + this map).
 
 ## How to use
@@ -288,7 +288,7 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | `welcomeNerdTrackFinanceBtn` | `welcomeSetupModal` | `setWelcomeNerdTrack('finance')` |
 | `welcomeNerdTrackTechBtn` | `welcomeSetupModal` | `setWelcomeNerdTrack('tech')` |
 | `welcomePersonalBtn` | `welcomeSetupModal` | `setWelcomeUseCase('personal')` |
-| `welcomeShowcaseHereBtn` | `welcomeSetupModal` | `goWelcomeFromShowcaseRoute('web')` · Keep exploring in this web app |
+| `welcomeShowcaseHereBtn` | `welcomeSetupModal` | `goWelcomeFromShowcaseRoute('web')` · Keep exploring in this app |
 | `welcomeShowcaseNodeBtn` | `welcomeSetupModal` | `goWelcomeFromShowcaseRoute('node')` · Access MiniDapp package for my node |
 | `welcomeTourPersonBtn` | `welcomeSetupModal` | `setWelcomeTourChoice('person')` · 1st in tour list |
 | `welcomeTourShopAmbassadorBtn` | `welcomeSetupModal` | `setWelcomeTourChoice('shop_ambassador')` · 2nd in tour list |
@@ -356,3 +356,4 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-22 | More drawer: **Community** section moved to immediately follow **Messages & Contacts** (before Preferences, Help, Test tools). |
 | 2026-03-22 | Top bar: **Only in node** when no MDS (no simulated block); `.sync-pill--placeholder`. Treasury stress: Winiwa price stack **above** `%` row, then slider. |
 | 2026-03-22 | Treasury stress: Winiwa **6 dp** (`fmtWiniwaUSD6`); USD tick row above track; **%** tick row (`.treasury-slider-pct-row`) below track; thumb `#treasurySliderThumbPrice` above axis / `#treasurySliderThumbPct` below; removed `#protocolSliderPct`; `calcSlider` falls back to `#protocolSlider`. |
+| 2026-03-23 | **Source path** → `prod_stables_app_v0.2.11/` (see `minidapp_version.md`). |

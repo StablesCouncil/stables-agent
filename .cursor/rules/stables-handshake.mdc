@@ -12,6 +12,8 @@ At the start of **every session**, before any work, read these two files in orde
 
 Then follow the calibration steps in `0_handshake/handshake.md`.
 
+**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first so you edit the **active** `prod_stables_app_*` folder (currently **v0.2.11**).
+
 Confirm calibration by stating:
 > "Calibration Active: Working on the basis of the Unified Handshake."
 

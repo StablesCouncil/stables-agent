@@ -34,4 +34,4 @@ This file is the single source of truth for all official Stables Council account
 *   **Moltbook:** [u/stablesagent](https://www.moltbook.com/u/stablesagent) (StablesAgent profile on the agent social network)
 
 ## In-app mirror (MiniDapp)
-A condensed **Terms / Privacy / Data / Security** summary and this official-presence list also appear in the Stables MiniDapp under **More → Community → Legal & notices** (`page-settings-legal` in `prod_stables_app_v0.2.10/index.html`). When accounts or domains change, update both this file and that page so they stay aligned.
+A condensed **Terms / Privacy / Data / Security** summary and this official-presence list also appear in the Stables MiniDapp under **More → Community → Legal & notices** (`page-settings-legal` in the active `prod_stables_app_*/index.html` — see `minidapp_version.md`). When accounts or domains change, update both this file and that page so they stay aligned.
