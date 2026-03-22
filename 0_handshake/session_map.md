@@ -29,6 +29,7 @@
 |------|----------|---------|
 | `visual_identity_spec.md` | `0_handshake/` | Exact colours, typography, background formulas, image generation prompts. LOCKED. |
 | `web_component_spec.md` | `0_handshake/` | Every reusable HTML/CSS component. Buttons, badges, layouts, page shell template. **The UI building law. Read before writing a single line of CSS.** |
+| `app_ui_inventory.md` | `0_handshake/` | **MiniDapp UI map**: every `page-*` screen, sections, patterns; plus **every `<button id>`** and **modal/overlay** root `id` in `prod_stables_app_v0.2.10/index.html`. Update when routes or chrome change. |
 | `stables.css` | `1_development/stream_3_governance/task_x_agent_node/` | The executable CSS. Tokens extracted from live site 2026-03-11. Never duplicate locally. Never derive tokens from archived presentation files. |
 | `prod_brand_masters/` | `2_current/stream_1_app/` | **Brand source of truth**. The ONLY allowed origin for logos/icons/wordmarks. Derive exports into `1_development/` as needed. |
 

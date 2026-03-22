@@ -22,6 +22,7 @@
 
 1. Keep the legacy MiniDapp as **shipping** until the SPA reaches parity.
 2. Move one screen at a time: extract HTML → React components, port JS logic into hooks or `features/*/`.
+3. **Wallet** is the first migrated screen (`src/features/wallet/`). Send/Receive modals, drag-sort currencies, and live activity remain to be wired.
 3. Share **tokens** and patterns with the handshake spec; avoid new one-off colours.
 4. When ready for Minima again: `npm run build` and serve `dist/` inside the MDS package (base path may need `vite.config` `base`).
 

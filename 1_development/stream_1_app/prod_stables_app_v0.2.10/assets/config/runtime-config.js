@@ -23,6 +23,14 @@ window.STABLES_CONFIG = {
   BACKUP_FIRST_SEEN_KEY: 'stables_backup_first_seen_ts',
   /** User confirmed Vault key is safely stored. Stops the first-run Vault key prompt. */
   SEED_PHRASE_SAVED_CONFIRMED_KEY: 'stables_seedphrase_saved_confirmed_v1',
+  /** After the welcome flow closes, wait this long (ms) before the Vault backup modal; a countdown is shown. */
+  VAULT_SECURITY_MODAL_DELAY_MS: 15000,
+  /**
+   * When true, clears the Vault-key “I have stored it safely” flag on every full page load so the
+   * amber security modal can appear again after each refresh (showcase / web demo).
+   * Set to false for a production MiniDapp build so users are not re-prompted every visit.
+   */
+  RESET_VAULT_KEY_CONFIRMATION_ON_EACH_LOAD: true,
   /** After confirming, user chose whether to allow occasional soft reminders: 'yes' | 'no'. */
   VAULT_PERIODIC_REMINDER_PREF_KEY: 'stables_vault_periodic_reminder_pref_v1',
   /** Last time we showed a soft Vault reminder (when pref is yes). */
@@ -31,6 +39,16 @@ window.STABLES_CONFIG = {
   VAULT_SOFT_REMINDER_INTERVAL_DAYS: 60,
   /** Public demo: MinimaOS install package (MDS zip) link */
   MDS_ZIP_URL: 'https://github.com/StablesCouncil/StablesCouncil.github.io/releases/latest/download/Stables.mds.zip',
+  /**
+   * Stables Charter on GitHub (Markdown). Governing text for how the Council and community run the protocol.
+   * Point this at the published file in your org repo when it is live (path below is a placeholder you can change).
+   */
+  STABLES_CHARTER_URL:
+    'https://github.com/StablesCouncil/StablesCouncil.github.io/blob/main/governance/stables_charter.md',
+  /** Public MEXC spot ticker for MINIMA/USDT (browser CORS must allow your app origin). */
+  MEXC_TICKER_URL: 'https://api.mexc.com/api/v3/ticker/price?symbol=MINIMAUSDT',
+  /** How often to refresh spot price for Treasury stress slider (ms). */
+  WINIWA_PRICE_POLL_MS: 120000,
   /**
    * Telegram: dedicated security / Vault key support (supergroup or channel invite).
    * Publish the real invite here when the channel is live; used from Vault modal “I need help”.

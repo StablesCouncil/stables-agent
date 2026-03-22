@@ -40,6 +40,9 @@
             --lh-subtitle: 1.5;
             --fz-body: 15px;
             --lh-body: 1.55;
+            /* Welcome step 0 — showcase preview notice (amber, slightly above body) */
+            --fz-showcase-intro: calc(var(--fz-body) + 1px);
+            --lh-showcase-intro: 1.55;
             --fz-caption: 13px;
             --lh-caption: 1.5;
             --fz-label: 12px;
@@ -596,11 +599,11 @@
             margin: 18px 0 10px
         }
 
-        /* Section stack: card on top, caption row (title + agent) below */
+        /* Section stack: title row (label + agent) directly above its card */
         .app-section--caption-bottom {
             display: flex;
-            flex-direction: column-reverse;
-            gap: 10px;
+            flex-direction: column;
+            gap: 0;
             margin-bottom: 22px;
         }
 
@@ -633,10 +636,10 @@
             margin-top: 18px;
         }
 
-        /* Section label + StablesAgent on one line (caption under the card) */
+        /* Section label + StablesAgent on one line (above the card) */
         .stitle-row {
             display: flex;
-            align-items: flex-start;
+            align-items: flex-end;
             justify-content: space-between;
             gap: 12px;
             margin: 18px 0 10px;
@@ -654,12 +657,12 @@
             text-align: left;
         }
 
-        /* Proposal / in-card caption row at bottom of box (footer) */
+        /* Proposal / in-card title row at top of box */
         .stitle-row--in-card {
-            margin: 14px 0 0 0;
-            padding-top: 12px;
-            border-top: 1px solid rgba(103, 232, 249, .12);
-            align-items: center;
+            margin: 0 0 10px 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(103, 232, 249, .12);
+            align-items: flex-end;
         }
 
         .stitle-row--in-card .stitle-inline {
@@ -672,10 +675,6 @@
             margin: 0;
             flex: 1;
             min-width: 0;
-        }
-
-        .prop-card > .stitle-row--in-card:last-child {
-            margin-bottom: 0;
         }
 
         .stitle-row--in-card .stitle-inline--sm {
@@ -1422,6 +1421,116 @@
             font-size: 15px
         }
 
+        /* Language (globe): presentation-style control; hidden <select id="welcomeLang"> stays source of truth */
+        .app-visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        .drawer-lang-bar {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 12px 14px 10px;
+            border-bottom: 1px solid rgba(103, 232, 249, .1);
+            background: rgba(11, 15, 20, .98);
+        }
+
+        .welcome-step-lang {
+            position: relative;
+            padding-top: 2px;
+        }
+
+        .welcome-step-lang .app-lang-switcher--corner {
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 4;
+        }
+
+        .app-lang-switcher {
+            position: relative;
+            z-index: 5;
+        }
+
+        .app-lang-globe-btn {
+            background: rgba(103, 232, 249, .08);
+            border: 1px solid rgba(103, 232, 249, .22);
+            color: var(--t);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s, border-color .2s, transform .2s;
+        }
+
+        .app-lang-globe-btn:hover {
+            background: rgba(103, 232, 249, .14);
+            border-color: rgba(103, 232, 249, .35);
+        }
+
+        .app-lang-globe-btn:focus-visible {
+            outline: 2px solid var(--c);
+            outline-offset: 2px;
+        }
+
+        .app-lang-globe-btn svg {
+            display: block;
+            width: 22px;
+            height: 22px;
+        }
+
+        .app-lang-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 160px;
+            padding: 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(103, 232, 249, .18);
+            background: rgba(16, 24, 38, .98);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, .45);
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            z-index: 20;
+        }
+
+        .app-lang-menu.open {
+            display: flex;
+        }
+
+        .app-lang-menu-item {
+            background: transparent;
+            border: none;
+            color: var(--t);
+            padding: 10px 14px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: var(--fz-ui);
+            font-weight: 600;
+            font-family: inherit;
+            transition: background .15s;
+        }
+
+        .app-lang-menu-item:hover,
+        .app-lang-menu-item:focus-visible {
+            background: rgba(103, 232, 249, .1);
+            outline: none;
+        }
+
         .dsect {
             padding: 10px 8px
         }
@@ -1499,6 +1608,56 @@
             gap: 7px;
             text-transform: uppercase;
             letter-spacing: .05em
+        }
+
+        /* More drawer: testing banner + faucet row as one tappable card */
+        .drawer-test-faucet-card {
+            appearance: none;
+            -webkit-appearance: none;
+            display: block;
+            width: calc(100% - 16px);
+            box-sizing: border-box;
+            margin: 8px;
+            padding: 14px 16px 16px;
+            text-align: left;
+            font: inherit;
+            color: inherit;
+            cursor: pointer;
+            background: rgba(251, 191, 36, .08);
+            border: 1px solid rgba(251, 191, 36, .28);
+            border-radius: 16px;
+            transition: background .15s, border-color .15s, box-shadow .15s
+        }
+
+        .drawer-test-faucet-card:hover {
+            background: rgba(251, 191, 36, .11);
+            border-color: rgba(251, 191, 36, .38)
+        }
+
+        .drawer-test-faucet-card:focus-visible {
+            outline: 2px solid rgba(103, 232, 249, .55);
+            outline-offset: 2px
+        }
+
+        .drawer-test-faucet-card__banner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: var(--fz-caption);
+            line-height: var(--lh-caption);
+            font-weight: 800;
+            color: var(--am);
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(251, 191, 36, .2)
+        }
+
+        .drawer-test-faucet-card__row {
+            display: flex;
+            align-items: center;
+            gap: 12px
         }
 
         /* MODALS */
@@ -1615,6 +1774,35 @@
             color: inherit;
         }
 
+        /*
+         * Welcome modal — showcase preview notice (step 0). Standard format for this copy:
+         * slightly larger than body, amber (#fbbf24, same family as Vault-key safety cards).
+         */
+        .welcome-modal-showcase-intro {
+            font-size: var(--fz-showcase-intro);
+            line-height: var(--lh-showcase-intro);
+            font-weight: 600;
+            color: #fbbf24;
+        }
+
+        #welcomeShowcaseIntroBody p {
+            margin: 0 0 14px 0;
+            font-size: inherit;
+            line-height: inherit;
+            font-weight: inherit;
+            color: inherit;
+        }
+
+        #welcomeShowcaseIntroBody p:last-child {
+            margin-bottom: 0;
+        }
+
+        #welcomeShowcaseIntroBody a {
+            color: var(--c);
+            text-decoration: underline;
+            font-weight: inherit;
+        }
+
         /* MERCHANT */
         .mcard {
             display: flex;
@@ -1709,6 +1897,24 @@
             padding: 14px 20px;
             font-size: var(--fz-caption);
             line-height: 1.5;
+            font-weight: 700;
+        }
+
+        /* Prose toasts that should read as a centered on-screen notice (not above bottom nav) */
+        .toast.toast--center-screen {
+            bottom: auto;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .toast.toast--amber {
+            border-color: rgba(251, 191, 36, .45);
+            color: #fbbf24;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .45), 0 0 0 1px rgba(251, 191, 36, .12);
+        }
+
+        .toast.toast--prose.toast--amber {
+            color: var(--t);
             font-weight: 700;
         }
 
@@ -3157,7 +3363,7 @@
             <!-- INVEST TABS -->
             <div class="tab-row" style="margin-bottom:24px">
                 <button class="tab-btn active" id="iTabCF" onclick="setInvestTab('cf')">Coverage Fund</button>
-                <button class="tab-btn" id="iTabLP" onclick="setInvestTab('lp')">Provide Liquidity</button>
+                <button class="tab-btn" id="iTabLP" onclick="setInvestTab('lp')">Liquidity Fund</button>
             </div>
 
             <!-- SECTION 2: COVERAGE FUND -->
@@ -3213,8 +3419,8 @@
             <div id="panelLP" style="display:none">
                 <div class="app-section app-section--caption-bottom">
                 <div class="stitle-row">
-                    <div class="pool-section-title">Liquidity pool</div>
-                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Liquidity Pool')" title="StablesAgent">
+                    <div class="pool-section-title">Liquidity fund</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Liquidity Fund')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
@@ -3224,7 +3430,7 @@
                         <div style="font-size:15px;font-weight:900">xWiniwa Secondary Market</div>
                         <div class="apy"
                             style="background:rgba(167,139,250,.12);color:var(--pu);border-color:rgba(167,139,250,.3)">
-                            Provide LP & Earn Trades</div>
+                            LP trade fees</div>
                     </div>
 
                     <div
@@ -3304,8 +3510,8 @@
                     </div>
 
                     <button class="btn btn-w" style="margin-top:6px;width:100%"
-                        onclick="showToast('\u2713 Liquidity successfully deployed to targeted bucket')">Deposit
-                        Liquidity</button>
+                        onclick="showToast('\u2713 Liquidity successfully deployed to targeted bucket')">Deposit to
+                        Liquidity Fund</button>
                 </div>
                 </div>
             </div>
@@ -3513,7 +3719,7 @@
                                     <table class="threshold-table" style="margin-top:6px">
                                         <tr>
                                             <td class="t-ok">CR &gt; 110%</td>
-                                            <td>All operations open</td>
+                                            <td>Above stress band</td>
                                         </tr>
                                         <tr>
                                             <td class="t-warn">&le; 110%</td>
@@ -3662,19 +3868,111 @@
             </div>
         </div>
 
+        <!-- AMBASSADOR (More → Shops & Exchange) -->
+        <div class="page" id="page-ambassador">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F91D;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Ambassador</div>
+                </div>
+            </header>
+
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+                <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Ambassador: onboard shops, Big Mac-indexed fees, 50/50 split')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:18px 16px">
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55">
+                        Ambassadors set up what they need to <strong>onboard shops</strong> to Stables: profiles, QR
+                        flows, and local support. Merchants use <strong>My shop</strong> for listings and
+                        <strong>Create Invoice</strong>; use <strong>Exchange</strong> (under <strong>Shops &amp;
+                            Exchange</strong> in More) when you need instant conversion between Wables balances.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--c)">Proposed fee (showcase):</strong> merchant pays
+                        <strong style="color:var(--t)">20 Big Macs</strong> (value indexed by country using the
+                        <a href="https://worldpopulationreview.com/country-rankings/big-mac-index-by-country"
+                            target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">Big
+                            Mac Index</a>), split <strong style="color:var(--t)">50% protocol</strong> /
+                        <strong style="color:var(--t)">50% ambassador</strong>. Exact launch terms will follow Council
+                        governance.
+                    </p>
+                    <p class="sec-body" style="margin:0;line-height:1.5;font-size:var(--fz-caption);color:var(--m)">
+                        Cashback framing: <strong style="color:var(--t)">10 Big Mac</strong> ambassador incentive is a
+                        working headline for community feedback, not a live ledger rule in this preview.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MY SHOP (More → Shops & Exchange) -->
+        <div class="page" id="page-my-shop">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F3EA;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">My shop</div>
+                    <div class="app-page-header__sub">List your business, invoices, and merchant tools</div>
+                </div>
+            </header>
+
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+                <div class="stitle-row">
+                    <div class="stitle">Your shop on Stables</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('My shop: merchant listing, Create Invoice, link to Ambassador program')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:18px 16px">
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55">
+                        Set up how customers find you and pay with Wables. In this preview, listing flows are
+                        illustrative; production will tie to your Vault identity and Council rules.
+                    </p>
+                    <p class="sec-body" style="margin:0;line-height:1.55;font-size:var(--fz-caption);color:var(--m)">
+                        Want to onboard other merchants? Open <strong style="color:var(--t)">Ambassador</strong> under
+                        <strong style="color:var(--t)">Shops &amp; Exchange</strong> in More.
+                    </p>
+                </div>
+            </div>
+
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Create Invoice</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Create Invoice: merchant QR and payment request')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:0;overflow:hidden">
+                    <div class="ditem" style="margin:0;border-radius:0;border:none" onclick="navigate('invoice')">
+                        <div class="dic" aria-hidden="true">&#x1F9FE;</div>
+                        <div class="dinfo">
+                            <div class="dname">Create Invoice</div>
+                            <div class="ddesc">Request payment with a merchant QR</div>
+                        </div><span style="color:var(--m)">›</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- WHERE TO SPEND -->
         <div class="page" id="page-spend">
-            <div class="fbet" style="margin-bottom:20px;align-items:flex-start">
-                <header class="app-page-header" style="margin-bottom:0;flex:1;min-width:0">
-                    <div class="dic" aria-hidden="true">&#x1F3EA;</div>
-                    <div class="app-page-header__text">
-                        <div class="app-page-header__title">Shops</div>
-                        <div class="app-page-header__sub">Merchants accepting Wables</div>
-                    </div>
-                </header>
-                <button class="btn btn-g" style="width:auto;padding:8px 12px;font-size:12px;flex-shrink:0">+ List My
-                    Business</button>
+            <header class="app-page-header" style="margin-bottom:16px">
+                <div class="dic" aria-hidden="true">&#x1F3EA;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">Shops</div>
+                    <div class="app-page-header__sub">Merchants accepting Wables</div>
+                </div>
+            </header>
+            <div style="display:flex;justify-content:center;margin:0 0 20px;padding:0 12px;box-sizing:border-box">
+                <button type="button" class="btn btn-lg" style="width:100%;max-width:340px"
+                    onclick="navigate('my-shop')">List my shop / Become an ambassador</button>
             </div>
             <input class="finput" placeholder="🔍 Search merchants..." style="margin-bottom:14px">
             <div class="app-section app-section--caption-bottom" style="margin-top:4px">
@@ -3957,43 +4255,26 @@
                     <div class="app-page-header__sub">Explore council transparency and tools</div>
                 </div>
             </header>
-            <p class="hint" style="margin:-8px 0 16px;font-weight:700;color:var(--m)">Protocol balance sheet and stress simulator: open <strong style="color:var(--t)">Treasury</strong> in the menu.</p>
-
-            <!-- LIABILITY STRUCTURE VIEW -->
+            <!-- STABLES CHARTER (GitHub) -->
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
-                <div class="stitle">System liability structure</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council: system liability structure by reference unit')" title="StablesAgent">
+                <div class="stitle">Stables Charter</div>
+                <button type="button" class="agent-mini-btn"
+                    onclick="openAgentExplain('Stables Charter: first GitHub draft coming in the coming weeks; members should read it for roles, process, and community rules')"
+                    title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
             </div>
-            <div class="card app-section-card" style="padding:16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
-                <div class="xs mu" style="margin-bottom:10px">Live distribution of Stables by reference unit</div>
-
-                <div class="liab-visual-card">
-                    <div class="fbet xs mu" style="margin-bottom:8px">
-                        <span>Total liabilities represented</span>
-                        <span id="liabDistTotal">-</span>
-                    </div>
-                    <div id="liabDistRows"></div>
-                </div>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-                    <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
-                        <div class="xs mu" style="margin-bottom:6px">Concentration signal</div>
-                        <div style="font-size:14px;font-weight:900" id="liabConcentration">-</div>
-                        <div class="xs mu mt8" id="liabLargestUnit">-</div>
-                    </div>
-                    <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
-                        <div class="xs mu" style="margin-bottom:6px">7d evolution</div>
-                        <div style="font-size:14px;font-weight:900" id="liabTrendState">-</div>
-                        <div class="xs mu mt8" id="liabTrendDetail">-</div>
-                    </div>
-                </div>
-
-                <div class="xs mu" style="margin-bottom:8px">Interpretation layer (informative only)</div>
-                <div id="liabRiskRows" style="display:grid;gap:8px"></div>
-                <div class="xs mu mt8">Transparency replaces control: the protocol exposes the structure, participants decide actions.</div>
+            <div class="card app-section-card" style="padding:18px 16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
+                <p class="sec-body" style="margin:0 0 12px;line-height:1.55">
+                    The <strong style="color:var(--t)">Stables Charter</strong> is the community&rsquo;s governing document: it describes how the Council works, how decisions are made, and the principles everyone is expected to follow as the protocol grows.
+                </p>
+                <p class="sec-body" style="margin:0 0 16px;line-height:1.55;color:var(--m)">
+                    If you take part in Council activity or represent the community, reading the charter matters so we share the same expectations, transparency, and accountability. The published charter on GitHub will be the reference copy to read and share.
+                </p>
+                <button type="button" id="councilCharterLink" class="btn btn-w"
+                    style="display:block;width:100%;text-align:center;box-sizing:border-box"
+                    onclick="showStablesCharterComingNotice()">Read the Charter on GitHub</button>
             </div>
             </div>
 
@@ -4057,6 +4338,12 @@
                 <!-- My Voting Power - time-weighted breakdown -->
                 <div
                     style="position:relative;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:14px;padding:14px;margin-bottom:12px">
+                    <div class="stitle-row stitle-row--in-card">
+                        <div class="stitle-inline">My Voting Power</div>
+                        <button type="button" class="agent-mini-btn" onclick="openAgentExplain('My Voting Power')" title="StablesAgent">
+                            <img src="agent.png" alt="StablesAgent">
+                        </button>
+                    </div>
                     <div class="vp-row">
                         <span class="vp-tag">3,450 USDw</span>
                         <span class="vp-calc">×1x
@@ -4083,17 +4370,17 @@
                         <span style="font-size:13px;font-weight:900;color:var(--pu)">Total: 15,491</span>
                         <span class="xs mu" style="align-self:center">Top 18% of voters</span>
                     </div>
-                    <div class="stitle-row stitle-row--in-card">
-                        <div class="stitle-inline">My Voting Power</div>
-                        <button type="button" class="agent-mini-btn" onclick="openAgentExplain('My Voting Power')" title="StablesAgent">
-                            <img src="agent.png" alt="StablesAgent">
-                        </button>
-                    </div>
                 </div>
             </div>
             <!-- CURRENT PROTOCOL DECISIONS -->
             <div
                 style="position:relative;margin-bottom:16px;background:rgba(167,139,250,.06);border:1px solid rgba(167,139,250,.18);border-radius:14px;padding:14px">
+                <div class="stitle-row stitle-row--in-card">
+                    <div class="stitle-inline">&#x2696;&#xFE0F; Current Protocol Decisions</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Current Protocol Decisions')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
                 <div class="ph-row"><span class="ph-label">Stablecoin tx fee</span><span class="ph-val">0%</span>
                 </div>
                 <div class="ph-row"><span class="ph-label">Coverage Fund fee share</span><span class="ph-val"
@@ -4106,16 +4393,16 @@
                         cf 2x
                         ·
                         xWiniwa 3x</span></div>
-                <div class="stitle-row stitle-row--in-card">
-                    <div class="stitle-inline">&#x2696;&#xFE0F; Current Protocol Decisions</div>
-                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Current Protocol Decisions')" title="StablesAgent">
-                        <img src="agent.png" alt="StablesAgent">
-                    </button>
-                </div>
             </div>
             <div style="font-size:16px;font-weight:900;margin:16px 0 10px">Current resolutions</div>
             <!-- BUDGET ALLOCATION VOTE -->
             <div class="prop-card" id="budgetVoteCard" style="position:relative;border-color:rgba(103,232,249,.22)">
+                <div class="stitle-row stitle-row--in-card">
+                    <div class="stitle-inline stitle-inline--sm">Budget allocation (next 3 months)</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Budget allocation (next 3 months)')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
                 <div class="xs mu" style="margin-bottom:12px">Set the treasury allocation across categories. Total must equal 100%.</div>
 
                 <div class="xs mu" style="margin-bottom:6px;font-weight:800">Operations</div>
@@ -4147,14 +4434,15 @@
                     <button class="btn vfor" id="budgetVoteBtn" disabled onclick="submitBudgetVote()"
                         style="opacity:.5;cursor:not-allowed">✓ Vote budget</button>
                 </div>
+            </div>
+            <div class="prop-card" style="position:relative">
                 <div class="stitle-row stitle-row--in-card">
-                    <div class="stitle-inline stitle-inline--sm">Budget allocation (next 3 months)</div>
-                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Budget allocation (next 3 months)')" title="StablesAgent">
+                    <div class="stitle-inline stitle-inline--sm">Add Turkish Lira (TRYs) as a supported
+                    currency</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Add Turkish Lira (TRYs) as a supported currency')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
-            </div>
-            <div class="prop-card" style="position:relative">
                 <div class="xs mu" style="margin-bottom:8px">Proposed by cluster champion @istanbul_cluster
                     · 3
                     days
@@ -4169,15 +4457,16 @@
                         For</button><button class="btn vag" onclick="showToast('Vote recorded - thank you!')">✗
                         Vote
                         Against</button></div>
+            </div>
+            <div class="prop-card" style="position:relative">
                 <div class="stitle-row stitle-row--in-card">
-                    <div class="stitle-inline stitle-inline--sm">Add Turkish Lira (TRYs) as a supported
-                    currency</div>
-                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Add Turkish Lira (TRYs) as a supported currency')" title="StablesAgent">
+                    <div class="stitle-inline stitle-inline--sm">Increase Savings Pool fee share from
+                    80%
+                    to 85%</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Increase Savings Pool fee share from 80% to 85%')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
-            </div>
-            <div class="prop-card" style="position:relative">
                 <div class="xs mu" style="margin-bottom:8px">Proposed by Council
                     · 1
                     week ago</div>
@@ -4190,18 +4479,16 @@
                         For</button><button class="btn vag" onclick="showToast('Vote recorded - thank you!')">✗
                         Vote
                         Against</button></div>
-                <div class="stitle-row stitle-row--in-card">
-                    <div class="stitle-inline stitle-inline--sm">Increase Savings Pool fee share from
-                    80%
-                    to 85%</div>
-                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Increase Savings Pool fee share from 80% to 85%')" title="StablesAgent">
-                        <img src="agent.png" alt="StablesAgent">
-                    </button>
-                </div>
             </div>
 
             <div style="font-size:16px;font-weight:900;margin:18px 0 10px">Past resolutions</div>
             <div class="prop-card" style="position:relative;border-color:rgba(167,139,250,.22)">
+                <div class="stitle-row stitle-row--in-card">
+                    <div class="stitle-inline stitle-inline--sm">Budget allocation (Q4 2026)</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Budget allocation (Q4 2026)')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
                 <div class="xs mu" style="margin-bottom:10px">Closed 2026-01-31 · Effective 2026-02-15</div>
                 <div class="xs mu" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
                     <div>
@@ -4213,12 +4500,6 @@
                         <div class="fbet"><span>Security / Audits</span><span style="font-weight:900;color:var(--rd)">8%</span></div>
                         <div class="fbet mt8"><span>Protocol participation</span><span style="font-weight:900;color:var(--pu)">50%</span></div>
                     </div>
-                </div>
-                <div class="stitle-row stitle-row--in-card">
-                    <div class="stitle-inline stitle-inline--sm">Budget allocation (Q4 2026)</div>
-                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Budget allocation (Q4 2026)')" title="StablesAgent">
-                        <img src="agent.png" alt="StablesAgent">
-                    </button>
                 </div>
             </div>
         </div>
@@ -4272,6 +4553,44 @@
                     <div class="cr-num" id="treasurySnapCR">-</div>
                     <div class="cr-sub">Winiwa-side assets divided by stables liabilities. 100% means assets match stables owed.</div>
                 </div>
+            </div>
+            </div>
+
+            <!-- System liability structure (moved from Council) -->
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">System liability structure</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Treasury: system liability structure by reference unit')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+            </div>
+            <div class="card app-section-card" style="padding:16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
+                <div class="xs mu" style="margin-bottom:10px">Live distribution of Stables by reference unit</div>
+
+                <div class="liab-visual-card">
+                    <div class="fbet xs mu" style="margin-bottom:8px">
+                        <span>Total liabilities represented</span>
+                        <span id="liabDistTotal">-</span>
+                    </div>
+                    <div id="liabDistRows"></div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+                    <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="xs mu" style="margin-bottom:6px">Concentration signal</div>
+                        <div style="font-size:14px;font-weight:900" id="liabConcentration">-</div>
+                        <div class="xs mu mt8" id="liabLargestUnit">-</div>
+                    </div>
+                    <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="xs mu" style="margin-bottom:6px">7d evolution</div>
+                        <div style="font-size:14px;font-weight:900" id="liabTrendState">-</div>
+                        <div class="xs mu mt8" id="liabTrendDetail">-</div>
+                    </div>
+                </div>
+
+                <div class="xs mu" style="margin-bottom:8px">Interpretation layer (informative only)</div>
+                <div id="liabRiskRows" style="display:grid;gap:8px"></div>
+                <div class="xs mu mt8">Transparency replaces control: the protocol exposes the structure, participants decide actions.</div>
             </div>
             </div>
 
@@ -4371,31 +4690,31 @@
                 </div>
 
                 <div style="padding-top:16px;border-top:1px solid rgba(255,255,255,0.05)">
-                    <div class="fbet" style="margin-bottom:12px">
-                        <div style="font-size:13px;font-weight:800">Stress Test Winiwa Price</div>
-                        <div id="protocolSliderPct" style="font-size:16px;font-weight:900;color:var(--c)">0%</div>
-                    </div>
-                    <div class="fbet" style="margin:-4px 0 10px">
-                        <div class="xs mu">Winiwa price</div>
-                        <div style="font-size:13px;font-weight:900;font-variant-numeric:tabular-nums">
-                            <span id="minimaPriceNow">-</span>
-                            <span style="opacity:.55">→</span>
-                            <span id="minimaPriceSim">-</span>
+                    <div style="font-size:13px;font-weight:800;margin-bottom:10px">Stress Test Winiwa Price</div>
+                    <div class="fbet" style="margin:0 0 8px;align-items:flex-start">
+                        <div class="xs mu">Winiwa price (USD)</div>
+                        <div style="text-align:right">
+                            <div style="font-size:13px;font-weight:900;font-variant-numeric:tabular-nums">
+                                <span id="minimaPriceNow">-</span>
+                                <span style="opacity:.55">→</span>
+                                <span id="minimaPriceSim">-</span>
+                            </div>
+                            <div id="winiwaSpotPriceSource" class="xs mu" style="margin-top:4px;color:var(--m)">—</div>
                         </div>
                     </div>
-                    <div style="position:relative;height:32px;display:flex;align-items:center">
+                    <div style="position:relative;height:32px;display:flex;align-items:center;margin-bottom:6px">
                         <input type="range" id="protocolSlider" min="-30" max="30" value="0" class="sim-slider"
                             oninput="syncSliders(this.value)" style="width:100%;accent-color:var(--pu)">
                         <div
                             style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.2);pointer-events:none">
                         </div>
                     </div>
-                    <div class="fbet xs mu" style="margin-top:6px">
+                    <div class="fbet xs mu" style="margin-top:4px">
                         <span>-30%</span><span>0%</span><span>+30%</span>
                     </div>
-                    <div class="fbet xs mu" style="margin-top:8px">
-                        <span>Price change</span>
-                        <span id="priceChangePct" style="font-weight:900;font-variant-numeric:tabular-nums">0%</span>
+                    <div class="fbet xs mu" style="margin-top:10px">
+                        <span>Price change (slider)</span>
+                        <span id="protocolSliderPct" style="font-size:16px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--c)">0%</span>
                     </div>
                 </div>
             </div>
@@ -4705,18 +5024,18 @@
                 <div class="dic" aria-hidden="true">&#x1F510;</div>
                 <div class="app-page-header__text">
                     <div class="app-page-header__title">Security</div>
-                    <div class="app-page-header__sub">Vault key only: access to my bank</div>
+                    <div class="app-page-header__sub">Vault key only: access to your bank</div>
                 </div>
             </header>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
                 <div class="stitle">Vault key</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Security: my Vault key is sole access to my bank; never share it')" title="StablesAgent">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Security: your Vault key is sole access to your bank; never share it')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
             </div>
             <div class="card card--prose-centered app-section-card" id="settingsSeedPhraseSection" style="padding:22px 20px 20px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.2))">
-                <p class="sec-body" style="margin-bottom:12px">My <strong>Vault key</strong> is my access to my bank. <strong>Without it, I risk losing my money.</strong> Use the Minima Security app to view or manage it.</p>
+                <p class="sec-body" style="margin-bottom:12px">Your <strong>Vault key</strong> is your access to your bank. <strong>Without it, you risk losing your money.</strong> Use the Minima Security app to view or manage it.</p>
                 <p class="sec-body">Never share it with anyone.</p>
                 <div class="sec-key-icon" aria-hidden="true">🔑</div>
                 <button type="button" class="btn btn-w btn-lg" onclick="openModal('seedSecurityAppModal')">Open Minima Security app</button>
@@ -4798,24 +5117,47 @@
     <!-- MORE DRAWER -->
     <div class="dback" id="drawer" onclick="closeMore(event)">
         <div class="drawer">
-            <div class="dsect">
-                <div class="dsect-t">Payments &amp; Trade</div>
-                <div class="ditem" onclick="navigate('exchange');closeMoreNow()">
-                    <div class="dic">
-                        🔄
+            <div class="drawer-lang-bar">
+                <div class="app-lang-switcher">
+                    <button type="button" class="app-lang-globe-btn" id="drawerLangGlobeBtn"
+                        onclick="toggleAppLangMenu(event, 'drawer')" aria-label="Language" aria-haspopup="true"
+                        aria-expanded="false" aria-controls="appLangMenuDrawer">
+                        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="appLangMenuDrawer" class="app-lang-menu" role="menu">
+                        <button type="button" class="app-lang-menu-item" role="menuitem"
+                            onclick="setAppLanguage('en')">English</button>
                     </div>
+                </div>
+            </div>
+            <div class="dsect">
+                <div class="dsect-t">Shops &amp; Exchange</div>
+                <div class="ditem" onclick="navigate('ambassador');closeMoreNow()">
+                    <div class="dic" aria-hidden="true">&#x1F91D;</div>
+                    <div class="dinfo">
+                        <div class="dname">Ambassador</div>
+                        <div class="ddesc">Open ambassador program &amp; showcase fees</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('my-shop');closeMoreNow()">
+                    <div class="dic" aria-hidden="true">&#x1F3EA;</div>
+                    <div class="dinfo">
+                        <div class="dname">My shop</div>
+                        <div class="ddesc">List your business · Create Invoice</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('exchange');closeMoreNow()">
+                    <div class="dic" aria-hidden="true">&#x1F504;</div>
                     <div class="dinfo">
                         <div class="dname">Exchange</div>
                         <div class="ddesc">Exchange currencies instantly</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
-                <div class="ditem" onclick="navigate('invoice');closeMoreNow()">
-                    <div class="dic">
-                        🧾
-                    </div>
-                    <div class="dinfo">
-                        <div class="dname">Create Invoice</div>
-                        <div class="ddesc">Request payment with a merchant QR</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4877,7 +5219,7 @@
                     </div>
                     <div class="dinfo">
                         <div class="dname">Security</div>
-                        <div class="ddesc">Vault key only: access to my bank</div>
+                        <div class="ddesc">Vault key only: access to your bank</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4935,19 +5277,25 @@
                 </div>
             </div>
             <div class="ddiv"></div>
-            <div class="test-banner">
-                🧪
-                Testing Phase Only</div>
-            <div class="dsect">
-                <div class="ditem" onclick="navigate('faucet');closeMoreNow()">
-                    <div class="dic" style="background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.2)">
-                        🚰
+            <div class="dsect" style="padding-top:4px;padding-bottom:12px">
+                <button type="button" class="drawer-test-faucet-card"
+                    onclick="navigate('faucet');closeMoreNow()"
+                    aria-label="Testing phase only. Get test Winiwa. Claim test tokens.">
+                    <div class="drawer-test-faucet-card__banner" aria-hidden="true">
+                        <span>🧪</span>
+                        <span>Testing Phase Only</span>
                     </div>
-                    <div class="dinfo">
-                        <div class="dname" style="color:var(--am)">Get Test Wiwina</div>
-                        <div class="ddesc">Claim test tokens (no real value)</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
+                    <div class="drawer-test-faucet-card__row">
+                        <div class="dic" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.28)">
+                            🚰
+                        </div>
+                        <div class="dinfo">
+                            <div class="dname" style="color:var(--am)">Get Test Wiwina</div>
+                            <div class="ddesc">Claim test tokens (no real value)</div>
+                        </div>
+                        <span style="color:var(--m)">›</span>
+                    </div>
+                </button>
             </div>
         </div>
     </div>
@@ -5043,10 +5391,26 @@
             <div class="type-eyebrow" style="color:#fbbf24;margin-bottom:10px">Safety</div>
             <div class="mttl" style="text-align:center;margin-bottom:12px">Open Minima Security app</div>
             <div style="margin:0 0 18px;line-height:var(--lh-body);text-align:center;color:var(--t);font-size:var(--fz-body);font-weight:500">
-                This opens the <strong style="color:#fbbf24">Minima Security app</strong> on my node so I can view or check my <strong style="color:#fbbf24">Vault key</strong>, also called <strong style="color:#fbbf24">Seed phrase</strong>, which is a series of 24 words. Only do this in a private place.
+                This opens the <strong style="color:#fbbf24">Minima Security app</strong> on your node so you can view or check your <strong style="color:#fbbf24">Vault key</strong>, also called <strong style="color:#fbbf24">Seed phrase</strong>, which is a series of 24 words. Only do this in a private place.
             </div>
             <button type="button" class="btn btn-w btn-lg"
                 onclick="closeModal('seedSecurityAppModal');openSeedPhrase()">Continue</button>
+        </div>
+    </div>
+
+    <!-- Minima Security: coming-soon notice (same amber treatment as seedSecurityAppModal; dismiss OK / backdrop) -->
+    <div class="mback centered" id="seedSecurityComingModal" style="z-index:640" aria-modal="true" role="dialog"
+        aria-labelledby="seedSecurityComingTitle"
+        onclick="if(event.target===this)closeModal('seedSecurityComingModal')">
+        <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.1),rgba(11,15,20,.94));padding:20px 18px 22px">
+            <div class="mhandle" style="background:rgba(251,191,36,.35)"></div>
+            <div class="type-eyebrow" style="color:#fbbf24;margin-bottom:10px">Stables</div>
+            <div class="mttl" id="seedSecurityComingTitle" style="text-align:center;margin-bottom:14px">Minima Security app</div>
+            <div style="margin:0 0 20px;line-height:1.55;text-align:center;color:var(--t);font-size:var(--fz-body);font-weight:500">
+                <p style="margin:0 0 12px">Opening the <strong style="color:#fbbf24">Minima Security app</strong> from Stables will be added in a <strong style="color:#fbbf24">coming version</strong>.</p>
+                <p style="margin:0;color:var(--m)">The Stables community is there to help with questions.</p>
+            </div>
+            <button type="button" class="btn btn-w btn-lg" onclick="closeModal('seedSecurityComingModal')">OK</button>
         </div>
     </div>
 
@@ -5084,8 +5448,41 @@
     <!-- FIRST INSTALL SETUP -->
     <div class="mback centered" id="welcomeSetupModal" onclick="if(event.target===this)closeWelcomeSetup()">
         <div class="modal welcome">
-            <!-- Step 1: Welcome first (congratulations, language, intro) -->
-            <div id="welcomeStepLang">
+            <!-- Step 0: Showcase preview notice (then main welcome) -->
+            <div id="welcomeStepShowcaseIntro">
+                <div style="display:flex;justify-content:center;margin-bottom:14px">
+                    <img src="stables_icon.png" alt="Stables" style="width:54px;height:54px;border-radius:14px">
+                </div>
+                <div id="welcomeShowcaseIntroBody" class="welcome-modal-showcase-intro"
+                    style="text-align:center;margin:0 0 22px;padding:0 4px;box-sizing:border-box">
+                </div>
+                <button type="button" class="btn btn-w btn-g" id="welcomeUnderstandBtn" style="width:100%"
+                    onclick="goWelcomeFromShowcaseIntro()">I understand</button>
+            </div>
+            <!-- Step 1: Welcome (congratulations, language, intro) -->
+            <div id="welcomeStepLang" class="welcome-step-lang" style="display:none">
+                <div class="app-lang-switcher app-lang-switcher--corner">
+                    <button type="button" class="app-lang-globe-btn" id="welcomeLangGlobeBtn"
+                        onclick="toggleAppLangMenu(event, 'welcome')" aria-label="Language" aria-haspopup="true"
+                        aria-expanded="false" aria-controls="appLangMenuWelcome">
+                        <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2"
+                            fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="2" y1="12" x2="22" y2="12"></line>
+                            <path
+                                d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                            </path>
+                        </svg>
+                    </button>
+                    <div id="appLangMenuWelcome" class="app-lang-menu" role="menu">
+                        <button type="button" class="app-lang-menu-item" role="menuitem"
+                            onclick="setAppLanguage('en')">English</button>
+                    </div>
+                </div>
+                <select id="welcomeLang" class="app-visually-hidden" onchange="updateWelcomeLanguage()" tabindex="-1"
+                    aria-hidden="true">
+                    <option value="en">English</option>
+                </select>
                 <div style="display:flex;justify-content:center;margin-bottom:14px">
                     <img src="stables_icon.png" alt="Stables" style="width:54px;height:54px;border-radius:14px">
                 </div>
@@ -5095,26 +5492,73 @@
                 </div>
                 <div class="mttl" id="welcomeTitle"
                     style="text-align:center;margin-bottom:14px;font-weight:800;line-height:1.3;color:var(--t)">Welcome to Stables</div>
-                <div style="display:flex;flex-direction:column;align-items:center;width:100%;margin-bottom:14px;box-sizing:border-box">
-                    <label class="flabel" for="welcomeLang" style="margin:0 0 8px 0;text-align:center;width:100%">Language</label>
-                    <!-- More locales when welcome copy is translated; UI strings are English-only for now. -->
-                    <select class="fsel" id="welcomeLang"
-                        style="display:block;width:100%;max-width:300px;margin:0;box-sizing:border-box;text-align:center;text-align-last:center"
-                        onchange="updateWelcomeLanguage()">
-                    <option value="en">English</option>
-                </select>
-                </div>
                 <div id="welcomeIntroBody" class="welcome-modal-body-copy"
                     style="text-align:center;margin:6px 0 24px;padding:0 4px;box-sizing:border-box">
                 </div>
                 <button class="btn btn-w btn-g" style="width:100%" onclick="goWelcomeToTourChoice()">Let's go</button>
-                <div id="welcomeShowcaseBanner" class="xs"
-                    style="text-align:center;margin-top:14px;font-weight:800;color:#fbbf24">
+            </div>
+
+            <!-- Guided tour path (persona buttons) -->
+            <div id="welcomeStepTourChoice" style="display:none">
+                <div style="display:flex;justify-content:center;margin-bottom:16px" aria-hidden="true">
+                    <div
+                        style="width:68px;height:68px;border-radius:50%;background:rgba(103,232,249,.12);border:1px solid rgba(103,232,249,.35);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.3),0 0 20px rgba(103,232,249,.12)">
+                        <img src="agent.png" alt="" width="40" height="40"
+                            style="width:40px;height:40px;border-radius:10px;object-fit:cover;display:block">
+                    </div>
+                </div>
+                <div id="welcomeTourChoiceHead" class="welcome-modal-body-copy"
+                    style="text-align:center;margin-bottom:16px">
+                    Pick your path for the StablesAgent guided tour.
+                </div>
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;flex-direction:column;gap:12px;margin-top:4px">
+                    <button class="btn btn-w btn-g" id="welcomeTourPersonBtn" style="width:100%;min-width:220px;line-height:1.4"
+                        onclick="setWelcomeTourChoice('person')">I'm a person. I want to understand what I'll be able to do with my own bank.</button>
+                    <button class="btn btn-w btn-g" id="welcomeTourShopAmbassadorBtn" style="width:100%;min-width:220px;line-height:1.4"
+                        onclick="setWelcomeTourChoice('shop_ambassador')">I want to become a shop ambassador and explore what the earning opportunities are.</button>
+                    <button class="btn btn-w btn-g" id="welcomeTourMerchantBtn" style="width:100%;min-width:220px;line-height:1.4"
+                        onclick="setWelcomeTourChoice('merchant')">I'm a merchant. I want to know how this will streamline my business process.</button>
+                    <button class="btn btn-w btn-g" id="welcomeTourNerdBtn" style="width:100%;min-width:220px;line-height:1.4"
+                        onclick="setWelcomeTourChoice('nerd')">I'm a nerd. I want to understand how this holds together.</button>
+                    <button class="btn btn-w btn-g" id="welcomeExploreBtn" style="width:100%;min-width:220px;line-height:1.4"
+                        onclick="setWelcomeTourChoice('explore')">I'm a viewer. I want to look around.</button>
                 </div>
             </div>
 
-            <!-- Step 2: Currency selection (after tour path choice) -->
+            <!-- Step 5: Nerd sub track choice -->
+            <div id="welcomeStepNerdTrack" style="display:none">
+                <div class="mttl" id="welcomeNerdTrackTitle"
+                    style="text-align:center;margin-bottom:12px">Pick your nerd deep dive</div>
+                <div id="welcomeNerdTrackBody" class="msub"
+                    style="text-align:center;margin-bottom:16px;color:var(--t)">
+                    Choose what you want to inspect first in this demo.
+                </div>
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
+                    <button class="btn btn-w btn-g" id="welcomeNerdTrackTechBtn" style="flex:1;min-width:220px"
+                        onclick="setWelcomeNerdTrack('tech')">Tech + blockchain</button>
+                    <button class="btn btn-w btn-g" id="welcomeNerdTrackFinanceBtn" style="flex:1;min-width:220px"
+                        onclick="setWelcomeNerdTrack('finance')">Financial side: how Stables is structured and ensures the peg</button>
+                </div>
+            </div>
+
+            <!-- Web preview vs node (before currency setup) -->
+            <div id="welcomeStepShowcaseMsg" style="display:none">
+                <div id="welcomeShowcaseCopy" class="welcome-modal-showcase-intro"
+                    style="margin-bottom:18px;text-align:center;white-space:pre-line;padding:0 4px;box-sizing:border-box">
+                </div>
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-bottom:10px">
+                    <button class="btn btn-w" id="welcomeShowcaseHereBtn" style="flex:1;min-width:220px;font-weight:900"
+                        onclick="goWelcomeFromShowcaseRoute('web')">Keep exploring in this web app</button>
+                    <button class="btn btn-w" id="welcomeShowcaseNodeBtn" style="flex:1;min-width:220px;font-weight:900"
+                        onclick="goWelcomeFromShowcaseRoute('node')">Access MiniDapp package for my node</button>
+                </div>
+            </div>
+
+            <!-- Currency selection (after web / MiniDapp choice) -->
             <div id="welcomeStepCurrencies" style="display:none">
+                <div id="welcomeCurrencyIntro" class="welcome-modal-body-copy"
+                    style="text-align:center;margin:0 0 18px;padding:0 4px;box-sizing:border-box;line-height:1.45;color:var(--t)">
+                </div>
                 <label class="flabel" style="margin-top:4px;margin-bottom:6px">Preferred currencies</label>
                 <div id="welcomeCurrencies" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
                     <span class="ccy-pill" data-ccy="AUDw" onclick="toggleWelcomeCcy(this)">AUDw</span>
@@ -5132,65 +5576,11 @@
                 <button class="btn btn-w" style="width:100%" onclick="applyWelcomeSetup()">Save and continue</button>
             </div>
 
-            <!-- After currency save: short next steps only -->
-            <div id="welcomeStepShowcaseMsg" style="display:none">
-                <div id="welcomeShowcaseCopy" class="welcome-modal-body-copy"
-                    style="margin-bottom:18px;text-align:center;white-space:pre-line">
-                </div>
-                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-bottom:10px">
-                    <button class="btn btn-w" id="welcomeShowcaseHereBtn" style="flex:1;min-width:220px;font-weight:900"
-                        onclick="closeWelcomeSetup()">Continue the visit here</button>
-                    <button class="btn btn-w" id="welcomeShowcaseNodeBtn" style="flex:1;min-width:220px;font-weight:900"
-                        onclick="openStablesMdsZipFromWelcome()">I can't wait to see it in my node</button>
-                </div>
-            </div>
-
-            <!-- Guided tour path (persona buttons) -->
-            <div id="welcomeStepTourChoice" style="display:none">
-                <div style="display:flex;justify-content:center;margin-bottom:16px" aria-hidden="true">
-                    <div
-                        style="width:68px;height:68px;border-radius:50%;background:rgba(103,232,249,.12);border:1px solid rgba(103,232,249,.35);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.3),0 0 20px rgba(103,232,249,.12)">
-                        <img src="agent.png" alt="" width="40" height="40"
-                            style="width:40px;height:40px;border-radius:10px;object-fit:cover;display:block">
-                    </div>
-                </div>
-                <div id="welcomeTourChoiceHead" class="welcome-modal-body-copy"
-                    style="text-align:center;margin-bottom:16px">
-                    Pick one path for the StablesAgent guided tour.
-                </div>
-                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;flex-direction:column;gap:12px;margin-top:4px">
-                    <button class="btn btn-w btn-g" id="welcomeTourPersonBtn" style="width:100%;min-width:220px;line-height:1.4"
-                        onclick="setWelcomeTourChoice('person')">I'm a person. I want to understand what I'll be able to do with my own bank.</button>
-                    <button class="btn btn-w btn-g" id="welcomeTourMerchantBtn" style="width:100%;min-width:220px;line-height:1.4"
-                        onclick="setWelcomeTourChoice('merchant')">I'm a merchant. I want to know how this will streamline my business process.</button>
-                    <button class="btn btn-w btn-g" id="welcomeTourNerdBtn" style="width:100%;min-width:220px;line-height:1.4"
-                        onclick="setWelcomeTourChoice('nerd')">I'm a nerd. I want to understand how this holds together.</button>
-                    <button class="btn btn-w btn-g" id="welcomeExploreBtn" style="width:100%;min-width:220px;line-height:1.4"
-                        onclick="setWelcomeTourChoice('explore')">I'm a viewer. I want to look around.</button>
-                </div>
-            </div>
-
-            <!-- Step 5: Nerd sub track choice -->
-            <div id="welcomeStepNerdTrack" style="display:none">
-                <div class="mttl" id="welcomeNerdTrackTitle"
-                    style="text-align:center;margin-bottom:12px">Pick my nerd deep dive</div>
-                <div id="welcomeNerdTrackBody" class="msub"
-                    style="text-align:center;margin-bottom:16px;color:var(--t)">
-                    Choose what you want to inspect first in this demo.
-                </div>
-                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
-                    <button class="btn btn-w btn-g" id="welcomeNerdTrackTechBtn" style="flex:1;min-width:220px"
-                        onclick="setWelcomeNerdTrack('tech')">Tech + blockchain</button>
-                    <button class="btn btn-w btn-g" id="welcomeNerdTrackFinanceBtn" style="flex:1;min-width:220px"
-                        onclick="setWelcomeNerdTrack('finance')">Financial side: how Stables is structured and ensures the peg</button>
-                </div>
-            </div>
-
             <!-- Step 4: Use case -->
             <div id="welcomeStepTourUseCase" style="display:none">
-                <div class="mttl" id="welcomeUseTitle" style="text-align:center;margin-bottom:12px">How will I use it?</div>
+                <div class="mttl" id="welcomeUseTitle" style="text-align:center;margin-bottom:12px">How will you mainly use the app?</div>
                 <div class="xs mu" id="welcomeUsePrompt" style="text-align:center;margin-bottom:16px">
-                    How will I mainly use the app, as a personal user or a merchant?
+                    Personal or merchant?
                 </div>
                 <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
                     <button class="btn btn-w btn-g" id="welcomePersonalBtn" style="flex:1;min-width:220px" onclick="setWelcomeUseCase('personal')">Personal</button>
@@ -5204,11 +5594,13 @@
     <div class="mback centered" id="seedPhraseSecurityModal" style="z-index:620" aria-modal="true" role="dialog" onclick="if(event.target===this)closeSeedPhraseSecurityModal()">
         <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.92));padding:20px 18px 22px">
             <div class="mttl" style="text-align:center;margin-bottom:12px">
-                Is my <strong style="color:#fbbf24">Vault key</strong> backed up?
+                Is your <strong style="color:#fbbf24">Vault key</strong> backed up?
             </div>
+            <p id="vaultBackupReminderMeta" class="xs mu"
+                style="display:none;text-align:center;margin:-4px 12px 12px;line-height:1.45;color:var(--m)"></p>
             <div style="text-align:center;margin-bottom:14px;line-height:1.55;color:var(--t);font-weight:600">
-                <p style="margin:0 0 12px 0">My <strong style="color:var(--t)">Vault key</strong> is my access to my bank. Without it, I can <strong style="color:var(--t)">lose my money</strong>. <strong style="color:var(--t)">No one can recover it for me</strong>, including Stables.</p>
-                <p style="margin:0;color:var(--m);font-weight:500">The Stables community can help with questions; <strong style="color:var(--t)">only I</strong> can keep my key safe.</p>
+                <p style="margin:0 0 12px 0">Your <strong style="color:var(--t)">Vault key</strong> is your access to your bank. Without it, you can <strong style="color:var(--t)">lose your money</strong>. <strong style="color:var(--t)">No one can recover it for you</strong>, including Stables.</p>
+                <p style="margin:0;color:var(--m);font-weight:500">The Stables community can help with questions; <strong style="color:var(--t)">only you</strong> can keep your key safe.</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:10px">
                 <button type="button" class="btn btn-w"
@@ -5231,10 +5623,10 @@
                 How do you want help?
             </div>
             <div style="text-align:center;margin-bottom:16px;line-height:1.55;color:var(--m);font-weight:600">
-                Talk to StablesAgent (starts with a question about my Vault key), or open the security support channel on Telegram.
+                Talk to StablesAgent (starts with a question about your Vault key), or open the security support channel on Telegram.
             </div>
             <div style="display:flex;flex-direction:column;gap:10px">
-                <button type="button" class="btn btn-w btn-g" onclick="vaultHelpChooseStablesAgent()">Talk to StablesAgent</button>
+                <button type="button" class="btn btn-w" onclick="vaultHelpChooseStablesAgent()">Talk to StablesAgent</button>
                 <button type="button" class="btn btn-w" style="line-height:1.35" onclick="vaultHelpChooseTelegramSecurity()">Stables security support on Telegram</button>
                 <button type="button" class="btn btn-w" onclick="closeModal('vaultHelpChoiceModal')">Back</button>
             </div>
@@ -5384,7 +5776,7 @@
 
     <script src="assets/config/runtime-config.js"></script>
     <script>
-        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'invoice', 'activity', 'contacts', 'feedback'];
+        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'invoice', 'activity', 'contacts', 'feedback'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
         let privacyMode = false; lede = false;
@@ -5409,6 +5801,14 @@
             if (label) label.textContent = url || '';
         }
 
+        function showStablesCharterComingNotice() {
+            if (typeof showToast !== 'function') return;
+            showToast(
+                'First draft of the Stables Charter will be published on GitHub over the coming weeks.',
+                { prose: true, tone: 'amber', durationMs: 8000 }
+            );
+        }
+
         function navigate(p) {
             PAGES.forEach(id => { const el = document.getElementById('page-' + id); if (el) el.classList.remove('active'); });
             const pg = document.getElementById('page-' + p);
@@ -5428,6 +5828,9 @@
             if (p === 'contacts' && typeof renderContactsPage === 'function') renderContactsPage();
             if (p === 'chat' && typeof renderChatContext === 'function') renderChatContext();
             if (p === 'council-comms' && typeof window.renderCouncilCommunicationPanels === 'function') window.renderCouncilCommunicationPanels();
+            if (p === 'treasury') {
+                if (typeof renderCouncilLiabilityStructure === 'function') renderCouncilLiabilityStructure();
+            }
             if (p === 'treasury' && typeof updateGlobalUI === 'function') updateGlobalUI();
             if (p === 'feedback') {
                 try {
@@ -5770,7 +6173,82 @@
             document.getElementById('lpApyDisplay').textContent = apyEst;
         }
 
+        function resetWelcomeLangMenuPosition() {
+            const menu = document.getElementById('appLangMenuWelcome');
+            if (!menu) return;
+            menu.style.position = '';
+            menu.style.top = '';
+            menu.style.right = '';
+            menu.style.left = '';
+            menu.style.bottom = '';
+            menu.style.zIndex = '';
+        }
+
+        function positionWelcomeLangMenu() {
+            const menu = document.getElementById('appLangMenuWelcome');
+            const btn = document.getElementById('welcomeLangGlobeBtn');
+            if (!menu || !btn || !menu.classList.contains('open')) return;
+            const r = btn.getBoundingClientRect();
+            /* Fixed layer: escapes .modal { overflow-y: auto } which was clipping the dropdown */
+            menu.style.position = 'fixed';
+            menu.style.top = (r.bottom + 8) + 'px';
+            menu.style.right = (window.innerWidth - r.right) + 'px';
+            menu.style.left = 'auto';
+            menu.style.bottom = 'auto';
+            menu.style.zIndex = '720';
+        }
+
+        function closeAppLangMenus() {
+            ['appLangMenuWelcome', 'appLangMenuDrawer'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('open');
+            });
+            resetWelcomeLangMenuPosition();
+            const wg = document.getElementById('welcomeLangGlobeBtn');
+            const dg = document.getElementById('drawerLangGlobeBtn');
+            if (wg) wg.setAttribute('aria-expanded', 'false');
+            if (dg) dg.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleAppLangMenu(ev, which) {
+            if (ev) {
+                ev.stopPropagation();
+                ev.preventDefault();
+            }
+            const map = { welcome: 'appLangMenuWelcome', drawer: 'appLangMenuDrawer' };
+            const menu = document.getElementById(map[which]);
+            const btn = document.getElementById(which === 'welcome' ? 'welcomeLangGlobeBtn' : 'drawerLangGlobeBtn');
+            if (!menu || !btn) return;
+            const willOpen = !menu.classList.contains('open');
+            closeAppLangMenus();
+            if (willOpen) {
+                menu.classList.add('open');
+                btn.setAttribute('aria-expanded', 'true');
+                if (which === 'welcome') {
+                    requestAnimationFrame(function () {
+                        requestAnimationFrame(positionWelcomeLangMenu);
+                    });
+                }
+            }
+        }
+
+        function setAppLanguage(code) {
+            const sel = document.getElementById('welcomeLang');
+            if (!sel) return;
+            const ok = Array.from(sel.options).some(o => o.value === code);
+            if (!ok) return;
+            sel.value = code;
+            try { localStorage.setItem('stables_lang_pref', code); } catch (_) {}
+            if (typeof updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
+            closeAppLangMenus();
+        }
+
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.app-lang-switcher')) closeAppLangMenus();
+        });
+
         function openMore() {
+            closeAppLangMenus();
             const d = document.getElementById('drawer');
             if (d) {
                 d.classList.add('open');
@@ -5780,6 +6258,7 @@
         }
         function closeMore(e) { if (e && e.target !== document.getElementById('drawer')) return; closeMoreNow(); }
         function closeMoreNow() {
+            closeAppLangMenus();
             const d = document.getElementById('drawer');
             if (d) {
                 d.classList.remove('vis');
@@ -6320,7 +6799,7 @@
         }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
         window.addEventListener('click', e => {
-            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'vaultHelpChoiceModal'].forEach(id => {
+            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'seedSecurityComingModal', 'vaultHelpChoiceModal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el && e.target === el) el.classList.remove('open');
             });
@@ -6716,9 +7195,33 @@
         let WALLET_XWM = 340;
         let WALLET_WABLES = 3450.75;
         let WALLET_CF = 1240;
-        const SIM_Winiwa_PRICE = 0.00846;
+        let SIM_Winiwa_PRICE = 0.00846;
         const SIM_XWM_PRICE = 10.49;
         const SIM_LEVERAGE = 4.2;
+
+        /** Optional: live MINIMA/USDT from MEXC public API (CORS must allow your origin). */
+        function refreshWiniwaSpotFromMexc() {
+            const cfg = window.STABLES_CONFIG || {};
+            const url = cfg.MEXC_TICKER_URL || 'https://api.mexc.com/api/v3/ticker/price?symbol=MINIMAUSDT';
+            const srcEl = document.getElementById('winiwaSpotPriceSource');
+            const setSrc = (t) => { if (srcEl) srcEl.textContent = t; };
+            fetch(url, { method: 'GET', cache: 'no-store' })
+                .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+                .then(j => {
+                    const p = parseFloat(j && j.price);
+                    if (!Number.isFinite(p) || p <= 0 || p > 1e7) throw new Error('bad price');
+                    SIM_Winiwa_PRICE = p;
+                    try {
+                        if (RATES.Winiwa) RATES.Winiwa.USDw = p;
+                    } catch (_) {}
+                    setSrc('Live · MEXC spot');
+                    if (typeof calcSlider === 'function') calcSlider();
+                    if (typeof updateGlobalUI === 'function') updateGlobalUI();
+                })
+                .catch(() => {
+                    setSrc('Demo rate (spot API unavailable)');
+                });
+        }
 
         function syncSliders(val) {
             const pSlider = document.getElementById('priceSlider');
@@ -7239,10 +7742,13 @@
             // Price labels
             const pNow = document.getElementById('minimaPriceNow');
             const pSim = document.getElementById('minimaPriceSim');
-            const pc = document.getElementById('priceChangePct');
-            if (pNow) pNow.textContent = fmtBase(SIM_Winiwa_PRICE);
-            if (pSim) pSim.textContent = fmtBase(simWiniwaPrice);
-            if (pc) pc.textContent = (pct > 0 ? '+' : '') + pct + '%';
+            const fmtWiniwaSpot = (v) => {
+                const n = Number(v) || 0;
+                const mx = n >= 1 ? 4 : n >= 0.01 ? 6 : 8;
+                return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: mx });
+            };
+            if (pNow) pNow.textContent = fmtWiniwaSpot(SIM_Winiwa_PRICE);
+            if (pSim) pSim.textContent = fmtWiniwaSpot(simWiniwaPrice);
 
             // Treasury moves with Minima price (demo)
             updateTreasuryUI(pct);
@@ -7324,7 +7830,7 @@
                     crEl.innerHTML = 'CR ' + newCR + '% \u26a0\ufe0f Minting LOCKED \u00b7 xWiniwa burn LOCKED';
                 } else {
                     crEl.style.cssText = 'margin-top:10px;padding:8px 12px;border-radius:9px;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.18);font-size:13px;font-weight:700;text-align:center;color:var(--gr)';
-                    crEl.innerHTML = 'CR ' + newCR + '% \u00b7 All operations open';
+                    crEl.innerHTML = 'CR ' + newCR + '%';
                 }
             }
         }
@@ -7408,10 +7914,7 @@
             showToast(merchantMode ? 'Merchant Mode ON' : 'Merchant Mode off');
         }
         function openSeedPhrase() {
-            showToast(
-                'Opening the Minima Security app from Stables will be added in an upcoming test version.\n\nThe Stables community is there to help with questions.',
-                { prose: true }
-            );
+            openModal('seedSecurityComingModal');
             /* MiniDapp: MDS.ui.open("security-app") */
         }
         function toggleCcyPill(el) {
@@ -7569,12 +8072,18 @@
             t.textContent = msg;
             if (o.prose) t.classList.add('toast--prose');
             else t.classList.remove('toast--prose');
+            if (o.centerScreen) t.classList.add('toast--center-screen');
+            else t.classList.remove('toast--center-screen');
+            if (o.tone === 'amber') t.classList.add('toast--amber');
+            else t.classList.remove('toast--amber');
             t.style.display = 'block';
             clearTimeout(toastTimer);
             const dur = typeof o.durationMs === 'number' ? o.durationMs : o.prose ? 5500 : 3000;
             toastTimer = setTimeout(() => {
                 t.style.display = 'none';
                 t.classList.remove('toast--prose');
+                t.classList.remove('toast--center-screen');
+                t.classList.remove('toast--amber');
             }, dur);
         }
 
@@ -7583,14 +8092,15 @@
                 const intent = localStorage.getItem('stables_showcase_install_intent_v1');
                 if (intent && typeof MDS !== 'undefined') {
                     localStorage.removeItem('stables_showcase_install_intent_v1');
-                    showToast('Wow! You are quick. Stables is installed on my node. Talk to StablesAgent in any language. UI is plain English for now.');
+                    showToast('Wow! You are quick. Stables is installed on your node. Talk to StablesAgent in any language. UI is plain English for now.');
                 }
             } catch (_) { }
         })();
 
         // Hash routing
         function routeFromHash() {
-            const h = location.hash.replace('#', '');
+            let h = location.hash.replace('#', '');
+            if (h === 'shop-ambassador') h = 'my-shop';
             if (h && PAGES.includes(h)) navigate(h);
         }
         function runBootStep(name, fn) {
@@ -7611,6 +8121,11 @@
         runBootStep('syncWalletCurrenciesFromSettings', syncWalletCurrenciesFromSettings);
         runBootStep('initCouncilMemberProfile', initCouncilMemberProfile);
         runBootStep('syncAppUpdatesSection', syncAppUpdatesSection);
+        runBootStep('refreshWiniwaSpotFromMexc', refreshWiniwaSpotFromMexc);
+        (function scheduleWiniwaPricePoll() {
+            const ms = Number((window.STABLES_CONFIG || {}).WINIWA_PRICE_POLL_MS) || 120000;
+            if (ms >= 30000) setInterval(() => { try { refreshWiniwaSpotFromMexc(); } catch (_) {} }, ms);
+        })();
         runBootStep('updateGlobalUI:final', updateGlobalUI);
         runBootStep('updateTreasuryCountdown', updateTreasuryCountdown);
         setInterval(updateTreasuryCountdown, 60000);

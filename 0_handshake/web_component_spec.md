@@ -1,5 +1,5 @@
 # STABLES WEB COMPONENT SPECIFICATION
-**Version**: 1.1  
+**Version**: 1.3  
 **Status**: MANDATORY — Load this file whenever building or editing any Stables web surface.  
 **Shared CSS**: `1_development/stream_3_governance/task_x_agent_node/stables.css`  
 **Reference implementation**: `https://stablescouncil.github.io/`  
@@ -22,6 +22,19 @@ Every Stables web page MUST:
 3. Use only the design tokens defined in `stables.css` (e.g. `var(--accent)`). Never hardcode a colour that has a token.
 4. Load Inter from Google Fonts (already imported in `stables.css`).
 
+### MiniDapp exception (shipped shell)
+
+The **Stables MiniDapp** (`1_development/stream_1_app/prod_stables_app_v*/index.html`) embeds a large **`<style>`** block instead of linking `stables.css` for the full shell. That block is the **single executable source** for in-app layout rules (e.g. `.stitle-row`, `.app-page-header`, wallet/council cards). **Do not** duplicate competing rules in one-off files or per-page overrides for the same selectors.
+
+| Role | File |
+|------|------|
+| **Law** (what to build, class contracts) | This spec (`web_component_spec.md`) |
+| **Inventory** (every page + sections) | `0_handshake/app_ui_inventory.md` |
+| **Executable CSS** (what the zip ships) | Active `prod_stables_app_*/index.html` `<style>` |
+| **SPA mirror** (migration target) | `stables_spa` shared CSS / `SectionWithCaption` |
+
+When you change a global pattern (e.g. title row alignment), change the **one** rule in the executable `<style>` (and mirror in `stables_spa` until unified). **Never** fix the same thing page-by-page with inline or local overrides.
+
 ---
 
 ## MINIDAPP / IN-APP SCREEN HEADER (prod Stables app)
@@ -43,14 +56,30 @@ Every Stables web page MUST:
 
 ## MINIDAPP SECTION + BOX + STABLESAGENT (prod Stables app)
 
-**Rule**: Each logical block is a **glass card first**, with the **section label + StablesAgent** as a **caption row underneath** (dedicated area below the card).
+**Rule**: Each logical block is a **section label + StablesAgent** row **immediately above** its **glass card** (no extra gap between the title row and the card).
 
-1. **Wrapper**: `div.app-section.app-section--caption-bottom` around the pair. Uses `flex-direction: column-reverse` so **DOM order stays** `stitle-row` then card, but **visually** the card is on top and the caption row below. After a page header, add `app-section--caption-bottom--mt20` on the wrapper instead of `mt20` on `stitle-row`.
-2. **Title row**: `div.stitle-row` inside the wrapper. Inside it: `div.stitle` (label text) **and** `button.agent-mini-btn` with `onclick="openAgentExplain('…')"` and `<img src="agent.png" alt="StablesAgent">`, side by side (title flexes; agent stays at the end of the caption row).
-3. **Content box**: `div.card` (or `.ex-card`, `.xwm-card`, `.cp-card`, `.lp-card`, `.treasury-snap-card`, etc.) **plus** `app-section-card`. **Do not** put `agent-mini-btn` inside the card when a section title exists in the caption row.
-4. **In-card captions** (e.g. proposal / voting cards): `div.stitle-row.stitle-row--in-card` **last inside the box** (footer), with `div.stitle-inline` (or `stitle-inline--sm`) plus the same `agent-mini-btn`.
+1. **Wrapper**: `div.app-section.app-section--caption-bottom` around the pair. Uses `flex-direction: column` and **`gap: 0`** so the title row sits flush above the card. **DOM order**: `stitle-row` (or `pool-section-title` for invest) first, then the card. After a page header, add `app-section--caption-bottom--mt20` on the wrapper instead of `mt20` on `stitle-row`.
+2. **Title row**: `div.stitle-row` inside the wrapper. Inside it: `div.stitle` (label text) **and** `button.agent-mini-btn` with `onclick="openAgentExplain('…')"` and `<img src="agent.png" alt="StablesAgent">`, side by side (title flexes; agent stays at the end of the row). **Alignment**: the row uses `align-items: flex-end` so label and agent sit on the **bottom** of that row’s band—**do not** override per screen.
+3. **Content box**: `div.card` (or `.ex-card`, `.xwm-card`, `.cp-card`, `.lp-card`, `.treasury-snap-card`, etc.) **plus** `app-section-card`. **Do not** put `agent-mini-btn` inside the card when a section title exists in the outer row.
+4. **In-card titles** (e.g. proposal / voting cards): `div.stitle-row.stitle-row--in-card` **first inside the box**, with `div.stitle-inline` (or `stitle-inline--sm`) plus the same `agent-mini-btn`; separator is a **bottom** border under the title row, not a gap above the card.
 
 **Reference**: `1_development/stream_1_app/prod_stables_app_v0.2.10/index.html` (`.app-section--caption-bottom`, `.stitle-row`, `.agent-mini-btn`, `.app-section-card` in the page `<style>` block).
+
+---
+
+## WELCOME MODAL — SHOWCASE PREVIEW NOTICE (MiniDapp step 0)
+
+**Rule**: The first welcome screen’s showcase paragraph uses the **standard showcase-intro format** only (no ad-hoc font sizes or colours on that block).
+
+| Piece | Contract |
+|-------|----------|
+| **Class** | `welcome-modal-showcase-intro` on the text container (`#welcomeShowcaseIntroBody` in `prod_stables_app_v0.2.10/index.html`). |
+| **Type** | `font-size: var(--fz-showcase-intro)` where `--fz-showcase-intro: calc(var(--fz-body) + 1px)`; `line-height: var(--lh-showcase-intro)` (1.55); `font-weight: 600`. |
+| **Colour** | `#fbbf24` (amber; same emphasis family as Vault-key safety modals). |
+| **Links** | `#welcomeShowcaseIntroBody a`: `color: var(--c)`, underline, inherit weight. |
+| **Paragraphs** | Use `<p>` per sentence or thought inside `#welcomeShowcaseIntroBody`; spacing via `#welcomeShowcaseIntroBody p` / `:last-child` in executable CSS. |
+
+**Executable source**: the `:root` tokens and rules live in the MiniDapp `<style>` block (`index.html`); do not duplicate elsewhere.
 
 ---
 
@@ -285,3 +314,12 @@ RTL pages: `<html lang="ar" dir="rtl">`. RTL rules are already in `stables.css`.
 | Favicon | `https://stablescouncil.github.io/favicon.png` (remote) |
 | Master symbol | `2_current/stream_1_app/prod_brand_masters/1_symbol_current.png` |
 | Reference site | `https://stablescouncil.github.io/` |
+
+---
+
+## Document history
+
+| Version | Change |
+|---------|--------|
+| 1.3 | MiniDapp welcome step 0: `.welcome-modal-showcase-intro` + `--fz-showcase-intro` / `--lh-showcase-intro` documented. |
+| 1.2 | MiniDapp section + title-row alignment; inventory pointer. |

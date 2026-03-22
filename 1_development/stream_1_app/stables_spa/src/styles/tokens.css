@@ -1,5 +1,5 @@
 /**
- * Stables design tokens — align with 0_handshake (live site reference).
+ * Stables design tokens — align with prod MiniDapp :root / 0_handshake.
  * Single source for new UI; extend here, not scattered hex values.
  */
 :root {
@@ -15,4 +15,23 @@
   --border-subtle: rgba(103, 232, 249, 0.12);
   --radius-card: 16px;
   --font-ui: 'Inter', system-ui, sans-serif;
+
+  /* Semantic aliases (legacy MiniDapp names — used by wallet.css) */
+  --t: #e6edf3;
+  --m: #9fb0c0;
+  --c: #67e8f9;
+  --pu: #a78bfa;
+  --am: #fbbf24;
+  --gr: #34d399;
+  --rd: #fb7185;
+  --rs: 12px;
+
+  --fz-label: 12px;
+  --lh-label: 1.35;
+  --fz-ui: 14px;
+  --lh-ui: 1.35;
+  --fz-caption: 13px;
+  --lh-caption: 1.5;
+  --fz-body: 15px;
+  --lh-body: 1.55;
 }

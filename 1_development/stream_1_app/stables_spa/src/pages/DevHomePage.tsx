@@ -16,7 +16,7 @@ export function DevHomePage() {
         cardClassName="cb-pad"
       >
         <p style={{ margin: 0, color: 'var(--text-secondary)', fontWeight: 600, lineHeight: 1.55 }}>
-          Content goes inside the card. The title row and StablesAgent control render below (caption pattern).
+          Content goes inside the card. The title row and StablesAgent sit directly above the card (no extra gap).
         </p>
       </SectionWithCaption>
     </>

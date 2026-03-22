@@ -10,7 +10,7 @@ function renderInvestment(ctx) {
   const investOptions = [
     { key: 'xwiniwa', label: 'xWiniwa Position', desc: 'Equity-like position, no fixed yield.', qty: state.balances.x, price: state.prices.xMinimaUSD, lev: state.metrics.leverageX },
     { key: 'coverage', label: 'Coverage Fund', desc: 'cUSD tokens, earn fees with conversion risk.', qty: 0, price: 1, lev: null },
-    { key: 'lp', label: 'Winiwa/xWiniwa LP', desc: 'Liquidity Provider pair (Planned feature)', qty: 0, price: 0, lev: null },
+    { key: 'lp', label: 'Liquidity Fund', desc: 'Winiwa/xWiniwa LP pair (planned)', qty: 0, price: 0, lev: null },
   ];
 
   const totalValue = investOptions.reduce((a, r) => a + (r.qty * r.price), 0);

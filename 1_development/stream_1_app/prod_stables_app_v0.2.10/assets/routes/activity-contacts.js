@@ -12,6 +12,12 @@
   const BACKUP_FIRST_SEEN_KEY = CFG.BACKUP_FIRST_SEEN_KEY || 'stables_backup_first_seen_ts';
   const SEED_PHRASE_SAVED_CONFIRMED_KEY = CFG.SEED_PHRASE_SAVED_CONFIRMED_KEY || 'stables_seedphrase_saved_confirmed_v1';
 
+  if (CFG.RESET_VAULT_KEY_CONFIRMATION_ON_EACH_LOAD) {
+    try {
+      localStorage.removeItem(SEED_PHRASE_SAVED_CONFIRMED_KEY);
+    } catch (_) {}
+  }
+
   const DEMO_CONTACTS = [
     { name: 'Alex', category: 'Friend', address: 'MxA1...9f21', city: 'Amsterdam, NL' },
     { name: 'Maria', category: 'Friend', address: 'MxB2...3ca8', city: 'Lisbon, PT' },
@@ -822,9 +828,82 @@
   };
 
   let seedModalWaitAttempts = 0;
-  window.scheduleSeedPhraseSecurityModal = function () {
+  let vaultSecurityCountdownInterval = null;
+  let vaultSecurityCountdownTimeout = null;
+  /** True only when `scheduleSeedPhraseSecurityModal` runs right after the post-welcome countdown. */
+  let vaultSecurityModalAfterWelcomeCountdown = false;
+
+  function clearVaultSecurityCountdownUI() {
+    if (vaultSecurityCountdownInterval) {
+      clearInterval(vaultSecurityCountdownInterval);
+      vaultSecurityCountdownInterval = null;
+    }
+    if (vaultSecurityCountdownTimeout) {
+      clearTimeout(vaultSecurityCountdownTimeout);
+      vaultSecurityCountdownTimeout = null;
+    }
+    const banner = document.getElementById('vaultSecurityReminderCountdown');
+    if (banner && banner.parentNode) banner.parentNode.removeChild(banner);
+  }
+
+  /**
+   * After welcome closes: show a countdown, then open the Vault backup modal.
+   * Delay from STABLES_CONFIG.VAULT_SECURITY_MODAL_DELAY_MS (default 15s).
+   */
+  window.startVaultSecurityModalCountdown = function () {
     try {
       if (localStorage.getItem(SEED_PHRASE_SAVED_CONFIRMED_KEY) === '1') return;
+    } catch (_) {}
+    clearVaultSecurityCountdownUI();
+    const delayMs = Math.max(
+      3000,
+      Number((window.STABLES_CONFIG || {}).VAULT_SECURITY_MODAL_DELAY_MS) || 15000
+    );
+    const totalSec = Math.max(1, Math.ceil(delayMs / 1000));
+
+    const el = document.createElement('div');
+    el.id = 'vaultSecurityReminderCountdown';
+    el.setAttribute('role', 'status');
+    el.setAttribute('aria-live', 'polite');
+    el.style.cssText =
+      'position:fixed;left:50%;bottom:calc(var(--nh,64px) + 88px);transform:translateX(-50%);z-index:400;' +
+      'padding:10px 18px;border-radius:14px;background:rgba(16,24,38,.96);border:1px solid rgba(251,191,36,.4);' +
+      'color:#fbbf24;font-size:13px;font-weight:800;box-shadow:0 8px 28px rgba(0,0,0,.4);pointer-events:none;' +
+      'max-width:min(360px,92vw);text-align:center;line-height:1.35';
+    el.textContent = `Vault key backup check in ${totalSec}s…`;
+    document.body.appendChild(el);
+
+    const endAt = Date.now() + delayMs;
+    vaultSecurityCountdownInterval = setInterval(() => {
+      const left = Math.max(0, Math.ceil((endAt - Date.now()) / 1000));
+      if (!document.getElementById('vaultSecurityReminderCountdown')) {
+        clearInterval(vaultSecurityCountdownInterval);
+        vaultSecurityCountdownInterval = null;
+        return;
+      }
+      if (left <= 0) {
+        clearInterval(vaultSecurityCountdownInterval);
+        vaultSecurityCountdownInterval = null;
+        return;
+      }
+      el.textContent = `Vault key backup check in ${left}s…`;
+    }, 250);
+
+    vaultSecurityCountdownTimeout = setTimeout(() => {
+      clearVaultSecurityCountdownUI();
+      vaultSecurityModalAfterWelcomeCountdown = true;
+      if (typeof window.scheduleSeedPhraseSecurityModal === 'function') {
+        window.scheduleSeedPhraseSecurityModal();
+      }
+    }, delayMs);
+  };
+
+  window.scheduleSeedPhraseSecurityModal = function () {
+    try {
+      if (localStorage.getItem(SEED_PHRASE_SAVED_CONFIRMED_KEY) === '1') {
+        vaultSecurityModalAfterWelcomeCountdown = false;
+        return;
+      }
     } catch (_) {}
     const welcome = document.getElementById('welcomeSetupModal');
     if (welcome && welcome.classList.contains('open')) return;
@@ -842,7 +921,23 @@
     }
     seedModalWaitAttempts = 0;
     const modal = document.getElementById('seedPhraseSecurityModal');
-    if (!modal || modal.classList.contains('open')) return;
+    if (!modal || modal.classList.contains('open')) {
+      vaultSecurityModalAfterWelcomeCountdown = false;
+      return;
+    }
+    const meta = document.getElementById('vaultBackupReminderMeta');
+    if (meta) {
+      if (vaultSecurityModalAfterWelcomeCountdown) {
+        vaultSecurityModalAfterWelcomeCountdown = false;
+        const delayMs = Number((window.STABLES_CONFIG || {}).VAULT_SECURITY_MODAL_DELAY_MS) || 15000;
+        const sec = Math.max(1, Math.round(delayMs / 1000));
+        meta.textContent = `This reminder was scheduled ${sec} seconds after you closed the welcome flow so you could use the app first.`;
+        meta.style.display = '';
+      } else {
+        meta.textContent = '';
+        meta.style.display = 'none';
+      }
+    }
     modal.classList.add('open');
   };
 
@@ -957,6 +1052,10 @@
   }
 
   window.closeWelcomeSetup = function () {
+    if (typeof closeAppLangMenus === 'function') closeAppLangMenus();
+    try {
+      sessionStorage.removeItem('stables_welcome_showcase_route_v1');
+    } catch (_) {}
     const modal = document.getElementById('welcomeSetupModal');
     if (modal) modal.classList.remove('open');
     syncWelcomeModalFabAccess();
@@ -965,17 +1064,23 @@
       if (typeof window.checkBackupReminder === 'function') window.checkBackupReminder();
     }, 400);
     setTimeout(() => {
-      if (typeof window.scheduleSeedPhraseSecurityModal === 'function') window.scheduleSeedPhraseSecurityModal();
-    }, 1800);
+      if (typeof window.startVaultSecurityModalCountdown === 'function') {
+        window.startVaultSecurityModalCountdown();
+      } else if (typeof window.scheduleSeedPhraseSecurityModal === 'function') {
+        window.scheduleSeedPhraseSecurityModal();
+      }
+    }, 300);
 
-    // Reset steps when closing.
+    // Reset steps when closing (next open starts at showcase intro unless a flow sets another step).
+    const stepShowcaseIntro = document.getElementById('welcomeStepShowcaseIntro');
     const stepLang = document.getElementById('welcomeStepLang');
     const stepCurrencies = document.getElementById('welcomeStepCurrencies');
     const stepTourChoice = document.getElementById('welcomeStepTourChoice');
     const stepNerdTrack = document.getElementById('welcomeStepNerdTrack');
     const stepShowcaseMsg = document.getElementById('welcomeStepShowcaseMsg');
     const stepTourUseCase = document.getElementById('welcomeStepTourUseCase');
-    if (stepLang) stepLang.style.display = '';
+    if (stepShowcaseIntro) stepShowcaseIntro.style.display = '';
+    if (stepLang) stepLang.style.display = 'none';
     if (stepCurrencies) stepCurrencies.style.display = 'none';
     if (stepTourChoice) stepTourChoice.style.display = 'none';
     if (stepNerdTrack) stepNerdTrack.style.display = 'none';
@@ -984,12 +1089,14 @@
   };
 
   function showWelcomeStep(step) {
+    const stepShowcaseIntro = document.getElementById('welcomeStepShowcaseIntro');
     const stepLang = document.getElementById('welcomeStepLang');
     const stepCurrencies = document.getElementById('welcomeStepCurrencies');
     const stepTourChoice = document.getElementById('welcomeStepTourChoice');
     const stepNerdTrack = document.getElementById('welcomeStepNerdTrack');
     const stepShowcaseMsg = document.getElementById('welcomeStepShowcaseMsg');
     const stepTourUseCase = document.getElementById('welcomeStepTourUseCase');
+    if (stepShowcaseIntro) stepShowcaseIntro.style.display = step === 'showcaseIntro' ? '' : 'none';
     if (stepLang) stepLang.style.display = step === 'lang' ? '' : 'none';
     if (stepCurrencies) stepCurrencies.style.display = step === 'currencies' ? '' : 'none';
     if (stepTourChoice) stepTourChoice.style.display = step === 'tourChoice' ? '' : 'none';
@@ -997,6 +1104,10 @@
     if (stepShowcaseMsg) stepShowcaseMsg.style.display = step === 'showcaseMsg' ? '' : 'none';
     if (stepTourUseCase) stepTourUseCase.style.display = step === 'tourUseCase' ? '' : 'none';
   }
+
+  window.goWelcomeFromShowcaseIntro = function () {
+    showWelcomeStep('lang');
+  };
 
   window.goWelcomeToTourChoice = function () {
     showWelcomeStep('tourChoice');
@@ -1023,8 +1134,41 @@
 
     if (typeof window.setPrimary === 'function') window.setPrimary(primary, true);
 
-    // Continue inside the same modal to show the showcase disclaimer.
-    showWelcomeStep('showcaseMsg');
+    let showcaseRoute = null;
+    try {
+      showcaseRoute = sessionStorage.getItem('stables_welcome_showcase_route_v1');
+      sessionStorage.removeItem('stables_welcome_showcase_route_v1');
+    } catch (_) {}
+
+    if (showcaseRoute === 'node') {
+      try {
+        localStorage.setItem('stables_showcase_install_intent_v1', '1');
+      } catch (_) {}
+    }
+
+    if (typeof window.closeWelcomeSetup === 'function') window.closeWelcomeSetup();
+
+    if (showcaseRoute === 'node') {
+      const url = window.STABLES_CONFIG?.MDS_ZIP_URL;
+      if (!url) {
+        if (typeof window.showToast === 'function') {
+          window.showToast('Download link not set', 'Ask Charles to set MDS_ZIP_URL in runtime-config.js.');
+        }
+      } else {
+        window.open(url, '_blank');
+      }
+    }
+  };
+
+  /** After showcase web/node choice: remember route and open currency step. */
+  window.goWelcomeFromShowcaseRoute = function (route) {
+    const r = String(route || '').trim().toLowerCase() === 'node' ? 'node' : 'web';
+    try {
+      sessionStorage.setItem('stables_welcome_showcase_route_v1', r);
+    } catch (_) {}
+    showWelcomeStep('currencies');
+    if (typeof window.updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
+    if (typeof window.updateWelcomePrimaryOptions === 'function') window.updateWelcomePrimaryOptions();
   };
 
   window.updateWelcomeLanguage = function () {
@@ -1035,11 +1179,13 @@
 
     const elTitle = document.getElementById('welcomeTitle');
     const elCongrats = document.getElementById('welcomeCongrats');
-    const elWelcomeShowcaseBanner = document.getElementById('welcomeShowcaseBanner');
+    const elShowcaseIntroBody = document.getElementById('welcomeShowcaseIntroBody');
+    const elWelcomeUnderstandBtn = document.getElementById('welcomeUnderstandBtn');
     const elIntroBody = document.getElementById('welcomeIntroBody');
     const elShowcase = document.getElementById('welcomeShowcaseCopy');
     const elTourChoiceHead = document.getElementById('welcomeTourChoiceHead');
     const elTourMerchantBtn = document.getElementById('welcomeTourMerchantBtn');
+    const elTourShopAmbassadorBtn = document.getElementById('welcomeTourShopAmbassadorBtn');
     const elTourPersonBtn = document.getElementById('welcomeTourPersonBtn');
     const elTourNerdBtn = document.getElementById('welcomeTourNerdBtn');
     const elExploreBtn = document.getElementById('welcomeExploreBtn');
@@ -1051,39 +1197,46 @@
     const elShowcaseNodeBtn = document.getElementById('welcomeShowcaseNodeBtn');
     // This element may not exist after copy/layout updates.
     const elShowcaseFinalMsg = document.getElementById('welcomeShowcaseFinalMsg');
+    const elWelcomeCurrencyIntro = document.getElementById('welcomeCurrencyIntro');
 
     const elNerdTrackTitle = document.getElementById('welcomeNerdTrackTitle');
     const elNerdTrackBody = document.getElementById('welcomeNerdTrackBody');
     const elNerdTrackTechBtn = document.getElementById('welcomeNerdTrackTechBtn');
     const elNerdTrackFinanceBtn = document.getElementById('welcomeNerdTrackFinanceBtn');
 
-    if (!elTitle || !elCongrats || !elIntroBody) return;
-
     const copy = {
       en: {
         congrats: 'Congratulations on becoming your own bank.',
-        /** Short, visible notice: showcase only, not a working demo. */
-        welcomeBanner: 'Showcase preview only. This is not a functioning demo or a finished product.',
+        /** Step 0 only: showcase preview + Telegram (HTML safe, static). */
+        welcomeShowcaseIntroHtml:
+          '<p>The following is a first Showcase preview of the Stables dapp being built.</p>' +
+          '<p>The current objective is to share with the Stables community the direction the dev team is currently taking and get feedback from the community.</p>' +
+          '<p>The Stables community can be reached at <a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer">t.me/stablescommunity</a>.</p>',
+        showcaseIntroUnderstandBtn: 'I understand',
         title: '',
         introParas: [
           'Being your own bank brings great possibilities, and real responsibilities too.',
-          'Don’t worry: we are a community that supports each other. I will be able to find all the information I need in order to set my bank securely.'
+          'Don’t worry: we are a community that supports each other. You will be able to find all the information you need in order to set your bank securely.'
         ],
         showcase:
-          'A guided demo tour will be added in a coming version.\n\nFor now I can keep exploring this preview in the web app, or install it as a MiniDapp on my Minima node.',
-        tourChoiceHint: 'Pick one path for the StablesAgent guided tour.',
+          'A guided demo tour will be added in a coming version.\n\nFor now you can keep exploring this preview in the web app, or access the MiniDapp package for your node.',
+        currencySetupIntro:
+          'Let’s just set up your currency of choice now, so that your bank is already personalised.',
+        tourChoiceHint: 'Pick your path for the StablesAgent guided tour.',
         tourMerchantBtn: 'I\'m a merchant. I want to know how this will streamline my business process.',
+        tourShopAmbassadorBtn:
+          'I want to become a shop ambassador and explore what the earning opportunities are.',
         tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
         tourNerdBtn: 'I\'m a nerd. I want to understand how this holds together.',
-        nerdTrackTitle: 'Pick my nerd deep dive',
-        nerdTrackBody: 'Choose what I want to inspect first in this demo.',
+        nerdTrackTitle: 'Pick your nerd deep dive',
+        nerdTrackBody: 'Choose what you want to inspect first in this demo.',
         nerdTrackTechBtn: 'Tech + blockchain',
         nerdTrackFinanceBtn: 'Financial side: how Stables is structured and ensures the peg',
         exploreBtn: 'I\'m a viewer. I want to look around.',
-        showcaseHereBtn: 'Continue in this web app',
-        showcaseNodeBtn: 'MiniDapp package for my node',
-        showcaseFinalMsg: 'See you back on my node.',
-        useTitle: 'How will I mainly use the app?',
+        showcaseHereBtn: 'Keep exploring in this web app',
+        showcaseNodeBtn: 'Access MiniDapp package for my node',
+        showcaseFinalMsg: 'See you back on your node.',
+        useTitle: 'How will you mainly use the app?',
         usePrompt: 'Personal or merchant?',
         personalBtn: 'Personal',
         merchantBtn: 'Merchant'
@@ -1091,11 +1244,20 @@
     };
 
     const c = copy.en;
-    if (c.congrats) elCongrats.textContent = c.congrats;
-    if (elWelcomeShowcaseBanner) {
-      elWelcomeShowcaseBanner.textContent = c.welcomeBanner || '';
-      elWelcomeShowcaseBanner.style.display = c.welcomeBanner ? '' : 'none';
+    if (elShowcaseIntroBody) {
+      const introHtml = c.welcomeShowcaseIntroHtml || '';
+      if (introHtml) elShowcaseIntroBody.innerHTML = introHtml;
+      else elShowcaseIntroBody.textContent = '';
     }
+    if (elWelcomeUnderstandBtn && c.showcaseIntroUnderstandBtn) {
+      elWelcomeUnderstandBtn.textContent = c.showcaseIntroUnderstandBtn;
+    }
+    if (elWelcomeCurrencyIntro && c.currencySetupIntro) {
+      elWelcomeCurrencyIntro.textContent = c.currencySetupIntro;
+    }
+
+    if (!elTitle || !elCongrats || !elIntroBody) return;
+    if (c.congrats) elCongrats.textContent = c.congrats;
     const welcomeTitleText = (c.title != null && String(c.title).trim()) || '';
     if (welcomeTitleText) {
       elTitle.style.display = '';
@@ -1116,6 +1278,7 @@
     if (elTourChoiceHead) elTourChoiceHead.textContent = c.tourChoiceHint || '';
     if (elExploreBtn) elExploreBtn.textContent = c.exploreBtn;
     if (elTourMerchantBtn) elTourMerchantBtn.textContent = c.tourMerchantBtn;
+    if (elTourShopAmbassadorBtn) elTourShopAmbassadorBtn.textContent = c.tourShopAmbassadorBtn;
     if (elTourPersonBtn) elTourPersonBtn.textContent = c.tourPersonBtn;
     if (elTourNerdBtn) elTourNerdBtn.textContent = c.tourNerdBtn;
     if (elUseTitle) elUseTitle.textContent = c.useTitle;
@@ -1140,14 +1303,14 @@
       return;
     }
 
-    // Merchant, person, explore: go straight to the currency setup.
-    showWelcomeStep('currencies');
+    // Merchant, shop/ambassador, person, explore: web vs node, then currency setup.
+    showWelcomeStep('showcaseMsg');
   };
 
   window.setWelcomeNerdTrack = function (track) {
     const t = String(track || '').trim();
     localStorage.setItem('stables_welcome_nerd_track_v1', t);
-    showWelcomeStep('currencies');
+    showWelcomeStep('showcaseMsg');
   };
 
   window.openStablesMdsZipFromWelcome = function () {
@@ -1214,7 +1377,7 @@
     const modal = document.getElementById('welcomeSetupModal');
     if (modal) modal.classList.add('open');
     syncWelcomeModalFabAccess();
-    showWelcomeStep('lang');
+    showWelcomeStep('showcaseIntro');
     if (typeof window.updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
   }, 700);
 })();

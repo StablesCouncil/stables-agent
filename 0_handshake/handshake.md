@@ -150,6 +150,11 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 *(I have read and locked the above rules into my active state. I will consult the specifications before every turn.)*
 
 ---
+## MiniDapp UI: single executable + spec + inventory
+- **Patterns (law)**: `0_handshake/web_component_spec.md` defines reusable blocks (title row + agent, section + card, headers). All models must follow it; do not invent parallel class systems.
+- **Page map**: `0_handshake/app_ui_inventory.md` lists every in-app page and its sections. **Update this file** whenever a destination or major block is added or removed.
+- **Executable CSS (shipped shell)**: Layout and component rules for the live MiniDapp live in the **`<style>` block** of the active `1_development/stream_1_app/prod_stables_app_v*/index.html`. Global decisions (e.g. `.stitle-row` alignment) are **one rule there**—not page-by-page exceptions. The React SPA (`stables_spa`) mirrors the same rules until a single build replaces the monolith.
+
 ## MiniDapp typography baseline (v0.2.10+)
 - **Do not use body UI copy below 13px** in the main MiniDapp shell (`index.html`). The `.xs` utility class is the smallest tier and is set to **13px**; `.sm` is **14px**. Inline styles that were **11px** were raised to **13px** for consistency.
 - **Primary explanatory sentences** (for example Council communications and app version banners) should use **14px** where readability matters, not `.xs` alone.

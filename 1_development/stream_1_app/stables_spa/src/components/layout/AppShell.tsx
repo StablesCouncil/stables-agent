@@ -4,6 +4,7 @@ import './AppShell.css'
 const nav: { to: string; label: string; end?: boolean }[] = [
   { to: '/', label: 'Home', end: true },
   { to: '/wallet', label: 'Wallet' },
+  { to: '/activity', label: 'Activity' },
   { to: '/council', label: 'Council' },
   { to: '/settings', label: 'Settings' },
 ]
