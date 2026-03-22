@@ -177,7 +177,7 @@ function updateTop() {
     priceChangeHtml = ' <span style="color: #ef4444; font-size: 14px;">▼</span>';
   }
 
-  $('minimaPrice').innerHTML = price > 0 ? `$${price.toFixed(5)}${priceChangeHtml}` : '$—';
+  $('minimaPrice').innerHTML = price > 0 ? `$${price.toFixed(5)}${priceChangeHtml}` : '\u2026';
 
   // Display wallet address (truncated)
   const addr = state.wallet.address || 'Loading...';
@@ -307,7 +307,7 @@ function safeRender() {
       </div>
     `;
     $('reloadBtn').onclick = () => location.reload();
-    showToast('Error', 'UI exception — see console.');
+    showToast('Error', 'UI exception - see console.');
   }
 }
 

@@ -1,4 +1,4 @@
-# Stables — Documentation
+# Stables - Documentation
 
 Stables is an experimental, protocol-focused research project built on Winiwa.
 The project explores minting, burning, oracle, and collateralization mechanisms

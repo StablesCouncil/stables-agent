@@ -6,6 +6,7 @@ This file is the single source of truth for all official Stables Council account
 *   **Website:** [stablescouncil.github.io](https://stablescouncil.github.io)
 *   **Discord:** [Stables Discord Server](https://discord.gg/cFq4hHAc)
 *   **Telegram (Community):** [t.me/stablescommunity](https://t.me/stablescommunity)
+*   **Telegram (Security / Vault key support):** [t.me/StablesSecuritySupport](https://t.me/StablesSecuritySupport) (invite must match `SECURITY_SUPPORT_TELEGRAM_URL` in the MiniDapp `runtime-config.js`)
 *   **Telegram (Council Official):** [t.me/StablesCouncilOfficial](https://t.me/StablesCouncilOfficial)
 
 ## Social Media

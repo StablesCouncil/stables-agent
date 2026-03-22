@@ -10,6 +10,7 @@
   const BACKUP_STORAGE_KEY = CFG.BACKUP_STORAGE_KEY || 'stables_last_config_backup_ts';
   const BACKUP_REMINDER_HOURS = CFG.BACKUP_REMINDER_HOURS || 48;
   const BACKUP_FIRST_SEEN_KEY = CFG.BACKUP_FIRST_SEEN_KEY || 'stables_backup_first_seen_ts';
+  const SEED_PHRASE_SAVED_CONFIRMED_KEY = CFG.SEED_PHRASE_SAVED_CONFIRMED_KEY || 'stables_seedphrase_saved_confirmed_v1';
 
   const DEMO_CONTACTS = [
     { name: 'Alex', category: 'Friend', address: 'MxA1...9f21', city: 'Amsterdam, NL' },
@@ -78,6 +79,9 @@
   const hiddenShops = new Set(JSON.parse(localStorage.getItem(HIDDEN_SHOPS_KEY) || '[]'));
   const contactNotes = JSON.parse(localStorage.getItem(CONTACT_NOTES_KEY) || '{}');
   const txNotes = JSON.parse(localStorage.getItem(TX_NOTES_KEY) || '{}');
+
+  /** Parsed JSON waiting for user to choose Replace vs Combine in the import modal. */
+  let pendingConfigImportPayload = null;
 
   function persistSuspicious() { localStorage.setItem(SUSPICIOUS_TX_KEY, JSON.stringify(Array.from(suspiciousTx))); }
   function persistHiddenTx() { localStorage.setItem(HIDDEN_TX_KEY, JSON.stringify(Array.from(deletedTx))); }
@@ -582,6 +586,139 @@
     document.getElementById('agentActionModal').classList.add('open');
   };
 
+  function normalizeConfigImportPayload(raw) {
+    if (!raw || typeof raw !== 'object') return null;
+    const keys = ['notes', 'txNotes', 'suspicious', 'softHiddenTx', 'deletedTx', 'hiddenShops'];
+    const hasSomething = keys.some(k => raw[k] != null);
+    if (!hasSomething) return null;
+    const notesOk = raw.notes && typeof raw.notes === 'object' && !Array.isArray(raw.notes);
+    const txOk = raw.txNotes && typeof raw.txNotes === 'object' && !Array.isArray(raw.txNotes);
+    return {
+      notes: notesOk ? { ...raw.notes } : {},
+      txNotes: txOk ? { ...raw.txNotes } : {},
+      suspicious: Array.isArray(raw.suspicious) ? raw.suspicious.map(String).filter(Boolean) : [],
+      softHiddenTx: Array.isArray(raw.softHiddenTx) ? raw.softHiddenTx.map(String).filter(Boolean) : [],
+      deletedTx: Array.isArray(raw.deletedTx) ? raw.deletedTx.map(String).filter(Boolean) : [],
+      hiddenShops: Array.isArray(raw.hiddenShops) ? raw.hiddenShops.map(String).filter(Boolean) : []
+    };
+  }
+
+  function refreshAfterConfigImport() {
+    window.renderActivity();
+    window.renderWalletRecentActivity();
+    if (typeof window.renderContactsPage === 'function') window.renderContactsPage();
+  }
+
+  window.triggerConfigBackupImport = function () {
+    const input = document.getElementById('configBackupFileInput');
+    if (input) input.click();
+  };
+
+  window.handleConfigBackupFileChosen = function (input) {
+    const f = input && input.files && input.files[0];
+    if (input) input.value = '';
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const raw = JSON.parse(String(reader.result || ''));
+        const norm = normalizeConfigImportPayload(raw);
+        if (!norm) {
+          if (typeof window.showToast === 'function') window.showToast('That file is not a Stables backup.');
+          return;
+        }
+        pendingConfigImportPayload = norm;
+        window.showConfigImportModeModal();
+      } catch (_) {
+        if (typeof window.showToast === 'function') window.showToast('Could not read that file. Use the backup you exported from Stables.');
+      }
+    };
+    reader.onerror = () => {
+      if (typeof window.showToast === 'function') window.showToast('Could not read file.');
+    };
+    reader.readAsText(f);
+  };
+
+  window.cancelPendingConfigImport = function () {
+    pendingConfigImportPayload = null;
+    window.closeAgentActionModal();
+  };
+
+  window.showConfigImportModeModal = function () {
+    if (!pendingConfigImportPayload) return;
+    const titleEl = document.getElementById('agentActionTitle');
+    const bodyEl = document.getElementById('agentActionContent');
+    const modal = document.getElementById('agentActionModal');
+    if (!titleEl || !bodyEl || !modal) return;
+    titleEl.textContent = 'Import preferences';
+    const titleRight = document.getElementById('agentActionTitleRight');
+    if (titleRight) titleRight.innerHTML = '';
+    bodyEl.innerHTML =
+      '<div class="xs mu" style="margin-bottom:12px;line-height:1.55">Choose how to use this file. Flags, hidden items, and notes will be updated as described below.</div>'
+      + '<div style="padding:12px;border-radius:12px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.18);margin-bottom:10px">'
+      + '<div style="font-size:12px;font-weight:900;color:var(--c);margin-bottom:6px">Replace</div>'
+      + '<div class="xs mu" style="line-height:1.45">Clears the same kinds of data on this device, then loads <strong>only</strong> what is in the file. Use when this device should match the other one exactly.</div>'
+      + '</div>'
+      + '<div style="padding:12px;border-radius:12px;background:rgba(16,24,38,.55);border:1px solid rgba(167,139,250,.22);margin-bottom:14px">'
+      + '<div style="font-size:12px;font-weight:900;color:var(--pu);margin-bottom:6px">Combine</div>'
+      + '<div class="xs mu" style="line-height:1.45"><strong>Flags &amp; hides:</strong> keep everything that is marked on <em>either</em> device. <strong>Notes:</strong> if both have a note for the same item, the <strong>imported</strong> one is kept.</div>'
+      + '</div>'
+      + '<div class="flex gap8" style="flex-wrap:wrap;justify-content:center">'
+      + '<button type="button" class="btn btn-w btn-g" style="flex:1;min-width:140px" onclick="applyPendingConfigImport(\'replace\')">Replace with file</button>'
+      + '<button type="button" class="btn btn-w" style="flex:1;min-width:140px" onclick="applyPendingConfigImport(\'combine\')">Combine with device</button>'
+      + '</div>'
+      + '<div style="text-align:center;margin-top:10px"><button type="button" class="btn" style="width:auto;padding:6px 12px;font-size:12px" onclick="cancelPendingConfigImport()">Cancel</button></div>';
+    modal.classList.add('open');
+  };
+
+  /**
+   * @param {'replace'|'combine'} mode
+   */
+  window.applyPendingConfigImport = function (mode) {
+    if (!pendingConfigImportPayload) return;
+    const p = pendingConfigImportPayload;
+    pendingConfigImportPayload = null;
+    const m = mode === 'combine' ? 'combine' : 'replace';
+
+    if (m === 'replace') {
+      suspiciousTx.clear();
+      p.suspicious.forEach(id => suspiciousTx.add(id));
+      hiddenTx.clear();
+      p.softHiddenTx.forEach(id => hiddenTx.add(id));
+      deletedTx.clear();
+      p.deletedTx.forEach(id => deletedTx.add(id));
+      hiddenShops.clear();
+      p.hiddenShops.forEach(name => hiddenShops.add(name));
+      Object.keys(contactNotes).forEach(k => { delete contactNotes[k]; });
+      Object.assign(contactNotes, p.notes);
+      Object.keys(txNotes).forEach(k => { delete txNotes[k]; });
+      Object.assign(txNotes, p.txNotes);
+    } else {
+      p.suspicious.forEach(id => suspiciousTx.add(id));
+      p.softHiddenTx.forEach(id => hiddenTx.add(id));
+      p.deletedTx.forEach(id => deletedTx.add(id));
+      p.hiddenShops.forEach(name => hiddenShops.add(name));
+      Object.assign(contactNotes, p.notes);
+      Object.assign(txNotes, p.txNotes);
+    }
+
+    persistSuspicious();
+    persistSoftHidden();
+    persistHiddenTx();
+    persistHiddenShops();
+    persistNotes();
+    persistTxNotes();
+    window.closeAgentActionModal();
+    try {
+      localStorage.setItem(BACKUP_STORAGE_KEY, String(Date.now()));
+    } catch (_) {}
+    window.updateBackupStatus();
+    refreshAfterConfigImport();
+    if (typeof window.showToast === 'function') {
+      window.showToast(m === 'replace' ? 'Preferences replaced from file' : 'Preferences merged from file');
+    }
+  };
+
   window.runConfigBackupNow = function () {
     const snapshot = {
       ts: new Date().toISOString(),
@@ -600,7 +737,7 @@
     a.click();
     URL.revokeObjectURL(a.href);
     localStorage.setItem(BACKUP_STORAGE_KEY, String(Date.now()));
-    if (typeof window.showToast === 'function') window.showToast('Local config backup exported');
+    if (typeof window.showToast === 'function') window.showToast('Export saved');
     window.updateBackupStatus();
   };
 
@@ -614,13 +751,12 @@
   };
 
   window.openBackupSettings = function () {
-    if (typeof window.navigate === 'function') window.navigate('settings');
-    const el = document.getElementById('backupStatusLabel');
-    if (el && typeof el.scrollIntoView === 'function') {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    if (typeof window.navigate === 'function') window.navigate('settings-security');
     const modal = document.getElementById('agentActionModal');
     if (modal) modal.classList.remove('open');
+    setTimeout(() => {
+      document.getElementById('settingsSeedPhraseSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 150);
   };
 
   window.checkBackupReminder = function () {
@@ -635,7 +771,9 @@
     const ageMs = now - (ts || firstSeen);
     const overdue = ageMs > (BACKUP_REMINDER_HOURS * 3600000);
     const welcomeOpen = document.getElementById('welcomeSetupModal')?.classList.contains('open');
-    if (welcomeOpen) {
+    const seedOpen = document.getElementById('seedPhraseSecurityModal')?.classList.contains('open');
+    const vaultHelpOpen = document.getElementById('vaultHelpChoiceModal')?.classList.contains('open');
+    if (welcomeOpen || seedOpen || vaultHelpOpen) {
       window.updateBackupStatus();
       return;
     }
@@ -644,18 +782,97 @@
       const bodyEl = document.getElementById('agentActionContent');
       const modal = document.getElementById('agentActionModal');
       if (titleEl && bodyEl && modal) {
-        titleEl.textContent = 'Backup your local config';
+        titleEl.textContent = 'Critical: your Vault key';
         const titleRight = document.getElementById('agentActionTitleRight');
         if (titleRight) titleRight.innerHTML = '';
         bodyEl.innerHTML =
-          '<div class="xs mu" style="margin-bottom:10px">Your personal settings and notes are stored locally. They are not recovered from your seed phrase.</div>'
-          + '<div class="xs mu" style="margin-bottom:14px">Export a backup file now so you can restore your setup later.</div>'
-          + '<div class="flex gap8"><button class="btn btn-w btn-g" style="flex:1" onclick="runConfigBackupNow()">Export backup file</button>'
-          + '<button class="btn" style="flex:1" onclick="openBackupSettings()">Open backup settings</button></div>';
+          '<div style="padding:12px;border-radius:12px;border:1px solid rgba(251,191,36,.42);background:rgba(251,191,36,.09);margin-bottom:12px">'
+          + '<div style="font-size:11px;font-weight:900;color:#fbbf24;margin-bottom:8px;text-transform:uppercase;letter-spacing:.07em">Protect on-chain assets</div>'
+          + '<div class="xs mu" style="line-height:1.55;margin:0">If you lose your <strong style="color:var(--t)">Vault key</strong>, you can lose <strong style="color:var(--t)">everything</strong>. No preference file replaces it: not notes, not hidden lists, not flags.</div>'
+          + '</div>'
+          + '<div class="xs mu" style="margin-bottom:14px;line-height:1.5">Saving labels or hidden lists is handy, but <strong>far less important</strong> than your Vault key. Open Security to check your Vault key; use Export only if you want to copy preferences to another device.</div>'
+          + '<button type="button" class="btn btn-w btn-g" style="width:100%;margin-bottom:10px" onclick="openBackupSettings()">Open Security: Vault key and preferences</button>'
+          + '<div class="xs mu" style="text-align:center"><button type="button" class="btn" style="width:auto;padding:6px 12px;font-size:11px" onclick="runConfigBackupNow()">Export preferences only</button></div>';
         modal.classList.add('open');
       }
     }
     window.updateBackupStatus();
+  };
+
+  /** Populate Settings backup section from STABLES_CONFIG (onchain vs local lists). */
+  window.refreshSettingsBackupCopy = function () {
+    const cfg = window.STABLES_CONFIG || {};
+    const notIn = document.getElementById('settingsNotInExportList');
+    const inExport = document.getElementById('settingsInExportList');
+    if (notIn) {
+      const items = cfg.ONCHAIN_RECOVERED || [];
+      notIn.innerHTML = items.map(x => `<li style="margin:0 0 6px 0">${x}</li>`).join('');
+    }
+    if (inExport) {
+      const items = cfg.LOCAL_CONFIG_ONLY || [];
+      inExport.innerHTML = items.map(x => `<li style="margin:0 0 6px 0">${x}</li>`).join('');
+    }
+    const keysEl = document.getElementById('settingsExportJsonKeysNote');
+    if (keysEl) {
+      keysEl.innerHTML = 'The file is for Stables only. It never contains your Vault key.';
+    }
+  };
+
+  let seedModalWaitAttempts = 0;
+  window.scheduleSeedPhraseSecurityModal = function () {
+    try {
+      if (localStorage.getItem(SEED_PHRASE_SAVED_CONFIRMED_KEY) === '1') return;
+    } catch (_) {}
+    const welcome = document.getElementById('welcomeSetupModal');
+    if (welcome && welcome.classList.contains('open')) return;
+    const agentModal = document.getElementById('agentActionModal');
+    if (agentModal && agentModal.classList.contains('open')) {
+      seedModalWaitAttempts += 1;
+      if (seedModalWaitAttempts < 25) setTimeout(() => window.scheduleSeedPhraseSecurityModal(), 500);
+      return;
+    }
+    const vaultHelpModal = document.getElementById('vaultHelpChoiceModal');
+    if (vaultHelpModal && vaultHelpModal.classList.contains('open')) {
+      seedModalWaitAttempts += 1;
+      if (seedModalWaitAttempts < 25) setTimeout(() => window.scheduleSeedPhraseSecurityModal(), 500);
+      return;
+    }
+    seedModalWaitAttempts = 0;
+    const modal = document.getElementById('seedPhraseSecurityModal');
+    if (!modal || modal.classList.contains('open')) return;
+    modal.classList.add('open');
+  };
+
+  window.closeSeedPhraseSecurityModal = function () {
+    document.getElementById('seedPhraseSecurityModal')?.classList.remove('open');
+  };
+
+  window.confirmSeedPhraseSaved = function () {
+    try {
+      localStorage.setItem(SEED_PHRASE_SAVED_CONFIRMED_KEY, '1');
+    } catch (_) {}
+    window.closeSeedPhraseSecurityModal();
+  };
+
+  /** Legacy no-ops: periodic Vault reminders UI removed; keep names so older bookmarks don’t throw. */
+  window.finishVaultPeriodicReminderChoice = function () {};
+  window.setVaultPeriodicReminderPrefFromSettings = function () {};
+  window.updateVaultReminderSettingsLabel = function () {};
+
+  /** Periodic Vault toasts removed - function kept for callers that still invoke it. */
+  window.maybeShowVaultSoftReminder = function () {};
+
+  window.deferSeedPhraseBackupNow = function () {
+    window.closeSeedPhraseSecurityModal();
+    if (typeof window.navigate === 'function') window.navigate('settings-security');
+    setTimeout(() => {
+      document.getElementById('settingsSeedPhraseSection')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 200);
+  };
+
+  /** Remind me: dismiss only; prompt returns on next visit until user chooses Yes. */
+  window.deferSeedPhraseRemindLater = function () {
+    window.closeSeedPhraseSecurityModal();
   };
 
   window.showStorageScopeInfo = function () {
@@ -729,9 +946,24 @@
     sel.value = next;
   };
 
+  function syncWelcomeModalFabAccess() {
+    try {
+      const open = document.getElementById('welcomeSetupModal')?.classList.contains('open');
+      document.body.classList.toggle('welcome-setup-open', !!open);
+    } catch (_) {}
+  }
+
   window.closeWelcomeSetup = function () {
     const modal = document.getElementById('welcomeSetupModal');
     if (modal) modal.classList.remove('open');
+    syncWelcomeModalFabAccess();
+
+    setTimeout(() => {
+      if (typeof window.checkBackupReminder === 'function') window.checkBackupReminder();
+    }, 400);
+    setTimeout(() => {
+      if (typeof window.scheduleSeedPhraseSecurityModal === 'function') window.scheduleSeedPhraseSecurityModal();
+    }, 1800);
 
     // Reset steps when closing.
     const stepLang = document.getElementById('welcomeStepLang');
@@ -763,8 +995,7 @@
     if (stepTourUseCase) stepTourUseCase.style.display = step === 'tourUseCase' ? '' : 'none';
   }
 
-  window.goWelcomeToCurrencies = function () {
-    // In this demo flow, we show guided tour choice first.
+  window.goWelcomeToTourChoice = function () {
     showWelcomeStep('tourChoice');
   };
 
@@ -794,15 +1025,17 @@
   };
 
   window.updateWelcomeLanguage = function () {
-    const lang = document.getElementById('welcomeLang')?.value || 'en';
     const stepLangWrap = document.getElementById('welcomeStepLang');
-    const dir = lang === 'ar' ? 'rtl' : 'ltr';
+    // Welcome copy is English-only until translations are finalized.
+    const dir = 'ltr';
     if (stepLangWrap) stepLangWrap.setAttribute('dir', dir);
 
     const elTitle = document.getElementById('welcomeTitle');
-    const elIntro = document.getElementById('welcomeIntroCopy');
+    const elCongrats = document.getElementById('welcomeCongrats');
+    const elWelcomeShowcaseBanner = document.getElementById('welcomeShowcaseBanner');
+    const elIntroBody = document.getElementById('welcomeIntroBody');
     const elShowcase = document.getElementById('welcomeShowcaseCopy');
-    const elTourBody = document.getElementById('welcomeTourBody');
+    const elTourChoiceHead = document.getElementById('welcomeTourChoiceHead');
     const elTourMerchantBtn = document.getElementById('welcomeTourMerchantBtn');
     const elTourPersonBtn = document.getElementById('welcomeTourPersonBtn');
     const elTourNerdBtn = document.getElementById('welcomeTourNerdBtn');
@@ -821,16 +1054,21 @@
     const elNerdTrackTechBtn = document.getElementById('welcomeNerdTrackTechBtn');
     const elNerdTrackFinanceBtn = document.getElementById('welcomeNerdTrackFinanceBtn');
 
-    if (!elTitle || !elIntro) return;
+    if (!elTitle || !elCongrats || !elIntroBody) return;
 
     const copy = {
       en: {
-        title: 'We’re really happy you’re here.',
-        intro:
-          'Congratulations on becoming your own bank. This gives you great possibilities, and with it, real responsibilities. Don’t worry, we’re a community that supports each other. Look around now, and we’ll help you secure your setup properly.',
+        congrats: 'Congratulations on becoming your own bank.',
+        /** Short, visible notice: showcase only, not a working demo. */
+        welcomeBanner: 'Showcase preview only. This is not a functioning demo or a finished product.',
+        title: '',
+        introParas: [
+          'Being your own bank brings great possibilities, and real responsibilities too.',
+          'Don’t worry: we are a community that supports each other. You will be able to find all the information you need in order to set your bank securely.'
+        ],
         showcase:
-          'Showcase prototype.\n\nRelease objective (community first):\nTransparency with the Stables community.\nShow what the core dev team is working on.\nMost importantly, get your feedback.\n\nHave a look, then reach out to us on Telegram:\nOpen More, then Help, Feedback to access the Telegram link.\n\nPrototype note:\nGuided tours will be added in a following prototype version.\nFor now, everything in the app is plain English.\nYou can of course talk with the StablesAgent in the language of your choice.\nYou can also add this app to your node by downloading the MDS zip from GitHub.\n\nRelease notes and the MDS zip: in Settings, use the Settings and updates section at the top.',
-        tourBody: 'Choose how you want the StablesAgent to guide you in this demo.',
+          'A guided demo tour will be added in a coming version.\n\nFor now you can keep exploring this preview in the web app, or install it as a MiniDapp on your Minima node.',
+        tourChoiceHint: 'Pick one path for the StablesAgent guided tour.',
         tourMerchantBtn: 'I\'m a merchant. I want to know how this will streamline my business process.',
         tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
         tourNerdBtn: 'I\'m a nerd. I want to understand how this holds together.',
@@ -839,182 +1077,40 @@
         nerdTrackTechBtn: 'Tech + blockchain',
         nerdTrackFinanceBtn: 'Financial side: how Stables is structured and ensures the peg',
         exploreBtn: 'I\'m a viewer. I want to look around.',
-        showcaseHereBtn: 'Continue the visit here',
-        showcaseNodeBtn: 'I can\'t wait to see it in my node',
+        showcaseHereBtn: 'Continue in this web app',
+        showcaseNodeBtn: 'MiniDapp package for my node',
         showcaseFinalMsg: 'See you back in your node.',
         useTitle: 'How will you mainly use the app?',
         usePrompt: 'Personal or merchant?',
         personalBtn: 'Personal',
         merchantBtn: 'Merchant'
-      },
-      'en-edgy': {
-        title: 'You made it. We’re seriously stoked you’re here.',
-        intro:
-          'Congratulations on becoming your own bank. You get real possibilities, and yes, real responsibilities too. No worries, we’ve got your back. Look around, then we’ll help you secure your setup properly.',
-        showcase:
-          'Showcase prototype.\n\nRelease objective (no fluff):\nBe transparent with the Stables community.\nShow what the core dev team is working on.\nMost importantly, get your feedback.\n\nHave a look, then reach out to us on Telegram:\nOpen More, then Help, Feedback to access the Telegram link.\n\nPrototype note:\nGuided tours will be added in a following prototype version.\nFor now, everything in the app is plain English.\nYou can of course talk with the StablesAgent in the language of your choice.\nYou can also add this app to your node by downloading the MDS zip from GitHub.\n\nRelease notes and the MDS zip: in Settings, use the Settings and updates section at the top.',
-        tourBody: 'Choose how you want the StablesAgent to guide you in this demo.',
-        tourMerchantBtn: 'I\'m a merchant. I want to know how this shit will streamline my business process.',
-        tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
-        tourNerdBtn: 'I\'m a nerd. I want to know how this shit holds.',
-        nerdTrackTitle: 'Pick your nerd deep dive',
-        nerdTrackBody: 'Choose what you want to inspect first in this demo.',
-        nerdTrackTechBtn: 'Tech + blockchain',
-        nerdTrackFinanceBtn: 'Financial side: how Stables is structured and ensures the peg',
-        exploreBtn: 'I\'m a viewer. I want to look around.',
-        showcaseHereBtn: 'Continue the visit here',
-        showcaseNodeBtn: 'I can\'t wait to see it in my node',
-        showcaseFinalMsg: 'See you back in your node.',
-        useTitle: 'How will you mainly use the app?',
-        usePrompt: 'Personal or merchant?',
-        personalBtn: 'Personal',
-        merchantBtn: 'Merchant'
-      },
-      fr: {
-        title: 'On est vraiment heureux que vous soyez là.',
-        intro:
-          'Félicitations, vous devenez votre propre banque. Cela vous ouvre de grandes possibilités, avec de vraies responsabilités. Ne vous inquiétez pas: nous sommes une communauté qui se soutient. Jetez un coup d’œil, puis nous vous aiderons à sécuriser votre configuration correctement.',
-        showcase:
-          'Prototype vitrine. Pour l’instant, il n’y a pas de vraie fonctionnalité (c’est juste une démo). Ce n’est pas branché à la blockchain. Imaginez une voiture prototype au salon auto: vous pouvez regarder à travers les vitres et poser des questions, mais les portes ne s’ouvrent pas et il n’y a pas de moteur sous le capot. Par contre, StablesAgent est là… et il peut répondre à une bonne partie des questions. Les visites guidées seront ajoutées dans une prochaine version du prototype. Pour le moment, toute l’interface de l’app est en anglais simple. Tu peux bien sur parler avec le StablesAgent dans la langue de ton choix. Tu peux aussi ajouter cette app à ton node en téléchargeant le zip MDS depuis GitHub.',
-        tourBody: 'Choisissez comment vous voulez être guidé par le StablesAgent dans cette démo.',
-        tourMerchantBtn: "Je suis un commerçant. Je veux savoir comment ça va révolutionner mes processus d’affaires.",
-        tourPersonBtn: "Je suis une personne. Je veux connaître la meilleure façon de faire tourner ma propre banque.",
-        tourNerdBtn: "Je suis un nerd. Je veux comprendre comment tout ça tient.",
-        nerdTrackTitle: 'Choisis ton deep dive de nerd',
-        nerdTrackBody: 'Qu’est-ce que tu veux inspecter en premier dans cette démo ?',
-        nerdTrackTechBtn: 'Tech + blockchain',
-        nerdTrackFinanceBtn: 'Côté financier: comment Stables est structuré et garde le peg',
-        exploreBtn: "Je suis juste un spectateur. Je veux regarder.",
-        showcaseHereBtn: 'Continuer la visite ici',
-        showcaseNodeBtn: "Je suis trop impatient de le voir dans mon node",
-        showcaseFinalMsg: 'A bientot dans ton node.',
-        useTitle: "Comment allez-vous surtout utiliser l’app?",
-        usePrompt: 'Personnel ou commerce?',
-        personalBtn: 'Personnel',
-        merchantBtn: 'Commerce'
-      },
-      'fr-CA': {
-        title: 'On est vraiment contents que tu sois là.',
-        intro:
-          'Félicitations d’être devenu ta propre banque. Ça te donne de grandes possibilités, et avec ça, des responsabilités bien réelles. Pas de stress: on est une communauté qui s’entraide. Jette un coup d’œil maintenant, puis on t’aide à sécuriser ton setup correctement.',
-        showcase:
-          'Prototype vitrine. Pour l’instant, il n’y a pas de vraie fonctionnalité (c’est juste une démo). Ce n’est pas branché à la blockchain. Imagine une voiture prototype au salon auto: tu peux regarder à travers les vitres et poser des questions, mais les portes ne s’ouvrent pas et y’a pas de moteur sous le capot. Par contre, StablesAgent est là… et il peut répondre à une bonne partie des questions. Les visites guidées seront ajoutées dans une prochaine version du prototype. Pour le moment, toute l’interface de l’app est en anglais simple. Tu peux bien sur parler avec le StablesAgent dans la langue de ton choix. Tu peux aussi ajouter cette app à ton node en téléchargeant le zip MDS depuis GitHub.',
-        tourBody: 'Choisis comment tu veux être guidé par le StablesAgent dans cette démo.',
-        tourMerchantBtn: "Je suis un commerçant. Je veux savoir comment ça va révolutionner mes processus d’affaires.",
-        tourPersonBtn: "Je suis une personne. Je veux connaître la meilleure façon de faire tourner ta propre banque.",
-        tourNerdBtn: "Je suis un nerd. Je veux comprendre comment tout ça tient.",
-        nerdTrackTitle: 'Choisis ton deep dive de nerd',
-        nerdTrackBody: 'Qu’est-ce que tu veux inspecter en premier dans cette démo ?',
-        nerdTrackTechBtn: 'Tech + blockchain',
-        nerdTrackFinanceBtn: 'Côté financier: comment Stables est structuré et garde le peg',
-        exploreBtn: "Je suis juste un spectateur. Je veux regarder.",
-        showcaseHereBtn: 'Continuer la visite ici',
-        showcaseNodeBtn: "Je suis trop impatient de le voir dans mon node",
-        showcaseFinalMsg: 'A bientot dans ton node.',
-        useTitle: "Comment tu vas surtout utiliser l’app?",
-        usePrompt: 'Plutôt personnel ou commerçant?',
-        personalBtn: 'Personnel',
-        merchantBtn: 'Commerçant'
-      },
-      es: {
-        title: 'Nos encanta que estés aquí.',
-        intro:
-          'Felicidades por convertirte en tu propia banca. Esto te da grandes posibilidades, y con ello, responsabilidades reales. No te preocupes: somos una comunidad que se apoya. Mira alrededor ahora y te ayudaremos a asegurar tu configuración correctamente.',
-        showcase:
-          'Prototipo de vitrina. Por ahora no hay funcionalidad real (solo es para demostración). No está conectada a la blockchain. Imagina un auto prototipo en una expo: puedes mirar por las ventanas y hacer preguntas, pero no hay motor bajo el capó y las puertas no se abren. El StablesAgent sí funciona y puede responder muchas preguntas sobre Stables. Las visitas guiadas se añadirán en una próxima versión de este prototipo. Por ahora, toda la interfaz de la app esta en inglés simple. Puedes por supuesto hablar con el StablesAgent en el idioma que elijas. También puedes agregar esta app a tu nodo descargando el zip MDS desde GitHub.',
-        tourBody: 'Elige cómo quieres que el StablesAgent te guíe en esta demo.',
-        tourMerchantBtn: 'Soy un comerciante. Quiero saber cómo esto va a revolucionar mi proceso de negocio.',
-        tourPersonBtn: 'Soy una persona. Quiero saber la mejor manera de dirigir mi propia banca.',
-        tourNerdBtn: 'Soy un nerd. Quiero entender cómo todo se mantiene unido.',
-        nerdTrackTitle: 'Tu deep dive de nerd',
-        nerdTrackBody: 'Elige qué quieres inspeccionar primero en esta demo.',
-        nerdTrackTechBtn: 'Tech + blockchain',
-        nerdTrackFinanceBtn: 'Lado financiero: cómo Stables está estructurado y mantiene el peg',
-        exploreBtn: 'Soy solo un espectador. Quiero mirar.',
-        showcaseHereBtn: 'Continuar la visita aquí',
-        showcaseNodeBtn: 'No puedo esperar para verlo en mi nodo',
-        showcaseFinalMsg: 'Nos vemos de vuelta en tu nodo.',
-        useTitle: '¿Cómo usarás principalmente la app?',
-        usePrompt: '¿Personal o comercio?',
-        personalBtn: 'Personal',
-        merchantBtn: 'Comercio'
-      },
-      ar: {
-        title: 'يسعدنا أنك هنا.',
-        intro:
-          'مبروك على أن أصبحت بنكك الخاص. هذا يفتح أمامك إمكانيات كبيرة, ومعها مسؤوليات حقيقية. لا تقلق: نحن مجتمع يدعم بعضه. تفقّد كل شيء الآن وسنساعدك على تأمين حسابك بالشكل الصحيح.',
-        showcase:
-          'نسخة تجريبية للعرض فقط. لا توجد وظائف حقيقية حالياً (إنها مجرد عرض). وهذه النسخة غير متصلة بسلسلة البلوكشين. تخيّل سيارة نموذجية في معرض سيارات: يمكنك النظر من خلال النوافذ وطرح الأسئلة، لكن الأبواب لا تُفتح ولا يوجد محرك تحت الغطاء. لكن StablesAgent يعمل, ويمكنه الإجابة على مجموعة كبيرة من أسئلة Stables. ستتم إضافة الجولات الإرشادية في نسخة بروتوتايب قادمة. في الوقت الحالي، كل واجهة التطبيق باللغة الإنجليزية فقط. يمكنك بالطبع التحدث مع StablesAgent باللغة التي تختارها. يمكنك كذلك إضافة هذا التطبيق إلى عقدتك عن طريق تنزيل ملف MDS zip من GitHub.',
-        tourBody: 'اختر كيف تريد أن يوجهك StablesAgent في هذه التجربة.',
-        tourMerchantBtn: 'أنا صاحب متجر. أريد أن أعرف كيف سيثور هذا سير عملي.',
-        tourPersonBtn: 'أنا شخص. أريد أن أعرف أفضل طريقة لإدارة بنكي الخاص.',
-        tourNerdBtn: 'أنا شخص فضولي. أريد أن أفهم كيف يتماسك كل هذا.',
-        nerdTrackTitle: 'اختر غوصة نيرد',
-        nerdTrackBody: 'اختر ماذا تريد فحصه أولاً في هذه التجربة.',
-        nerdTrackTechBtn: 'التقنية + البلوكشين',
-        nerdTrackFinanceBtn: 'الجانب المالي: كيف يتم هيكلة Stables وكيف يحافظ على peg',
-        exploreBtn: 'أنا مجرد متفرج. أريد فقط أن ألقي نظرة.',
-        showcaseHereBtn: 'كمّل الزيارة هنا',
-        showcaseNodeBtn: 'لا أطيق الانتظار لرؤيته في عقدتي',
-        showcaseFinalMsg: 'أراك مرة أخرى في عقدتك.',
-        useTitle: 'كيف ستستخدم التطبيق غالباً؟',
-        usePrompt: 'شخصي أم متجر؟',
-        personalBtn: 'شخصي',
-        merchantBtn: 'متجر'
-      },
-      hi: {
-        title: 'आप आ गए. Stables में आपका स्वागत है!',
-        intro:
-          'बधाई हो, अब आप अपने खुद के बैंक बन गए हैं। इससे आपको शानदार संभावनाएँ मिलती हैं, और साथ में बड़ी जिम्मेदारियाँ भी। चिंता न करें, हम एक सपोर्टिंग कम्युनिटी हैं। इधर-उधर देखें, फिर हम आपकी सेटअप को सही तरीके से सुरक्षित करने में मदद करेंगे।',
-        showcase:
-          'यह एक शोकेस प्रोटोटाइप है। अभी वास्तविक कार्यक्षमता नहीं है (यह सिर्फ डेमो है)। यह ब्लॉकचेन से कनेक्टेड नहीं। कार शो में रखी एक प्रोटोटाइप कार जैसी कल्पना करें: आप खिड़कियों से देख सकते हैं और सवाल पूछ सकते हैं, लेकिन दरवाज़े नहीं खुलते और हुड के नीचे इंजन नहीं है। फिर भी StablesAgent काम करता है और Stables पर बहुत सारे सवालों के जवाब दे सकता है। अगले प्रोटोटाइप वर्जन में गाइडेड टूर जोड़े जाएंगे। अभी के लिए, ऐप की पूरी UI सिर्फ साधारण English में है। आप जरूर StablesAgent से अपनी पसंद की भाषा में बात कर सकते हैं। आप GitHub से MDS zip डाउनलोड करके इस ऐप को अपने नोड में भी जोड़ सकते हैं।',
-        tourBody: 'इस डेमो में आप चाहते हैं कि StablesAgent आपको कैसे गाइड करे, वो चुनें।',
-        tourMerchantBtn: 'मैं एक मर्चेंट हूं. मैं जानना चाहता हूं कि यह मेरे बिजनेस प्रोसेस को कैसे बदल देगा.',
-        tourPersonBtn: 'मैं एक इंसान हूं. मैं जानना चाहता हूं कि अपना खुद का बैंक चलाने का सबसे अच्छा तरीका क्या है.',
-        tourNerdBtn: 'मैं एक nerd हूं. मैं समझना चाहता हूं कि यह सब कैसे टिकता है.',
-        nerdTrackTitle: 'नर्ड वाला डीप डाइव चुनें',
-        nerdTrackBody: 'इस डेमो में आप पहले क्या समझना चाहते हैं?',
-        nerdTrackTechBtn: 'टेक + ब्लॉकचेन',
-        nerdTrackFinanceBtn: 'वित्तीय पक्ष: Stables कैसे structured है और peg कैसे सुनिश्चित करता है',
-        exploreBtn: 'मैं बस एक दर्शक हूं. मैं बस देखना चाहता हूं.',
-        showcaseHereBtn: 'यहीं विजिट जारी रखें',
-        showcaseNodeBtn: 'इंतजार नहीं कर सकता, इसे अपने नोड में देखना है',
-        showcaseFinalMsg: 'फिर मिलते हैं, अपने नोड में.',
-        useTitle: 'आप ऐप का मुख्य रूप से कैसे उपयोग करेंगे?',
-        usePrompt: 'पर्सनल या मर्चेंट?',
-        personalBtn: 'पर्सनल',
-        merchantBtn: 'मर्चेंट'
-      },
-      zh: {
-        title: '很高兴你来到 Stables。',
-        intro:
-          '恭喜你成为自己的银行。你将拥有很大的可能性，同时也要承担真实的责任。别担心，我们是一个互相支持的社区。现在先四处看看，我们会帮你把设置安全地完成好。',
-        showcase:
-          '展示用原型。当前没有真实功能（仅用于演示），并未连接到区块链。把它想象成车展上的原型车：你可以透过车窗看进去、提出问题，但车门不会打开，机舱下面也没有发动机。不过 StablesAgent 是可以用的，而且能回答一大批 Stables 相关问题。后续原型版本会加入导览功能。就目前而言，应用界面全部是简单英文。你当然可以选择你想用的语言来和 StablesAgent 交流。你也可以通过从 GitHub 下载 MDS zip 来把这个应用加入到你的节点。',
-        tourBody: '在这个演示里，选择你想让 StablesAgent 怎么带你看。',
-        tourMerchantBtn: '我是商户。我想知道这会如何改变我的业务流程。',
-        tourPersonBtn: '我是个人。我想知道运营自己的银行的最佳方式。',
-        tourNerdBtn: '我是技术宅。我想弄明白这一切是怎么“撑住”的。',
-        nerdTrackTitle: '选择你的技术宅深度',
-        nerdTrackBody: '在这个演示里，你想先看什么？',
-        nerdTrackTechBtn: '技术 + 区块链',
-        nerdTrackFinanceBtn: '金融侧: Stables 的结构以及它如何确保 peg',
-        exploreBtn: '我是个观众。我想看看。',
-        showcaseHereBtn: '继续在这里参观',
-        showcaseNodeBtn: '迫不及待想在我的节点里看到它',
-        showcaseFinalMsg: '回到你的节点，我们再见。',
-        useTitle: '你主要会怎么使用这个应用？',
-        usePrompt: '个人还是商户？',
-        personalBtn: '个人',
-        merchantBtn: '商户'
       }
     };
 
-    const c = copy[lang] || copy.en;
-    elTitle.textContent = c.title;
-    elIntro.textContent = c.intro;
+    const c = copy.en;
+    if (c.congrats) elCongrats.textContent = c.congrats;
+    if (elWelcomeShowcaseBanner) {
+      elWelcomeShowcaseBanner.textContent = c.welcomeBanner || '';
+      elWelcomeShowcaseBanner.style.display = c.welcomeBanner ? '' : 'none';
+    }
+    const welcomeTitleText = (c.title != null && String(c.title).trim()) || '';
+    if (welcomeTitleText) {
+      elTitle.style.display = '';
+      elTitle.textContent = welcomeTitleText;
+    } else {
+      elTitle.style.display = 'none';
+    }
+    elIntroBody.innerHTML = '';
+    const paras = Array.isArray(c.introParas) ? c.introParas : [];
+    paras.forEach((p, i) => {
+      const pe = document.createElement('p');
+      pe.style.margin = i < paras.length - 1 ? '0 0 22px' : '0';
+      pe.style.maxWidth = '100%';
+      pe.textContent = p;
+      elIntroBody.appendChild(pe);
+    });
     if (elShowcase) elShowcase.textContent = c.showcase;
-    if (elTourBody) elTourBody.textContent = c.tourBody;
+    if (elTourChoiceHead) elTourChoiceHead.textContent = c.tourChoiceHint || '';
     if (elExploreBtn) elExploreBtn.textContent = c.exploreBtn;
     if (elTourMerchantBtn) elTourMerchantBtn.textContent = c.tourMerchantBtn;
     if (elTourPersonBtn) elTourPersonBtn.textContent = c.tourPersonBtn;
@@ -1074,9 +1170,30 @@
     if (typeof window.showToast === 'function') window.showToast('Setup saved');
   };
 
+  /** More → Help → Guided tours: open welcome on the StablesAgent role picker (path choice). */
+  window.openWelcomeGuidedToursFromMenu = function () {
+    const modal = document.getElementById('welcomeSetupModal');
+    if (!modal) return;
+    modal.classList.add('open');
+    syncWelcomeModalFabAccess();
+    const langSel = document.getElementById('welcomeLang');
+    if (langSel) {
+      try {
+        const pref = localStorage.getItem('stables_lang_pref');
+        if (pref && Array.from(langSel.options).some(o => o.value === pref)) langSel.value = pref;
+      } catch (_) {}
+    }
+    if (typeof window.updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
+    showWelcomeStep('tourChoice');
+  };
+
   setTimeout(() => {
     if (typeof window.renderCouncilCommunicationPanels === 'function') window.renderCouncilCommunicationPanels();
   }, 50);
+
+  setTimeout(() => {
+    if (typeof window.refreshSettingsBackupCopy === 'function') window.refreshSettingsBackupCopy();
+  }, 120);
 
   // Initialize reminders once.
   setTimeout(() => window.checkBackupReminder(), 1600);
@@ -1084,8 +1201,16 @@
   setTimeout(() => { if (typeof window.refreshSpendShopCards === 'function') window.refreshSpendShopCards(); }, 400);
   setTimeout(() => {
     window.updateWelcomePrimaryOptions();
+    const langSel = document.getElementById('welcomeLang');
+    if (langSel) {
+      try {
+        const pref = localStorage.getItem('stables_lang_pref');
+        if (pref && Array.from(langSel.options).some(o => o.value === pref)) langSel.value = pref;
+      } catch (_) {}
+    }
     const modal = document.getElementById('welcomeSetupModal');
     if (modal) modal.classList.add('open');
+    syncWelcomeModalFabAccess();
     showWelcomeStep('lang');
     if (typeof window.updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
   }, 700);

@@ -27,7 +27,27 @@
             --th: 60px;
             --safe-top: env(safe-area-inset-top, 0px);
             --r: 18px;
-            --rs: 12px
+            --rs: 12px;
+
+            /* Type scale - one size per role everywhere (natural hierarchy, not “designed”) */
+            --fz-eyebrow: 12px;
+            --lh-eyebrow: 1.35;
+            --fz-hero: 21px;
+            --lh-hero: 1.35;
+            --fz-title: 18px;
+            --lh-title: 1.3;
+            --fz-subtitle: 15px;
+            --lh-subtitle: 1.5;
+            --fz-body: 15px;
+            --lh-body: 1.55;
+            --fz-caption: 13px;
+            --lh-caption: 1.5;
+            --fz-label: 12px;
+            --lh-label: 1.35;
+            --fz-ui: 14px;
+            --lh-ui: 1.35;
+            --fz-tab: 13px;
+            --fz-btn-lg: 15px;
         }
 
         * {
@@ -38,6 +58,8 @@
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
+            font-size: var(--fz-body);
+            line-height: var(--lh-body);
             background: var(--bg);
             background-image: radial-gradient(ellipse 80% 35% at 50% 0%, rgba(103, 232, 249, .1) 0%, transparent 60%);
             color: var(--t);
@@ -104,17 +126,21 @@
         }
 
         .brand-name {
-            font-size: 17px;
+            font-size: var(--fz-title);
             font-weight: 800;
             line-height: 1;
         }
 
         .brand-sub {
-            font-size: 13px;
+            font-size: var(--fz-caption);
             font-weight: 700;
-            color: var(--t);
             letter-spacing: 0.02em;
             margin-top: 3px;
+            color: var(--c);
+            background: linear-gradient(90deg, var(--c), var(--pu));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .sync-pill {
@@ -154,16 +180,37 @@
 
         .test-pill {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 5px;
+            justify-content: center;
+            gap: 2px;
             background: rgba(251, 191, 36, .1);
             border: 1px solid rgba(251, 191, 36, .3);
             border-radius: 999px;
-            padding: 5px 10px;
-            font-size: 13px;
+            padding: 6px 12px 7px;
+            cursor: pointer;
+            text-align: center;
+            line-height: 1.12;
+            max-width: min(200px, 46vw);
+        }
+
+        .test-pill-title {
+            font-size: var(--fz-title);
             font-weight: 800;
-            color: var(--am);
-            cursor: pointer
+            color: var(--t);
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        .test-pill-sub {
+            font-size: var(--fz-caption);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            color: var(--c);
+            background: linear-gradient(90deg, var(--c), var(--pu));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         /* LAYOUT */
@@ -312,7 +359,8 @@
             max-width: 580px;
             margin: 0 auto;
             pointer-events: none;
-            z-index: 99;
+            /* Above modals (e.g. Vault key reminder z-index 620) so StablesAgent FAB stays tappable */
+            z-index: 750;
             height: 100dvh;
             transition: transform .22s ease, opacity .22s ease;
         }
@@ -347,6 +395,15 @@
         .fab:hover {
             box-shadow: 0 0 30px rgba(103, 232, 249, .4);
             transform: scale(1.06)
+        }
+
+        /* Welcome setup: only StablesAgent FAB is tappable; stress + QR are visible but inert */
+        body.welcome-setup-open .fab-container .sim-fab,
+        body.welcome-setup-open .fab-container > .fab {
+            pointer-events: none !important;
+            opacity: 0.38;
+            cursor: default;
+            filter: grayscale(0.25);
         }
 
         /* CARDS */
@@ -504,7 +561,7 @@
             flex-shrink: 0
         }
 
-        /* CALC BOX — always visible on Mint page */
+        /* CALC BOX - always visible on Mint page */
         .calc-box {
             background: rgba(103, 232, 249, .05);
             border: 1px solid rgba(103, 232, 249, .15);
@@ -530,7 +587,8 @@
 
         /* COMMON */
         .stitle {
-            font-size: 13px;
+            font-size: var(--fz-label);
+            line-height: var(--lh-label);
             font-weight: 700;
             color: var(--m);
             text-transform: uppercase;
@@ -549,9 +607,9 @@
             background: rgba(103, 232, 249, .05);
             border-left: 3px solid rgba(103, 232, 249, .35);
             border-radius: 0 10px 10px 0;
-            font-size: 13px;
+            font-size: var(--fz-caption);
+            line-height: var(--lh-caption);
             color: var(--m);
-            line-height: 1.5
         }
 
         .flex {
@@ -592,13 +650,15 @@
             margin-top: 20px
         }
 
-        /* App minimum readable tier: do not go below 13px for UI copy (see .xs). */
+        /* Secondary line - same role as hints / helper copy app-wide */
         .sm {
-            font-size: 14px
+            font-size: var(--fz-ui);
+            line-height: var(--lh-ui);
         }
 
         .xs {
-            font-size: 13px
+            font-size: var(--fz-caption);
+            line-height: var(--lh-caption);
         }
 
         .mu {
@@ -613,7 +673,8 @@
             width: 220px;
             border-radius: 13px;
             padding: 13px 18px;
-            font-size: 14px;
+            font-size: var(--fz-ui);
+            line-height: var(--lh-ui);
             font-weight: 800;
             font-family: inherit;
             cursor: pointer;
@@ -651,7 +712,8 @@
 
         .btn-lg {
             padding: 15px 22px;
-            font-size: 15px;
+            font-size: var(--fz-btn-lg);
+            line-height: var(--lh-subtitle);
             border-radius: 15px
         }
 
@@ -663,7 +725,8 @@
             border: 1px solid rgba(103, 232, 249, .2);
             border-radius: var(--rs);
             color: var(--t);
-            font-size: 15px;
+            font-size: var(--fz-body);
+            line-height: var(--lh-body);
             font-weight: 700;
             font-family: inherit;
             outline: none;
@@ -681,7 +744,8 @@
             border: 1px solid rgba(103, 232, 249, .2);
             border-radius: var(--rs);
             color: var(--t);
-            font-size: 14px;
+            font-size: var(--fz-body);
+            line-height: var(--lh-body);
             font-weight: 700;
             font-family: inherit;
             outline: none;
@@ -709,7 +773,8 @@
         }
 
         .flabel {
-            font-size: 13px;
+            font-size: var(--fz-label);
+            line-height: var(--lh-label);
             font-weight: 700;
             color: var(--m);
             text-transform: uppercase;
@@ -725,7 +790,8 @@
         }
 
         .w-label {
-            font-size: 13px;
+            font-size: var(--fz-label);
+            line-height: var(--lh-label);
             font-weight: 700;
             color: var(--m);
             text-transform: uppercase;
@@ -745,7 +811,8 @@
         }
 
         .w-ccy {
-            font-size: 14px;
+            font-size: var(--fz-ui);
+            line-height: var(--lh-ui);
             color: var(--m);
             font-weight: 600;
             margin-bottom: 18px
@@ -1120,7 +1187,8 @@
             flex: 1;
             padding: 10px 8px;
             border-radius: 10px;
-            font-size: 12px;
+            font-size: var(--fz-tab);
+            line-height: var(--lh-ui);
             font-weight: 700;
             font-family: inherit;
             border: 1px solid transparent;
@@ -1194,15 +1262,15 @@
             transition: opacity .25s
         }
 
-        /* Agent must stay reachable even when a modal is open */
+        /* Agent must stay above security / welcome modals (mback up to ~620) */
         #agentDrawer {
-            z-index: 360;
+            z-index: 750;
             /* No backdrop blur: modals sit under this overlay (z 300 < 360) and looked smeared */
             backdrop-filter: none;
             -webkit-backdrop-filter: none;
         }
 
-        /* Fill viewport — avoids a dead band under the panel (old max-height: 85dvh) */
+        /* Fill viewport - avoids a dead band under the panel (old max-height: 85dvh) */
         #agentDrawer .agent-drawer-panel {
             height: 100%;
             min-height: 100dvh;
@@ -1335,7 +1403,8 @@
             background: rgba(251, 191, 36, .08);
             border: 1px solid rgba(251, 191, 36, .25);
             border-radius: 11px;
-            font-size: 13px;
+            font-size: var(--fz-caption);
+            line-height: var(--lh-caption);
             font-weight: 800;
             color: var(--am);
             display: flex;
@@ -1374,7 +1443,9 @@
             border-radius: 22px 22px 0 0;
             padding: 22px 18px 36px;
             max-height: 88vh;
-            overflow-y: auto
+            overflow-y: auto;
+            font-size: var(--fz-body);
+            line-height: var(--lh-body);
         }
 
         .modal {
@@ -1410,15 +1481,51 @@
         }
 
         .mttl {
-            font-size: 18px;
+            font-size: var(--fz-title);
+            line-height: var(--lh-title);
             font-weight: 900;
             margin-bottom: 3px
         }
 
         .msub {
-            font-size: 13px;
+            font-size: var(--fz-subtitle);
+            line-height: var(--lh-subtitle);
             color: var(--m);
             margin-bottom: 18px
+        }
+
+        /* Semantic text roles (use instead of one-off font-size in markup) */
+        .type-eyebrow {
+            font-size: var(--fz-eyebrow);
+            line-height: var(--lh-eyebrow);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            text-align: center;
+        }
+
+        .type-hero {
+            font-size: var(--fz-hero);
+            line-height: var(--lh-hero);
+            font-weight: 900;
+        }
+
+        /*
+         * Welcome modal default reading style (same as intro lines, e.g.
+         * "Being your own bank brings great possibilities…").
+         */
+        .welcome-modal-body-copy {
+            font-size: var(--fz-body);
+            line-height: 1.6;
+            font-weight: 600;
+            color: var(--t);
+        }
+
+        #welcomeIntroBody p {
+            font-size: inherit;
+            line-height: inherit;
+            font-weight: inherit;
+            color: inherit;
         }
 
         /* MERCHANT */
@@ -1456,12 +1563,14 @@
         }
 
         .mn {
-            font-size: 15px;
+            font-size: var(--fz-body);
+            line-height: var(--lh-body);
             font-weight: 800
         }
 
         .mt2 {
-            font-size: 12px;
+            font-size: var(--fz-caption);
+            line-height: var(--lh-caption);
             color: var(--m);
             margin-top: 2px
         }
@@ -1603,7 +1712,8 @@
             border: 1px solid rgba(103, 232, 249, .2);
             border-radius: 11px;
             font-family: monospace;
-            font-size: 13px;
+            font-size: var(--fz-caption);
+            line-height: var(--lh-caption);
             word-break: break-all;
             color: var(--m);
             cursor: pointer;
@@ -1611,7 +1721,7 @@
             margin-top: 10px
         }
 
-        /* WALLET NAV — primary tab larger */
+        /* WALLET NAV - primary tab larger */
         #tab-wallet .nicon {
             font-size: 30px
         }
@@ -1960,6 +2070,34 @@
             vertical-align: middle
         }
 
+        /* App shell: screen title always outside cards; lede optional */
+        .app-screen-title {
+            font-size: var(--fz-title);
+            font-weight: 900;
+            margin: 0 0 6px 0;
+            color: var(--t);
+            line-height: var(--lh-title);
+        }
+
+        .app-screen-lede {
+            font-size: var(--fz-caption);
+            line-height: var(--lh-caption);
+            color: var(--m);
+            margin: 0 0 16px 0;
+            font-weight: 700;
+        }
+
+        /* Narrative / CTA cards: centered copy (forms and toggle rows stay left-aligned) */
+        .card.card--prose-centered {
+            text-align: center;
+        }
+
+        .card.card--prose-centered .sec-body {
+            margin-left: auto;
+            margin-right: auto;
+            max-width: 36rem;
+        }
+
         /* SETTINGS */
         .set-row {
             display: flex;
@@ -1982,6 +2120,27 @@
             font-size: 13px;
             color: var(--m);
             margin-top: 2px
+        }
+
+        /*
+         * Preferences → Security (Vault key): comfort-reading tier; title is .app-screen-title outside the card.
+         */
+        #settingsSeedPhraseSection .sec-body {
+            font-size: 16px;
+            line-height: 1.55;
+            color: var(--t);
+            margin: 0 0 16px 0
+        }
+
+        #settingsSeedPhraseSection .sec-body:last-of-type {
+            margin-bottom: 14px
+        }
+
+        #settingsSeedPhraseSection .sec-key-icon {
+            font-size: 32px;
+            line-height: 1;
+            margin: 0 auto 14px;
+            user-select: none;
         }
 
         .toggle {
@@ -2070,7 +2229,7 @@
             color: var(--t)
         }
 
-        /* LEARN MORE — collapsible hints */
+        /* LEARN MORE - collapsible hints */
         details.lm {
             margin-bottom: 10px
         }
@@ -2286,7 +2445,7 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 90;
+            z-index: 750;
             backdrop-filter: blur(8px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3), 0 0 20px rgba(103, 232, 249, 0.12);
             transition: transform 0.2s;
@@ -2509,7 +2668,7 @@
                             </div>
                             <div style="text-align:right">
                                 <div class="ccy-sec-amt bal-amount">0.00</div>
-                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">—</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">-</div>
                             </div>
                         </div>
                         <div class="ccy-sec-row" data-ccy="EURw">
@@ -2544,7 +2703,7 @@
                             <div>
                                 <div class="ccy-sec-amt bal-amount">0.00</div>
                                 <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
-                                    —
+                                    -
                                 </div>
                             </div>
                         </div>
@@ -2569,7 +2728,7 @@
                             <div>
                                 <div class="ccy-sec-amt bal-amount">0.00</div>
                                 <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
-                                    —
+                                    -
                                 </div>
                             </div>
                         </div>
@@ -2581,7 +2740,7 @@
                             <div>
                                 <div class="ccy-sec-amt bal-amount">0.00</div>
                                 <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
-                                    —
+                                    -
                                 </div>
                             </div>
                         </div>
@@ -2593,7 +2752,7 @@
                             <div>
                                 <div class="ccy-sec-amt bal-amount">0.00</div>
                                 <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
-                                    —
+                                    -
                                 </div>
                             </div>
                         </div>
@@ -2820,7 +2979,7 @@
                                     Mint</div>
                             </div>
                         </div>
-                        <!-- Calc — always visible -->
+                        <!-- Calc - always visible -->
                         <div class="calc-box">
                             <div class="calc-row">
                                 <span class="mu">Winiwa price</span>
@@ -2840,7 +2999,7 @@
                             onclick="executeMintXwm()">Mint xWiniwa</button>
 
 
-                        <!-- BURN xWINIWA — Reclaim Winiwa -->
+                        <!-- BURN xWINIWA - Reclaim Winiwa -->
                         <div style="margin-top:32px">
                             <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn xWiniwa</div>
                             <div
@@ -3066,7 +3225,7 @@
                 </div>
                 <div class="rate-pill" id="ratePill">1 USDw = 0.918 EURw &middot; No fees</div>
                 <button class="btn btn-w btn-lg"
-                    onclick="showToast('✓ Exchange confirmed — funds arrive instantly')">Exchange
+                    onclick="showToast('✓ Exchange confirmed - funds arrive instantly')">Exchange
                     Now</button>
             </div>
             <div class="stitle mt20">Recent</div>
@@ -3096,7 +3255,7 @@
         <div class="page" id="page-spend">
             <div class="fbet" style="margin-bottom:20px;align-items:center">
                 <div>
-                    <div style="font-size:18px;font-weight:900">&#x1F3EA; Where to Spend</div>
+                    <div class="app-screen-title">&#x1F3EA; Where to Spend</div>
                     <div class="xs mu mt8">Merchants accepting Wables</div>
                 </div><button class="btn btn-g" style="width:auto;padding:8px 12px;font-size:12px">+ List My
                     Business</button>
@@ -3147,7 +3306,7 @@
 
         <!-- CHAT -->
         <div class="page" id="page-chat">
-            <div style="font-size:18px;font-weight:900;margin-bottom:3px">Chat</div>
+            <div class="app-screen-title">Chat</div>
             <div class="xs mu" id="chatContactLabel" style="margin-bottom:8px;display:none"></div>
             <div class="xs mu" style="margin-bottom:14px">Private
                 ·
@@ -3192,7 +3351,7 @@
 
         <!-- COUNCIL COMMUNICATIONS (official notices) -->
         <div class="page" id="page-council-comms">
-            <div style="font-size:18px;font-weight:900;margin-bottom:3px">Council communications</div>
+            <div class="app-screen-title">Council communications</div>
             <div class="xs mu" style="margin-bottom:14px">Security, required updates, and other critical notices from Stables Council</div>
             <div id="councilCommsPageMount" aria-live="polite"></div>
         </div>
@@ -3201,7 +3360,7 @@
         <div class="page" id="page-activity">
             <div class="fbet" style="margin-bottom:12px;align-items:flex-end">
                 <div>
-                    <div style="font-size:18px;font-weight:900;margin-bottom:3px">All Transactions</div>
+                    <div class="app-screen-title">All Transactions</div>
                 </div>
             </div>
 
@@ -3232,7 +3391,7 @@
         <div class="page" id="page-contacts">
             <div class="fbet" style="margin-bottom:12px;align-items:flex-end">
                 <div>
-                    <div style="font-size:18px;font-weight:900;margin-bottom:3px">Contacts</div>
+                    <div class="app-screen-title">Contacts</div>
                     <div class="xs mu">Counterparties and conversation links</div>
                 </div>
                 <button class="btn btn-w btn-g" style="width:auto;padding:10px 12px" onclick="navigate('wallet')">Back</button>
@@ -3245,17 +3404,17 @@
             <div class="card" id="contactDetailCard" style="padding:14px;display:none">
                 <div class="fbet" style="margin-bottom:8px">
                     <div style="font-size:16px;font-weight:900" id="contactDetailName">Contact</div>
-                    <div class="xs mu" id="contactDetailMeta">—</div>
+                    <div class="xs mu" id="contactDetailMeta">-</div>
                 </div>
-                <div class="xs mu" id="contactDetailAddress" style="margin-bottom:12px">—</div>
+                <div class="xs mu" id="contactDetailAddress" style="margin-bottom:12px">-</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
                     <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
                         <div class="xs mu">Latest sent</div>
-                        <div style="font-size:12px;font-weight:800;margin-top:4px" id="contactLatestSent">—</div>
+                        <div style="font-size:12px;font-weight:800;margin-top:4px" id="contactLatestSent">-</div>
                     </div>
                     <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
                         <div class="xs mu">Latest received</div>
-                        <div style="font-size:12px;font-weight:800;margin-top:4px" id="contactLatestReceived">—</div>
+                        <div style="font-size:12px;font-weight:800;margin-top:4px" id="contactLatestReceived">-</div>
                     </div>
                 </div>
                 <label class="xs mu" for="contactNotes" style="display:block;margin:0 0 6px 0">Notes</label>
@@ -3274,7 +3433,7 @@
         <div class="page" id="page-feedback">
             <div class="fbet" style="margin-bottom:12px;align-items:center">
                 <div>
-                    <div style="font-size:18px;font-weight:900;margin-bottom:3px">Feedback</div>
+                    <div class="app-screen-title">Feedback</div>
                     <div class="xs mu">Reach us on Telegram, community or core team</div>
                 </div>
             </div>
@@ -3295,7 +3454,7 @@
 
         <!-- COUNCIL -->
         <div class="page" id="page-council">
-            <div style="font-size:18px;font-weight:900;margin-bottom:3px">Council</div>
+            <div class="app-screen-title">Council</div>
             <div class="xs mu" style="margin-bottom:12px">Public balance-sheet transparency
                 · Real-time liability visibility</div>
             <div style="display:flex;gap:12px;align-items:center;margin:0 0 16px">
@@ -3323,17 +3482,17 @@
                     </div>
                     <div style="text-align:right">
                         <div style="font-size:14px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Coverage Ratio</div>
-                        <div id="protocolCRBig" style="font-size:44px;font-weight:900;line-height:1.05;margin-top:4px;color:var(--gr)">—</div>
+                        <div id="protocolCRBig" style="font-size:44px;font-weight:900;line-height:1.05;margin-top:4px;color:var(--gr)">-</div>
                     </div>
                 </div>
                 <div class="fbet" style="margin-bottom:16px;padding:12px;border-radius:14px;background:rgba(0,0,0,.20);border:1px solid rgba(255,255,255,.06)">
                     <div>
                         <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Assets</div>
-                        <div id="assetTotalBig" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--t)">—</div>
+                        <div id="assetTotalBig" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--t)">-</div>
                     </div>
                     <div style="text-align:right">
                         <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em">Liabilities</div>
-                        <div id="liabTotalBig" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--t)">—</div>
+                        <div id="liabTotalBig" style="font-size:22px;font-weight:900;margin-top:6px;color:var(--t)">-</div>
                     </div>
                 </div>
 
@@ -3348,7 +3507,7 @@
                             </div>
                             <div class="mark" title="100% liabilities baseline"></div>
                         </div>
-                        <div class="cr-val" id="assetsRowVal">—</div>
+                        <div class="cr-val" id="assetsRowVal">-</div>
                     </div>
                     <div class="cr-row">
                         <div class="cr-lbl">Liabilities</div>
@@ -3359,7 +3518,7 @@
                             </div>
                             <div class="mark" title="100% baseline"></div>
                         </div>
-                        <div class="cr-val" id="liabRowVal">—</div>
+                        <div class="cr-val" id="liabRowVal">-</div>
                     </div>
                 </div>
 
@@ -3373,7 +3532,7 @@
                             </div>
                             <div class="mark" title="100% liabilities baseline"></div>
                         </div>
-                        <div class="cr-val" id="treasuryRowVal">—</div>
+                        <div class="cr-val" id="treasuryRowVal">-</div>
                     </div>
                 </div>
 
@@ -3382,22 +3541,22 @@
                         <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Assets</div>
                         <div class="fbet" style="font-size:14px;font-weight:900">
                             <span style="color:var(--m)">Winiwa (rebalance)</span>
-                            <span id="protocolRebWVal" style="color:var(--am)">—</span>
+                            <span id="protocolRebWVal" style="color:var(--am)">-</span>
                         </div>
                         <div class="fbet" style="font-size:14px;font-weight:900;margin-top:10px">
                             <span style="color:var(--m)">xWiniwa (equity)</span>
-                            <span id="protocolXwmVal" style="color:var(--pu)">—</span>
+                            <span id="protocolXwmVal" style="color:var(--pu)">-</span>
                         </div>
                     </div>
                     <div style="padding:12px;border-radius:14px;background:rgba(16,24,38,.35);border:1px solid rgba(255,255,255,.06)">
                         <div style="font-size:12px;font-weight:900;color:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px">Liabilities</div>
                         <div class="fbet" style="font-size:14px;font-weight:900">
                             <span style="color:var(--m)">Stables</span>
-                            <span id="protocolLiabVal" style="color:var(--gr)">—</span>
+                            <span id="protocolLiabVal" style="color:var(--gr)">-</span>
                         </div>
                         <div class="fbet" style="font-size:14px;font-weight:900;margin-top:10px">
                             <span style="color:var(--m)">Staked (rebalance)</span>
-                            <span id="protocolStakedVal" style="color:var(--gr)">—</span>
+                            <span id="protocolStakedVal" style="color:var(--gr)">-</span>
                         </div>
                     </div>
                 </div>
@@ -3411,9 +3570,9 @@
                     <div class="fbet" style="margin:-4px 0 10px">
                         <div class="xs mu">Winiwa price</div>
                         <div style="font-size:13px;font-weight:900;font-variant-numeric:tabular-nums">
-                            <span id="minimaPriceNow">—</span>
+                            <span id="minimaPriceNow">-</span>
                             <span style="opacity:.55">→</span>
-                            <span id="minimaPriceSim">—</span>
+                            <span id="minimaPriceSim">-</span>
                         </div>
                     </div>
                     <div style="position:relative;height:32px;display:flex;align-items:center">
@@ -3443,7 +3602,7 @@
                 <div class="liab-visual-card">
                     <div class="fbet xs mu" style="margin-bottom:8px">
                         <span>Total liabilities represented</span>
-                        <span id="liabDistTotal">—</span>
+                        <span id="liabDistTotal">-</span>
                     </div>
                     <div id="liabDistRows"></div>
                 </div>
@@ -3451,13 +3610,13 @@
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
                     <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
                         <div class="xs mu" style="margin-bottom:6px">Concentration signal</div>
-                        <div style="font-size:14px;font-weight:900" id="liabConcentration">—</div>
-                        <div class="xs mu mt8" id="liabLargestUnit">—</div>
+                        <div style="font-size:14px;font-weight:900" id="liabConcentration">-</div>
+                        <div class="xs mu mt8" id="liabLargestUnit">-</div>
                     </div>
                     <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
                         <div class="xs mu" style="margin-bottom:6px">7d evolution</div>
-                        <div style="font-size:14px;font-weight:900" id="liabTrendState">—</div>
-                        <div class="xs mu mt8" id="liabTrendDetail">—</div>
+                        <div style="font-size:14px;font-weight:900" id="liabTrendState">-</div>
+                        <div class="xs mu mt8" id="liabTrendDetail">-</div>
                     </div>
                 </div>
 
@@ -3475,12 +3634,12 @@
                 <div class="fbet" style="margin-bottom:10px">
                     <div>
                         <div class="xs mu" style="font-weight:800;text-transform:uppercase;letter-spacing:.05em">Total treasury</div>
-                        <div id="treasuryTotal" style="font-size:20px;font-weight:900">—</div>
+                        <div id="treasuryTotal" style="font-size:20px;font-weight:900">-</div>
                     </div>
                     <div style="text-align:right">
                         <div class="xs mu" style="margin-bottom:4px">Next budget vote</div>
                         <div class="fbet" style="gap:10px;justify-content:flex-end">
-                            <div id="treasuryNextVote" style="font-size:12px;font-weight:900">—</div>
+                            <div id="treasuryNextVote" style="font-size:12px;font-weight:900">-</div>
                             <button class="btn btn-w btn-g" style="width:auto;padding:10px 12px" onclick="scrollToBudgetVote()">Vote here</button>
                         </div>
                     </div>
@@ -3496,19 +3655,19 @@
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
                     <div class="xs mu">
-                        <div class="fbet"><span>Operations</span><span id="tOpsVal" style="font-weight:900;color:var(--c)">—</span></div>
-                        <div class="fbet mt8"><span>Growth / BD</span><span id="tGrowthVal" style="font-weight:900;color:var(--gr)">—</span></div>
-                        <div class="fbet mt8"><span>Incentives</span><span id="tIncentVal" style="font-weight:900;color:var(--am)">—</span></div>
+                        <div class="fbet"><span>Operations</span><span id="tOpsVal" style="font-weight:900;color:var(--c)">-</span></div>
+                        <div class="fbet mt8"><span>Growth / BD</span><span id="tGrowthVal" style="font-weight:900;color:var(--gr)">-</span></div>
+                        <div class="fbet mt8"><span>Incentives</span><span id="tIncentVal" style="font-weight:900;color:var(--am)">-</span></div>
                     </div>
                     <div class="xs mu">
-                        <div class="fbet"><span>Security / Audits</span><span id="tSecVal" style="font-weight:900;color:var(--rd)">—</span></div>
-                        <div class="fbet mt8"><span>Protocol participation</span><span id="tMPVal" style="font-weight:900;color:var(--pu)">—</span></div>
+                        <div class="fbet"><span>Security / Audits</span><span id="tSecVal" style="font-weight:900;color:var(--rd)">-</span></div>
+                        <div class="fbet mt8"><span>Protocol participation</span><span id="tMPVal" style="font-weight:900;color:var(--pu)">-</span></div>
                     </div>
                 </div>
 
                 <div class="fbet" style="margin-top:10px">
                     <div class="xs mu">Time to next vote</div>
-                    <div id="treasuryCountdown" style="font-size:13px;font-weight:900">—</div>
+                    <div id="treasuryCountdown" style="font-size:13px;font-weight:900">-</div>
                 </div>
                 <div class="xs mu mt8">
                     The Council can adjust allocations periodically. The protocol participation allocation is used to pursue
@@ -3518,7 +3677,7 @@
 
             <!-- Voting Power Card -->
             <div style="margin-bottom:16px">
-                <!-- My Voting Power — time-weighted breakdown -->
+                <!-- My Voting Power - time-weighted breakdown -->
                 <div
                     style="position:relative;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:14px;padding:14px;margin-bottom:12px">
                     <button class="agent-mini-btn" onclick="openAgentExplain('My Voting Power')" title="StablesAgent">
@@ -3627,9 +3786,9 @@
                     <div class="vfill" style="width:74%"></div>
                 </div>
                 <div class="fbet xs mu"><span>74% in favour</span><span>48 votes</span></div>
-                <div class="vbtns"><button class="btn vfor" onclick="showToast('Vote recorded — thank you!')">✓
+                <div class="vbtns"><button class="btn vfor" onclick="showToast('Vote recorded - thank you!')">✓
                         Vote
-                        For</button><button class="btn vag" onclick="showToast('Vote recorded — thank you!')">✗
+                        For</button><button class="btn vag" onclick="showToast('Vote recorded - thank you!')">✗
                         Vote
                         Against</button></div>
             </div>
@@ -3647,9 +3806,9 @@
                     <div class="vfill" style="width:61%"></div>
                 </div>
                 <div class="fbet xs mu"><span>61% in favour</span><span>92 votes</span></div>
-                <div class="vbtns"><button class="btn vfor" onclick="showToast('Vote recorded — thank you!')">✓
+                <div class="vbtns"><button class="btn vfor" onclick="showToast('Vote recorded - thank you!')">✓
                         Vote
-                        For</button><button class="btn vag" onclick="showToast('Vote recorded — thank you!')">✗
+                        For</button><button class="btn vag" onclick="showToast('Vote recorded - thank you!')">✗
                         Vote
                         Against</button></div>
             </div>
@@ -3680,7 +3839,7 @@
             <div class="test-banner" style="margin:0 0 16px">
                 🧪
                 Testing Phase Only
-                —
+                -
                 These tools will NOT
                 exist in
                 the
@@ -3705,26 +3864,16 @@
                     <div class="xs mu" style="margin-bottom:10px">Clear all balances and start fresh. Useful for
                         testing
                         mission scenarios.</div>
-                    <button class="btn btn-w btn-g" onclick="showToast('Test state reset — Vault cleared')">Reset
+                    <button class="btn btn-w btn-g" onclick="showToast('Test state reset - Vault cleared')">Reset
                         Everything</button>
                 </div>
             </div>
         </div>
 
-        <!-- SETTINGS PAGE -->
-        <div class="page" id="page-settings">
-            <div style="font-size:18px;font-weight:900;margin-bottom:3px">Settings</div>
-            <div class="xs mu" style="margin-bottom:16px">Council members vote, Executives execute via Multisig.</div>
-            <div class="stitle mt20">Settings and updates</div>
-            <div class="card" id="settings-app-updates" style="padding:14px 18px;margin-bottom:8px">
-                <div class="xs mu" style="margin-bottom:12px;line-height:1.55;font-weight:800;color:var(--t)">
-                    Release notes and new prototype drops will show up here as we ship. For now, use the link below to download the latest Stables MiniDapp package for your Minima node (MDS zip on GitHub).
-                </div>
-                <a id="settingsMdsZipLink" class="btn btn-w" style="flex:1;min-width:220px;font-size:14px;font-weight:900;display:block;text-align:center;width:100%;text-decoration:none;box-sizing:border-box"
-                    href="#" target="_blank" rel="noopener">Download Stables.mds.zip</a>
-                <div class="xs mu" id="settingsMdsZipUrlLabel" style="margin-top:10px;word-break:break-all;line-height:1.45;opacity:.9"></div>
-            </div>
-            <div class="stitle mt20">My Profile</div>
+        <!-- PREFERENCES: MY PROFILE -->
+        <div class="page" id="page-settings-profile">
+            <div class="app-screen-title">My profile</div>
+            <div class="app-screen-lede">Council members vote, Executives execute via Multisig.</div>
             <div class="card" style="padding:14px 18px">
                 <div class="xs mu" style="margin-bottom:12px">This profile defines your council identity, including an NFT-style avatar preview, and the role allowed to execute council decision actions.</div>
 
@@ -3782,6 +3931,22 @@
                 </div>
                 <div class="xs mu" style="margin-top:10px">Stored locally in your Winiwa node.</div>
             </div>
+        </div>
+
+        <!-- PREFERENCES: SETTINGS AND UPDATES -->
+        <div class="page" id="page-settings-updates">
+            <div class="app-screen-title">Settings and updates</div>
+            <div class="app-screen-lede">MiniDapp package, theme, display, wallet addresses, and syncing preferences between devices. Your <strong style="color:var(--t)">Vault key</strong> is only on <strong style="color:var(--t)">Security</strong>.</div>
+            <div class="stitle mt20">App updates</div>
+            <div class="card card--prose-centered" id="settings-app-updates" style="padding:14px 18px;margin-bottom:8px">
+                <div class="xs mu" style="margin-bottom:12px;line-height:1.55;font-weight:800;color:var(--t)">
+                    Release notes and new prototype drops will show up here as we ship. For now, use the link below to download the latest Stables MiniDapp package for your Minima node (MDS zip on GitHub).
+                </div>
+                <a id="settingsMdsZipLink" class="btn btn-w" style="flex:1;min-width:220px;font-size:14px;font-weight:900;display:block;text-align:center;width:100%;text-decoration:none;box-sizing:border-box"
+                    href="#" target="_blank" rel="noopener">Download Stables.mds.zip</a>
+                <div class="xs mu" id="settingsMdsZipUrlLabel" style="margin-top:10px;word-break:break-all;line-height:1.45;opacity:.9"></div>
+            </div>
+            <div class="stitle mt20">Appearance &amp; behaviour</div>
             <div class="card" style="padding:0 18px">
                 <div class="set-row">
                     <div>
@@ -3850,10 +4015,11 @@
                     </div>
                 </div>
             </div>
-            <div class="stitle mt20">Security</div>
+            <div class="stitle mt20">Wallet addresses</div>
             <div class="card" style="padding:0 18px">
-                <div style="padding:14px 0 8px">
-                    <div class="set-label" style="margin-bottom:8px">My Addresses</div>
+                <div style="padding:14px 0 14px">
+                    <div class="set-label" style="margin-bottom:8px">My addresses</div>
+                    <div class="xs mu" style="margin-bottom:10px">Receive and label addresses here. Your Vault key is managed under <strong style="color:var(--t)">Preferences → Security</strong>.</div>
                     <div class="addr-box" style="margin-top:0" onclick="showToast('Address copied!')">
                         Mx688...f3b2a1c9d4e7f0123456789abcdef <span style="color:var(--c)">
                             ·
@@ -3864,35 +4030,51 @@
                         Generate
                         new address</button>
                 </div>
-                <div class="set-row">
-                    <div>
-                        <div class="set-label">
-                            🔑
-                            Seed Phrase</div>
-                        <div class="set-sub">View via Winiwa Security App</div>
-                    </div>
-                    <button class="btn" style="width:auto;padding:8px 12px;font-size:12px"
-                        onclick="openSeedPhrase()">Open
-                        →</button>
-                </div>
             </div>
-            <div class="stitle mt20">Local Backup</div>
+            <div class="stitle mt20">Sync preferences</div>
             <div class="card" style="padding:14px 18px">
                 <div class="xs mu" style="margin-bottom:8px" id="backupStatusLabel">Last backup: never</div>
-                <div class="flex gap8">
-                    <button class="btn btn-w btn-g" style="flex:1" onclick="runConfigBackupNow()">Export config backup</button>
-                    <button class="btn" style="flex:1" onclick="showStorageScopeInfo()">What is onchain?</button>
+                <div class="xs mu" style="margin-bottom:12px;line-height:1.5">
+                    Save a small file to <strong style="color:var(--t)">copy your Stables preferences to another device</strong> (another phone or node). This is separate from your Vault key. Use <strong style="color:var(--t)">Security</strong> for that.
                 </div>
-                <div class="xs mu mt8">Reminder appears if no backup was exported recently.</div>
+                <div style="display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:14px">
+                    <div style="padding:12px;border-radius:12px;background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.22)">
+                        <div style="font-size:11px;font-weight:900;color:var(--gr);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Comes back with your Vault key</div>
+                        <div class="xs mu" style="margin-bottom:8px">These return when that device uses the same Vault key:</div>
+                        <ul id="settingsNotInExportList" style="margin:0;padding-left:18px;font-size:13px;line-height:1.45;color:var(--t)"></ul>
+                    </div>
+                    <div style="padding:12px;border-radius:12px;background:rgba(103,232,249,.06);border:1px solid rgba(103,232,249,.2)">
+                        <div style="font-size:11px;font-weight:900;color:var(--c);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Only in this backup</div>
+                        <div class="xs mu" style="margin-bottom:8px">These move only if you export and import (or type them again):</div>
+                        <ul id="settingsInExportList" style="margin:0;padding-left:18px;font-size:13px;line-height:1.45;color:var(--t)"></ul>
+                    </div>
+                </div>
+                <div class="xs mu" id="settingsExportJsonKeysNote" style="margin-bottom:12px;line-height:1.5"></div>
+                <input type="file" id="configBackupFileInput" accept=".json,application/json" style="display:none" autocomplete="off" onchange="handleConfigBackupFileChosen(this)">
+                <div class="flex gap8" style="flex-wrap:wrap;margin-bottom:10px">
+                    <button type="button" class="btn btn-w btn-g" style="flex:1;min-width:160px" onclick="runConfigBackupNow()">Export</button>
+                    <button type="button" class="btn btn-w" style="flex:1;min-width:160px" onclick="triggerConfigBackupImport()">Import</button>
+                </div>
+                <div class="xs mu mt8">After you choose a file, pick <strong>Replace</strong> (make this device match the file) or <strong>Combine</strong> (merge lists and notes; the file wins when both have a note for the same item). We may remind you if you have not exported in a while.</div>
             </div>
-            <div class="hint mt16">Settings are stored locally on your device.</div>
+        </div>
+
+        <!-- PREFERENCES: SECURITY (Vault key only, critical) -->
+        <div class="page" id="page-settings-security">
+            <div class="app-screen-title">Security</div>
+            <div class="card card--prose-centered" id="settingsSeedPhraseSection" style="padding:22px 20px 20px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.2))">
+                <p class="sec-body" style="margin-bottom:12px">Your <strong>Vault key</strong> is your access to your bank. <strong>Lose it and you can lose your money.</strong> Use the Minima Security app to view or manage it.</p>
+                <p class="sec-body">Never share it with anyone.</p>
+                <div class="sec-key-icon" aria-hidden="true">🔑</div>
+                <button type="button" class="btn btn-w btn-lg" onclick="openModal('seedSecurityAppModal')">Open Minima Security app</button>
+            </div>
         </div>
 
         <!-- MERCHANT INVOICE PAGE -->
         <div class="page" id="page-invoice">
             <div class="fbet" style="margin-bottom:14px">
                 <div>
-                    <div style="font-size:18px;font-weight:900">Create Invoice</div>
+                    <div class="app-screen-title">Create Invoice</div>
                     <div class="xs mu mt8">Generate a payment QR for your customer</div>
                 </div>
                 <button class="btn btn-g" style="width:auto;padding:8px 12px;font-size:12px"
@@ -3926,10 +4108,10 @@
         style="display:none;position:fixed;inset:0;z-index:500;background:#0b0f14;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px">
         <div style="font-size:13px;color:var(--m);margin-bottom:4px">Scan to pay</div>
         <div style="font-size:48px;font-weight:900;letter-spacing:-.02em;margin-bottom:4px" id="mdAmt">
-            —
+            -
         </div>
         <div style="font-size:14px;color:var(--m);margin-bottom:24px" id="mdNote">
-            —
+            -
         </div>
         <div
             style="width:240px;height:240px;background:#fff;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:80px;margin:0 auto 24px">
@@ -4012,6 +4194,13 @@
             <div class="ddiv"></div>
             <div class="dsect">
                 <div class="dsect-t">Help</div>
+                <div class="ditem" onclick="openWelcomeGuidedToursFromMenu();closeMoreNow()">
+                    <div class="dic">🧭</div>
+                    <div class="dinfo">
+                        <div class="dname">Guided tours</div>
+                        <div class="ddesc">Start from the welcome screen, then pick a guided path</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
                 <div class="ditem" onclick="openAgent();closeMoreNow()">
                     <div class="dic">
                         <img src="agent.png" alt="StablesAgent"
@@ -4035,13 +4224,31 @@
             <div class="ddiv"></div>
             <div class="dsect">
                 <div class="dsect-t">Preferences</div>
-                <div class="ditem" onclick="navigate('settings');closeMoreNow()">
+                <div class="ditem" onclick="navigate('settings-profile');closeMoreNow()">
+                    <div class="dic">
+                        👤
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">My profile</div>
+                        <div class="ddesc">Council identity and avatar</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('settings-updates');closeMoreNow()">
                     <div class="dic">
                         ⚙️
                     </div>
                     <div class="dinfo">
                         <div class="dname">Settings and updates</div>
-                        <div class="ddesc">Manage updates, theme, currency, and privacy</div>
+                        <div class="ddesc">Package, theme, display, addresses, sync</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('settings-security');closeMoreNow()">
+                    <div class="dic">
+                        🔐
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">Security</div>
+                        <div class="ddesc">Vault key only: access to your bank</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -4127,14 +4334,14 @@
             <div id="recvAddr" class="addr-box" onclick="copyAddr(this)">Mx688...f3b2a1c9d4e7f0123456789abcdef</div>
             <div class="xs mu mt8" style="text-align:center;margin-bottom:8px">Tap to copy</div>
             <div style="display:grid;grid-template-columns:1fr auto;gap:6px;margin-bottom:12px">
-                <button class="btn btn-g" style="font-size:12px;padding:10px" onclick="genNewAddr()">+ New
+                <button class="btn btn-g" style="padding:10px" onclick="genNewAddr()">+ New
                     address</button>
-                <button class="btn" id="privToggle" style="font-size:13px;padding:10px;width:auto"
+                <button class="btn" id="privToggle" style="padding:10px;width:auto"
                     onclick="togglePrivacy()">🔒
                     Auto: OFF</button>
             </div>
             <details style="margin-bottom:12px">
-                <summary style="cursor:pointer;font-size:12px;font-weight:700;color:var(--m);padding:8px 0">Add tip ▾</summary>
+                <summary style="cursor:pointer;font-weight:700;color:var(--m);padding:8px 0">Add tip ▾</summary>
                 <div style="margin-top:8px">
                     <label class="flabel">Tip destination address</label>
                     <input class="finput" placeholder="Tip goes to this address..." style="margin-bottom:6px">
@@ -4144,6 +4351,20 @@
             <button class="btn btn-w btn-g" style="margin-bottom:8px"
                 onclick="closeModal('recvModal');navigate('invoice')">Create a Merchant Invoice
                 →</button>
+        </div>
+    </div>
+
+    <!-- OPEN NODE SECURITY APP (seed phrase) - safety styling -->
+    <div class="mback centered" id="seedSecurityAppModal" onclick="if(event.target===this)closeModal('seedSecurityAppModal')">
+        <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.1),rgba(11,15,20,.94));padding:20px 18px 22px">
+            <div class="mhandle" style="background:rgba(251,191,36,.35)"></div>
+            <div class="type-eyebrow" style="color:#fbbf24;margin-bottom:10px">Safety</div>
+            <div class="mttl" style="text-align:center;margin-bottom:12px">Open Minima Security app</div>
+            <div style="margin:0 0 18px;line-height:var(--lh-body);text-align:center;color:var(--t);font-size:var(--fz-body);font-weight:500">
+                This opens the <strong style="color:#fbbf24">Minima Security app</strong> on your node so you can view or check your <strong style="color:#fbbf24">Vault key</strong>, also called <strong style="color:#fbbf24">Seed phrase</strong>, which is a series of 24 words. Only do this in a private place.
+            </div>
+            <button type="button" class="btn btn-w btn-lg"
+                onclick="closeModal('seedSecurityAppModal');openSeedPhrase()">Continue</button>
         </div>
     </div>
 
@@ -4160,7 +4381,7 @@
             <div class="hint" style="margin-bottom:14px">Camera access required. In the MiniDapp, scanning opens
                 automatically.</div>
             <button class="btn btn-w"
-                onclick="showToast('Demo: Payment to Ground Coffee — $4.50');closeModal('qrModal')">Demo:
+                onclick="showToast('Demo: Payment to Ground Coffee - $4.50');closeModal('qrModal')">Demo:
                 Simulate
                 Scan</button>
             <button class="btn btn-w btn-g mt8" onclick="closeModal('qrModal')">Cancel</button>
@@ -4171,7 +4392,7 @@
     <div class="mback centered" id="agentActionModal" onclick="if(event.target===this)closeAgentActionModal()">
         <div class="modal">
             <div class="fbet" style="margin-bottom:10px;align-items:center">
-                <div style="font-size:16px;font-weight:900" id="agentActionTitle">Transaction details</div>
+                <div class="mttl" style="margin-bottom:0" id="agentActionTitle">Transaction details</div>
                 <div id="agentActionTitleRight"></div>
             </div>
             <div id="agentActionContent"></div>
@@ -4184,29 +4405,33 @@
             <div style="display:flex;justify-content:center;margin-bottom:14px">
                 <img src="stables_icon.png" alt="Stables" style="width:54px;height:54px;border-radius:14px">
             </div>
-            <!-- Step 1: Language + intro only -->
+            <!-- Step 1: Welcome first (congratulations, language, intro) -->
             <div id="welcomeStepLang">
-                <div class="mttl" id="welcomeTitle"
-                    style="text-align:center;margin-bottom:10px;font-size:24px;font-weight:900;line-height:1.25">Welcome to Stables</div>
-                <label class="flabel" style="margin-top:4px;margin-bottom:4px">Language</label>
-                <select class="fsel" id="welcomeLang" style="margin-bottom:14px" onchange="updateWelcomeLanguage()">
-                    <option value="en">English</option>
-                    <option value="en-edgy">English (Edgy)</option>
-                    <option value="fr">Français</option>
-                    <option value="fr-CA">Québécois</option>
-                    <option value="es">Spanish</option>
-                    <option value="ar">العربية</option>
-                    <option value="hi">हिन्दी</option>
-                    <option value="zh">中文</option>
-                </select>
-                <div class="xs mu" id="welcomeIntroCopy"
-                    style="text-align:center;margin-bottom:16px;font-size:20px;font-weight:900;line-height:1.45;color:var(--t)">
-                    Welcome to Stables.
+                <div id="welcomeCongrats" class="type-hero"
+                    style="text-align:center;margin-bottom:12px;color:var(--t)">
+                    Congratulations on becoming your own bank.
                 </div>
-                <button class="btn btn-w btn-g" style="width:100%" onclick="goWelcomeToCurrencies()">Let's go</button>
+                <div class="mttl" id="welcomeTitle"
+                    style="text-align:center;margin-bottom:14px;font-weight:800;line-height:1.3;color:var(--t)">Welcome to Stables</div>
+                <div style="display:flex;flex-direction:column;align-items:center;width:100%;margin-bottom:14px;box-sizing:border-box">
+                    <label class="flabel" for="welcomeLang" style="margin:0 0 8px 0;text-align:center;width:100%">Language</label>
+                    <!-- More locales when welcome copy is translated; UI strings are English-only for now. -->
+                    <select class="fsel" id="welcomeLang"
+                        style="display:block;width:100%;max-width:300px;margin:0;box-sizing:border-box;text-align:center;text-align-last:center"
+                        onchange="updateWelcomeLanguage()">
+                    <option value="en">English</option>
+                </select>
+                </div>
+                <div id="welcomeIntroBody" class="welcome-modal-body-copy"
+                    style="text-align:center;margin:6px 0 24px;padding:0 4px;box-sizing:border-box">
+                </div>
+                <button class="btn btn-w btn-g" style="width:100%" onclick="goWelcomeToTourChoice()">Let's go</button>
+                <div id="welcomeShowcaseBanner" class="xs"
+                    style="text-align:center;margin-top:14px;font-weight:800;color:#fbbf24">
+                </div>
             </div>
 
-            <!-- Step 2: Currency selection (moved to the end via JS flow) -->
+            <!-- Step 2: Currency selection (after tour path choice) -->
             <div id="welcomeStepCurrencies" style="display:none">
                 <label class="flabel" style="margin-top:4px;margin-bottom:6px">Preferred currencies</label>
                 <div id="welcomeCurrencies" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
@@ -4225,34 +4450,33 @@
                 <button class="btn btn-w" style="width:100%" onclick="applyWelcomeSetup()">Save and continue</button>
             </div>
 
-            <!-- Step 3: Showcase prototype message -->
+            <!-- After currency save: short next steps only -->
             <div id="welcomeStepShowcaseMsg" style="display:none">
-                <div id="welcomeShowcaseCopy"
-                    style="margin-bottom:16px;padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12);font-size:15px;font-weight:900;color:var(--am);line-height:1.6;text-align:center;white-space:pre-line">
-                    Showcase prototype...
+                <div id="welcomeShowcaseCopy" class="welcome-modal-body-copy"
+                    style="margin-bottom:18px;text-align:center;white-space:pre-line">
                 </div>
                 <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-bottom:10px">
-                    <button class="btn btn-w" id="welcomeShowcaseHereBtn" style="flex:1;min-width:220px;font-size:14px;font-weight:900"
+                    <button class="btn btn-w" id="welcomeShowcaseHereBtn" style="flex:1;min-width:220px;font-weight:900"
                         onclick="closeWelcomeSetup()">Continue the visit here</button>
-                    <button class="btn btn-w" id="welcomeShowcaseNodeBtn" style="flex:1;min-width:220px;font-size:14px;font-weight:900"
+                    <button class="btn btn-w" id="welcomeShowcaseNodeBtn" style="flex:1;min-width:220px;font-weight:900"
                         onclick="openStablesMdsZipFromWelcome()">I can't wait to see it in my node</button>
                 </div>
             </div>
 
-            <!-- Step 4: Guided tour choice -->
+            <!-- Guided tour path (persona buttons) -->
             <div id="welcomeStepTourChoice" style="display:none">
-                <div class="xs mu" id="welcomeTourBody"
-                    style="text-align:center;margin-bottom:16px;font-size:16px;font-weight:900;line-height:1.55">
-                    Choose how you want the StablesAgent to guide you in this demo.
+                <div id="welcomeTourChoiceHead" class="welcome-modal-body-copy"
+                    style="text-align:center;margin-bottom:16px">
+                    Pick one path for the StablesAgent guided tour.
                 </div>
-                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
-                    <button class="btn btn-w btn-g" id="welcomeTourPersonBtn" style="flex:1;min-width:220px;font-size:14px"
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;flex-direction:column;gap:12px;margin-top:4px">
+                    <button class="btn btn-w btn-g" id="welcomeTourPersonBtn" style="width:100%;min-width:220px;line-height:1.4"
                         onclick="setWelcomeTourChoice('person')">I'm a person. I want to understand what I'll be able to do with my own bank.</button>
-                    <button class="btn btn-w btn-g" id="welcomeTourMerchantBtn" style="flex:1;min-width:220px;font-size:14px"
-                        onclick="setWelcomeTourChoice('merchant')">I'm a merchant. I want to know how this shit will streamline my business process.</button>
-                    <button class="btn btn-w btn-g" id="welcomeTourNerdBtn" style="flex:1;min-width:220px;font-size:14px"
-                        onclick="setWelcomeTourChoice('nerd')">I'm a nerd. I want to know how this shit holds.</button>
-                    <button class="btn btn-w btn-g" id="welcomeExploreBtn" style="flex:1;min-width:220px;font-size:14px"
+                    <button class="btn btn-w btn-g" id="welcomeTourMerchantBtn" style="width:100%;min-width:220px;line-height:1.4"
+                        onclick="setWelcomeTourChoice('merchant')">I'm a merchant. I want to know how this will streamline my business process.</button>
+                    <button class="btn btn-w btn-g" id="welcomeTourNerdBtn" style="width:100%;min-width:220px;line-height:1.4"
+                        onclick="setWelcomeTourChoice('nerd')">I'm a nerd. I want to understand how this holds together.</button>
+                    <button class="btn btn-w btn-g" id="welcomeExploreBtn" style="width:100%;min-width:220px;line-height:1.4"
                         onclick="setWelcomeTourChoice('explore')">I'm a viewer. I want to look around.</button>
                 </div>
             </div>
@@ -4260,22 +4484,22 @@
             <!-- Step 5: Nerd sub track choice -->
             <div id="welcomeStepNerdTrack" style="display:none">
                 <div class="mttl" id="welcomeNerdTrackTitle"
-                    style="text-align:center;margin-bottom:12px;font-size:18px">Pick your nerd deep dive</div>
-                <div class="xs mu" id="welcomeNerdTrackBody"
-                    style="text-align:center;margin-bottom:16px;font-size:18px;font-weight:900;line-height:1.55;color:var(--t)">
+                    style="text-align:center;margin-bottom:12px">Pick your nerd deep dive</div>
+                <div id="welcomeNerdTrackBody" class="msub"
+                    style="text-align:center;margin-bottom:16px;color:var(--t)">
                     Choose what you want to inspect first in this demo.
                 </div>
                 <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
-                    <button class="btn btn-w btn-g" id="welcomeNerdTrackTechBtn" style="flex:1;min-width:220px;font-size:14px"
+                    <button class="btn btn-w btn-g" id="welcomeNerdTrackTechBtn" style="flex:1;min-width:220px"
                         onclick="setWelcomeNerdTrack('tech')">Tech + blockchain</button>
-                    <button class="btn btn-w btn-g" id="welcomeNerdTrackFinanceBtn" style="flex:1;min-width:220px;font-size:14px"
+                    <button class="btn btn-w btn-g" id="welcomeNerdTrackFinanceBtn" style="flex:1;min-width:220px"
                         onclick="setWelcomeNerdTrack('finance')">Financial side: how Stables is structured and ensures the peg</button>
                 </div>
             </div>
 
             <!-- Step 4: Use case -->
             <div id="welcomeStepTourUseCase" style="display:none">
-                <div class="mttl" id="welcomeUseTitle" style="text-align:center;margin-bottom:12px;font-size:18px">How will you use it?</div>
+                <div class="mttl" id="welcomeUseTitle" style="text-align:center;margin-bottom:12px">How will you use it?</div>
                 <div class="xs mu" id="welcomeUsePrompt" style="text-align:center;margin-bottom:16px">
                     How will you mainly use the app, as a personal or a merchant?
                 </div>
@@ -4283,6 +4507,47 @@
                     <button class="btn btn-w btn-g" id="welcomePersonalBtn" style="flex:1;min-width:220px" onclick="setWelcomeUseCase('personal')">Personal</button>
                     <button class="btn" id="welcomeMerchantBtn" style="flex:1;min-width:220px" onclick="setWelcomeUseCase('merchant')">Merchant</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vault key safety (after welcome until user confirms Yes); matches Security page amber card -->
+    <div class="mback centered" id="seedPhraseSecurityModal" style="z-index:620" aria-modal="true" role="dialog" onclick="if(event.target===this)closeSeedPhraseSecurityModal()">
+        <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.92));padding:20px 18px 22px">
+            <div class="mttl" style="text-align:center;margin-bottom:12px">
+                Have you saved your <strong style="color:#fbbf24">Vault key</strong>?
+            </div>
+            <div style="text-align:center;margin-bottom:14px;line-height:1.55;color:var(--t);font-weight:600">
+                <p style="margin:0 0 12px 0">Your <strong style="color:var(--t)">Vault key</strong> is your access to your bank. Lose it and you can <strong style="color:var(--t)">lose your money</strong>. <strong style="color:var(--t)">No one can recover it for you</strong>, including Stables.</p>
+                <p style="margin:0;color:var(--m);font-weight:500">The Stables community can help with questions; <strong style="color:var(--t)">only you</strong> can keep your key safe.</p>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+                <button type="button" class="btn btn-w"
+                    onclick="deferSeedPhraseBackupNow()">Let me do that right now</button>
+                <button type="button" class="btn btn-w" style="line-height:1.35"
+                    onclick="deferSeedPhraseRemindLater()">Please remind me each visit. I understand I am at risk of losing all my assets</button>
+                <button type="button" class="btn btn-w"
+                    onclick="confirmSeedPhraseSaved()">Yes, I have stored it safely</button>
+                <button type="button" class="btn btn-w" style="line-height:1.35"
+                    onclick="openVaultHelpChooser()">I need help</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vault modal: I need help → StablesAgent or security Telegram -->
+    <div class="mback centered" id="vaultHelpChoiceModal" style="z-index:635" aria-modal="true" role="dialog" onclick="if(event.target===this)closeModal('vaultHelpChoiceModal')">
+        <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.35);box-shadow:0 0 0 1px rgba(251,191,36,.1),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.06),rgba(11,15,20,.92));padding:20px 18px 22px">
+            <div class="type-eyebrow" style="color:#fbbf24;margin-bottom:10px">Help</div>
+            <div class="mttl" style="text-align:center;margin-bottom:12px">
+                How do you want help?
+            </div>
+            <div style="text-align:center;margin-bottom:16px;line-height:1.55;color:var(--m);font-weight:600">
+                Talk to StablesAgent (starts with a question about your Vault key), or open the security support channel on Telegram.
+            </div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+                <button type="button" class="btn btn-w btn-g" onclick="vaultHelpChooseStablesAgent()">Talk to StablesAgent</button>
+                <button type="button" class="btn btn-w" style="line-height:1.35" onclick="vaultHelpChooseTelegramSecurity()">Stables security support on Telegram</button>
+                <button type="button" class="btn btn-w" onclick="closeModal('vaultHelpChoiceModal')">Back</button>
             </div>
         </div>
     </div>
@@ -4382,7 +4647,7 @@
                 <!-- CR status -->
                 <div id="simCRStatus"
                     style="margin-top:10px;padding:8px 12px;border-radius:9px;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.18);font-size:13px;font-weight:700;text-align:center;color:var(--gr)">
-                    Protocol CR: 247% — Healthy</div>
+                    Protocol CR: 247% (Healthy)</div>
             </div>
         </div>
     </div>
@@ -4430,7 +4695,7 @@
 
     <script src="assets/config/runtime-config.js"></script>
     <script>
-        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'chat', 'council-comms', 'council', 'faucet', 'settings', 'invoice', 'activity', 'contacts', 'feedback'];
+        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'chat', 'council-comms', 'council', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'invoice', 'activity', 'contacts', 'feedback'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
         let privacyMode = false; lede = false;
@@ -4463,7 +4728,10 @@
             if (TABS.includes(p)) { document.getElementById('tab-' + p).classList.add('active'); }
             else { document.getElementById('tab-more').classList.add('active'); }
             curPage = p;
-            if (p === 'settings') syncAppUpdatesSection();
+            if (p === 'settings-updates') {
+                syncAppUpdatesSection();
+                if (typeof window.refreshSettingsBackupCopy === 'function') window.refreshSettingsBackupCopy();
+            }
             if (p === 'activity') {
                 if (typeof setActivityFilter === 'function') setActivityFilter('all');
                 if (typeof setActivityCcyFilter === 'function') setActivityCcyFilter('all');
@@ -4641,6 +4909,85 @@
             // Safety stop if no ack arrives (e.g., maintenance mode).
             timeouts.push(setTimeout(() => { stopRetries(); }, 9000));
         }
+
+        /** Open agent drawer and auto-send an exact first message (same postMessage contract as openAgentExplain). */
+        function openAgentWithSuggestedPrompt(text, ctxPayload, ctxDisplayLabel) {
+            const frame = document.getElementById('agentFrame');
+            if (!frame) return;
+            const promptCtx = String(ctxPayload || 'help').trim() || 'help';
+            const finalText = String(text || '').trim();
+            if (!finalText) return;
+            const suggestKey = `${promptCtx}::${finalText}`;
+            const needsLoad = !frame.src || frame.src === 'about:blank';
+            const payload = {
+                type: 'stablesagent:suggest',
+                text: finalText,
+                ctx: promptCtx,
+                autoSend: true,
+                ts: Date.now()
+            };
+            const postSuggest = () => {
+                try {
+                    if (!frame.contentWindow) return;
+                    if (frame.src === 'about:blank') return;
+                    frame.contentWindow.postMessage(payload, '*');
+                } catch (e) { }
+            };
+            if (needsLoad) {
+                frame.addEventListener('load', () => { postSuggest(); }, { once: true });
+            }
+            openAgent();
+            const label = document.getElementById('agentCtxLabel');
+            if (label && ctxDisplayLabel) label.textContent = `Context: ${ctxDisplayLabel}`;
+            if (suggestKey === lastAgentSuggestKey) return;
+            lastAgentSuggestKey = suggestKey;
+            let settled = false;
+            const timeouts = [];
+            const stopRetries = () => {
+                if (settled) return;
+                settled = true;
+                while (timeouts.length) clearTimeout(timeouts.pop());
+                window.removeEventListener('message', onVaultHelpAck);
+            };
+            const onVaultHelpAck = (event) => {
+                const d = event?.data;
+                if (!d || typeof d !== 'object') return;
+                if (d.type !== 'stablesagent:ack') return;
+                stopRetries();
+            };
+            window.addEventListener('message', onVaultHelpAck);
+            postSuggest();
+            timeouts.push(setTimeout(() => { if (!settled) postSuggest(); }, 500));
+            timeouts.push(setTimeout(() => { if (!settled) postSuggest(); }, 1500));
+            timeouts.push(setTimeout(() => { if (!settled) postSuggest(); }, 3500));
+            timeouts.push(setTimeout(() => { if (!settled) postSuggest(); }, 6500));
+            timeouts.push(setTimeout(() => { stopRetries(); }, 9000));
+        }
+
+        function openVaultHelpChooser() {
+            openModal('vaultHelpChoiceModal');
+        }
+
+        function vaultHelpChooseStablesAgent() {
+            closeModal('vaultHelpChoiceModal');
+            openAgentWithSuggestedPrompt(
+                'Explain to me what the Vault key is.',
+                'vault key',
+                'Vault key help'
+            );
+        }
+
+        function vaultHelpChooseTelegramSecurity() {
+            const raw = window.STABLES_CONFIG && window.STABLES_CONFIG.SECURITY_SUPPORT_TELEGRAM_URL;
+            const url = String(raw || '').trim();
+            if (url) {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            } else if (typeof showToast === 'function') {
+                showToast('Security channel link not set. Use More, Help, Feedback for Telegram.');
+            }
+            closeModal('vaultHelpChoiceModal');
+        }
+
         function closeAgent(e) { if (e && e.target !== document.getElementById('agentDrawer')) return; closeAgentNow(); }
         function closeAgentNow() {
             const d = document.getElementById('agentDrawer');
@@ -5283,7 +5630,7 @@
         }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
         window.addEventListener('click', e => {
-            ['sendModal', 'recvModal', 'qrModal'].forEach(id => {
+            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'vaultHelpChoiceModal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el && e.target === el) el.classList.remove('open');
             });
@@ -5412,7 +5759,7 @@
 
             const row = document.querySelector(`#ccyList .ccy-sec-row[data-ccy="${c}"]`);
             const balTxt = row?.querySelector('.ccy-sec-amt')?.textContent?.trim() || '0.00';
-            const eqTxt = row?.querySelector('.ccy-sec-usd')?.textContent?.trim() || '—';
+            const eqTxt = row?.querySelector('.ccy-sec-usd')?.textContent?.trim() || '-';
             if (title) title.textContent = 'Currency';
             if (titleRight) {
                 titleRight.innerHTML = `<div style="display:flex;gap:6px">
@@ -5612,7 +5959,7 @@
             if (!dist.length || totalUSD <= 0) {
                 rowsWrap.innerHTML = '<div class="xs mu">No liability positions detected yet.</div>';
                 concEl.textContent = 'No concentration';
-                largestEl.textContent = '—';
+                largestEl.textContent = '-';
                 trendStateEl.textContent = 'No trend';
                 trendDetailEl.textContent = 'Not enough observations yet';
                 return;
@@ -5669,8 +6016,8 @@
             trendDetailEl.textContent = `${topCode} share ${delta >= 0 ? '+' : ''}${delta.toFixed(1)}% vs 7d baseline`;
         }
 
-        // Treasury (demo) — Council allocation buckets
-        // Treasury (demo) — Council allocation buckets
+        // Treasury (demo) - Council allocation buckets
+        // Treasury (demo) - Council allocation buckets
         let TREASURY_TOTAL_MINIMA = 250000; // held in Minima (not USD), used for the Treasury card
         const TREASURY_ALLOC = { ops: 0.15, growth: 0.15, incent: 0.08, sec: 0.07, mp: 0.55 };
         const TREASURY_NEXT_VOTE_UTC = new Date('2026-04-01T12:00:00Z').getTime();
@@ -5758,7 +6105,7 @@
                     if (code === BASE_CCY || r.dataset.walletEnabled === '1') totalBase += eq;
                 } else {
                     eqEl.style.color = 'var(--rd)';
-                    eqEl.textContent = '—';
+                    eqEl.textContent = '-';
                     if ((code === BASE_CCY || r.dataset.walletEnabled === '1') && eq > 0) totalBase += eq;
                 }
             });
@@ -5896,7 +6243,7 @@
             const totEl = document.getElementById('bTotal');
             const total = parseInt((totEl?.textContent || '0').replace('%', ''), 10) || 0;
             if (total !== 100) return showToast('Budget must total 100%');
-            showToast('✓ Budget vote recorded — thank you!');
+            showToast('✓ Budget vote recorded - thank you!');
         }
 
         function updateTreasuryCountdown() {
@@ -5912,7 +6259,7 @@
 
         function executeMintXwm() {
             const role = getCouncilExecutionRole();
-            if (role !== 'Executor') return showToast('Council execution locked — only Executive (Multisig) can execute council decisions.');
+            if (role !== 'Executor') return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
             const mintAmt = parseFloat(document.getElementById('xwmAmt').value) || 0;
             if (mintAmt <= 0 || mintAmt > WALLET_WINIWA) return showToast('Invalid amount or insufficient balance');
             const earnedXwm = (mintAmt * SIM_Winiwa_PRICE * SIM_LEVERAGE / SIM_XWM_PRICE);
@@ -5931,7 +6278,7 @@
 
         function executeBurnXwm() {
             const role = getCouncilExecutionRole();
-            if (role !== 'Executor') return showToast('Council execution locked — only Executive (Multisig) can execute council decisions.');
+            if (role !== 'Executor') return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
             const burnAmt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
             if (burnAmt <= 0 || burnAmt > WALLET_XWM) return showToast('Invalid amount or insufficient balance');
             const earnedWiniwa = (burnAmt * SIM_XWM_PRICE / SIM_Winiwa_PRICE);
@@ -5949,7 +6296,7 @@
 
         function executeMintWables() {
             const role = getCouncilExecutionRole();
-            if (role !== 'Executor') return showToast('Council execution locked — only Executive (Multisig) can execute council decisions.');
+            if (role !== 'Executor') return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
             const mintAmt = parseFloat(document.getElementById('issueAmt').value) || 0;
             if (mintAmt <= 0) return showToast('Enter valid amount');
             const winiwaCost = mintAmt / SIM_Winiwa_PRICE;
@@ -5968,7 +6315,7 @@
 
         function executeBurnWables() {
             const role = getCouncilExecutionRole();
-            if (role !== 'Executor') return showToast('Council execution locked — only Executive (Multisig) can execute council decisions.');
+            if (role !== 'Executor') return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
             const burnAmt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
             if (burnAmt <= 0 || burnAmt > WALLET_WABLES) return showToast('Invalid amount or insufficient balance');
             const earnedWiniwa = burnAmt / SIM_Winiwa_PRICE;
@@ -6321,7 +6668,7 @@
             showToast(merchantMode ? 'Merchant Mode ON' : 'Merchant Mode off');
         }
         function openSeedPhrase() {
-            showToast('Opening Winiwa Security App\u2026');
+            showToast('Opening Minima Security app\u2026');
             /* MiniDapp: MDS.ui.open("security-app") */
         }
         function toggleCcyPill(el) {

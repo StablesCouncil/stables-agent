@@ -47,8 +47,8 @@ function renderInvestment(ctx) {
             </div>
           </div>
           <!-- ✅ Values: 14px / 900, right-aligned, 110px width -->
-          <div style="width:110px; text-align:right; font-weight:900; font-size: 14px;">${r.key === 'lp' ? '—' : fmt(r.qty)}</div>
-          <div style="width:110px; text-align:right; font-weight:900; font-size: 14px;">${r.key === 'lp' ? '—' : fmt(r.qty * r.price)}</div>
+          <div style="width:110px; text-align:right; font-weight:900; font-size: 14px;">${r.key === 'lp' ? '-' : fmt(r.qty)}</div>
+          <div style="width:110px; text-align:right; font-weight:900; font-size: 14px;">${r.key === 'lp' ? '-' : fmt(r.qty * r.price)}</div>
         </div>
       `).join('')}
       

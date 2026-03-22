@@ -21,8 +21,21 @@ window.STABLES_CONFIG = {
   BACKUP_REMINDER_HOURS: 48,
   BACKUP_STORAGE_KEY: 'stables_last_config_backup_ts',
   BACKUP_FIRST_SEEN_KEY: 'stables_backup_first_seen_ts',
+  /** User confirmed Vault key is safely stored. Stops the first-run Vault key prompt. */
+  SEED_PHRASE_SAVED_CONFIRMED_KEY: 'stables_seedphrase_saved_confirmed_v1',
+  /** After confirming, user chose whether to allow occasional soft reminders: 'yes' | 'no'. */
+  VAULT_PERIODIC_REMINDER_PREF_KEY: 'stables_vault_periodic_reminder_pref_v1',
+  /** Last time we showed a soft Vault reminder (when pref is yes). */
+  VAULT_SOFT_REMINDER_LAST_KEY: 'stables_vault_soft_reminder_last_ts_v1',
+  /** Days between soft reminders when user opted in. */
+  VAULT_SOFT_REMINDER_INTERVAL_DAYS: 60,
   /** Public demo: MinimaOS install package (MDS zip) link */
   MDS_ZIP_URL: 'https://github.com/StablesCouncil/StablesCouncil.github.io/releases/latest/download/Stables.mds.zip',
+  /**
+   * Telegram: dedicated security / Vault key support (supergroup or channel invite).
+   * Publish the real invite here when the channel is live; used from Vault modal “I need help”.
+   */
+  SECURITY_SUPPORT_TELEGRAM_URL: 'https://t.me/StablesSecuritySupport',
   /**
    * Official council notices on the Council communications page (security, mandatory updates, critical comms).
    * Replace `items` on each release; keep copy factual and short.
