@@ -1,0 +1,65 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.app-shell__header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  background: rgba(16, 24, 38, 0.6);
+  backdrop-filter: blur(8px);
+}
+
+.app-shell__brand {
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+}
+
+.app-shell__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.app-shell__nav a {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  color: var(--muted);
+  border: 1px solid transparent;
+}
+
+.app-shell__nav a:hover {
+  color: var(--text-primary);
+  border-color: var(--border-subtle);
+}
+
+.app-shell__nav a.active {
+  color: var(--accent-cyan);
+  border-color: rgba(103, 232, 249, 0.35);
+  background: rgba(103, 232, 249, 0.06);
+}
+
+.app-shell__main {
+  flex: 1;
+  overflow: auto;
+  padding: 16px 20px 32px;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.app-shell__foot {
+  font-size: 0.75rem;
+  color: var(--muted);
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-subtle);
+  text-align: center;
+}

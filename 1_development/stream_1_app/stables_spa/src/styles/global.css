@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  color: var(--text-primary);
+  background: var(--bg);
+}
+
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+a {
+  color: var(--accent-cyan);
+}
+
+code {
+  font-size: 0.9em;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  background: var(--panel);
+  border: 1px solid var(--border-subtle);
+}
+
+/* Default inner padding for section cards */
+.cb-pad {
+  padding: 18px;
+}
