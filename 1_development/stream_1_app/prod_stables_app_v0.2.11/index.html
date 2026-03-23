@@ -8427,7 +8427,7 @@
             // Simulated values after price move
             const priceMove = pct / 100;
             const simWiniwVal = curWiniwaHeld * SIM_Winiwa_PRICE * (1 + priceMove);
-            const simXwmVal = curXwmHeld * SIM_XWM_PRICE; // xMinima doesn't move with Winiwa price
+            let simXwmVal = 0; // Calculated after protocol state finalizes
             const simWablesVal = curWablesVal; // Pegged to $1
             const simCFVal = 0; // CF tokens (if any)
 
@@ -8462,6 +8462,10 @@
                 simTotalAssets = protW_USD + rebW_USD + xwmUSD + pledgedUSD;
                 newCRnum = liabEffective > 0 ? ((simTotalAssets / liabEffective) * 100) : 999;
             }
+
+            // Sync wallet xWiniwa equity to protocol-level multiplier
+            const equityMultiplier = ASSET_XWM_USD > 0 ? (xwmUSD / ASSET_XWM_USD) : 0;
+            simXwmVal = curXwmVal * equityMultiplier;
 
             const newCR = newCRnum.toFixed(0);
 
