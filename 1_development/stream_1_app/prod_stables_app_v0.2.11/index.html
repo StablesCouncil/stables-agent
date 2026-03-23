@@ -4940,9 +4940,20 @@
                     <div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(255,255,255,0.06)">
                         <div class="fbet xs mu" style="margin-bottom:8px">
                             <span>Historical Evolution</span>
-                            <span style="color:var(--c)">All-time</span>
+                            <span style="color:var(--c)" id="crEvolutionPeriodLabel">Live (Today)</span>
                         </div>
-                        <div id="crEvolutionGraph" style="height:64px; width:100%; position:relative; overflow:hidden; border-radius:4px;"></div>
+                        <div style="position:relative; height:64px; margin-bottom:12px;">
+                            <!-- Y-axis scale labels -->
+                            <div style="position:absolute; left:0; top:0; font-size:9px; color:rgba(255,255,255,0.4); line-height:1;">130%</div>
+                            <div style="position:absolute; left:0; bottom:8px; font-size:9px; color:rgba(52,211,153,0.6); line-height:1;">110%</div>
+                            
+                            <div id="crEvolutionGraph" style="height:100%; width:100%; position:absolute; inset:0; overflow:hidden; border-radius:4px; pointer-events:none;"></div>
+                        </div>
+                        
+                        <!-- Scrub Slider -->
+                        <div class="treasury-slider-input-shell" style="margin-bottom:4px;">
+                            <input type="range" min="0" max="19" step="1" value="19" class="slider" id="crScrubSlider" oninput="scrubCoverageGraph(this.value)">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -8131,26 +8142,50 @@
             }
         }
 
-        setTimeout(renderCoverageEvolutionGraph, 100);
+        /** Illustrative historical data points */
+        const CR_HIST_DATA = [105, 108, 112, 110, 109, 115, 118, 114, 116, 120, 122, 118, 115, 112, 114, 117, 121, 125, 123, 119];
+        
+        function scrubCoverageGraph(indexStr) {
+            const idx = parseInt(indexStr, 10);
+            const val = CR_HIST_DATA[idx];
+            
+            // Update period label
+            const labelEl = document.getElementById('crEvolutionPeriodLabel');
+            if (labelEl) {
+                const daysAgo = (CR_HIST_DATA.length - 1) - idx;
+                labelEl.textContent = daysAgo === 0 ? 'Live (Today)' : `${daysAgo} ${daysAgo === 1 ? 'day' : 'days'} ago`;
+            }
+            
+            // Update the main Coverage Ratio display to reflect the scrubbed period
+            const crNumEl = document.getElementById('treasurySnapCR');
+            if (crNumEl) {
+                crNumEl.textContent = val + '%';
+                crNumEl.style.color = val >= 110 ? 'var(--gr)' : val >= 100 ? 'var(--am)' : 'var(--rd)';
+            }
+            
+            renderCoverageEvolutionGraph(idx); // re-render with active indicator
+        }
 
-        /** Draws the illustrative historical evolution graph for Coverage Ratio. */
-        function renderCoverageEvolutionGraph() {
+        /** Draws the illustrative historical evolution graph for Coverage Ratio, with an optional active index. */
+        function renderCoverageEvolutionGraph(activeIndex) {
+            if (activeIndex === undefined) activeIndex = CR_HIST_DATA.length - 1;
             const container = document.getElementById('crEvolutionGraph');
             if (!container) return;
             
-            // Illustrative historical data points (percentages)
-            const data = [105, 108, 112, 110, 109, 115, 118, 114, 116, 120, 122, 118, 115, 112, 114, 117, 121, 125, 123, 119];
             const minCr = 100;
             const maxCr = 130;
-            // Use fixed dimensions for viewBox to map coordinates correctly regardless of container DOM state
             const w = 300;
             const h = 64;
             
-            const dx = w / (data.length - 1);
+            const dx = w / (CR_HIST_DATA.length - 1);
             const scaleY = (val) => h - ((val - minCr) / (maxCr - minCr) * h);
             
-            let points = data.map((val, i) => `${i * dx},${scaleY(val)}`).join(' ');
+            let points = CR_HIST_DATA.map((val, i) => `${i * dx},${scaleY(val)}`).join(' ');
             let areaPoints = `0,${h} ${points} ${w},${h}`;
+            
+            // Active marker
+            const activeX = activeIndex * dx;
+            const activeY = scaleY(CR_HIST_DATA[activeIndex]);
             
             const svg = `
             <svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
@@ -8166,12 +8201,16 @@
                 <polygon points="${areaPoints}" fill="url(#crGrad)" />
                 <!-- Line -->
                 <polyline points="${points}" fill="none" stroke="var(--c)" stroke-width="2" vector-effect="non-scaling-stroke" />
+                
+                <!-- Active Scrubber Marker -->
+                <line x1="${activeX}" y1="0" x2="${activeX}" y2="${h}" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="2,2" />
+                <circle cx="${activeX}" cy="${activeY}" r="3" fill="var(--c)" stroke="#0B0F14" stroke-width="1.5" />
             </svg>`;
             container.innerHTML = svg;
         }
 
         // Initialize historical graph when module loads
-        setTimeout(renderCoverageEvolutionGraph, 100);
+        setTimeout(() => renderCoverageEvolutionGraph(), 100);
 
         function updateTreasuryUI(priceMovePct) {
             const totalUSD = TREASURY_TOTAL_MINIMA * SIM_Winiwa_PRICE * (1 + (priceMovePct / 100));

@@ -7,6 +7,7 @@
   const SOFT_HIDDEN_TX_KEY = CFG.SOFT_HIDDEN_TX_KEY || 'stables_soft_hidden_tx_ids_v1';
   const HIDDEN_SHOPS_KEY = CFG.HIDDEN_SHOPS_KEY || 'stables_hidden_shop_names_v1';
   const TX_NOTES_KEY = CFG.TX_NOTES_KEY || 'stables_tx_notes_v1';
+  const CONTACT_FAVORITES_KEY = CFG.CONTACT_FAVORITES_KEY || 'stables_contact_favorites_v1';
   const BACKUP_STORAGE_KEY = CFG.BACKUP_STORAGE_KEY || 'stables_last_config_backup_ts';
   const BACKUP_REMINDER_HOURS = CFG.BACKUP_REMINDER_HOURS || 48;
   const BACKUP_FIRST_SEEN_KEY = CFG.BACKUP_FIRST_SEEN_KEY || 'stables_backup_first_seen_ts';
@@ -120,6 +121,12 @@
   const hiddenShops = new Set(JSON.parse(localStorage.getItem(HIDDEN_SHOPS_KEY) || '[]'));
   const contactNotes = JSON.parse(localStorage.getItem(CONTACT_NOTES_KEY) || '{}');
   const txNotes = JSON.parse(localStorage.getItem(TX_NOTES_KEY) || '{}');
+  const DEFAULT_FAVORITES = ['Alex', 'Maria', 'Sam'];
+  const contactFavorites = new Set(
+    localStorage.getItem(CONTACT_FAVORITES_KEY)
+      ? JSON.parse(localStorage.getItem(CONTACT_FAVORITES_KEY))
+      : DEFAULT_FAVORITES
+  );
 
   /** Parsed JSON waiting for user to choose Replace vs Combine in the import modal. */
   let pendingConfigImportPayload = null;
@@ -130,6 +137,7 @@
   function persistHiddenShops() { localStorage.setItem(HIDDEN_SHOPS_KEY, JSON.stringify(Array.from(hiddenShops))); }
   function persistNotes() { localStorage.setItem(CONTACT_NOTES_KEY, JSON.stringify(contactNotes)); }
   function persistTxNotes() { localStorage.setItem(TX_NOTES_KEY, JSON.stringify(txNotes)); }
+  function persistFavorites() { localStorage.setItem(CONTACT_FAVORITES_KEY, JSON.stringify(Array.from(contactFavorites))); }
   function getTxById(id) { return DEMO_ACTIVITY.find(x => x.id === id); }
   function getExchangeById(id) { return DEMO_EXCHANGES.find(x => x.id === id); }
   function getTxNote(tx) {
@@ -421,14 +429,24 @@
     const list = document.getElementById('contactsList'); if (!list) return;
     const search = String(document.getElementById('contactsSearchInput')?.value || '').toLowerCase().trim();
     const contacts = Array.from(CONTACTS_BOOK.values()).filter(c => !search || c.name.toLowerCase().includes(search) || c.category.toLowerCase().includes(search));
+    // Sort favorites first, then alphabetically
+    contacts.sort((a, b) => {
+      const aFav = contactFavorites.has(a.name);
+      const bFav = contactFavorites.has(b.name);
+      if (aFav !== bFav) return aFav ? -1 : 1;
+      return a.name.localeCompare(b.name);
+    });
     list.innerHTML = '';
     contacts.forEach(c => {
       const txCount = DEMO_ACTIVITY.filter(x => !deletedTx.has(x.id) && x.counterparty === c.name).length;
       const shopHidden = hiddenShops.has(c.name);
+      const isFav = contactFavorites.has(c.name);
       const row = document.createElement('div');
       row.className = 'tx-row';
-      row.innerHTML = `<div class="tx-ic in-ic">👤</div><div class="tx-info"><div class="tx-t">${c.name}</div><div class="tx-d">${c.category} · ${txCount} transactions${shopHidden ? ' · Shop hidden from Spend' : ''}</div></div><div class="badge ${c.saved ? 'b-gr' : 'b-cy'}">${c.saved ? 'Saved' : 'Demo'}</div>`;
-      row.addEventListener('click', () => { selectedContactName = c.name; window.renderSelectedContact(); });
+      row.style.cssText = 'display:flex;align-items:center;gap:8px;';
+      row.innerHTML = `<div class="tx-ic in-ic">${isFav ? '⭐' : '👤'}</div><div class="tx-info" style="flex:1;min-width:0"><div class="tx-t">${c.name}</div><div class="tx-d">${c.category} · ${txCount} transactions${shopHidden ? ' · Shop hidden from Spend' : ''}</div></div><div class="badge ${c.saved ? 'b-gr' : 'b-cy'}" style="flex-shrink:0">${c.saved ? 'Saved' : 'Demo'}</div><button type="button" title="${isFav ? 'Remove from favourites' : 'Add to favourites'}" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:16px;padding:4px 6px;color:${isFav ? '#fbbf24' : 'var(--m)'}" onclick="event.stopPropagation();toggleContactFavorite('${c.name.replace(/'/g, "\\'")}')">★</button>`;
+      row.querySelector('.tx-info').addEventListener('click', () => { selectedContactName = c.name; window.renderSelectedContact(); });
+      row.querySelector('.tx-ic').addEventListener('click', () => { selectedContactName = c.name; window.renderSelectedContact(); });
       list.appendChild(row);
     });
     window.renderSelectedContact();
@@ -1023,13 +1041,19 @@
     const wrap = document.getElementById('sendContactChips');
     if (!wrap) return;
     wrap.innerHTML = '';
-    // Send modal: show *all* contacts so the user has full access.
-    const contacts = Array.from(CONTACTS_BOOK.values());
-    contacts.forEach(c => {
+    const MAX_CHIPS = 5;
+    const all = Array.from(CONTACTS_BOOK.values());
+    const favs = all.filter(c => contactFavorites.has(c.name)).sort((a, b) => a.name.localeCompare(b.name));
+    const rest = all.filter(c => !contactFavorites.has(c.name)).sort((a, b) => a.name.localeCompare(b.name));
+    // Favourites first, then fill remaining slots with non-favourites, max 5 total
+    const shown = [...favs, ...rest].slice(0, MAX_CHIPS);
+    shown.forEach(c => {
       const chip = document.createElement('button');
       chip.className = 'ccy-pill';
       chip.style.cursor = 'pointer';
-      chip.textContent = c.name;
+      const isFav = contactFavorites.has(c.name);
+      chip.textContent = (isFav ? '⭐ ' : '') + c.name;
+      chip.title = c.address;
       chip.addEventListener('click', () => window.setSendRecipient(c.name, c.address));
       wrap.appendChild(chip);
     });
@@ -1039,6 +1063,111 @@
     const input = document.getElementById('sendToInput');
     if (!input) return;
     input.value = `${name} · ${address}`;
+  };
+
+  // --- Contact picker overlay (shared across all address inputs) ---
+  window.toggleContactFavorite = function (name) {
+    if (contactFavorites.has(name)) {
+      contactFavorites.delete(name);
+    } else {
+      contactFavorites.add(name);
+    }
+    persistFavorites();
+    // Re-render everything that uses favorites ordering
+    window.renderContactsPage();
+    window.renderSendContactChips();
+    // If picker is still open, re-render it
+    const overlay = document.getElementById('contactPickerOverlay');
+    if (overlay && overlay.style.display !== 'none') {
+      const targetId = overlay.getAttribute('data-target-input');
+      window._renderContactPickerList(targetId);
+    }
+  };
+
+  window._renderContactPickerList = function (targetInputId) {
+    const listEl = document.getElementById('contactPickerList');
+    if (!listEl) return;
+    const q = String(document.getElementById('contactPickerSearch')?.value || '').toLowerCase().trim();
+    const all = Array.from(CONTACTS_BOOK.values()).filter(c =>
+      !q || c.name.toLowerCase().includes(q) || c.category.toLowerCase().includes(q) || c.address.toLowerCase().includes(q)
+    );
+    const favs = all.filter(c => contactFavorites.has(c.name)).sort((a, b) => a.name.localeCompare(b.name));
+    const rest = all.filter(c => !contactFavorites.has(c.name)).sort((a, b) => a.name.localeCompare(b.name));
+    listEl.innerHTML = '';
+
+    function makeRow(c) {
+      const isFav = contactFavorites.has(c.name);
+      const row = document.createElement('div');
+      row.className = 'cpicker-row';
+      row.innerHTML =
+        `<div class="cpicker-row-ic">${isFav ? '⭐' : '👤'}</div>` +
+        `<div class="cpicker-row-info">` +
+          `<div class="cpicker-row-name">${c.name}</div>` +
+          `<div class="cpicker-row-sub">${c.category} · <span style="font-family:monospace;font-size:11px">${c.address}</span></div>` +
+        `</div>` +
+        `<button type="button" class="cpicker-fav-btn" title="${isFav ? 'Remove favourite' : 'Add favourite'}" ` +
+          `onclick="event.stopPropagation();toggleContactFavorite('${c.name.replace(/'/g, "\\'")}')">★</button>`;
+      row.querySelector('.cpicker-row-info').addEventListener('click', () => {
+        window.fillContactInput(targetInputId, c.name, c.address);
+        window.closeContactPicker();
+      });
+      row.querySelector('.cpicker-row-ic').addEventListener('click', () => {
+        window.fillContactInput(targetInputId, c.name, c.address);
+        window.closeContactPicker();
+      });
+      const favBtn = row.querySelector('.cpicker-fav-btn');
+      favBtn.style.color = isFav ? '#fbbf24' : 'var(--m)';
+      return row;
+    }
+
+    if (favs.length) {
+      const lbl = document.createElement('div');
+      lbl.className = 'cpicker-section-label';
+      lbl.textContent = '⭐ Favourites';
+      listEl.appendChild(lbl);
+      favs.forEach(c => listEl.appendChild(makeRow(c)));
+    }
+    if (rest.length) {
+      if (favs.length) {
+        const lbl = document.createElement('div');
+        lbl.className = 'cpicker-section-label';
+        lbl.textContent = 'Contacts';
+        listEl.appendChild(lbl);
+      }
+      rest.forEach(c => listEl.appendChild(makeRow(c)));
+    }
+    if (!all.length) {
+      const empty = document.createElement('div');
+      empty.style.cssText = 'text-align:center;color:var(--m);font-size:13px;padding:24px 0;';
+      empty.textContent = 'No contacts match your search.';
+      listEl.appendChild(empty);
+    }
+  };
+
+  window.openContactPicker = function (targetInputId) {
+    const overlay = document.getElementById('contactPickerOverlay');
+    if (!overlay) return;
+    overlay.setAttribute('data-target-input', targetInputId || '');
+    const searchEl = document.getElementById('contactPickerSearch');
+    if (searchEl) searchEl.value = '';
+    window._renderContactPickerList(targetInputId);
+    overlay.style.display = 'flex';
+    requestAnimationFrame(() => overlay.classList.add('cpicker-open'));
+    if (searchEl) setTimeout(() => searchEl.focus(), 120);
+  };
+
+  window.closeContactPicker = function () {
+    const overlay = document.getElementById('contactPickerOverlay');
+    if (!overlay) return;
+    overlay.classList.remove('cpicker-open');
+    setTimeout(() => { overlay.style.display = 'none'; }, 220);
+  };
+
+  window.fillContactInput = function (targetInputId, name, address) {
+    const el = document.getElementById(targetInputId);
+    if (!el) return;
+    el.value = `${name} · ${address}`;
+    el.dispatchEvent(new Event('input', { bubbles: true }));
   };
 
   // --- First install setup ---
