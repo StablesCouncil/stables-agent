@@ -8373,11 +8373,11 @@
             showToast(`Successfully reclaimed ${earnedWiniwa.toLocaleString('en-US', { maximumFractionDigits: 0 })} Winiwa`);
         }
 
-        /** Winiwa / MINIMA USD in Treasury + stress UI: exactly 6 digits after the decimal point. */
+        /** Winiwa / MINIMA USD in Treasury + stress UI: 5 digits after the decimal point. */
         function fmtWiniwaUSD6(v) {
             const n = Number(v);
-            if (!Number.isFinite(n)) return '$0.000000';
-            return '$' + n.toFixed(6);
+            if (!Number.isFinite(n)) return '$0.00000';
+            return '$' + n.toFixed(5);
         }
 
         function calcSlider() {
