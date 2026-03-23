@@ -6209,7 +6209,7 @@
     <div class="dback" id="simDrawer" onclick="closeSim(event)">
         <div class="drawer" style="padding:0; overflow:hidden; display:flex; flex-direction:column; max-height:85dvh;">
             <div class="dhead" style="padding:16px 16px 0; flex-shrink:0;"><span
-                    style="font-size:16px;font-weight:800">My own bank risk assessment</span>
+                    style="font-size:16px;font-weight:800">My own bank positioning</span>
                 <button class="dclose" onclick="openAgentExplain('Portfolio Simulator')" title="StablesAgent" style="display:flex;align-items:center;justify-content:center">
                     <img src="agent.png" alt="StablesAgent" style="width:18px;height:18px;border-radius:6px;object-fit:cover">
                 </button>
@@ -9038,12 +9038,12 @@
             const steps = 40;
             
             // Re-read trade intents for full curve simulation
-            const mintXwmWiniwa = parseFloat(document.getElementById('xwmAmt').value) || 0;
-            const mintWablesAmt = parseFloat(document.getElementById('issueAmt').value) || 0;
+            const mintXwmWiniwa = parseFloat(document.getElementById('xwmAmt')?.value) || 0;
+            const mintWablesAmt = parseFloat(document.getElementById('issueAmt')?.value) || 0;
             const mintWablesWiniwa = mintWablesAmt > 0 ? (mintWablesAmt / SIM_Winiwa_PRICE) : 0;
-            const burnXwmAmt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
+            const burnXwmAmt = parseFloat(document.getElementById('xwmBurnAmt')?.value) || 0;
             const burnXwmWiniwa = burnXwmAmt > 0 ? (burnXwmAmt * SIM_XWM_PRICE / SIM_Winiwa_PRICE) : 0;
-            const burnWablesAmt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
+            const burnWablesAmt = parseFloat(document.getElementById('reclaimAmt')?.value) || 0;
             const burnWablesWiniwa = burnWablesAmt > 0 ? (burnWablesAmt / SIM_Winiwa_PRICE) : 0;
 
             const earnedXwm = mintXwmWiniwa > 0 ? (mintXwmWiniwa * SIM_Winiwa_PRICE * SIM_LEVERAGE / SIM_XWM_PRICE) : 0;
