@@ -6218,21 +6218,35 @@
             <div class="sim-card"
                 style="position:relative;padding:16px; background:none; border:none; box-shadow:none; overflow-y:auto; flex-grow:1;">
                 <!-- Slider header -->
-                <div class="fbet" style="margin-bottom:14px">
-                    <div style="font-size:13px;font-weight:800">Winiwa price change</div>
-                    <div id="sliderPct" style="font-size:18px;font-weight:900;color:var(--c)">0%</div>
+                <div style="margin-bottom:24px; padding-top: 10px;">
+                    <div class="xs mu" style="margin-bottom:6px">Winiwa price (USD)</div>
+                    <div style="font-size:15px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1.35;color:var(--t)">
+                        <span id="portMinimaPriceNow">-</span>
+                        <span style="opacity:.55">&rarr;</span>
+                        <span id="portMinimaPriceSim">-</span>
+                    </div>
                 </div>
 
                 <!-- Slider -->
-                <div style="position:relative;height:32px;display:flex;align-items:center;margin-bottom:20px">
-                    <input type="range" id="priceSlider" min="-30" max="30" value="0" step="1" class="sim-slider"
-                        oninput="syncSliders(this.value)" style="width:100%;accent-color:var(--pu)">
-                    <div
-                        style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.2);pointer-events:none">
+                <div class="xs mu" style="margin-bottom:8px;font-weight:800;color:var(--m)">Price change (slider)</div>
+                <div class="treasury-slider-price-row" aria-hidden="false">
+                    <span id="portPriceAtMin30">$0.000000</span>
+                    <span id="portPriceAtZero">$0.000000</span>
+                    <span id="portPriceAtPlus30">$0.000000</span>
+                </div>
+                <div class="treasury-slider-track-wrap">
+                    <div class="treasury-slider-input-shell">
+                        <div id="portSliderThumbPrice" class="treasury-slider-thumb-price">$0.000000</div>
+                        <div id="portSliderThumbPct" class="treasury-slider-thumb-pct">0%</div>
+                        <input type="range" id="priceSlider" min="-30" max="30" value="0" step="1" class="sim-slider"
+                            oninput="syncSliders(this.value)" style="width:100%;accent-color:var(--pu);position:relative;z-index:3">
+                        <div style="position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.2);pointer-events:none;z-index:2"></div>
                     </div>
                 </div>
-                <div class="fbet xs mu" style="margin-bottom:16px;margin-top:-14px">
-                    <span>&#x2212;30%</span><span>0%</span><span>+30%</span>
+                <div class="treasury-slider-pct-row" aria-hidden="false" style="margin-bottom:24px;">
+                    <span>&#x2212;30%</span>
+                    <span>0%</span>
+                    <span>+30%</span>
                 </div>
 
                 <!-- Portfolio table -->
@@ -8549,30 +8563,51 @@
             if (pNow) pNow.textContent = fmtWiniwaUSD6(SIM_Winiwa_PRICE);
             if (pSim) pSim.textContent = fmtWiniwaUSD6(simWiniwaPrice);
 
-            const baseSpot = Number(SIM_Winiwa_PRICE) || 0;
+            document.getElementById('portMinimaPriceNow') && (document.getElementById('portMinimaPriceNow').textContent = fmtWiniwaUSD6(baseSpot));
+            document.getElementById('portMinimaPriceSim') && (document.getElementById('portMinimaPriceSim').textContent = fmtWiniwaUSD6(simWiniwaPrice));
+
             const elMin = document.getElementById('treasuryPriceAtMin30');
             const elMid = document.getElementById('treasuryPriceAtZero');
             const elMax = document.getElementById('treasuryPriceAtPlus30');
-            if (elMin) elMin.textContent = fmtWiniwaUSD6(baseSpot * 0.7);
-            if (elMid) elMid.textContent = fmtWiniwaUSD6(baseSpot);
-            if (elMax) elMax.textContent = fmtWiniwaUSD6(baseSpot * 1.3);
-            const thumbP = document.getElementById('treasurySliderThumbPrice');
-            const thumbPctEl = document.getElementById('treasurySliderThumbPct');
-            const ps = document.getElementById('protocolSlider');
-            if (thumbP && thumbPctEl && ps) {
-                const minS = parseFloat(ps.min);
-                const maxS = parseFloat(ps.max);
-                const valS = parseFloat(ps.value);
-                const tr = (maxS > minS) ? (valS - minS) / (maxS - minS) : 0.5;
-                const pctPos = Math.max(0, Math.min(100, tr * 100));
-                thumbP.style.left = pctPos + '%';
-                thumbPctEl.style.left = pctPos + '%';
-                const deltaPct = Math.round(valS);
-                const pctPart = deltaPct > 0 ? ('+' + deltaPct + '%') : deltaPct < 0 ? (deltaPct + '%') : '0%';
-                thumbP.textContent = fmtWiniwaUSD6(baseSpot * (1 + valS / 100));
-                thumbPctEl.textContent = pctPart;
-                thumbPctEl.style.color = deltaPct > 0 ? 'var(--gr)' : deltaPct < 0 ? 'var(--rd)' : 'var(--c)';
+            const pMin = document.getElementById('portPriceAtMin30');
+            const pMid = document.getElementById('portPriceAtZero');
+            const pMax = document.getElementById('portPriceAtPlus30');
+            
+            const txtMin = fmtWiniwaUSD6(baseSpot * 0.7);
+            const txtMid = fmtWiniwaUSD6(baseSpot);
+            const txtMax = fmtWiniwaUSD6(baseSpot * 1.3);
+
+            if (elMin) elMin.textContent = txtMin;
+            if (elMid) elMid.textContent = txtMid;
+            if (elMax) elMax.textContent = txtMax;
+            
+            if (pMin) pMin.textContent = txtMin;
+            if (pMid) pMid.textContent = txtMid;
+            if (pMax) pMax.textContent = txtMax;
+
+            function syncThumb(thumbPId, thumbPctId, sliderId) {
+                const thumbP = document.getElementById(thumbPId);
+                const thumbPctEl = document.getElementById(thumbPctId);
+                const ps = document.getElementById(sliderId);
+                if (thumbP && thumbPctEl && ps) {
+                    const minS = parseFloat(ps.min);
+                    const maxS = parseFloat(ps.max);
+                    const valS = parseFloat(ps.value);
+                    const tr = (maxS > minS) ? (valS - minS) / (maxS - minS) : 0.5;
+                    const pctPos = Math.max(0, Math.min(100, tr * 100));
+                    thumbP.style.left = pctPos + '%';
+                    thumbPctEl.style.left = pctPos + '%';
+                    
+                    const deltaPct = Math.round(valS);
+                    const pctPart = deltaPct > 0 ? ('+' + deltaPct + '%') : deltaPct < 0 ? (deltaPct + '%') : '0%';
+                    thumbP.textContent = fmtWiniwaUSD6(baseSpot * (1 + valS / 100));
+                    thumbPctEl.textContent = pctPart;
+                    thumbPctEl.style.color = deltaPct > 0 ? 'var(--gr)' : deltaPct < 0 ? 'var(--rd)' : 'var(--c)';
+                }
             }
+
+            syncThumb('treasurySliderThumbPrice', 'treasurySliderThumbPct', 'protocolSlider');
+            syncThumb('portSliderThumbPrice', 'portSliderThumbPct', 'priceSlider');
 
             // Treasury moves with Minima price (demo)
             updateTreasuryUI(pct);
