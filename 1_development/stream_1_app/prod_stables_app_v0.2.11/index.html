@@ -6253,7 +6253,7 @@
                         <tr style="color:var(--m);font-size:10px;text-transform:uppercase;letter-spacing:.05em">
                             <td style="padding:0 0 6px">Asset</td>
                             <td style="padding:0 0 6px;text-align:right" id="simCurHeader">Current</td>
-                            <td style="padding:0 0 6px;text-align:right">Simulated</td>
+                            <td style="padding:0 0 6px;text-align:right" id="simSimHeader">Simulated</td>
                             <td style="padding:0 0 6px;text-align:right">Simulated &#x394;</td>
                         </tr>
                     </thead>
@@ -6303,6 +6303,40 @@
                         </tr>
                     </tbody>
                 </table>
+                
+                <!-- Options / Range config -->
+                <div class="fbet" style="margin-top:24px;margin-bottom:12px;border-top:1px solid rgba(255,255,255,0.05);padding-top:16px;">
+                    <div style="font-size:13px;font-weight:800;color:var(--m);text-transform:uppercase;letter-spacing:0.05em;">Performance Graph</div>
+                    <button class="btn-icon" onclick="toggleSimRangeEditor()" style="color:var(--m);padding:4px;" title="Edit Range">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    </button>
+                </div>
+                <!-- Range editor -->
+                <div id="simRangeEditor" style="display:none; margin-bottom:16px; padding:12px; background:rgba(0,0,0,0.2); border-radius:8px; border:1px solid rgba(255,255,255,0.05);">
+                    <div class="fbet">
+                        <div>
+                            <div class="xs mu" style="margin-bottom:4px">Min %</div>
+                            <input type="number" id="simRangeMin" value="-30" onchange="updateSimRange()" style="width:60px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;padding:4px 8px;border-radius:4px;font-size:12px;text-align:center;">
+                        </div>
+                        <div>
+                            <div class="xs mu" style="margin-bottom:4px">Max %</div>
+                            <input type="number" id="simRangeMax" value="30" onchange="updateSimRange()" style="width:60px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:white;padding:4px 8px;border-radius:4px;font-size:12px;text-align:center;">
+                        </div>
+                        <div style="display:flex;align-items:flex-end;">
+                            <button onclick="toggleSimRangeEditor()" style="background:var(--pu);color:white;border:none;padding:6px 12px;border-radius:4px;font-size:12px;font-weight:700;cursor:pointer;">Done</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PnL Graph Container -->
+                <div style="position:relative; height:160px; width:100%; border-radius:8px; overflow:hidden; background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.03); margin-bottom:24px;">
+                    <svg id="simPnlGraph" width="100%" height="100%" preserveAspectRatio="none" style="display:block;"></svg>
+                </div>
+                <!-- Legend -->
+                <div class="fbet xs mu" style="margin-top:-16px; margin-bottom:24px; padding:0 8px;">
+                    <div><span style="display:inline-block;width:10px;height:2px;background:var(--m);vertical-align:middle;margin-right:4px;"></span>Current</div>
+                    <div><span style="display:inline-block;width:10px;height:2px;background:var(--pu);vertical-align:middle;margin-right:4px;"></span>Simulated (+Trades)</div>
+                </div>
             </div>
         </div>
     </div>
@@ -8414,21 +8448,22 @@
             const deltaXwmHeld = earnedXwm - burnXwmAmt;
             const deltaWablesHeld = mintWablesAmt - burnWablesAmt;
 
-            // Post-trade current position (before price move)
-            const curWiniwaHeld = WALLET_WINIWA + deltaWiniwaHeld;
-            const curXwmHeld = WALLET_XWM + deltaXwmHeld;
-            const curWablesHeld = WALLET_WABLES + deltaWablesHeld;
+            // Pure Current Position (no trades, spot price)
+            const curWiniwVal = WALLET_WINIWA * SIM_Winiwa_PRICE;
+            const curXwmVal = WALLET_XWM * SIM_XWM_PRICE;
+            const curWablesVal = WALLET_WABLES; // Pegged to $1
             const curCFVal = WALLET_CF || 0;
 
-            const curWiniwVal = curWiniwaHeld * SIM_Winiwa_PRICE;
-            const curXwmVal = curXwmHeld * SIM_XWM_PRICE;
-            const curWablesVal = curWablesHeld; // Pegged to $1
+            // Post-trade base holdings (before price move)
+            const postTradeWiniwaHeld = WALLET_WINIWA + deltaWiniwaHeld;
+            const postTradeXwmHeld = WALLET_XWM + deltaXwmHeld;
+            const postTradeWablesHeld = WALLET_WABLES + deltaWablesHeld;
 
-            // Simulated values after price move
+            // Simulated values after trades AND price move
             const priceMove = pct / 100;
-            const simWiniwVal = curWiniwaHeld * SIM_Winiwa_PRICE * (1 + priceMove);
+            const simWiniwVal = postTradeWiniwaHeld * SIM_Winiwa_PRICE * (1 + priceMove);
             let simXwmVal = 0; // Calculated after protocol state finalizes
-            const simWablesVal = curWablesVal; // Pegged to $1
+            const simWablesVal = postTradeWablesHeld; // Pegged to $1
             const simCFVal = 0; // CF tokens (if any)
 
             // Protocol global simulated state (new structure-level decomposition)
@@ -8465,7 +8500,8 @@
 
             // Sync wallet xWiniwa equity to protocol-level multiplier
             const equityMultiplier = ASSET_XWM_USD > 0 ? (xwmUSD / ASSET_XWM_USD) : 0;
-            simXwmVal = curXwmVal * equityMultiplier;
+            const basePostTradeXwmVal = postTradeXwmHeld * SIM_XWM_PRICE;
+            simXwmVal = basePostTradeXwmVal * equityMultiplier;
 
             const newCR = newCRnum.toFixed(0);
 
@@ -8628,10 +8664,15 @@
             }
             function dc(v) { return v > 0.005 ? 'var(--gr)' : v < -0.005 ? 'var(--rd)' : 'var(--m)'; }
 
-            // Show "+ trade" indicator in header if there is an intended trade
+            // Show "+ trades" indicator in Simulated header if there is an intended trade
+            const simHeader = document.getElementById('simSimHeader');
+            if (simHeader) {
+                const badgeColor = intentTradeActive ? 'var(--am)' : 'var(--m)';
+                simHeader.innerHTML = `Simulated <span style="font-size:10px;color:${badgeColor};margin-left:2px">(+Trades)</span>`;
+            }
             const curHeader = document.getElementById('simCurHeader');
             if (curHeader) {
-                curHeader.innerHTML = intentTradeActive ? 'Current <span style="font-size:10px;color:var(--am);margin-left:2px">+ trade</span>' : 'Current';
+                curHeader.innerHTML = 'Current';
             }
             // Winiwa row
             const wCurEl = document.getElementById('sWiniwaCur');
@@ -8940,6 +8981,145 @@
                 t.classList.remove('toast--amber');
             }, dur);
         }
+
+        // --- PNL GRAPH AND RANGE ENGINE ---
+        function toggleSimRangeEditor() {
+            const el = document.getElementById('simRangeEditor');
+            if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function updateSimRange() {
+            const minV = parseInt(document.getElementById('simRangeMin').value) || -30;
+            const maxV = parseInt(document.getElementById('simRangeMax').value) || 30;
+            
+            const pSlider1 = document.getElementById('priceSlider');
+            if (pSlider1) {
+                pSlider1.min = minV;
+                pSlider1.max = maxV;
+                if (parseInt(pSlider1.value) < minV) pSlider1.value = minV;
+                if (parseInt(pSlider1.value) > maxV) pSlider1.value = maxV;
+            }
+            
+            const ptRows = document.querySelectorAll('#simDrawer .treasury-slider-pct-row span');
+            if (ptRows.length >= 3) {
+                ptRows[0].innerHTML = minV < 0 ? `&#x2212;${Math.abs(minV)}%` : `+${minV}%`;
+                ptRows[2].innerHTML = maxV < 0 ? `&#x2212;${Math.abs(maxV)}%` : `+${maxV}%`;
+            }
+            if (typeof calcSlider === 'function') calcSlider();
+        }
+
+        function getEquityMultiplierAtPriceMove(priceMove) {
+            const baseSpot = Number(SIM_Winiwa_PRICE) || 0;
+            const simWiniwaPrice = baseSpot * (1 + priceMove);
+            const liabUSD_raw = LIAB_STABLES_CIRC + LIAB_REBAL_STAKED;
+            const protW_USD = ASSET_PROTOCOL_WINIWA * simWiniwaPrice;
+            const treasReserve_USD = ASSET_TREASURY_WINIWA * simWiniwaPrice;
+            const rebW_USD = ASSET_REBAL_WINIWA * simWiniwaPrice;
+            let xwmUSD = Math.max(0, ASSET_XWM_USD * (1 + priceMove * SIM_LEVERAGE));
+            
+            let pledgedUSD = 0;
+            const deficitUSD = Math.max(0, liabUSD_raw - (protW_USD + rebW_USD + xwmUSD));
+            if (xwmUSD <= 0.01 && deficitUSD > 0) {
+                pledgedUSD = Math.min(deficitUSD, protW_USD + treasReserve_USD);
+            }
+            
+            let simTotalAssets = protW_USD + rebW_USD + xwmUSD + pledgedUSD;
+            let newCRnum = liabUSD_raw > 0 ? ((simTotalAssets / liabUSD_raw) * 100) : 999;
+            if (newCRnum <= 100) {
+                xwmUSD += LIAB_REBAL_STAKED;
+            }
+            return ASSET_XWM_USD > 0 ? (xwmUSD / ASSET_XWM_USD) : 0;
+        }
+
+        function drawSimPnlGraph(minPct, maxPct, curPctVal) {
+            const svg = document.getElementById('simPnlGraph');
+            if (!svg) return;
+            const rect = svg.getBoundingClientRect();
+            if (rect.width === 0) return; 
+            
+            const w = rect.width;
+            const h = rect.height;
+            const steps = 40;
+            
+            // Re-read trade intents for full curve simulation
+            const mintXwmWiniwa = parseFloat(document.getElementById('xwmAmt').value) || 0;
+            const mintWablesAmt = parseFloat(document.getElementById('issueAmt').value) || 0;
+            const mintWablesWiniwa = mintWablesAmt > 0 ? (mintWablesAmt / SIM_Winiwa_PRICE) : 0;
+            const burnXwmAmt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
+            const burnXwmWiniwa = burnXwmAmt > 0 ? (burnXwmAmt * SIM_XWM_PRICE / SIM_Winiwa_PRICE) : 0;
+            const burnWablesAmt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
+            const burnWablesWiniwa = burnWablesAmt > 0 ? (burnWablesAmt / SIM_Winiwa_PRICE) : 0;
+
+            const earnedXwm = mintXwmWiniwa > 0 ? (mintXwmWiniwa * SIM_Winiwa_PRICE * SIM_LEVERAGE / SIM_XWM_PRICE) : 0;
+            const deltaWiniwaHeld = -mintXwmWiniwa - mintWablesWiniwa + burnXwmWiniwa + burnWablesWiniwa;
+            const deltaXwmHeld = earnedXwm - burnXwmAmt;
+            const deltaWablesHeld = mintWablesAmt - burnWablesAmt;
+
+            const postTradeWiniwaHeld = WALLET_WINIWA + deltaWiniwaHeld;
+            const postTradeXwmHeld = WALLET_XWM + deltaXwmHeld;
+            const postTradeWablesHeld = WALLET_WABLES + deltaWablesHeld;
+            const curCFVal = WALLET_CF || 0;
+
+            let curData = [];
+            let simData = [];
+            let minVal = Infinity;
+            let maxVal = -Infinity;
+
+            for (let i=0; i<=steps; i++) {
+                const pct = minPct + (maxPct - minPct) * (i/steps);
+                const priceMove = pct / 100;
+                
+                const eqM = getEquityMultiplierAtPriceMove(priceMove);
+                
+                const cW = WALLET_WINIWA * SIM_Winiwa_PRICE * (1 + priceMove);
+                const cX = (WALLET_XWM * SIM_XWM_PRICE) * eqM;
+                const cTotal = cW + cX + WALLET_WABLES + curCFVal;
+                
+                const sW = postTradeWiniwaHeld * SIM_Winiwa_PRICE * (1 + priceMove);
+                const sX = (postTradeXwmHeld * SIM_XWM_PRICE) * eqM;
+                const sTotal = sW + sX + postTradeWablesHeld + curCFVal;
+                
+                curData.push({x: pct, y: cTotal});
+                simData.push({x: pct, y: sTotal});
+                
+                if (cTotal < minVal) minVal = cTotal;
+                if (sTotal < minVal) minVal = sTotal;
+                if (cTotal > maxVal) maxVal = cTotal;
+                if (sTotal > maxVal) maxVal = sTotal;
+            }
+            
+            const span = (maxVal - minVal) || 1;
+            minVal -= span * 0.15;
+            maxVal += span * 0.15;
+            
+            const scaleX = (pct) => ((pct - minPct) / (maxPct - minPct)) * w;
+            const scaleY = (val) => h - (((val - minVal) / (maxVal - minVal)) * h);
+            
+            const buildPath = (data) => data.map((d,i) => `${i===0?'M':'L'}${scaleX(d.x)},${scaleY(d.y)}`).join(' ');
+            const curPath = buildPath(curData);
+            const simPath = buildPath(simData);
+            
+            const cursorX = scaleX(curPctVal);
+
+            const svgHtml = `
+                <line x1="${scaleX(0)}" y1="0" x2="${scaleX(0)}" y2="${h}" stroke="rgba(255,255,255,0.1)" stroke-width="1" stroke-dasharray="4,4"/>
+                <path d="${curPath}" fill="none" stroke="var(--m)" stroke-width="2" stroke-linecap="round"/>
+                <path d="${simPath}" fill="none" stroke="var(--pu)" stroke-width="2" stroke-linecap="round"/>
+                <line x1="${cursorX}" y1="0" x2="${cursorX}" y2="${h}" stroke="var(--c)" stroke-width="1"/>
+            `;
+            svg.innerHTML = svgHtml;
+        }
+        
+        // Ensure graph draws when the drawer is opened or resized
+        const _simDrawerResizeObserver = new ResizeObserver(() => {
+            if (document.getElementById('simDrawer')?.style.display !== 'none') {
+                if (typeof calcSlider === 'function') calcSlider();
+            }
+        });
+        const graphContainerEl = document.getElementById('simPnlGraph');
+        if (graphContainerEl) _simDrawerResizeObserver.observe(graphContainerEl);
+
+
 
         (function initNodeWowMessage() {
             try {
