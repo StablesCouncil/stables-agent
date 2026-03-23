@@ -3225,6 +3225,158 @@
 
 
         /* (walkthrough removed; replaced by StablesAgent drawer) */
+
+        /* === CONTACT PICKER OVERLAY === */
+        #contactPickerOverlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 700;
+            background: rgba(0,0,0,.55);
+            align-items: flex-end;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+            opacity: 0;
+            transition: opacity .2s ease;
+        }
+        #contactPickerOverlay.cpicker-open {
+            opacity: 1;
+        }
+        #contactPickerSheet {
+            width: 100%;
+            max-width: 520px;
+            max-height: 82dvh;
+            display: flex;
+            flex-direction: column;
+            background: rgba(16,24,38,.97);
+            border: 1px solid rgba(103,232,249,.22);
+            border-bottom: none;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 -4px 32px rgba(0,0,0,.45);
+            transform: translateY(40px);
+            transition: transform .22s cubic-bezier(.22,1,.36,1);
+            overflow: hidden;
+        }
+        #contactPickerOverlay.cpicker-open #contactPickerSheet {
+            transform: translateY(0);
+        }
+        #contactPickerHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px 10px;
+            border-bottom: 1px solid rgba(103,232,249,.1);
+            flex-shrink: 0;
+        }
+        #contactPickerTitle {
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--t);
+        }
+        #contactPickerClose {
+            background: rgba(103,232,249,.08);
+            border: 1px solid rgba(103,232,249,.2);
+            border-radius: 8px;
+            color: var(--c);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 800;
+            padding: 5px 12px;
+        }
+        #contactPickerSearch {
+            margin: 10px 12px 6px;
+            flex-shrink: 0;
+        }
+        #contactPickerList {
+            overflow-y: auto;
+            flex: 1;
+            padding: 4px 0 16px;
+        }
+        .cpicker-section-label {
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: .07em;
+            color: var(--m);
+            padding: 10px 16px 4px;
+        }
+        .cpicker-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background .12s;
+        }
+        .cpicker-row:hover, .cpicker-row:active {
+            background: rgba(103,232,249,.06);
+        }
+        .cpicker-row-ic {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: rgba(103,232,249,.1);
+            border: 1px solid rgba(103,232,249,.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .cpicker-row-info {
+            flex: 1;
+            min-width: 0;
+            cursor: pointer;
+        }
+        .cpicker-row-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--t);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cpicker-row-sub {
+            font-size: 12px;
+            color: var(--m);
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .cpicker-fav-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 4px 6px;
+            flex-shrink: 0;
+            line-height: 1;
+            transition: color .12s, transform .12s;
+        }
+        .cpicker-fav-btn:hover {
+            transform: scale(1.2);
+        }
+        .cpicker-book-btn {
+            background: rgba(103,232,249,.08);
+            border: 1px solid rgba(103,232,249,.2);
+            border-radius: 10px;
+            color: var(--c);
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            min-height: 42px;
+            transition: background .15s;
+            flex-shrink: 0;
+        }
+        .cpicker-book-btn:hover, .cpicker-book-btn:active {
+            background: rgba(103,232,249,.18);
+        }
     </style>
 </head>
 
@@ -4784,6 +4936,14 @@
                     <div class="xs mu" style="font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Coverage ratio</div>
                     <div class="cr-num" id="treasurySnapCR">-</div>
                     <div class="cr-sub">Winiwa-side assets divided by stables liabilities. 100% means assets match stables owed.</div>
+                    
+                    <div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(255,255,255,0.06)">
+                        <div class="fbet xs mu" style="margin-bottom:8px">
+                            <span>Historical Evolution</span>
+                            <span style="color:var(--c)">All-time</span>
+                        </div>
+                        <div id="crEvolutionGraph" style="height:64px; width:100%; position:relative; overflow:hidden; border-radius:4px;"></div>
+                    </div>
                 </div>
             </div>
             </div>
@@ -5444,8 +5604,13 @@
                 <input class="finput" placeholder="e.g. Coffee + pastry" style="margin-bottom:12px" id="invNote"
                     oninput="updateInvoice()">
                 <label class="flabel">Tip address (optional)</label>
-                <input class="finput" placeholder="Leave blank to disable tips..." style="margin-bottom:4px"
-                    id="invTip">
+                <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:4px">
+                    <input class="finput" placeholder="Leave blank to disable tips..." style="min-width:0;margin-bottom:0"
+                        id="invTip">
+                    <button class="cpicker-book-btn" type="button" onclick="openContactPicker('invTip')" title="Open contact book">
+                        &#x1F4D6;
+                    </button>
+                </div>
                 <div class="xs mu" style="margin-bottom:4px">Payer can add optional tip to this address</div>
             </div>
             </div>
@@ -5678,8 +5843,11 @@
             </div>
             <div class="msub">Funds arrive instantly, anywhere</div>
             <label class="flabel">Recipient (name or account ID)</label>
-            <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px">
+            <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;margin-bottom:12px">
                 <input class="finput" id="sendToInput" placeholder="Search my contacts or paste ID..." style="min-width:0">
+                <button class="cpicker-book-btn" type="button" onclick="openContactPicker('sendToInput')" title="Open contact book">
+                    &#x1F4D6;
+                </button>
                 <button class="btn" style="width:auto;padding:12px 14px"
                     onclick="closeModal('sendModal');openModal('qrModal')" title="Scan QR">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -5725,7 +5893,12 @@
                 </select>
             </div>
             <label class="flabel">Sender (optional)</label>
-            <input class="finput" id="reqFromInput" placeholder="Name or account ID..." style="margin-bottom:10px">
+            <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
+                <input class="finput" id="reqFromInput" placeholder="Name or account ID..." style="min-width:0;margin-bottom:0">
+                <button class="cpicker-book-btn" type="button" onclick="openContactPicker('reqFromInput')" title="Open contact book">
+                    &#x1F4D6;
+                </button>
+            </div>
             <div
                 style="width:150px;height:150px;margin:0 auto 10px;background:#fff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#444;text-align:center;padding:10px">
                 QR encodes address + amount</div>
@@ -5999,6 +6172,21 @@
                 <button type="button" class="btn btn-w" style="line-height:1.35" onclick="vaultHelpChooseTelegramSecurity()">Stables security support on Telegram</button>
                 <button type="button" class="btn btn-w" onclick="closeModal('vaultHelpChoiceModal')">Back</button>
             </div>
+        </div>
+    </div>
+
+    <!-- CONTACT PICKER OVERLAY -->
+    <div id="contactPickerOverlay" onclick="if(event.target===this)closeContactPicker()">
+        <div id="contactPickerSheet" onclick="event.stopPropagation()">
+            <div id="contactPickerHeader">
+                <div class="mhandle" style="position:static;margin:0;flex-shrink:0"></div>
+                <div id="contactPickerTitle">Select a contact</div>
+                <button id="contactPickerClose" type="button" onclick="closeContactPicker()">Done</button>
+            </div>
+            <input class="finput" id="contactPickerSearch"
+                placeholder="Search contacts..."
+                oninput="window._renderContactPickerList(document.getElementById('contactPickerOverlay').getAttribute('data-target-input'))">
+            <div id="contactPickerList"></div>
         </div>
     </div>
 
@@ -7942,6 +8130,50 @@
                 crEl.style.color = n >= 110 ? 'var(--gr)' : n >= 100 ? 'var(--am)' : 'var(--rd)';
             }
         }
+
+        }
+
+        setTimeout(renderCoverageEvolutionGraph, 100);
+
+        /** Draws the illustrative historical evolution graph for Coverage Ratio. */
+        function renderCoverageEvolutionGraph() {
+            const container = document.getElementById('crEvolutionGraph');
+            if (!container) return;
+            
+            // Illustrative historical data points (percentages)
+            const data = [105, 108, 112, 110, 109, 115, 118, 114, 116, 120, 122, 118, 115, 112, 114, 117, 121, 125, 123, 119];
+            const minCr = 100;
+            const maxCr = 130;
+            // Use fixed dimensions for viewBox to map coordinates correctly regardless of container DOM state
+            const w = 300;
+            const h = 64;
+            
+            const dx = w / (data.length - 1);
+            const scaleY = (val) => h - ((val - minCr) / (maxCr - minCr) * h);
+            
+            let points = data.map((val, i) => `${i * dx},${scaleY(val)}`).join(' ');
+            let areaPoints = `0,${h} ${points} ${w},${h}`;
+            
+            const svg = `
+            <svg width="100%" height="100%" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="crGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="rgba(103,232,249,0.3)" />
+                        <stop offset="100%" stop-color="rgba(103,232,249,0.0)" />
+                    </linearGradient>
+                </defs>
+                <!-- Baseline 110% line -->
+                <line x1="0" y1="${scaleY(110)}" x2="${w}" y2="${scaleY(110)}" stroke="rgba(52,211,153,0.3)" stroke-width="1" stroke-dasharray="2,2"/>
+                <!-- Area -->
+                <polygon points="${areaPoints}" fill="url(#crGrad)" />
+                <!-- Line -->
+                <polyline points="${points}" fill="none" stroke="var(--c)" stroke-width="2" vector-effect="non-scaling-stroke" />
+            </svg>`;
+            container.innerHTML = svg;
+        }
+
+        // Initialize historical graph when module loads
+        setTimeout(renderCoverageEvolutionGraph, 100);
 
         function updateTreasuryUI(priceMovePct) {
             const totalUSD = TREASURY_TOTAL_MINIMA * SIM_Winiwa_PRICE * (1 + (priceMovePct / 100));
