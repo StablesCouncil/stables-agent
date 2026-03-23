@@ -6284,7 +6284,7 @@
                                 &#x2014;</td>
                         </tr>
                         <tr style="border-top:1px solid rgba(103,232,249,.08)">
-                            <td style="padding:7px 0;color:var(--am);font-weight:700">cover pool</td>
+                            <td style="padding:7px 0;color:var(--am);font-weight:700">Coverage fund</td>
                             <td style="padding:7px 0;text-align:right;font-weight:700" id="sCFCur">$500.00
                             </td>
                             <td style="padding:7px 0;text-align:right;font-weight:700" id="sCFSim">$500.00
@@ -8547,11 +8547,12 @@
 
             syncTreasurySnapshot(simTotalAssets, liabEffective, Number(newCR));
 
-            // Price labels (6 fractional digits); simulated → tracks slider in real time
             const pNow = document.getElementById('minimaPriceNow');
             const pSim = document.getElementById('minimaPriceSim');
             if (pNow) pNow.textContent = fmtWiniwaUSD6(SIM_Winiwa_PRICE);
             if (pSim) pSim.textContent = fmtWiniwaUSD6(simWiniwaPrice);
+
+            const baseSpot = Number(SIM_Winiwa_PRICE) || 0;
 
             document.getElementById('portMinimaPriceNow') && (document.getElementById('portMinimaPriceNow').textContent = fmtWiniwaUSD6(baseSpot));
             document.getElementById('portMinimaPriceSim') && (document.getElementById('portMinimaPriceSim').textContent = fmtWiniwaUSD6(simWiniwaPrice));
