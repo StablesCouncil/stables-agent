@@ -8468,14 +8468,29 @@
             const treasReserve_USD = ASSET_TREASURY_WINIWA * simWiniwaPrice;
             const rebW_USD = ASSET_REBAL_WINIWA * simWiniwaPrice;
 
-            // CORRECT: xWiniwa equity = excess collateral = assets minus senior liabilities
-            //   xWiniwa formula price = excess / total xWM supply
-            //   This is the source of the convex payoff: liabilities are fixed (pegged stables),
-            //   assets scale with Minima price → surplus grows faster than linearly as price rises
-            const excessCollateral = Math.max(0, protW_USD + rebW_USD - liabUSD_raw);
-            // If no xWM supply info available, fall back to ratio vs baseline
-            const baseExcess = Math.max(0.01, ASSET_XWM_USD); // baseline equity USD
-            const equityMultiplier = excessCollateral / baseExcess;
+            // CORRECT xWiniwa residual formula (spec: xMinima = excess collateral / supply)
+            // Key insight: liabilities are pegged-USD (fixed), assets scale with Minima price.
+            // Formula: equityMultiplier = sim_excess / base_excess, both computed the same way
+            // so that multiplier is always exactly 1.0 at priceMove=0 regardless of mock data.
+            const liabFixed = liabUSD_raw; // stablecoin liabs are USD-pegged = constant
+
+            // Baseline excess at current spot price (priceMove = 0)
+            const baseProtW = ASSET_PROTOCOL_WINIWA * SIM_Winiwa_PRICE;
+            const baseRebW  = ASSET_REBAL_WINIWA   * SIM_Winiwa_PRICE;
+            const baseExcess = baseProtW + baseRebW - liabFixed; // may be < 0 if CR < 100
+
+            // Simulated excess at the slider's price
+            const simExcess = protW_USD + rebW_USD - liabFixed;
+
+            let equityMultiplier;
+            if (baseExcess > 0.01) {
+                // Healthy: multiplier = ratio of excess collateral at sim price vs spot price
+                // This is exactly: (1 + priceMove * impliedLeverage) computed correctly
+                equityMultiplier = Math.max(0, simExcess / baseExcess);
+            } else {
+                // CR <= 100% at baseline: fall back to declared SIM_LEVERAGE (protocol stress mode)
+                equityMultiplier = Math.max(0, 1 + priceMove * SIM_LEVERAGE);
+            }
 
             // Protocol CR for status display
             const allAssets = protW_USD + rebW_USD;
@@ -8483,7 +8498,7 @@
             let liabStakedEffective = LIAB_REBAL_STAKED;
             let liabEffective = liabUSD_raw;
             let pledgedUSD = 0;
-            let xwmUSD = excessCollateral; // = equity pool
+            let xwmUSD = Math.max(0, simExcess);
             let simTotalAssets = allAssets;
             if (newCRnum <= 100) {
                 xwmUSD += LIAB_REBAL_STAKED;
@@ -8493,7 +8508,7 @@
                 newCRnum = liabEffective > 0 ? ((simTotalAssets / liabEffective) * 100) : 999;
             }
 
-            // User's xWiniwa value tracks the protocol equity multiplier
+            // User's xWiniwa: current market value × equity multiplier
             const basePostTradeXwmVal = postTradeXwmHeld * SIM_XWM_PRICE;
             simXwmVal = basePostTradeXwmVal * equityMultiplier;
 
@@ -9009,22 +9024,23 @@
         }
 
         function getEquityMultiplierAtPriceMove(priceMove) {
-            // Correct residual formula: xWiniwa equity = excess collateral / baseline equity
-            // Liabilities are fixed (pegged stables), assets scale with Minima price → convex payoff
-            const simWiniwaPrice = (Number(SIM_Winiwa_PRICE) || 0) * (1 + priceMove);
-            const protW = ASSET_PROTOCOL_WINIWA * simWiniwaPrice;
-            const rebW = ASSET_REBAL_WINIWA * simWiniwaPrice;
+            // Self-anchored residual formula: multiplier = sim_excess / base_excess
+            // Both computed identically so multiplier is exactly 1.0 at priceMove=0
             const liab = LIAB_STABLES_CIRC + LIAB_REBAL_STAKED;
-            const excess = Math.max(0, protW + rebW - liab);
-            const baseExcess = Math.max(0.01, ASSET_XWM_USD);
-            let mult = excess / baseExcess;
-            // If CR drops below 100 the rebal staked gets converted to equity — same bonus
-            const allAssets = protW + rebW;
-            if (liab > 0 && (allAssets / liab) * 100 <= 100) {
-                const bonus = Math.max(0, LIAB_REBAL_STAKED);
-                mult = Math.max(0, excess + bonus) / baseExcess;
+            const baseProtW = ASSET_PROTOCOL_WINIWA * SIM_Winiwa_PRICE;
+            const baseRebW  = ASSET_REBAL_WINIWA   * SIM_Winiwa_PRICE;
+            const baseExcess = baseProtW + baseRebW - liab;
+
+            const simPrice = SIM_Winiwa_PRICE * (1 + priceMove);
+            const simProtW = ASSET_PROTOCOL_WINIWA * simPrice;
+            const simRebW  = ASSET_REBAL_WINIWA   * simPrice;
+            const simExcess = simProtW + simRebW - liab;
+
+            if (baseExcess > 0.01) {
+                return Math.max(0, simExcess / baseExcess);
             }
-            return mult;
+            // Fallback if CR <= 100% at baseline
+            return Math.max(0, 1 + priceMove * SIM_LEVERAGE);
         }
 
         function drawSimPnlGraph(minPct, maxPct, curPctVal) {
