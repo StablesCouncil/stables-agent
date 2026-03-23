@@ -8462,7 +8462,7 @@
             const simWiniwVal = postTradeWiniwaHeld * SIM_Winiwa_PRICE * (1 + priceMove);
             let simXwmVal = 0; // Calculated after protocol state finalizes
             const simWablesVal = postTradeWablesHeld; // Pegged to $1
-            const simCFVal = 0; // CF tokens (if any)
+            const simCFVal = curCFVal; // CF tokens (if any)
 
             // Protocol global simulated state (new structure-level decomposition)
             const simWiniwaPrice = SIM_Winiwa_PRICE * (1 + priceMove);
@@ -8725,6 +8725,12 @@
                     crEl.style.cssText = 'margin-top:10px;padding:8px 12px;border-radius:9px;background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.18);font-size:13px;font-weight:700;text-align:center;color:var(--gr)';
                     crEl.innerHTML = 'CR ' + newCR + '%';
                 }
+            }
+
+            if (sliderEl.id === 'priceSlider' && typeof drawSimPnlGraph === 'function') {
+                const minS = parseFloat(sliderEl.min) || -30;
+                const maxS = parseFloat(sliderEl.max) || 30;
+                drawSimPnlGraph(minS, maxS, pct);
             }
         }
 

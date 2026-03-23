@@ -144,6 +144,8 @@ Full technical sovereignty is achieved through:
 - **Node participation** — every user validates the network they depend on
 - **Code-first monetary logic** — no human intermediary in monetary operations
 - **Dedicated sovereign banking device** — hardware embedding a Minima node on chip, enabling offline-capable, tamper-resistant participation
+- **Recoverable self-custody mechanisms** — account recovery pathways that allow participants to recover access after key loss without introducing discretionary custody (exact design to be specified in later technical annexes)
+- **Embedded lightweight node architecture** — support for a trimmed Minima node running directly within the Stables application stack, so users can access sovereign settlement through integrated node functionality
 
 #### I.3.2 Financial Destination — Economic Sovereignty
 
