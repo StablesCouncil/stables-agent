@@ -45,8 +45,11 @@ window.STABLES_CONFIG = {
    */
   STABLES_CHARTER_URL:
     'https://github.com/StablesCouncil/StablesCouncil.github.io/blob/main/governance/stables_charter.md',
-  /** MEXC spot ticker for MINIMA/USDT. In MiniDapp, `MDS.net.GET` is used (no CORS issue). */
-  MEXC_TICKER_URL: 'https://api.mexc.com/api/v3/ticker/price?symbol=MINIMAUSDT',
+  /**
+   * MEXC ticker for MINIMA/USDT. Prefer the 24h endpoint: same last price as spot plus quote volume (USDT)
+   * for Treasury liquidity readouts. In MiniDapp, `MDS.net.GET` is used (no CORS issue).
+   */
+  MEXC_TICKER_URL: 'https://api.mexc.com/api/v3/ticker/24hr?symbol=MINIMAUSDT',
   /**
    * Optional override for CoinGecko simple price (Minima id). Default is built into `index.html`;
    * set here if you need a different endpoint or query.

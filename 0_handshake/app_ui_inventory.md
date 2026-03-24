@@ -110,7 +110,7 @@
 |--|--|
 | **Nav** | Bottom tab |
 | **Page header** | Invest · My holdings, pools, and protocol tools |
-| **Sections** | Tab row → **Coverage Fund** / **Liquidity funds** panels (`pool-section-title`: Coverage fund / Liquidity funds). LP panel includes main graph for **current liquidity by bucket**, then **Add liquidity** form and CTA to Exchange pair. Top **My holdings** card removed (available through simulator drawer). |
+| **Sections** | Tab row → **Coverage Fund** / **Liquidity funds** panels (`pool-section-title`: Coverage fund / Liquidity funds). **Coverage fund** card: no duplicate title inside card; **Last 30 days perf** (30d metrics + `cfMonthChart` / `cfNavLineOverlay` + `cfDaySlider`; under-chart `cfFeesDay` / `cfYieldDay` only); **Historical performance** (`cfHistChart` / `cfHistNavOverlay`, `cfHistFoot`); **Fund composition** + token/NAV grid; **My available balances** + deposit/withdraw. LP panel: **current liquidity by bucket**, **Add liquidity**, CTA to Exchange. Top **My holdings** removed (simulator drawer). |
 | **Panel CF** | `stitle-row` with `pool-section-title` + agent → `cp-card` |
 | **Panel LP** | `stitle-row` with `pool-section-title` + agent → `lp-card` |
 
@@ -197,7 +197,7 @@
 |--|--|
 | **Nav** | More |
 | **Page header** | Treasury · Analyse the community's treasury (chest icon) |
-| **Sections** | How the protocol stands → `treasury-snap-card`; **System liability structure** → card (`liabDist*`); Simply ALM + stress test → card (stress: **Winiwa price (USD)** `#minimaPriceNow` → `#minimaPriceSim` (6 dp) + `#winiwaSpotPriceSource`; **Price change (slider)** line only (no side `%`); row `#treasuryPriceAtMin30` / `#treasuryPriceAtZero` / `#treasuryPriceAtPlus30` **above** the track; `#treasurySliderThumbPrice` **above** thumb on track, `#treasurySliderThumbPct` **below**; `.treasury-slider-pct-row` (‑30% / 0 / +30%) **below** track; `#protocolSlider` in `.treasury-slider-input-shell`; `calcSlider` uses `priceSlider` \|\| `protocolSlider`; live spot via `refreshWiniwaSpotFromMexc` / config) |
+| **Sections** | How the protocol stands → `treasury-snap-card`; **System liability structure** → card (`liabDist*`); **Concentration & trading depth** → card (`treasuryConc*` xWiniwa / Winiwa / `treasuryVol*` MEXC 24h); Simply ALM + stress test → card (stress: **Winiwa price (USD)** `#minimaPriceNow` → `#minimaPriceSim` (6 dp) + `#winiwaSpotPriceSource`; **Price change (slider)** line only (no side `%`); row `#treasuryPriceAtMin30` / `#treasuryPriceAtZero` / `#treasuryPriceAtPlus30` **above** the track; `#treasurySliderThumbPrice` **above** thumb on track, `#treasurySliderThumbPct` **below**; `.treasury-slider-pct-row` (‑30% / 0 / +30%) **below** track; `#protocolSlider` in `.treasury-slider-input-shell`; `calcSlider` uses `priceSlider` \|\| `protocolSlider`; live spot + optional 24h volume via `refreshWiniwaSpotFromMexc` / `MEXC_TICKER_URL` (24hr ticker) / config) |
 
 ---
 
@@ -366,3 +366,5 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-23 | Currency defaults: `CNYw` is **on** by default in **Settings → Currencies to Display** and **Welcome → Preferred currencies**. |
 | 2026-03-23 | CNY presentation copy/icon: `Renminbi Yuan`; primary card emoji in `CCY_META` uses `🐼` for parity with themed currency icons (🍁, 🦘, 🧀, etc.). |
 | 2026-03-23 | Primary-currency default: `EURw` is now first/default (wallet initial shell + `BASE_CCY='EURw'`; welcome fallback prefers `EURw` when available). |
+| 2026-03-24 | Treasury: **Concentration & trading depth** (xWiniwa vs Stables, demo Winiwa chain slice vs `WINIWA_24H_QUOTE_USD`); `MEXC_TICKER_URL` default → 24h ticker; `renderTreasuryConcentrationReview` on liability render + Treasury `calcSlider`. |
+| 2026-03-24 | Invest **Coverage fund**: **Last 30 days perf** vs **Historical performance** sections; removed inner duplicate title and third under-graph line; **My available balances**; token/NAV under **Fund composition**. |

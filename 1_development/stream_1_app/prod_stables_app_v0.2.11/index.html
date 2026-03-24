@@ -3647,65 +3647,73 @@
                     </button>
                 </div>
                 <div class="cp-card app-section-card">
-                    <div class="fbet" style="margin-bottom:10px">
-                        <div style="font-size:15px;font-weight:900">Coverage fund</div>
-                    </div>
                     <div style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:14px;margin-bottom:12px">
+                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">Last 30 days perf</div>
+                        <p class="xs mu" style="margin:0 0 12px;line-height:1.5;color:var(--m)">The four headline metrics and the daily chart below are all for the <strong style="color:var(--t)">rolling last 30 days</strong>. Use the scrubber to pick a day; the two lines under the chart are fees and yield for that day only.</p>
                         <div class="pool-grid" style="margin-bottom:14px;grid-template-columns:repeat(4,minmax(0,1fr))">
                             <div>
                                 <div class="ps-lbl">30-day fees</div>
                                 <div class="ps-val" id="cfMonthFees" style="color:var(--gr)">$0.00</div>
                             </div>
                             <div>
-                                <div class="ps-lbl">Transactions</div>
+                                <div class="ps-lbl">30-day transactions</div>
                                 <div class="ps-val" id="cfMonthTx">0</div>
                             </div>
                             <div>
-                                <div class="ps-lbl">Average fee</div>
+                                <div class="ps-lbl">30-day avg fee</div>
                                 <div class="ps-val" id="cfAvgFee">$0.00</div>
                             </div>
                             <div>
-                                <div class="ps-lbl">Annualised yield</div>
+                                <div class="ps-lbl">30-day annualised yield</div>
                                 <div class="ps-val" id="cfMonthYield" style="color:var(--gr)">0.00%</div>
                             </div>
                         </div>
                         <div class="fbet xs mu" style="margin-bottom:8px">
-                            <span>Past month daily fees and yield</span>
+                            <span>Daily detail (within last 30 days)</span>
                             <span id="cfDayLabel">—</span>
                         </div>
                         <div class="fbet xs mu" style="margin-bottom:8px;gap:12px;flex-wrap:wrap">
                             <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:rgba(103,232,249,.9);margin-right:6px;vertical-align:middle"></span>Fees</span>
                             <span><span style="display:inline-block;width:14px;height:0;border-top:2px solid rgba(230,237,243,.85);margin-right:6px;vertical-align:middle"></span>Funds asset</span>
+                            <span><span style="display:inline-block;width:14px;height:0;border-top:2px dashed rgba(52,211,153,.9);margin-right:6px;vertical-align:middle"></span>Yield</span>
                         </div>
                         <div id="cfChartWrap" style="position:relative;height:96px;margin-bottom:8px">
                             <div id="cfMonthChart" style="display:flex;align-items:flex-end;justify-content:space-between;height:100%;gap:3px;position:relative;z-index:1"></div>
                             <svg id="cfNavLineOverlay" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible"></svg>
                         </div>
                         <input type="range" min="0" max="29" step="1" value="29" class="sim-slider" id="cfDaySlider" style="width:100%;accent-color:var(--c)" oninput="scrubCoverageFundDay(this.value)">
-                        <div class="fbet xs mu" style="margin-top:8px">
-                            <span id="cfFeesDay">0 fees/day</span>
-                            <span id="cfYieldDay">0.00% annualised yield</span>
+                        <div class="xs mu" style="margin-top:8px;display:flex;flex-direction:column;gap:4px;line-height:1.35">
+                            <div id="cfFeesDay">0 fees/day</div>
+                            <div id="cfYieldDay">0.00% annualised yield</div>
                         </div>
+                    </div>
+                    <div style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:14px;margin-bottom:12px">
+                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">Historical performance</div>
+                        <p class="xs mu" style="margin:0 0 12px;line-height:1.5;color:var(--m)"><strong style="color:var(--t)">Full historical evolution</strong> (demo): weekly buckets over about 18 months — wider context than the last-30-days view above. No scrubber; the series runs from past to present left to right.</p>
+                        <div class="fbet xs mu" style="margin-bottom:8px;gap:12px;flex-wrap:wrap">
+                            <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:rgba(103,232,249,.9);margin-right:6px;vertical-align:middle"></span>Fees</span>
+                            <span><span style="display:inline-block;width:14px;height:0;border-top:2px solid rgba(230,237,243,.85);margin-right:6px;vertical-align:middle"></span>Funds asset</span>
+                            <span><span style="display:inline-block;width:14px;height:0;border-top:2px dashed rgba(52,211,153,.9);margin-right:6px;vertical-align:middle"></span>Yield</span>
+                        </div>
+                        <div id="cfHistChartWrap" style="position:relative;height:96px;margin-bottom:4px">
+                            <div id="cfHistChart" style="display:flex;align-items:flex-end;justify-content:space-between;height:100%;gap:1px;position:relative;z-index:1"></div>
+                            <svg id="cfHistNavOverlay" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible"></svg>
+                        </div>
+                        <div class="xs mu" style="margin-top:6px;line-height:1.4;color:var(--m)" id="cfHistFoot">—</div>
                     </div>
                     <div style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:12px;margin-bottom:12px">
                         <div class="xs mu" style="font-weight:800;margin-bottom:8px">Fund composition</div>
                         <div id="cfCompBars" style="display:flex;gap:4px;height:14px;margin-bottom:8px"></div>
                         <div id="cfCompLegend" class="xs mu" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px"></div>
-                    </div>
-                    <div class="pool-grid" style="margin-bottom:12px">
-                        <div>
-                            <div class="ps-lbl">My USDwcf</div>
-                            <div class="ps-val" id="cfMyTokens" style="color:var(--gr)">0.00</div>
-                            <div class="xs mu mt8">Token price: <span id="cfTokenPrice">1.000 USDw / USDwcf</span></div>
-                        </div>
-                        <div>
-                            <div class="ps-lbl">Funds asset</div>
-                            <div class="ps-val" id="cfFundNav">$0.00</div>
-                            <div class="xs mu mt8">Supply: <span id="cfTokenSupply">0.00 USDwcf</span></div>
+                        <div class="xs mu" style="margin-top:10px;padding-top:10px;border-top:1px dashed rgba(255,255,255,.08);display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;line-height:1.4">
+                            <span style="color:var(--m)">Your USDwcf</span><span id="cfMyTokens" style="font-weight:800;color:var(--gr);text-align:right">0.00</span>
+                            <span style="color:var(--m)">Token price</span><span id="cfTokenPrice" style="font-weight:700;color:var(--t);text-align:right">1.000 USDw / USDwcf</span>
+                            <span style="color:var(--m)">Supply</span><span id="cfTokenSupply" style="font-weight:700;color:var(--t);text-align:right">0.00 USDwcf</span>
+                            <span style="color:var(--m)">Fund NAV</span><span id="cfFundNav" style="font-weight:700;color:var(--t);text-align:right">$0.00</span>
                         </div>
                     </div>
                     <div style="padding:12px;background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;margin-bottom:12px">
-                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">Available balances</div>
+                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">My available balances</div>
                         <div style="overflow-x:auto;margin-bottom:10px">
                             <table id="cfBalanceTable" style="width:100%;border-collapse:collapse;font-size:13px;color:var(--m)">
                                 <thead>
@@ -4941,6 +4949,41 @@
                 <div class="xs mu" style="margin-bottom:8px">Interpretation layer (informative only)</div>
                 <div id="liabRiskRows" style="display:grid;gap:8px"></div>
                 <div class="xs mu mt8">Transparency replaces control: the protocol exposes the structure, participants decide actions.</div>
+            </div>
+            </div>
+
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Concentration &amp; trading depth</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Treasury: xWiniwa concentration vs Stables; Winiwa chain-style concentration vs 24h venue volume; illustrative series until an on-chain indexer is wired')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+            </div>
+            <div class="card app-section-card" style="padding:16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
+                <p class="xs mu" style="margin:0 0 14px;line-height:1.55">Holder concentration (demo distribution shaped by protocol sliders) read against <strong style="color:var(--t)">MEXC 24h volume</strong> where available. Production would replace holder tiers with indexer data.</p>
+                <div style="display:grid;gap:12px">
+                    <div style="padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="xs mu" style="font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;color:var(--c)">xWiniwa holders (protocol equity)</div>
+                        <div class="fbet" style="margin-bottom:6px;font-size:13px"><span class="xs mu">Top holder group (est.)</span><span id="treasuryConcXwmTop1" style="font-weight:900">-</span></div>
+                        <div class="fbet" style="margin-bottom:6px;font-size:13px"><span class="xs mu">Top 10 (est.)</span><span id="treasuryConcXwmTop10" style="font-weight:900">-</span></div>
+                        <div class="fbet" style="margin-bottom:8px;font-size:13px"><span class="xs mu">Top-10 equity vs circulating Stables</span><span id="treasuryConcXwmVsStables" style="font-weight:900">-</span></div>
+                        <p class="xs mu" style="margin:0;line-height:1.5;color:var(--m)" id="treasuryConcXwmNote">-</p>
+                    </div>
+                    <div style="padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="xs mu" style="font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;color:var(--pu)">Winiwa holders (chain-wide slice, demo)</div>
+                        <div class="fbet" style="margin-bottom:6px;font-size:13px"><span class="xs mu">Largest wallets (est. share)</span><span id="treasuryConcWTop1" style="font-weight:900">-</span></div>
+                        <div class="fbet" style="margin-bottom:6px;font-size:13px"><span class="xs mu">Top 10 wallets (est.)</span><span id="treasuryConcWTop10" style="font-weight:900">-</span></div>
+                        <div class="fbet" style="margin-bottom:6px;font-size:13px"><span class="xs mu">Top-10 notional at stress price</span><span id="treasuryConcWWhaleUsd" style="font-weight:900">-</span></div>
+                        <div class="fbet" style="margin-bottom:8px;font-size:13px"><span class="xs mu">Vs last 24h venue volume</span><span id="treasuryConcWVsVol" style="font-weight:900">-</span></div>
+                        <p class="xs mu" style="margin:0;line-height:1.5;color:var(--m)" id="treasuryConcWNote">-</p>
+                    </div>
+                    <div style="padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="xs mu" style="font-weight:800;text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px">MINIMA/USDT venue (24h)</div>
+                        <div class="fbet" style="margin-bottom:6px;font-size:13px"><span class="xs mu">Quote volume (USDT)</span><span id="treasuryVol24hUsd" style="font-weight:900">-</span></div>
+                        <div class="fbet" style="margin-bottom:8px;font-size:13px"><span class="xs mu">24h change</span><span id="treasuryVol24hChg" style="font-weight:900">-</span></div>
+                        <p class="xs mu" style="margin:0;line-height:1.5;color:var(--m)" id="treasuryVolFoot">-</p>
+                    </div>
+                </div>
             </div>
             </div>
 
@@ -6698,6 +6741,15 @@
         let coverageFundDayIdx = 29;
         let coverageFundMyTokens = 0;
         const CF_DEPOSIT_ASSETS = ['USDw', 'EURw', 'GBPw', 'CNYw', 'xWiniwa'];
+        /** Demo-only cap on shown yield (not labelled in UI). */
+        const CF_MAX_DISPLAY_YIELD_ANNUAL_PCT = 1.85;
+        const CF_SERIES_REV = 2;
+
+        function cfCapAnnualisedYieldForDisplay(pct) {
+            const x = Number(pct) || 0;
+            if (x <= 0) return x;
+            return Math.min(x, CF_MAX_DISPLAY_YIELD_ANNUAL_PCT);
+        }
 
         function fmtCfMMDDYYYY(d) {
             const x = d instanceof Date ? d : new Date(d);
@@ -6767,7 +6819,12 @@
                 const avgFeeUsd = clamp(0.21 + Math.cos(i * 0.37) * 0.04 + phase * 0.08, 0.16, 0.42);
                 const feesUsd = txCount * avgFeeUsd;
                 const navUsd = 48200 + i * 165 + Math.sin(i * 0.31) * 520;
-                const dailyYieldPct = (feesUsd / Math.max(1, navUsd)) * 100;
+                const fromFees = (feesUsd / Math.max(1, navUsd)) * 100;
+                const dailyYieldPct = clamp(
+                    fromFees * 0.058 + Math.sin(i * 0.72) * 0.0011 + Math.cos(i * 0.36) * 0.00055,
+                    0.00075,
+                    0.00508
+                );
                 const comp = {
                     USDw: clamp(0.50 + Math.sin(i * 0.20) * 0.04, 0.40, 0.62),
                     EURw: clamp(0.22 + Math.cos(i * 0.18) * 0.03, 0.12, 0.30),
@@ -6783,8 +6840,97 @@
         }
 
         function getCoverageFundSeries() {
-            if (!coverageFundSeries.length) coverageFundSeries = buildCoverageFundSeries();
+            if (!coverageFundSeries.length || coverageFundSeries._rev !== CF_SERIES_REV) {
+                coverageFundSeries = buildCoverageFundSeries();
+                coverageFundSeries._rev = CF_SERIES_REV;
+            }
             return coverageFundSeries;
+        }
+
+        let coverageFundHistSeries = [];
+        const CF_HIST_SERIES_REV = 1;
+        const CF_HIST_WEEKS = 78;
+
+        function cfCalendarWeekEndForHistIndex(idx) {
+            const d = new Date();
+            d.setHours(0, 0, 0, 0);
+            const i = Math.max(0, Math.min(CF_HIST_WEEKS - 1, Number(idx) || 0));
+            d.setDate(d.getDate() - (CF_HIST_WEEKS - 1 - i) * 7);
+            return d;
+        }
+
+        function buildCoverageFundHistSeries() {
+            const rows = [];
+            const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+            for (let i = 0; i < CF_HIST_WEEKS; i++) {
+                const phase = i / Math.max(1, CF_HIST_WEEKS - 1);
+                const txCount = Math.round(620 + phase * 480 + Math.sin(i * 0.21) * 95);
+                const avgFeeUsd = clamp(0.18 + Math.cos(i * 0.16) * 0.055 + phase * 0.07, 0.13, 0.39);
+                const feesUsd = txCount * avgFeeUsd * 0.105;
+                const navUsd = 26500 + i * 315 + Math.sin(i * 0.24) * 1650 + phase * 4200;
+                const fromFees = (feesUsd / Math.max(1, navUsd)) * 100;
+                const dailyYieldPct = clamp(
+                    fromFees * 0.048 + Math.sin(i * 0.47) * 0.0011 + Math.cos(i * 0.28) * 0.00055,
+                    0.00065,
+                    0.00515
+                );
+                rows.push({ weekIndex: i + 1, txCount, avgFeeUsd, feesUsd, navUsd, dailyYieldPct });
+            }
+            return rows;
+        }
+
+        function getCoverageFundHistSeries() {
+            if (!coverageFundHistSeries.length || coverageFundHistSeries._rev !== CF_HIST_SERIES_REV) {
+                coverageFundHistSeries = buildCoverageFundHistSeries();
+                coverageFundHistSeries._rev = CF_HIST_SERIES_REV;
+            }
+            return coverageFundHistSeries;
+        }
+
+        function renderCoverageFundHistChart() {
+            const series = getCoverageFundHistSeries();
+            const chart = document.getElementById('cfHistChart');
+            const svg = document.getElementById('cfHistNavOverlay');
+            const foot = document.getElementById('cfHistFoot');
+            if (!chart || !series.length) return;
+            const primary = (typeof BASE_CCY !== 'undefined' && BASE_CCY) ? BASE_CCY : 'USDw';
+            chart.innerHTML = '';
+            const feesP = series.map((r) => cfUsdStableEquivToPrimary(r.feesUsd));
+            const navP = series.map((r) => cfUsdStableEquivToPrimary(r.navUsd));
+            const yieldAnnualCapped = series.map((r) => cfCapAnnualisedYieldForDisplay((Number(r.dailyYieldPct) || 0) * 365));
+            const maxFees = Math.max(1e-9, ...feesP);
+            const activeIdx = series.length - 1;
+            series.forEach((row, idx) => {
+                const col = document.createElement('div');
+                col.style.flex = '1';
+                col.style.display = 'flex';
+                col.style.flexDirection = 'column';
+                col.style.alignItems = 'stretch';
+                col.style.justifyContent = 'flex-end';
+                col.style.height = '100%';
+                col.style.minWidth = '0';
+                const hf = Math.max(3, Math.round((feesP[idx] / maxFees) * 100));
+                const wrapF = document.createElement('div');
+                wrapF.style.display = 'flex';
+                wrapF.style.flexDirection = 'column';
+                wrapF.style.justifyContent = 'flex-end';
+                wrapF.style.height = '100%';
+                const barF = document.createElement('div');
+                barF.style.height = `${hf}%`;
+                barF.style.borderRadius = '1px 1px 0 0';
+                const active = idx === activeIdx;
+                barF.style.background = active ? 'rgba(103,232,249,.95)' : 'rgba(103,232,249,.38)';
+                barF.style.boxShadow = active ? '0 0 6px rgba(103,232,249,.28)' : 'none';
+                wrapF.appendChild(barF);
+                col.appendChild(wrapF);
+                const wk = fmtCfMMDDYYYY(cfCalendarWeekEndForHistIndex(idx));
+                col.title = `Week ending ${wk} · Fees ${fmtCfPrimaryAmount(feesP[idx], primary)} · NAV ${fmtCfPrimaryAmount(navP[idx], primary)}`;
+                chart.appendChild(col);
+            });
+            renderCoverageFundSvgOverlays(svg, navP, yieldAnnualCapped, activeIdx);
+            if (foot) {
+                foot.textContent = `Demo: ${CF_HIST_WEEKS} weekly buckets, ending ${fmtCfMMDDYYYY(cfCalendarWeekEndForHistIndex(activeIdx))}.`;
+            }
         }
 
         function fmtCfUsd(v) {
@@ -6829,7 +6975,7 @@
             return Math.max(1.0001, base);
         }
 
-        function renderCoverageFundNavLine(svgEl, navP, maxNav, activeIdx) {
+        function renderCoverageFundSvgOverlays(svgEl, navP, yieldAnnualCapped, activeIdx) {
             if (!svgEl) return;
             const n = navP.length;
             if (!n) {
@@ -6842,21 +6988,67 @@
             const yTop = padY;
             const yBot = 100 - padY;
             const yRange = Math.max(1e-9, yBot - yTop);
-            const pts = navP.map((nav, i) => {
-                const x = n <= 1 ? 500 : (i / (n - 1)) * 1000;
-                const t = (nav / maxNav);
+            const clamp01 = (t) => Math.max(0, Math.min(1, t));
+
+            const navMin = Math.min(...navP);
+            const navMax = Math.max(...navP);
+            const navSpanRaw = navMax - navMin;
+            const navPad = Math.max(navSpanRaw * 0.15, navMax * 0.004, 1e-6);
+            const navLo = navMin - navPad;
+            const navHi = navMax + navPad;
+            const navDen = Math.max(1e-9, navHi - navLo);
+
+            const yMin = Math.min(...yieldAnnualCapped);
+            const yMax = Math.max(...yieldAnnualCapped);
+            const ySpanRaw = yMax - yMin;
+            const yPad = Math.max(ySpanRaw * 0.2, 0.04, 1e-6);
+            const yLo = Math.max(0, yMin - yPad);
+            const yHi = yMax + yPad;
+            const yDen = Math.max(1e-9, yHi - yLo);
+
+            const xAt = (i) => (n <= 1 ? 500 : (i / (n - 1)) * 1000);
+
+            const yieldPts = yieldAnnualCapped.map((yv, i) => {
+                const x = xAt(i);
+                const t = clamp01((yv - yLo) / yDen);
                 const y = yBot - t * yRange;
                 return { x, y };
             });
-            const poly = document.createElementNS(NS, 'polyline');
-            poly.setAttribute('points', pts.map((p) => `${p.x},${p.y}`).join(' '));
-            poly.setAttribute('fill', 'none');
-            poly.setAttribute('stroke', 'rgba(230,237,243,0.9)');
-            poly.setAttribute('stroke-width', '2');
-            poly.setAttribute('stroke-linejoin', 'round');
-            poly.setAttribute('stroke-linecap', 'round');
-            svgEl.appendChild(poly);
-            pts.forEach((p, i) => {
+            const polyY = document.createElementNS(NS, 'polyline');
+            polyY.setAttribute('points', yieldPts.map((p) => `${p.x},${p.y}`).join(' '));
+            polyY.setAttribute('fill', 'none');
+            polyY.setAttribute('stroke', 'rgba(52,211,153,0.92)');
+            polyY.setAttribute('stroke-width', '1.8');
+            polyY.setAttribute('stroke-dasharray', '5 4');
+            polyY.setAttribute('stroke-linejoin', 'round');
+            polyY.setAttribute('stroke-linecap', 'round');
+            svgEl.appendChild(polyY);
+            yieldPts.forEach((p, i) => {
+                const c = document.createElementNS(NS, 'circle');
+                c.setAttribute('cx', String(p.x));
+                c.setAttribute('cy', String(p.y));
+                c.setAttribute('r', i === activeIdx ? '2.6' : '1.6');
+                c.setAttribute('fill', i === activeIdx ? 'rgba(52,211,153,1)' : 'rgba(52,211,153,.55)');
+                c.setAttribute('stroke', 'rgba(11,15,20,0.45)');
+                c.setAttribute('stroke-width', '0.6');
+                svgEl.appendChild(c);
+            });
+
+            const navPts = navP.map((nav, i) => {
+                const x = xAt(i);
+                const t = clamp01((nav - navLo) / navDen);
+                const y = yBot - t * yRange;
+                return { x, y };
+            });
+            const polyN = document.createElementNS(NS, 'polyline');
+            polyN.setAttribute('points', navPts.map((p) => `${p.x},${p.y}`).join(' '));
+            polyN.setAttribute('fill', 'none');
+            polyN.setAttribute('stroke', 'rgba(230,237,243,0.9)');
+            polyN.setAttribute('stroke-width', '2');
+            polyN.setAttribute('stroke-linejoin', 'round');
+            polyN.setAttribute('stroke-linecap', 'round');
+            svgEl.appendChild(polyN);
+            navPts.forEach((p, i) => {
                 const c = document.createElementNS(NS, 'circle');
                 c.setAttribute('cx', String(p.x));
                 c.setAttribute('cy', String(p.y));
@@ -6877,8 +7069,8 @@
             chart.innerHTML = '';
             const feesP = series.map((r) => cfUsdStableEquivToPrimary(r.feesUsd));
             const navP = series.map((r) => cfUsdStableEquivToPrimary(r.navUsd));
+            const yieldAnnualCapped = series.map((r) => cfCapAnnualisedYieldForDisplay((Number(r.dailyYieldPct) || 0) * 365));
             const maxFees = Math.max(1e-9, ...feesP);
-            const maxNav = Math.max(1e-9, ...navP);
             series.forEach((row, idx) => {
                 const col = document.createElement('div');
                 col.style.flex = '1';
@@ -6905,12 +7097,12 @@
                 col.appendChild(wrapF);
                 col.style.cursor = 'pointer';
                 const dateStr = fmtCfMMDDYYYY(cfCalendarDateForSeriesIndex(idx));
-                col.title = `${dateStr} · Fees ${fmtCfPrimaryAmount(feesP[idx], primary)} · Funds asset ${fmtCfPrimaryAmount(navP[idx], primary)} · ${row.txCount} tx`;
+                col.title = `${dateStr} · Fees ${fmtCfPrimaryAmount(feesP[idx], primary)} · Funds asset ${fmtCfPrimaryAmount(navP[idx], primary)}`;
                 col.addEventListener('mouseenter', () => { scrubCoverageFundDay(idx); });
                 col.addEventListener('mousemove', () => { scrubCoverageFundDay(idx); });
                 chart.appendChild(col);
             });
-            renderCoverageFundNavLine(svg, navP, maxNav, activeIdx);
+            renderCoverageFundSvgOverlays(svg, navP, yieldAnnualCapped, activeIdx);
         }
 
         function renderCoverageFundComposition(activeIdx) {
@@ -6952,8 +7144,8 @@
             const avgFee = monthTx > 0 ? monthFees / monthTx : 0;
             const avgNav = series.reduce((s, r) => s + r.navUsd, 0) / series.length;
             const monthYieldPct = (monthFees / Math.max(1, avgNav)) * 100;
-            const annualizedMonthYieldPct = monthYieldPct * 12;
-            const annualizedDayYieldPct = (Number(row.dailyYieldPct) || 0) * 365;
+            const annualizedMonthYieldPct = cfCapAnnualisedYieldForDisplay(monthYieldPct * 12);
+            const annualizedDayYieldPct = cfCapAnnualisedYieldForDisplay((Number(row.dailyYieldPct) || 0) * 365);
             const tokenPx = cfTokenPrice(row);
             const tokenSupply = Math.max(1, row.navUsd / tokenPx);
 
@@ -6978,6 +7170,7 @@
             const slider = document.getElementById('cfDaySlider');
             if (slider) slider.value = String(idx);
             renderCoverageFundChart(idx);
+            renderCoverageFundHistChart();
             renderCoverageFundComposition(idx);
             renderCoverageFundStats(idx);
             syncCfDepositUI();
@@ -8531,6 +8724,7 @@
             }
             const latestPoint = sliderSeries[Math.max(0, sliderSeries.length - 1)] || point;
             renderLiabilityPie(latestPoint.shares, latestPoint.ts);
+            if (typeof renderTreasuryConcentrationReview === 'function') renderTreasuryConcentrationReview();
         }
 
         // Treasury (demo) - Council allocation buckets
@@ -8547,13 +8741,20 @@
         const SIM_XWM_PRICE = 10.49;
         const SIM_LEVERAGE = 4.2;
 
+        /** Last 24h USDT quote volume from MEXC when the ticker response includes it (see `refreshWiniwaSpotFromMexc`). */
+        window.WINIWA_24H_QUOTE_USD = null;
+        window.WINIWA_24H_CHANGE_PCT = null;
+        /** Demo circulating Winiwa (units) for chain-style concentration vs venue depth (until indexer). */
+        const TREASURY_DEMO_WINIWA_CHAIN_SUPPLY = 999000000;
+
         /**
          * Live Winiwa / MINIMA USD spot for Treasury + sim labels (`#minimaPriceNow`, rates).
+         * When `MEXC_TICKER_URL` points at the 24h ticker, also fills `WINIWA_24H_QUOTE_USD` / `WINIWA_24H_CHANGE_PCT`.
          * Order: MEXC via MDS.net (MiniDapp, no CORS issue) → browser fetch MEXC → CoinGecko (browser-CORS-safe).
          */
         function refreshWiniwaSpotFromMexc() {
             const cfg = window.STABLES_CONFIG || {};
-            const mexcUrl = cfg.MEXC_TICKER_URL || 'https://api.mexc.com/api/v3/ticker/price?symbol=MINIMAUSDT';
+            const mexcUrl = cfg.MEXC_TICKER_URL || 'https://api.mexc.com/api/v3/ticker/24hr?symbol=MINIMAUSDT';
             const cgUrl = cfg.COINGECKO_MINIMA_URL ||
                 'https://api.coingecko.com/api/v3/simple/price?ids=minima&vs_currencies=usd';
             const srcEl = document.getElementById('winiwaSpotPriceSource');
@@ -8572,7 +8773,25 @@
                 return true;
             }
 
+            function afterMexcMarket(j, label) {
+                const p = parseFloat(j && (j.lastPrice != null ? j.lastPrice : j.price));
+                if (!Number.isFinite(p) || p <= 0 || p > 1e7) {
+                    window.WINIWA_24H_QUOTE_USD = null;
+                    window.WINIWA_24H_CHANGE_PCT = null;
+                    return false;
+                }
+                const qv = parseFloat(j && j.quoteVolume);
+                const chg = parseFloat(j && j.priceChangePercent);
+                if (Number.isFinite(qv) && qv >= 0) window.WINIWA_24H_QUOTE_USD = qv;
+                else window.WINIWA_24H_QUOTE_USD = null;
+                window.WINIWA_24H_CHANGE_PCT = Number.isFinite(chg) ? chg : null;
+                applySpot(p, label);
+                return true;
+            }
+
             function tryCoinGecko() {
+                window.WINIWA_24H_QUOTE_USD = null;
+                window.WINIWA_24H_CHANGE_PCT = null;
                 fetch(cgUrl, { method: 'GET', cache: 'no-store' })
                     .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
                     .then(j => {
@@ -8580,9 +8799,11 @@
                         const p = row && (typeof row.usd === 'number' ? row.usd : parseFloat(row.usd));
                         if (applySpot(p, 'Live · CoinGecko')) return;
                         setSrc('Demo rate (spot APIs unavailable)');
+                        if (typeof renderTreasuryConcentrationReview === 'function') renderTreasuryConcentrationReview();
                     })
                     .catch(() => {
                         setSrc('Demo rate (spot APIs unavailable)');
+                        if (typeof renderTreasuryConcentrationReview === 'function') renderTreasuryConcentrationReview();
                     });
             }
 
@@ -8591,8 +8812,7 @@
                     try {
                         if (response && response.status && response.response) {
                             const j = JSON.parse(response.response);
-                            const p = parseFloat(j && j.price);
-                            if (applySpot(p, 'Live · MEXC spot (MDS)')) return;
+                            if (afterMexcMarket(j, 'Live · MEXC (MDS)')) return;
                         }
                     } catch (_) { /* fall through */ }
                     tryCoinGecko();
@@ -8603,11 +8823,107 @@
             fetch(mexcUrl, { method: 'GET', cache: 'no-store' })
                 .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
                 .then(j => {
-                    const p = parseFloat(j && j.price);
-                    if (applySpot(p, 'Live · MEXC spot')) return;
+                    if (afterMexcMarket(j, 'Live · MEXC')) return;
                     tryCoinGecko();
                 })
                 .catch(() => { tryCoinGecko(); });
+        }
+
+        function treasuryFmtUsdCompact(n) {
+            const v = Number(n) || 0;
+            if (!Number.isFinite(v) || v <= 0) return '—';
+            if (v >= 1e9) return '$' + (v / 1e9).toFixed(2) + 'B';
+            if (v >= 1e6) return '$' + (v / 1e6).toFixed(2) + 'M';
+            if (v >= 1e3) return '$' + (v / 1e3).toFixed(1) + 'k';
+            return '$' + v.toFixed(0);
+        }
+
+        function treasuryDemoXwmConcentration() {
+            const equityUsd = Number(ASSET_XWM_USD) || 0;
+            const px = Number(SIM_XWM_PRICE) || 10.49;
+            const floatUnits = equityUsd > 0 && px > 0 ? equityUsd / px : 0;
+            const damp = Math.min(9, Math.log10(Math.max(10, floatUnits)) * 1.05);
+            const top1 = Math.max(7.5, Math.min(27, 20.2 - damp * 0.5));
+            const top10 = Math.max(33, Math.min(70, 54 - damp * 0.9));
+            return { top1, top10, equityUsd };
+        }
+
+        function treasuryDemoWiniwaChainConcentration() {
+            const spot = Number(SIM_Winiwa_PRICE) || 0.00846;
+            const wobble = (Math.sin(spot * 888) * 0.5 + 0.5) * 2.8;
+            const top1 = Math.max(4.5, Math.min(11.2, 6.4 + wobble * 0.35));
+            const top10 = Math.max(24, Math.min(38, 30.5 + wobble * 0.6));
+            return { top1, top10 };
+        }
+
+        function renderTreasuryConcentrationReview() {
+            const ids = ['treasuryConcXwmTop1', 'treasuryConcXwmTop10', 'treasuryConcXwmVsStables', 'treasuryConcXwmNote',
+                'treasuryConcWTop1', 'treasuryConcWTop10', 'treasuryConcWWhaleUsd', 'treasuryConcWVsVol', 'treasuryConcWNote',
+                'treasuryVol24hUsd', 'treasuryVol24hChg', 'treasuryVolFoot'];
+            if (!ids.some(id => document.getElementById(id))) return;
+
+            const x = treasuryDemoXwmConcentration();
+            const w = treasuryDemoWiniwaChainConcentration();
+            const liabRaw = (Number(LIAB_STABLES_CIRC) || 0) + (Number(LIAB_REBAL_STAKED) || 0);
+            const top10EquityUsd = (x.top10 / 100) * x.equityUsd;
+            const vsStablesPct = liabRaw > 0 ? (top10EquityUsd / liabRaw) * 100 : 0;
+
+            const sliderEl = document.getElementById('protocolSlider');
+            const stressPct = sliderEl ? (parseInt(sliderEl.value, 10) || 0) : 0;
+            const spot = Number(SIM_Winiwa_PRICE) || 0;
+            const stressPx = spot * (1 + stressPct / 100);
+            const top10WiniwaUsd = (w.top10 / 100) * TREASURY_DEMO_WINIWA_CHAIN_SUPPLY * stressPx;
+
+            const vol = window.WINIWA_24H_QUOTE_USD;
+            const volNum = Number(vol);
+            const mult = (Number.isFinite(volNum) && volNum > 0) ? (top10WiniwaUsd / volNum) : null;
+
+            const set = (id, txt) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = txt;
+            };
+
+            set('treasuryConcXwmTop1', x.top1.toFixed(1) + '%');
+            set('treasuryConcXwmTop10', x.top10.toFixed(1) + '%');
+            set('treasuryConcXwmVsStables', liabRaw > 0 ? (vsStablesPct.toFixed(1) + '% of circulating Stables (USD)') : '—');
+            set('treasuryConcXwmNote', 'Concentrated xWiniwa means fewer addresses could unwind equity (burn) and recycle through Winiwa paths — compare the top-10 share to outstanding Stables when judging how much could exit the system in stress.');
+
+            set('treasuryConcWTop1', w.top1.toFixed(1) + '%');
+            set('treasuryConcWTop10', w.top10.toFixed(1) + '%');
+            set('treasuryConcWWhaleUsd', treasuryFmtUsdCompact(top10WiniwaUsd) + (stressPct !== 0 ? ' (stress price)' : ''));
+
+            let vsVolColor = 'var(--m)';
+            let vsVolText = '—';
+            if (mult != null && Number.isFinite(mult)) {
+                vsVolText = mult.toFixed(2) + '× 24h volume';
+                vsVolColor = mult >= 5 ? 'var(--rd)' : mult >= 2 ? 'var(--am)' : 'var(--gr)';
+            } else if (vol == null) {
+                vsVolText = 'Need venue volume';
+            }
+            const vsEl = document.getElementById('treasuryConcWVsVol');
+            if (vsEl) {
+                vsEl.textContent = vsVolText;
+                vsEl.style.color = vsVolColor;
+            }
+
+            set('treasuryConcWNote', 'Large on-chain balances matter if holders sell into thin books: notional is shown at the stress-test Winiwa price above. If top-10 notional is many times daily venue volume, a coordinated exit could move the market harder.');
+
+            if (Number.isFinite(volNum) && volNum > 0) {
+                set('treasuryVol24hUsd', treasuryFmtUsdCompact(volNum));
+                const chg = window.WINIWA_24H_CHANGE_PCT;
+                if (Number.isFinite(chg)) {
+                    set('treasuryVol24hChg', (chg >= 0 ? '+' : '') + chg.toFixed(2) + '%');
+                    const chgEl = document.getElementById('treasuryVol24hChg');
+                    if (chgEl) chgEl.style.color = chg >= 0 ? 'var(--gr)' : 'var(--rd)';
+                } else {
+                    set('treasuryVol24hChg', '—');
+                }
+                set('treasuryVolFoot', 'Volume is MINIMA/USDT quote turnover on MEXC (USDT). Use it as a rough depth gauge vs whale notional, not a guarantee of absorbable size.');
+            } else {
+                set('treasuryVol24hUsd', '—');
+                set('treasuryVol24hChg', '—');
+                set('treasuryVolFoot', '24h volume appears when the MEXC ticker response includes quoteVolume (use the 24h ticker URL in runtime config). CoinGecko fallback supplies price only.');
+            }
         }
 
         function syncSliders(val) {
@@ -9391,6 +9707,10 @@
                 const minS = parseFloat(sliderEl.min) || -30;
                 const maxS = parseFloat(sliderEl.max) || 30;
                 drawSimPnlGraph(minS, maxS, pct);
+            }
+
+            if (curPage === 'treasury' && typeof renderTreasuryConcentrationReview === 'function') {
+                renderTreasuryConcentrationReview();
             }
         }
 

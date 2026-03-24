@@ -15,6 +15,8 @@
   - [I.2 Structural Identity](stables_charter.md#i2-structural-identity)  
   - [I.3 Dual Destination Framework](stables_charter.md#i3-dual-destination-framework)  
   - [I.4 Open Platform Doctrine](stables_charter.md#i4-open-platform-doctrine)  
+  - [I.5 Treasury Allocation and Market Participant Mandate](stables_charter.md#i5-treasury-allocation-and-market-participant-mandate)  
+  - [I.5.4 Concentration and Flow Monitoring (App)](stables_charter.md#i54-concentration-and-flow-monitoring-app)  
 - [Article II — Monetary Core (Invariant Foundation)](stables_charter.md#article-ii--monetary-core-invariant-foundation)  
   - [II.1 Minima-Only Base Collateral](stables_charter.md#ii1-minima-only-base-collateral)  
   - [II.2 Solvency Invariant](stables_charter.md#ii2-solvency-invariant)  
@@ -26,7 +28,7 @@
   - [II.8 Three Structural Pillars of Soundness](stables_charter.md#ii8-three-structural-pillars-of-soundness)  
   - [II.9 Asset-Liability Structure and Risk Topology](stables_charter.md#ii9-asset-liability-structure-and-risk-topology)  
 - [Article III — Structural Layers and Modularity](stables_charter.md#article-iii--structural-layers-and-modularity)  
--  - [III.3 Execution, Settlement, and Value Transfer Model](stables_charter.md#iii3-execution-settlement-and-value-transfer-model)  
+  - [III.3 Execution, Settlement, and Value Transfer Model](stables_charter.md#iii3-execution-settlement-and-value-transfer-model)  
 - [Article IV — Merchant Activation Doctrine (Growth Architecture)](stables_charter.md#article-iv--merchant-activation-doctrine-growth-architecture)  
 - [Article V — Oracle Framework](stables_charter.md#article-v--oracle-framework)  
 - [Article VI — Transparency Doctrine](stables_charter.md#article-vi--transparency-doctrine)  
@@ -43,7 +45,7 @@
 ## PREAMBLE
 ### Sovereign Context, Structural Identity, and Transition Doctrine
 
-**Section summary:** The Preamble traces money from human exchange to state money and then to sovereign digital infrastructure. It explains why coercive, jurisdiction-bound "king's money" can work yet remains structurally prone to abuse, why a medium of exchange should have independent value, why Minima can fill that role, and why Stables exists as the banking bridge between present liability systems and a Minima-native horizon.
+**Section summary:** The Preamble traces money from human exchange to state money and then to sovereign digital infrastructure. It explains why coercive, jurisdiction-bound "king's money" can work yet remains structurally prone to abuse, why a medium of exchange should have independent value, why Minima can fill that role, and why Stables exists as the banking bridge between present liability systems and a Minima-native horizon. It states that **Stables is a means, not an end**: the aim is wealth creation through voluntary exchange; the protocol is judged by how well it stimulates that exchange.
 
 Human economic life begins with exchange. People trade because needs differ, abilities differ, and cooperation creates surplus. As communities grow, direct barter becomes insufficient; a common reference is needed so that value can move cleanly across time, distance, and specialisation. Money emerges as a shared medium of exchange chosen because it is scarce enough to matter, recognisable enough to trust, and practical enough to move.
 
@@ -63,6 +65,8 @@ It operates as a **sovereign banking infrastructure protocol**: a structured bri
 
 The transition from centralised to sovereign monetary coordination is gradual. The distribution of Minima must widen. Merchant adoption must deepen. Economic habits must shift. Until that transition matures, Stables provides the coordination layer that makes Minima economically usable *today* — through synthetic stable representations, merchant settlement, and deterministic solvency.
 
+**Stables is a tool, not an end.** The protocol and its instruments are **means**: infrastructure for voluntary exchange and settlement. The **aim** is **wealth creation in the broad sense** — durable value, productive cooperation, and mutual gain through trade — not the perpetuation of any single application or token for its own sake. Stables contributes to that aim by making exchange **easier, more transparent, and more trustworthy**, so that economic activity can expand on consent rather than coercion. Success is measured by whether this infrastructure **stimulates and sustains real exchange**, not by abstract adoption metrics detached from human welfare.
+
 Each participant in the Stables system structurally represents their own bank through:
 
 - **Self-custody** — no third party holds user funds
@@ -80,9 +84,11 @@ The horizon is a Minima-native economy in which Minima functions as a day-to-day
 
 ## ARTICLE I — Mission and Dual Destination
 
-**Section summary:** This Article defines why Stables exists, how it is structurally identified within the Minima nation, and which long-term destinations it pursues. It translates the philosophical framing of the Preamble into a concrete mission, a precise institutional identity, and a dual destination framework (infrastructure sovereignty first, economic sovereignty built upon it).
+**Section summary:** This Article defines why Stables exists, how it is structurally identified within the Minima nation, and which long-term destinations it pursues. It translates the philosophical framing of the Preamble into a concrete mission, a precise institutional identity, and a dual destination framework (infrastructure sovereignty first, economic sovereignty built upon it). It affirms that Stables is **instrumental infrastructure** for exchange and wealth creation, not a terminal objective in itself.
 
 ### I.1 Core Objective
+
+Stables exists as **instrumental infrastructure**: a **medium and machinery of exchange** that supports **wealth creation through expanded, voluntary trade**. The Council’s mission is therefore not to promote the system as a goal in itself, but to steward tools that make exchange and settlement work better for participants.
 
 The mission of the Stables Council is to enable individuals and merchants to be their own bank through:
 
@@ -129,6 +135,15 @@ To prevent governance decisions from being made blindly, Stables shall provide a
 - the impact and behaviour of the Council’s market participant allocation (treasury segment) under stress and potential arbitrage regimes.
 
 The simulator is a governance tool. It makes visible what budget allocation and threshold decisions imply before those decisions are enacted.
+
+#### I.5.4 Concentration and Flow Monitoring (App)
+
+Treasury and structure-level analysis shall be supported in the Stables application by **concentration metrics read together with trading volume**, so the Council and participants can monitor exit pressure and market-stress risk.
+
+- **xMinima holder concentration** — distribution of xMinima across addresses (e.g. top holders, Herfindahl-style or tiered concentration), combined with **xMinima trading volume** and flow metrics, to estimate how much value could plausibly be **withdrawn or sold out of the Stables structure** under stress or during heavy turnover.
+- **Minima holder concentration (base layer)** — where observable at the Minima blockchain level, distribution of Minima holdings and large-wallet share, combined with **Minima trading volume** and liquidation-relevant flow, to assess **market crash or disorderly price pressure** risk if concentrated holders unwind or if volume spikes alongside collateral moves.
+
+These views are **monitoring and disclosure tools**. They do not replace protocol invariants; they make concentration and flow legible for treasury decisions, stress testing, and participant due diligence. Exact metrics, refresh cadence, and presentation shall be specified in implementation documentation and may evolve without changing the Charter’s monetary core.
 
 ### I.3 Dual Destination Framework
 
@@ -469,6 +484,8 @@ Transparency is not a feature of the Stables protocol. It is a structural proper
 - **Stress scenarios** — visible modelling of balance sheet behaviour under adverse conditions
 - **Exposure simulation** — tools for participants to understand their risk before entering a position
 - **Equity sensitivity modelling** — the relationship between Minima price movements and xMinima value
+- **xMinima concentration and flow monitoring** — holder distribution together with xMinima trading volume, to surface potential exit from the Stables structure (see Article I.5.4)
+- **Minima concentration and flow monitoring (base layer)** — where observable, holder distribution together with Minima trading volume, to surface liquidation and market-disorder risk relevant to collateral (see Article I.5.4)
 
 ### VI.2 Predictability as a Right
 
@@ -590,6 +607,8 @@ Formal definitions to include:
 
 *This annex shall contain a comprehensive risk analysis. To be drafted in Phase 2. Format: narrative overview + structured matrix (Option C).*
 
+Beyond protocol-internal and market-structure risks, Stables and its participants depend on **physical infrastructure**, **connectivity**, **continuity of the base layer**, and **the wider monetary and political environment**. The matrix below therefore includes **macro and existential** categories (local and global where relevant): blockchain continuity, power and internet failure, natural catastrophe, unrest, legal prohibition, and **regime transitions** in how humanity settles value (fiat erosion, CBDCs, commodity standards, or novel mediums such as energy- or power-linked exchange). Mitigations for these categories are partly structural (redundancy, transparency, optional offline or mesh directions) and partly **outside the protocol’s control**; the Charter records them so they are not ignored in deliberation or disclosure.
+
 Risk categories to be addressed:
 
 | # | Risk Category | Scope |
@@ -606,6 +625,15 @@ Risk categories to be addressed:
 | 10 | **Transition Risk** | Dependencies on external systems during the bridge period |
 | 11 | **Competitive Attack** | External actors (banks, other protocols, governments) using regulatory pressure, merchant disruption, MINIMA price manipulation, or FUD campaigns to undermine confidence |
 | 12 | **Confidence Risk** | Total or prolonged loss of merchant and participant confidence, leading to system contraction |
+| 13 | **Base-Layer Continuity Risk** | Stoppage, prolonged disruption, contentious fork, or effective destruction of the Minima blockchain or its consensus |
+| 14 | **Power Supply Risk** | Loss or instability of electricity locally, regionally, or at global scale affecting nodes, devices, and users |
+| 15 | **Connectivity Risk** | Internet or backbone outage locally or globally; dependency on third-party networks and DNS |
+| 16 | **Natural Disaster Risk** | All hazard types (geophysical, climatic, biological, etc.), localised or widespread, affecting infrastructure and human continuity |
+| 17 | **Political and Civil Unrest Risk** | Conflict, instability, sanctions, or disorder affecting access, settlement, or adoption |
+| 18 | **Jurisdictional Prohibition Risk** | Bans, blocking, delisting, or criminalisation of app or protocol use in one jurisdiction or across many |
+| 19 | **Fiat Regime Transition Risk** | Erosion, loss of confidence in, or structural replacement of fiat as the dominant reference settlement layer Stables bridges to |
+| 20 | **CBDC Regime Risk** | Advent and dominance of central bank digital currencies (regional or global) reshaping payment rails, privacy, and interoperability |
+| 21 | **Competing Monetary Standard Risk** | Return to commodity standards (e.g. gold), or emergence of novel means of exchange (including energy- or power-linked units and other non-fiat reference systems) |
 
 Each risk shall be paired with:
 
