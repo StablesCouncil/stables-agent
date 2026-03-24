@@ -33,7 +33,7 @@
 |--|--|
 | **Nav** | More / Shops & Exchange · **Ambassador** |
 | **Page header** | Ambassador (no subline) |
-| **Sections** | Agent row → card: regional onboarding; **register** 10 Big Macs **or** via first shop (preview); merchant listing **20 Big Macs** 50/50 + Big Mac Index link |
+| **Sections** | Agent row → card: regional onboarding; **register** 10 Big Mac®s **or** via first shop (preview); merchant listing **20 Big Mac®s** 50/50 + Big Mac Index link |
 
 ---
 
@@ -335,7 +335,7 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | Date | Change |
 |------|--------|
 | 2026-03-19 | **Legal & notices** (`page-settings-legal`): More → **Community** (⚖️); **stablescouncil.org** + github.io + agent subdomain in-app. **Exchange** recent list: `activity-contacts.js` → `openExchangeDetail` / `repeatExchangeFromDetail`. |
-| 2026-03-19 | **Ambassador** / **My shop** copy: regional Ambassadors for listing; fully listed → same privileges + onboard others; Ambassador registration **10 Big Macs** or via **first shop** (preview); merchant **20 Big Mac** 50/50 kept on Ambassador page. |
+| 2026-03-19 | **Ambassador** / **My shop** copy: regional Ambassadors for listing; fully listed → same privileges + onboard others; Ambassador registration **10 Big Mac®s** or via **first shop** (preview); merchant **20 Big Mac®** 50/50 kept on Ambassador page. |
 | 2026-03-19 | Shops & Exchange (was Payments & Trade): `page-ambassador`, `page-my-shop`, `exchange`; Create Invoice section on **My shop**; `#shop-ambassador` → `my-shop`. |
 | 2026-03-19 | **My shop**: **Webshop linking & QR**, **Merchant API kit** (GitHub org link); **Webhooks & callbacks** markup retained but **hidden** (`display:none`); drawer **My shop** ddesc: webshop kit (preview). |
 | 2026-03-19 | Welcome language: globe + `appLangMenuWelcome` (no “Language” label); hidden `#welcomeLang` select; drawer top `drawer-lang-bar` + `#drawerLangGlobeBtn`. |
@@ -357,3 +357,6 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-22 | Top bar: **Only in node** when no MDS (no simulated block); `.sync-pill--placeholder`. Treasury stress: Winiwa price stack **above** `%` row, then slider. |
 | 2026-03-22 | Treasury stress: Winiwa **6 dp** (`fmtWiniwaUSD6`); USD tick row above track; **%** tick row (`.treasury-slider-pct-row`) below track; thumb `#treasurySliderThumbPrice` above axis / `#treasurySliderThumbPct` below; removed `#protocolSliderPct`; `calcSlider` falls back to `#protocolSlider`. |
 | 2026-03-23 | **Source path** → `prod_stables_app_v0.2.11/` (see `minidapp_version.md`). |
+| 2026-03-23 | Currency defaults: `CNYw` is **on** by default in **Settings → Currencies to Display** and **Welcome → Preferred currencies**. |
+| 2026-03-23 | CNY presentation copy/icon: `Renminbi Yuan`; primary card emoji in `CCY_META` uses `🐼` for parity with themed currency icons (🍁, 🦘, 🧀, etc.). |
+| 2026-03-23 | Primary-currency default: `EURw` is now first/default (wallet initial shell + `BASE_CCY='EURw'`; welcome fallback prefers `EURw` when available). |

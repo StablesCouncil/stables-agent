@@ -880,6 +880,8 @@
     }, 150);
   };
 
+  // Temporary kill switch: keep backup timestamp/status updates, but suppress reminder popup.
+  const BACKUP_REMINDER_MODAL_ENABLED = false;
   window.checkBackupReminder = function () {
     const now = Date.now();
     const ts = Number(localStorage.getItem(BACKUP_STORAGE_KEY) || 0);
@@ -898,7 +900,7 @@
       window.updateBackupStatus();
       return;
     }
-    if (overdue) {
+    if (overdue && BACKUP_REMINDER_MODAL_ENABLED) {
       const titleEl = document.getElementById('agentActionTitle');
       const bodyEl = document.getElementById('agentActionContent');
       const modal = document.getElementById('agentActionModal');
@@ -1200,7 +1202,8 @@
       opt.textContent = code === 'MINIMA' ? 'Winiwa' : code;
       sel.appendChild(opt);
     });
-    const next = options.includes(prev) ? prev : options[0];
+    const preferred = options.includes('EURw') ? 'EURw' : options[0];
+    const next = options.includes(prev) ? prev : preferred;
     sel.value = next;
   };
 
@@ -1277,7 +1280,7 @@
     const lang = document.getElementById('welcomeLang')?.value || 'en';
     const selected = Array.from(document.querySelectorAll('#welcomeCurrencies .ccy-pill.on'))
       .map(x => x.dataset?.ccy).filter(Boolean);
-    const primary = document.getElementById('welcomePrimary')?.value || selected[0] || 'USDw';
+    const primary = document.getElementById('welcomePrimary')?.value || (selected.includes('EURw') ? 'EURw' : (selected[0] || 'EURw'));
 
     localStorage.setItem('stables_welcome_done_v1', '1');
     localStorage.setItem('stables_lang_pref', lang);
