@@ -3482,16 +3482,16 @@
             <div class="card app-section-card" style="padding:14px 18px">
                 <div class="cb" style="padding:0">
                     <!-- Primary currency card -->
-                    <div class="ccy-primary" data-ccy="EURw" draggable="true">
+                    <div class="ccy-primary" data-ccy="GBPw" draggable="true">
                         <div class="ccy-pri-flex">
                             <div>
                                 <div class="ccy-pri-name">
-                                    💵
-                                    EURw &nbsp;&middot;&nbsp; Euro</div>
+                                    💷
+                                    GBPw &nbsp;&middot;&nbsp; British Pound</div>
                                 <div class="ccy-pri-full" style="margin-top:4px"></div>
                             </div>
                             <div style="text-align:right;">
-                                <div class="ccy-pri-bal bal-amount">2,150.50</div>
+                                <div class="ccy-pri-bal bal-amount">346.23 GBPw</div>
                             </div>
                         </div>
                     </div>
@@ -3647,40 +3647,84 @@
                     </button>
                 </div>
                 <div class="cp-card app-section-card">
-                    <div class="xs mu" style="margin-bottom:12px;line-height:1.5;font-weight:800">Deposit my Stables to earn all transaction fees while strengthening the protocol.</div>
                     <div class="fbet" style="margin-bottom:10px">
-                        <div style="font-size:15px;font-weight:900">cf tokens</div>
-                        <div class="apy"
-                            style="background:rgba(52,211,153,.12);color:var(--gr);border-color:rgba(52,211,153,.3)">
-                            100% of
-                            network fees</div>
+                        <div style="font-size:15px;font-weight:900">Coverage fund</div>
+                    </div>
+                    <div style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:14px;margin-bottom:12px">
+                        <div class="pool-grid" style="margin-bottom:14px;grid-template-columns:repeat(4,minmax(0,1fr))">
+                            <div>
+                                <div class="ps-lbl">30-day fees</div>
+                                <div class="ps-val" id="cfMonthFees" style="color:var(--gr)">$0.00</div>
+                            </div>
+                            <div>
+                                <div class="ps-lbl">Transactions</div>
+                                <div class="ps-val" id="cfMonthTx">0</div>
+                            </div>
+                            <div>
+                                <div class="ps-lbl">Average fee</div>
+                                <div class="ps-val" id="cfAvgFee">$0.00</div>
+                            </div>
+                            <div>
+                                <div class="ps-lbl">Annualised yield</div>
+                                <div class="ps-val" id="cfMonthYield" style="color:var(--gr)">0.00%</div>
+                            </div>
+                        </div>
+                        <div class="fbet xs mu" style="margin-bottom:8px">
+                            <span>Past month daily fees and yield</span>
+                            <span id="cfDayLabel">—</span>
+                        </div>
+                        <div class="fbet xs mu" style="margin-bottom:8px;gap:12px;flex-wrap:wrap">
+                            <span><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:rgba(103,232,249,.9);margin-right:6px;vertical-align:middle"></span>Fees</span>
+                            <span><span style="display:inline-block;width:14px;height:0;border-top:2px solid rgba(230,237,243,.85);margin-right:6px;vertical-align:middle"></span>Funds asset</span>
+                        </div>
+                        <div id="cfChartWrap" style="position:relative;height:96px;margin-bottom:8px">
+                            <div id="cfMonthChart" style="display:flex;align-items:flex-end;justify-content:space-between;height:100%;gap:3px;position:relative;z-index:1"></div>
+                            <svg id="cfNavLineOverlay" viewBox="0 0 1000 100" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible"></svg>
+                        </div>
+                        <input type="range" min="0" max="29" step="1" value="29" class="sim-slider" id="cfDaySlider" style="width:100%;accent-color:var(--c)" oninput="scrubCoverageFundDay(this.value)">
+                        <div class="fbet xs mu" style="margin-top:8px">
+                            <span id="cfFeesDay">0 fees/day</span>
+                            <span id="cfYieldDay">0.00% annualised yield</span>
+                        </div>
+                    </div>
+                    <div style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:12px;margin-bottom:12px">
+                        <div class="xs mu" style="font-weight:800;margin-bottom:8px">Fund composition</div>
+                        <div id="cfCompBars" style="display:flex;gap:4px;height:14px;margin-bottom:8px"></div>
+                        <div id="cfCompLegend" class="xs mu" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px"></div>
                     </div>
                     <div class="pool-grid" style="margin-bottom:12px">
                         <div>
-                            <div class="ps-lbl">My deposit</div>
-                            <div class="ps-val" style="color:var(--gr)">$500.00</div>
-                            <div class="xs mu mt8">&asymp; 494.50 cfUSDw</div>
+                            <div class="ps-lbl">My USDwcf</div>
+                            <div class="ps-val" id="cfMyTokens" style="color:var(--gr)">0.00</div>
+                            <div class="xs mu mt8">Token price: <span id="cfTokenPrice">1.000 USDw / USDwcf</span></div>
                         </div>
                         <div>
-                            <div class="ps-lbl">30-day yield</div>
-                            <div class="ps-val" style="color:var(--gr)">+$5.33</div>
-                            <div class="xs mu mt8">Paid in cf tokens</div>
+                            <div class="ps-lbl">Funds asset</div>
+                            <div class="ps-val" id="cfFundNav">$0.00</div>
+                            <div class="xs mu mt8">Supply: <span id="cfTokenSupply">0.00 USDwcf</span></div>
                         </div>
                     </div>
-                    <div
-                        style="padding:9px 12px;background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.12);border-radius:9px;margin-bottom:12px">
-                        <div class="fbet">
-                            <div class="xs mu">Total Fund Size</div>
-                            <div style="font-size:13px;font-weight:800">$48,200 equiv.</div>
+                    <div style="padding:12px;background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;margin-bottom:12px">
+                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">Available balances</div>
+                        <div style="overflow-x:auto;margin-bottom:10px">
+                            <table id="cfBalanceTable" style="width:100%;border-collapse:collapse;font-size:13px;color:var(--m)">
+                                <thead>
+                                    <tr style="border-bottom:1px solid rgba(255,255,255,.08)">
+                                        <th style="padding:4px 8px 6px 0;text-align:left;font-weight:700;color:var(--m)">Asset</th>
+                                        <th style="padding:4px 0 6px 8px;text-align:right;font-weight:700;color:var(--m)">Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cfBalanceTableBody"></tbody>
+                            </table>
                         </div>
-                        <div class="fbet mt8">
-                            <div class="xs mu">cfUSDw value</div>
-                            <div style="font-size:13px;font-weight:800;color:var(--gr)">1.011 USDw / cfUSDw</div>
+                        <div style="margin-bottom:8px">
+                            <select class="fsel" id="cfAssetCcy" style="margin-top:0" aria-label="Asset for deposit or withdraw"></select>
                         </div>
-                    </div>
-                    <div class="pool-btns">
-                        <button class="btn btn-g" onclick="showToast('Redeem cf tokens coming soon')">Redeem</button>
-                        <button class="btn" onclick="showToast('Deposit to Coverage Fund coming soon')">Deposit</button>
+                        <div class="fbet" style="gap:8px">
+                            <input class="finput" id="cfAmount" type="number" min="0" step="0.01" placeholder="Amount">
+                            <button class="btn btn-g" style="height:42px;min-width:116px" onclick="depositCoverageFund()">Deposit</button>
+                            <button class="btn" style="height:42px;min-width:116px" onclick="withdrawCoverageFund()">Withdraw</button>
+                        </div>
                     </div>
                 </div>
                 </div>
@@ -5645,13 +5689,6 @@
                         <div class="ddesc">Explore council transparency and tools</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
-                <div class="ditem" onclick="navigate('settings-legal');closeMoreNow()">
-                    <div class="dic">&#x2696;&#xFE0F;</div>
-                    <div class="dinfo">
-                        <div class="dname">Legal &amp; notices</div>
-                        <div class="ddesc">Terms, privacy, data, Council properties</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
                 <div class="ditem" onclick="navigate('treasury');closeMoreNow()">
                     <div class="dic">
                         <img src="treasure-chest.svg" alt="" width="20" height="20"
@@ -5660,6 +5697,13 @@
                     <div class="dinfo">
                         <div class="dname">Treasury</div>
                         <div class="ddesc">Analyse the community's treasury</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="navigate('settings-legal');closeMoreNow()">
+                    <div class="dic">&#x2696;&#xFE0F;</div>
+                    <div class="dinfo">
+                        <div class="dname">Legal &amp; notices</div>
+                        <div class="ddesc">Terms, privacy, data, Council properties</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -6644,7 +6688,438 @@
                 renderLpLiveBins();
                 renderHeatmap();
                 syncLpBaseUI();
+            } else {
+                renderCoverageFundPanel();
             }
+        }
+
+        // ----- COVERAGE FUND JS -----
+        let coverageFundSeries = [];
+        let coverageFundDayIdx = 29;
+        let coverageFundMyTokens = 0;
+        const CF_DEPOSIT_ASSETS = ['USDw', 'EURw', 'GBPw', 'CNYw', 'xWiniwa'];
+
+        function fmtCfMMDDYYYY(d) {
+            const x = d instanceof Date ? d : new Date(d);
+            if (Number.isNaN(x.getTime())) return '—';
+            const mm = String(x.getMonth() + 1).padStart(2, '0');
+            const dd = String(x.getDate()).padStart(2, '0');
+            const yyyy = x.getFullYear();
+            return `${mm}/${dd}/${yyyy}`;
+        }
+
+        function cfCalendarDateForSeriesIndex(idx) {
+            const d = new Date();
+            d.setHours(0, 0, 0, 0);
+            const i = Math.max(0, Math.min(29, Number(idx) || 0));
+            d.setDate(d.getDate() - (29 - i));
+            return d;
+        }
+
+        function fmtCfWalletQty(n, code) {
+            const c = String(code || '');
+            const dec = (c === 'JPYw' || c === 'CNYw') ? 0 : (c === 'USDwcf' ? 4 : 2);
+            return (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+        }
+
+        function getCfAssetBalance(code) {
+            const c = String(code || '');
+            if (c === 'xWiniwa') return Number(typeof WALLET_XWM !== 'undefined' ? WALLET_XWM : 0) || 0;
+            if (c === 'USDwcf') return Number(coverageFundMyTokens) || 0;
+            const row = document.querySelector('#ccyList .ccy-sec-row[data-ccy="' + c + '"]');
+            if (!row) return 0;
+            const t = (row.querySelector('.ccy-sec-amt')?.textContent || '0').replace(/,/g, '');
+            return Number(t) || 0;
+        }
+
+        function syncCfDepositUI() {
+            const tbody = document.getElementById('cfBalanceTableBody');
+            const sel = document.getElementById('cfAssetCcy');
+            if (!tbody && !sel) return;
+            const codes = CF_DEPOSIT_ASSETS;
+            const prev = (sel && sel.value && codes.includes(sel.value)) ? sel.value : 'USDw';
+            if (tbody) {
+                const rowsHtml = [];
+                codes.forEach((c) => {
+                    const b = getCfAssetBalance(c);
+                    rowsHtml.push(`<tr><td style="padding:5px 8px 5px 0;color:var(--t)">${c}</td><td style="padding:5px 0 5px 8px;text-align:right;font-weight:700;color:var(--t)">${fmtCfWalletQty(b, c)}</td></tr>`);
+                });
+                rowsHtml.push(`<tr><td colspan="2" style="border-top:1px solid rgba(255,255,255,.08);padding:0;line-height:0;font-size:0">&nbsp;</td></tr>`);
+                const cfTok = getCfAssetBalance('USDwcf');
+                rowsHtml.push(`<tr><td style="padding:8px 8px 4px 0;color:var(--pu)">USDwcf</td><td style="padding:8px 0 4px 8px;text-align:right;font-weight:700;color:var(--t)">${fmtCfWalletQty(cfTok, 'USDwcf')}</td></tr>`);
+                tbody.innerHTML = rowsHtml.join('');
+            }
+            if (sel) {
+                sel.innerHTML = codes.map((c) => {
+                    const b = getCfAssetBalance(c);
+                    return `<option value="${c}">${c} — ${fmtCfWalletQty(b, c)}</option>`;
+                }).join('');
+                sel.value = prev;
+            }
+        }
+
+        function buildCoverageFundSeries() {
+            const rows = [];
+            const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+            for (let i = 0; i < 30; i++) {
+                const phase = i / 29;
+                const txCount = Math.round(138 + Math.sin(i * 0.52) * 24 + phase * 54);
+                const avgFeeUsd = clamp(0.21 + Math.cos(i * 0.37) * 0.04 + phase * 0.08, 0.16, 0.42);
+                const feesUsd = txCount * avgFeeUsd;
+                const navUsd = 48200 + i * 165 + Math.sin(i * 0.31) * 520;
+                const dailyYieldPct = (feesUsd / Math.max(1, navUsd)) * 100;
+                const comp = {
+                    USDw: clamp(0.50 + Math.sin(i * 0.20) * 0.04, 0.40, 0.62),
+                    EURw: clamp(0.22 + Math.cos(i * 0.18) * 0.03, 0.12, 0.30),
+                    GBPw: clamp(0.11 + Math.sin(i * 0.27) * 0.02, 0.06, 0.18),
+                    CNYw: clamp(0.07 + Math.cos(i * 0.22) * 0.02, 0.04, 0.12),
+                    xWiniwa: 0
+                };
+                const total = comp.USDw + comp.EURw + comp.GBPw + comp.CNYw + comp.xWiniwa;
+                Object.keys(comp).forEach((k) => comp[k] = comp[k] / total);
+                rows.push({ day: i + 1, txCount, avgFeeUsd, feesUsd, navUsd, dailyYieldPct, comp });
+            }
+            return rows;
+        }
+
+        function getCoverageFundSeries() {
+            if (!coverageFundSeries.length) coverageFundSeries = buildCoverageFundSeries();
+            return coverageFundSeries;
+        }
+
+        function fmtCfUsd(v) {
+            const num = (Number(v) || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return `${num} USDw`;
+        }
+
+        /** Convert USDw-equivalent amounts into the user’s primary stables currency (Wallet primary). */
+        function cfUsdStableEquivToPrimary(usdEquivAmount) {
+            const p = (typeof BASE_CCY !== 'undefined' && BASE_CCY) ? BASE_CCY : 'USDw';
+            const amt = Number(usdEquivAmount) || 0;
+            if (!Number.isFinite(amt)) return 0;
+            if (p === 'USDw') return amt;
+            if (typeof RATES === 'undefined' || !RATES.USDw) return amt;
+            const r = RATES.USDw[p];
+            if (typeof r === 'number' && r > 0) return amt * r;
+            if (p === 'MINIMA') {
+                const wPerUsd = RATES.Winiwa && RATES.Winiwa.USDw;
+                if (typeof wPerUsd === 'number' && wPerUsd > 0) return amt / wPerUsd;
+            }
+            return amt;
+        }
+
+        function fmtCfPrimaryAmount(amount, ccy) {
+            const code = String(ccy || 'USDw');
+            const n = Number(amount) || 0;
+            const dec = (code === 'JPYw' || code === 'CNYw') ? 0 : 2;
+            const num = n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
+            return `${num} ${code}`;
+        }
+
+        function fmtCfAnnualisedYieldPct(pct) {
+            const x = Number(pct) || 0;
+            const s = x.toFixed(2);
+            if (x > 0) return `+${s}%`;
+            if (x < 0) return `${s}%`;
+            return `${s}%`;
+        }
+
+        function cfTokenPrice(dayRow) {
+            const base = 1 + dayRow.dailyYieldPct * 0.5;
+            return Math.max(1.0001, base);
+        }
+
+        function renderCoverageFundNavLine(svgEl, navP, maxNav, activeIdx) {
+            if (!svgEl) return;
+            const n = navP.length;
+            if (!n) {
+                svgEl.innerHTML = '';
+                return;
+            }
+            const NS = 'http://www.w3.org/2000/svg';
+            svgEl.innerHTML = '';
+            const padY = 6;
+            const yTop = padY;
+            const yBot = 100 - padY;
+            const yRange = Math.max(1e-9, yBot - yTop);
+            const pts = navP.map((nav, i) => {
+                const x = n <= 1 ? 500 : (i / (n - 1)) * 1000;
+                const t = (nav / maxNav);
+                const y = yBot - t * yRange;
+                return { x, y };
+            });
+            const poly = document.createElementNS(NS, 'polyline');
+            poly.setAttribute('points', pts.map((p) => `${p.x},${p.y}`).join(' '));
+            poly.setAttribute('fill', 'none');
+            poly.setAttribute('stroke', 'rgba(230,237,243,0.9)');
+            poly.setAttribute('stroke-width', '2');
+            poly.setAttribute('stroke-linejoin', 'round');
+            poly.setAttribute('stroke-linecap', 'round');
+            svgEl.appendChild(poly);
+            pts.forEach((p, i) => {
+                const c = document.createElementNS(NS, 'circle');
+                c.setAttribute('cx', String(p.x));
+                c.setAttribute('cy', String(p.y));
+                c.setAttribute('r', i === activeIdx ? '3.5' : '2.2');
+                c.setAttribute('fill', i === activeIdx ? 'rgba(103,232,249,0.95)' : 'rgba(230,237,243,0.85)');
+                c.setAttribute('stroke', 'rgba(11,15,20,0.5)');
+                c.setAttribute('stroke-width', '0.8');
+                svgEl.appendChild(c);
+            });
+        }
+
+        function renderCoverageFundChart(activeIdx) {
+            const series = getCoverageFundSeries();
+            const chart = document.getElementById('cfMonthChart');
+            const svg = document.getElementById('cfNavLineOverlay');
+            if (!chart) return;
+            const primary = (typeof BASE_CCY !== 'undefined' && BASE_CCY) ? BASE_CCY : 'USDw';
+            chart.innerHTML = '';
+            const feesP = series.map((r) => cfUsdStableEquivToPrimary(r.feesUsd));
+            const navP = series.map((r) => cfUsdStableEquivToPrimary(r.navUsd));
+            const maxFees = Math.max(1e-9, ...feesP);
+            const maxNav = Math.max(1e-9, ...navP);
+            series.forEach((row, idx) => {
+                const col = document.createElement('div');
+                col.style.flex = '1';
+                col.style.display = 'flex';
+                col.style.flexDirection = 'column';
+                col.style.alignItems = 'stretch';
+                col.style.justifyContent = 'flex-end';
+                col.style.height = '100%';
+
+                const hf = Math.max(8, Math.round((feesP[idx] / maxFees) * 100));
+                const wrapF = document.createElement('div');
+                wrapF.style.display = 'flex';
+                wrapF.style.flexDirection = 'column';
+                wrapF.style.justifyContent = 'flex-end';
+                wrapF.style.height = '100%';
+                const barF = document.createElement('div');
+                barF.style.height = `${hf}%`;
+                barF.style.borderRadius = '2px 2px 0 0';
+                const active = idx === activeIdx;
+                barF.style.background = active ? 'rgba(103,232,249,.95)' : 'rgba(103,232,249,.4)';
+                barF.style.boxShadow = active ? '0 0 8px rgba(103,232,249,.32)' : 'none';
+                wrapF.appendChild(barF);
+
+                col.appendChild(wrapF);
+                col.style.cursor = 'pointer';
+                const dateStr = fmtCfMMDDYYYY(cfCalendarDateForSeriesIndex(idx));
+                col.title = `${dateStr} · Fees ${fmtCfPrimaryAmount(feesP[idx], primary)} · Funds asset ${fmtCfPrimaryAmount(navP[idx], primary)} · ${row.txCount} tx`;
+                col.addEventListener('mouseenter', () => { scrubCoverageFundDay(idx); });
+                col.addEventListener('mousemove', () => { scrubCoverageFundDay(idx); });
+                chart.appendChild(col);
+            });
+            renderCoverageFundNavLine(svg, navP, maxNav, activeIdx);
+        }
+
+        function renderCoverageFundComposition(activeIdx) {
+            const series = getCoverageFundSeries();
+            const row = series[activeIdx] || series[series.length - 1];
+            const colors = {
+                USDw: 'rgba(103,232,249,.88)',
+                EURw: 'rgba(59,130,246,.86)',
+                GBPw: 'rgba(245,158,11,.86)',
+                CNYw: 'rgba(239,68,68,.86)',
+                xWiniwa: 'rgba(167,139,250,.88)'
+            };
+            const bars = document.getElementById('cfCompBars');
+            const legend = document.getElementById('cfCompLegend');
+            if (bars) {
+                bars.innerHTML = '';
+                ['USDw', 'EURw', 'GBPw', 'CNYw', 'xWiniwa'].forEach((k) => {
+                    const seg = document.createElement('div');
+                    seg.style.width = `${Math.max(2, row.comp[k] * 100)}%`;
+                    seg.style.background = colors[k];
+                    seg.style.borderRadius = '4px';
+                    seg.title = `${k} ${(row.comp[k] * 100).toFixed(1)}%`;
+                    bars.appendChild(seg);
+                });
+            }
+            if (legend) {
+                legend.innerHTML = ['USDw', 'EURw', 'GBPw', 'CNYw', 'xWiniwa']
+                    .map((k) => `<span><span style="display:inline-block;width:8px;height:8px;border-radius:99px;background:${colors[k]};margin-right:6px"></span>${k} ${(row.comp[k] * 100).toFixed(1)}%</span>`)
+                    .join('');
+            }
+        }
+
+        function renderCoverageFundStats(activeIdx) {
+            const series = getCoverageFundSeries();
+            const row = series[activeIdx] || series[series.length - 1];
+            const primary = (typeof BASE_CCY !== 'undefined' && BASE_CCY) ? BASE_CCY : 'USDw';
+            const monthFees = series.reduce((s, r) => s + r.feesUsd, 0);
+            const monthTx = series.reduce((s, r) => s + r.txCount, 0);
+            const avgFee = monthTx > 0 ? monthFees / monthTx : 0;
+            const avgNav = series.reduce((s, r) => s + r.navUsd, 0) / series.length;
+            const monthYieldPct = (monthFees / Math.max(1, avgNav)) * 100;
+            const annualizedMonthYieldPct = monthYieldPct * 12;
+            const annualizedDayYieldPct = (Number(row.dailyYieldPct) || 0) * 365;
+            const tokenPx = cfTokenPrice(row);
+            const tokenSupply = Math.max(1, row.navUsd / tokenPx);
+
+            const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+            set('cfDayLabel', fmtCfMMDDYYYY(cfCalendarDateForSeriesIndex(activeIdx)));
+            set('cfFeesDay', `${fmtCfPrimaryAmount(cfUsdStableEquivToPrimary(row.feesUsd), primary)} fees/day`);
+            set('cfYieldDay', `${fmtCfAnnualisedYieldPct(annualizedDayYieldPct)} annualised yield`);
+            set('cfMonthFees', fmtCfPrimaryAmount(cfUsdStableEquivToPrimary(monthFees), primary));
+            set('cfMonthTx', `${monthTx.toLocaleString('en-US')}`);
+            set('cfAvgFee', fmtCfPrimaryAmount(cfUsdStableEquivToPrimary(avgFee), primary));
+            set('cfMonthYield', fmtCfAnnualisedYieldPct(annualizedMonthYieldPct));
+            set('cfTokenPrice', `${tokenPx.toFixed(4)} USDw / USDwcf`);
+            set('cfFundNav', fmtCfPrimaryAmount(cfUsdStableEquivToPrimary(row.navUsd), primary));
+            set('cfTokenSupply', `${tokenSupply.toLocaleString('en-US', { maximumFractionDigits: 2 })} USDwcf`);
+            set('cfMyTokens', coverageFundMyTokens.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        }
+
+        function renderCoverageFundPanel() {
+            const series = getCoverageFundSeries();
+            const idx = Math.max(0, Math.min(series.length - 1, Number(coverageFundDayIdx) || (series.length - 1)));
+            coverageFundDayIdx = idx;
+            const slider = document.getElementById('cfDaySlider');
+            if (slider) slider.value = String(idx);
+            renderCoverageFundChart(idx);
+            renderCoverageFundComposition(idx);
+            renderCoverageFundStats(idx);
+            syncCfDepositUI();
+        }
+
+        function scrubCoverageFundDay(indexVal) {
+            const series = getCoverageFundSeries();
+            const maxI = Math.max(0, series.length - 1);
+            const next = Math.max(0, Math.min(maxI, Number(indexVal) || 0));
+            if (next === coverageFundDayIdx) return;
+            coverageFundDayIdx = next;
+            renderCoverageFundPanel();
+        }
+
+        function depositCoverageFund() {
+            const amtEl = document.getElementById('cfAmount');
+            const assetEl = document.getElementById('cfAssetCcy');
+            const amount = Number(amtEl?.value || 0);
+            const asset = String(assetEl?.value || 'USDw');
+            if (!(amount > 0)) {
+                showToast('Enter a deposit amount');
+                return;
+            }
+            const series = getCoverageFundSeries();
+            const row = series[Math.max(0, Math.min(series.length - 1, coverageFundDayIdx))];
+            const px = cfTokenPrice(row);
+            const minted = amount / px;
+            coverageFundMyTokens += minted;
+            if (amtEl) amtEl.value = '';
+            renderCoverageFundStats(coverageFundDayIdx);
+            syncCfDepositUI();
+            showToast(`Deposited ${amount.toLocaleString('en-US', { maximumFractionDigits: 2 })} ${asset} · minted ${minted.toLocaleString('en-US', { maximumFractionDigits: 4 })} USDwcf`);
+        }
+
+        function withdrawCoverageFund() {
+            const amtEl = document.getElementById('cfAmount');
+            const amount = Number(amtEl?.value || 0);
+            if (!(amount > 0)) {
+                showToast('Enter a withdraw amount');
+                return;
+            }
+            if (amount > coverageFundMyTokens) {
+                showToast('Amount exceeds your USDwcf balance');
+                return;
+            }
+            coverageFundMyTokens -= amount;
+            if (amtEl) amtEl.value = '';
+            renderCoverageFundStats(coverageFundDayIdx);
+            syncCfDepositUI();
+            showToast(`Withdrew ${amount.toLocaleString('en-US', { maximumFractionDigits: 4 })} USDwcf`);
+        }
+
+        function bindDragHandleOnlyRange(input) {
+            if (!input || input.dataset.dragHandleOnlyBound === '1') return;
+            input.dataset.dragHandleOnlyBound = '1';
+            input.style.touchAction = 'none';
+            input.style.cursor = 'pointer';
+
+            let dragging = false;
+            let activePointerId = null;
+            const nearPx = 18;
+
+            const clamp01 = (n) => Math.max(0, Math.min(1, n));
+            const thumbRatio = () => {
+                const min = Number(input.min || 0);
+                const max = Number(input.max || 100);
+                const val = Number(input.value || min);
+                return max > min ? clamp01((val - min) / (max - min)) : 0;
+            };
+            const isNearThumb = (clientX) => {
+                const rect = input.getBoundingClientRect();
+                const xThumb = rect.left + thumbRatio() * rect.width;
+                return Math.abs(clientX - xThumb) <= nearPx;
+            };
+            const snapByStep = (raw) => {
+                const min = Number(input.min || 0);
+                const max = Number(input.max || 100);
+                const step = Number(input.step || 1);
+                const v = Math.max(min, Math.min(max, raw));
+                if (step <= 0) return v;
+                const snapped = Math.round((v - min) / step) * step + min;
+                return Math.max(min, Math.min(max, snapped));
+            };
+            const setFromPointer = (clientX) => {
+                const rect = input.getBoundingClientRect();
+                const min = Number(input.min || 0);
+                const max = Number(input.max || 100);
+                if (!(max > min)) return;
+                const ratio = clamp01((clientX - rect.left) / Math.max(1, rect.width));
+                const raw = min + ratio * (max - min);
+                const next = snapByStep(raw);
+                if (String(next) !== String(input.value)) {
+                    input.value = String(next);
+                    input.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            };
+
+            input.addEventListener('pointerdown', (e) => {
+                if (!isNearThumb(e.clientX)) return;
+                dragging = true;
+                activePointerId = e.pointerId;
+                input.classList.add('is-dragging');
+                input.setPointerCapture(e.pointerId);
+                e.preventDefault();
+                setFromPointer(e.clientX);
+            });
+            input.addEventListener('pointermove', (e) => {
+                if (!dragging || e.pointerId !== activePointerId) return;
+                e.preventDefault();
+                setFromPointer(e.clientX);
+            });
+            const stop = (e) => {
+                if (e.pointerId !== activePointerId) return;
+                dragging = false;
+                input.classList.remove('is-dragging');
+                try { input.releasePointerCapture(e.pointerId); } catch (_) { }
+                activePointerId = null;
+            };
+            input.addEventListener('pointerup', stop);
+            input.addEventListener('pointercancel', stop);
+            input.addEventListener('lostpointercapture', () => {
+                dragging = false;
+                input.classList.remove('is-dragging');
+                activePointerId = null;
+            });
+            input.addEventListener('click', (e) => {
+                // Keep slider behavior consistent: only drag from thumb, no track jumps.
+                if (!dragging && !isNearThumb(e.clientX)) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        }
+
+        function initGraphSliderBehavior() {
+            [
+                'crScrubSlider',
+                'liabTimeSlider',
+                'cfDaySlider',
+                'protocolSlider',
+                'priceSlider'
+            ].forEach((id) => bindDragHandleOnlyRange(document.getElementById(id)));
         }
 
         // ----- CONCENTRATED LIQUIDITY JS -----
@@ -7687,6 +8162,7 @@
             if (!silent) showToast((tag || 'USDw') + ' set as primary currency');
             syncWalletCurrenciesFromSettings();
             updateGlobalUI();
+            if (typeof renderCoverageFundPanel === 'function') renderCoverageFundPanel();
         }
 
         function walletDeleteCcy(code) {
@@ -8170,7 +8646,6 @@
             };
 
             const fmt2 = (n) => Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            const baseSym = CCY_SYMBOL[BASE_CCY] || '';
 
             // Primary card styling based on currency
             const priCard = document.querySelector('.ccy-primary');
@@ -8188,7 +8663,7 @@
             const priBal = document.querySelector('.ccy-pri-bal');
             const baseRow = document.querySelector('#ccyList .ccy-sec-row[data-ccy="' + BASE_CCY + '"]');
             const baseAmt = baseRow ? parseFloat((baseRow.querySelector('.ccy-sec-amt')?.textContent || '').replace(/,/g, '')) : 0;
-            if (priBal) priBal.textContent = fmt2(baseAmt);
+            if (priBal) priBal.textContent = `${fmt2(baseAmt)} ${BASE_CCY}`;
 
             // Update all side-row equivalents in BASE_CCY
             const rows = Array.from(document.querySelectorAll('#ccyList .ccy-sec-row'));
@@ -8205,7 +8680,7 @@
                 // Equivalent display (convert to principal currency).
                 if (amt > 0) {
                     eqEl.style.color = 'var(--gr)';
-                    eqEl.textContent = `${baseSym}${fmt2(eq)}`;
+                    eqEl.textContent = `${fmt2(eq)} ${BASE_CCY}`;
                     if (code === BASE_CCY || r.dataset.walletEnabled === '1') totalBase += eq;
                 } else {
                     eqEl.style.color = 'var(--rd)';
@@ -8218,7 +8693,7 @@
             const wTotal = document.querySelector('.w-total');
             const wCcy = document.querySelector('.w-ccy');
             if (wCcy) wCcy.textContent = `${BASE_CCY} equivalent`;
-            if (wTotal && Number.isFinite(totalBase)) wTotal.textContent = fmt2(totalBase);
+            if (wTotal && Number.isFinite(totalBase)) wTotal.textContent = `${fmt2(totalBase)} ${BASE_CCY}`;
 
             if (walletEditMode) refreshWalletCcyPrimaryStars();
 
@@ -8270,6 +8745,7 @@
             syncTreasurySnapshot(assetsUSD, liabUSD, crNow);
 
             calcSlider();
+            if (typeof syncCfDepositUI === 'function') syncCfDepositUI();
         }
 
         function fmtUSD(v) {
@@ -8277,15 +8753,13 @@
         }
 
         // Base currency (primary stable) formatting for simulator numbers
-        let BASE_CCY = 'EURw';
-        const CCY_SYMBOL = { USDw: '$', EURw: '€', GBPw: '£', JPYw: '¥', CADw: '$', AUDw: '$', CHFw: 'CHF', CNYw: '¥', MINIMA: 'MIN' };
+        let BASE_CCY = 'GBPw';
         function fmtBase(usdValue) {
             const v = Number(usdValue) || 0;
             const rate = (RATES.USDw && RATES.USDw[BASE_CCY]) ? RATES.USDw[BASE_CCY] : 1;
-            const sym = CCY_SYMBOL[BASE_CCY] || '';
             const scaled = v * rate;
             const num = scaled.toLocaleString('en-US', { maximumFractionDigits: 0 });
-            return sym ? `${sym}${num}` : `${num} ${BASE_CCY}`;
+            return `${num} ${BASE_CCY}`;
         }
 
         /** Treasury page: simple assets / liabilities / equity + bar + CR (updates with stress slider). */
@@ -8922,6 +9396,8 @@
 
         // Init on load
         populateLpBaseCurrencies();
+        initGraphSliderBehavior();
+        renderCoverageFundPanel();
         syncLpBaseUI();
         renderLpLiveBins();
         calcSlider();
