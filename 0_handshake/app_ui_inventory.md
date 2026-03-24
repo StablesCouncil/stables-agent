@@ -110,7 +110,7 @@
 |--|--|
 | **Nav** | Bottom tab |
 | **Page header** | Invest · My holdings, pools, and protocol tools |
-| **Sections** | My holdings → `pool-section-title` + gradient `card` (not `app-section-card` on that card); tab row → **Coverage Fund** / **Liquidity funds** panels (`pool-section-title`: Coverage fund / Liquidity funds). LP panel includes top selector `#lpBaseCcy` (all currencies, default Winiwa), main graph for **current liquidity by bucket**, then **Add liquidity** form and CTA to Exchange pair. |
+| **Sections** | Tab row → **Coverage Fund** / **Liquidity funds** panels (`pool-section-title`: Coverage fund / Liquidity funds). LP panel includes main graph for **current liquidity by bucket**, then **Add liquidity** form and CTA to Exchange pair. Top **My holdings** card removed (available through simulator drawer). |
 | **Panel CF** | `stitle-row` with `pool-section-title` + agent → `cp-card` |
 | **Panel LP** | `stitle-row` with `pool-section-title` + agent → `lp-card` |
 
@@ -353,6 +353,7 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-19 | More drawer: `.drawer-test-faucet-card` merges “Testing Phase Only” banner + Get Test Wiwina row into one tappable amber card. |
 | 2026-03-19 | Mint / Exchange / Invest alignment: removed **Reserve Status** block from **Mint Wables** (Treasury is single source); Exchange **Provide liquidity** button opens `invest` LP panel; LP naming unified to **Liquidity funds** with base selector `#lpBaseCcy` (Winiwa). |
 | 2026-03-19 | LP UX pass: `#lpBaseCcy` now includes all currencies; graph labelled as current bucket liquidity; add-liquidity form separated below; LP includes direct CTA to open the selected pair on Exchange. |
+| 2026-03-19 | Invest cleanup: removed top **My holdings** block; holdings view consolidated in simulator drawer titled **My own bank holdings**. |
 | 2026-03-19 | Invest tabs: **Liquidity Fund** (was Provide Liquidity); LP panel `pool-section-title` **Liquidity fund**; primary LP CTA **Deposit to Liquidity Fund**. |
 | 2026-03-19 | Full tables: every `<button id>`, every modal/overlay root `id`, global chrome, settings toggles. |
 | 2026-03-22 | Initial inventory + handshake link to single `<style>` source. |

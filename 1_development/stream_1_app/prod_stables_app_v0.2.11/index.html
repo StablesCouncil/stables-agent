@@ -3631,40 +3631,8 @@
                 </div>
             </header>
 
-            <!-- TOTAL PORTFOLIO HOLDINGS -->
-            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
-            <div class="pool-section-title">My holdings</div>
-            <div class="card"
-                style="padding:16px;margin-bottom:0;background:linear-gradient(135deg,rgba(103,232,249,0.03),rgba(167,139,250,0.02));border:1px solid rgba(103,232,249,0.1)">
-                <div class="fbet" style="margin-bottom:14px">
-                    <span class="xs mu" style="font-weight:700;text-transform:uppercase;letter-spacing:0.04em">Combined
-                        Net Worth</span>
-                    <span class="bal-amount" style="font-size:22px;font-weight:900;color:var(--t)">$4,076.63</span>
-                </div>
-                <div class="bs-visual" style="margin-bottom:16px;height:6px;border-radius:3px">
-                    <div class="bs-seg" style="width:84%;background:rgba(52,211,153,.65)" title="Spendable"></div>
-                    <div class="bs-seg" style="width:12%;background:rgba(251,191,36,.7)" title="Coverage Fund"></div>
-                    <div class="bs-seg" style="width:4%;background:rgba(167,139,250,.7)" title="xWiniwa"></div>
-                </div>
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-                    <div>
-                        <div class="xs mu" style="margin-bottom:4px">Spendable Wallet</div>
-                        <div class="bal-amount" style="font-size:13px;font-weight:800;color:var(--gr)">$3,450.75</div>
-                    </div>
-                    <div>
-                        <div class="xs mu" style="margin-bottom:4px">Coverage Fund (Yield)</div>
-                        <div class="bal-amount" style="font-size:13px;font-weight:800;color:var(--am)">$500.00</div>
-                    </div>
-                    <div>
-                        <div class="xs mu" style="margin-bottom:4px">xWiniwa (Equity)</div>
-                        <div class="bal-amount" style="font-size:13px;font-weight:800;color:var(--pu)">$125.88</div>
-                    </div>
-                </div>
-            </div>
-            </div>
-
             <!-- INVEST TABS -->
-            <div class="tab-row" style="margin-bottom:24px">
+            <div class="tab-row" style="margin-top:20px;margin-bottom:24px">
                 <button class="tab-btn active" id="iTabCF" onclick="setInvestTab('cf')">Coverage Fund</button>
                 <button class="tab-btn" id="iTabLP" onclick="setInvestTab('lp')">Liquidity funds</button>
             </div>
@@ -3728,38 +3696,32 @@
                     </button>
                 </div>
                 <div class="lp-card app-section-card">
-                    <div style="margin-bottom:12px">
-                        <label class="flabel">Pool base currency</label>
-                        <select class="fsel" id="lpBaseCcy" style="margin-top:6px" onchange="syncLpBaseUI()"></select>
+                    <div style="margin-bottom:10px">
+                        <select class="fsel" id="lpQuoteCcy" style="margin-top:6px" onchange="syncLpBaseUI()"></select>
                     </div>
-                    <div class="xs mu" style="margin-bottom:12px;line-height:1.5;font-weight:800">Provide liquidity on the xWiniwa secondary market and earn from trades.</div>
                     <div class="fbet" style="margin-bottom:10px">
-                        <div style="font-size:15px;font-weight:900" id="lpPairTitle">Winiwa / xWiniwa liquidity</div>
-                        <div class="apy"
-                            style="background:rgba(167,139,250,.12);color:var(--pu);border-color:rgba(167,139,250,.3)">
-                            LP trade fees</div>
+                        <div style="font-size:15px;font-weight:900" id="lpPairTitle">xWiniwa / Winiwa liquidity</div>
                     </div>
 
                     <div
                         style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px;margin-bottom:16px">
-                        <div class="fbet" style="margin-bottom:16px">
-                            <div class="xs mu">Current Mid-Point</div>
-                            <div style="font-size:14px;font-weight:800;color:var(--c)">$84.60 per Winiwa</div>
-                        </div>
-                        <div class="xs mu" style="margin-bottom:10px;font-weight:800">Current liquidity by bucket (demo)</div>
+                        <div class="xs mu" style="margin-bottom:10px;font-weight:800">Current liquidity</div>
                         <div style="display:flex;align-items:flex-end;justify-content:space-between;height:80px;margin-bottom:8px;gap:2px"
                             id="lpLiveBins">
                             <!-- Javascript populates current liquidity buckets -->
                         </div>
 
-                        <div class="fbet xs mu" style="margin-bottom:16px">
-                            <span>$78.00</span>
-                            <span id="lpLiveDepthLabel" style="color:var(--c);font-weight:700">Live depth around spot</span>
-                            <span>$91.00</span>
+                        <div class="fbet xs mu" style="margin-bottom:4px">
+                            <span id="lpLiveMinLabel">$78.00</span>
+                            <span id="lpLiveMidLabel" style="color:var(--c);font-weight:700">$84.60</span>
+                            <span id="lpLiveMaxLabel">$91.00</span>
                         </div>
+                        <div class="xs mu" id="lpLiveHoverLabel" style="text-align:center;margin-bottom:6px">
+                            Hover a bin to view price and quantity of Winiwa
+                        </div>
+                        <div class="xs mu" style="text-align:center;margin-bottom:8px" id="lpLiveDepthLabel">Liquidity bins</div>
+                        <div class="xs mu" style="text-align:center">Total liquidity: <span id="lpLiveTotalMinima" style="color:var(--t);font-weight:800">0 MINIMA</span></div>
 
-                        <button class="btn btn-w" style="margin-top:10px;width:100%" id="lpGoExchangeBtn"
-                            onclick="openLpExchangeForBase()">Open Winiwa ↔ xWiniwa on Exchange</button>
                     </div>
 
                     <!-- Dual Token Deposit -->
@@ -3786,45 +3748,30 @@
                                 $85.10)</span>
                             <span>$91.00</span>
                         </div>
-                        <div
-                            style="text-align:center;padding:12px;background:rgba(103,232,249,.04);border-radius:8px;border:1px dashed rgba(103,232,249,.2)">
-                            <div class="xs mu" style="margin-bottom:4px">Target APY</div>
-                            <div id="lpApyDisplay" style="font-size:22px;font-weight:900;color:var(--gr)">~18.4%</div>
-                            <div class="xs mu" style="margin-top:4px">Yield drops to 0% if price exits optimal range
-                            </div>
-                        </div>
                     </div>
-                    <div class="cb" style="margin-bottom:10px">
-                        <label class="flabel" id="lpBaseDepositLabel">Deposit Winiwa</label>
-                        <div class="fbet"
-                            style="padding:10px 14px;background:rgba(16,24,38,.8);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:6px">
-                            <input class="nobg" type="number" id="lpDepW" placeholder="0.00"
-                                style="font-size:18px;font-weight:700;width:100%;color:var(--t)">
-                            <div class="fbet" style="gap:8px">
-                                <span style="font-size:13px;font-weight:800;color:var(--c)" id="lpBaseTokenTag">Winiwa</span>
-                                <button class="max-btn"
-                                    onclick="fillLpBaseMax()">MAX</button>
-                            </div>
-                        </div>
-                        <div class="fbet xs mu">
-                            <span>Available: <span id="lpAvailW">10,000 Winiwa</span></span>
-                        </div>
-                    </div>
-
                     <div class="cb" style="margin-bottom:16px">
-                        <label class="flabel">Deposit xWiniwa</label>
-                        <div class="fbet"
-                            style="padding:10px 14px;background:rgba(16,24,38,.8);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:6px">
-                            <input class="nobg" type="number" id="lpDepX" placeholder="0.00"
-                                style="font-size:18px;font-weight:700;width:100%;color:var(--t)">
-                            <div class="fbet" style="gap:8px">
-                                <span style="font-size:13px;font-weight:800;color:var(--pu)">xWiniwa</span>
-                                <button class="max-btn"
-                                    onclick="document.getElementById('lpDepX').value=WALLET_XWM">MAX</button>
-                            </div>
+                        <label class="flabel" id="lpQuoteDepositLabel">Deposit xWiniwa</label>
+                        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:6px">
+                            <input class="finput" type="number" id="lpDepX" placeholder="0.00" inputmode="decimal"
+                                style="min-width:0;margin-bottom:0">
+                            <button class="btn" style="width:auto;padding:12px 14px"
+                                onclick="fillLpQuoteMax()">MAX</button>
                         </div>
                         <div class="fbet xs mu">
                             <span>Available: <span id="lpAvailX">340 xWiniwa</span></span>
+                        </div>
+                    </div>
+
+                    <div class="cb" style="margin-bottom:10px">
+                        <label class="flabel" id="lpBaseDepositLabel">Deposit winiwa</label>
+                        <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:6px">
+                            <input class="finput" type="number" id="lpDepW" placeholder="0.00" inputmode="decimal"
+                                style="min-width:0;margin-bottom:0">
+                            <button class="btn" style="width:auto;padding:12px 14px"
+                                onclick="fillLpBaseMax()">MAX</button>
+                        </div>
+                        <div class="fbet xs mu">
+                            <span>Available: <span id="lpAvailW">10,000 Winiwa</span></span>
                         </div>
                     </div>
 
@@ -6178,7 +6125,7 @@
     <div class="dback" id="simDrawer" onclick="closeSim(event)">
         <div class="drawer" style="padding:0; overflow:hidden; display:flex; flex-direction:column; max-height:85dvh;">
             <div class="dhead" style="padding:16px 16px 0; flex-shrink:0;"><span
-                    style="font-size:16px;font-weight:800">My own bank positioning</span>
+                    style="font-size:16px;font-weight:800">My own bank holdings</span>
                 <button class="dclose" onclick="openAgentExplain('Portfolio Simulator')" title="StablesAgent" style="display:flex;align-items:center;justify-content:center">
                     <img src="agent.png" alt="StablesAgent" style="width:18px;height:18px;border-radius:6px;object-fit:cover">
                 </button>
@@ -6389,7 +6336,15 @@
                 syncAppUpdatesSection();
                 if (typeof window.refreshSettingsBackupCopy === 'function') window.refreshSettingsBackupCopy();
             }
-            if (p === 'exchange' && typeof window.renderExchangeRecentList === 'function') window.renderExchangeRecentList();
+            if (p === 'exchange') {
+                const quote = String(document.getElementById('lpQuoteCcy')?.value || 'xWiniwa');
+                const fromSel = document.getElementById('exFromCcy');
+                const toSel = document.getElementById('exToCcy');
+                if (fromSel) fromSel.value = quote;
+                if (toSel) toSel.value = 'Winiwa';
+                if (typeof calcRate === 'function') calcRate();
+                if (typeof window.renderExchangeRecentList === 'function') window.renderExchangeRecentList();
+            }
             if (p === 'activity') {
                 if (typeof setActivityFilter === 'function') setActivityFilter('all');
                 if (typeof setActivityCcyFilter === 'function') setActivityCcyFilter('all');
@@ -6762,7 +6717,6 @@
             });
 
             document.getElementById('lpActiveLabel').textContent = labelEst;
-            document.getElementById('lpApyDisplay').textContent = apyEst;
         }
 
         function renderLpLiveBins() {
@@ -6770,66 +6724,116 @@
             if (!container) return;
             container.innerHTML = '';
             const bins = [22, 25, 31, 37, 45, 54, 62, 71, 79, 88, 94, 100, 96, 90, 82, 74, 66, 57, 49, 40, 33, 28, 24, 21];
-            bins.forEach((h) => {
+            let totalMinima = 0;
+            const quote = String(document.getElementById('lpQuoteCcy')?.value || 'xWiniwa');
+            const pairMid = (() => {
+                if (quote === 'xWiniwa') {
+                    return ((RATES.Winiwa && RATES.Winiwa.xWiniwa) ? Number(RATES.Winiwa.xWiniwa) : 0.0888) || 0.0888;
+                }
+                return ((RATES[quote] && RATES[quote].Winiwa) ? Number(RATES[quote].Winiwa) : 1) || 1;
+            })();
+            const pairMin = pairMid * 0.92;
+            const pairMax = pairMid * 1.08;
+            const fmtPair = (v) => {
+                const n = Number(v) || 0;
+                if (n >= 1000) return n.toFixed(0);
+                if (n >= 100) return n.toFixed(2);
+                if (n >= 1) return n.toFixed(4);
+                return n.toFixed(6);
+            };
+            const minLbl = document.getElementById('lpLiveMinLabel');
+            const midLbl = document.getElementById('lpLiveMidLabel');
+            const maxLbl = document.getElementById('lpLiveMaxLabel');
+            const hoverLbl = document.getElementById('lpLiveHoverLabel');
+            const setHoverInfo = (idx, bucketWiniwa) => {
+                if (!hoverLbl) return;
+                const t = bins.length > 1 ? idx / (bins.length - 1) : 0;
+                const price = pairMin + (pairMax - pairMin) * t;
+                hoverLbl.textContent = `Bin ${idx + 1}: 1 ${quote} = ${fmtPair(price)} Winiwa · ${Number(bucketWiniwa).toLocaleString('en-US')} Winiwa`;
+            };
+            if (minLbl) minLbl.textContent = `${fmtPair(pairMin)} Winiwa`;
+            if (midLbl) midLbl.textContent = `1 ${quote} = ${fmtPair(pairMid)} Winiwa`;
+            if (maxLbl) maxLbl.textContent = `${fmtPair(pairMax)} Winiwa`;
+            if (hoverLbl) hoverLbl.textContent = 'Hover a bin to view price and quantity of Winiwa';
+            bins.forEach((h, idx) => {
                 const div = document.createElement('div');
                 const isCore = h >= 90;
                 const isNear = h >= 65 && h < 90;
+                const bucketMinima = Math.max(120, Math.round(h * 36));
+                totalMinima += bucketMinima;
                 div.style.flex = '1';
                 div.style.height = `${h}%`;
                 div.style.borderRadius = '2px 2px 0 0';
+                div.style.position = 'relative';
                 div.style.background = isCore
                     ? 'rgba(103,232,249,.92)'
                     : isNear
                         ? 'rgba(103,232,249,.45)'
                         : 'rgba(103,232,249,.20)';
                 div.style.boxShadow = isCore ? '0 0 8px rgba(103,232,249,.35)' : 'none';
+                div.style.cursor = 'pointer';
+                div.addEventListener('mouseenter', () => setHoverInfo(idx, bucketMinima));
+                div.addEventListener('mousemove', () => setHoverInfo(idx, bucketMinima));
+                div.title = `Bin ${idx + 1} · ${bucketMinima.toLocaleString('en-US')} MINIMA`;
                 container.appendChild(div);
             });
+            container.addEventListener('mouseleave', () => {
+                if (hoverLbl) hoverLbl.textContent = 'Hover a bin to view price and quantity of Winiwa';
+            });
             const lbl = document.getElementById('lpLiveDepthLabel');
-            if (lbl) lbl.textContent = 'Current liquidity concentration at spot';
+            if (lbl) lbl.textContent = 'Liquidity bins';
+            const totalEl = document.getElementById('lpLiveTotalMinima');
+            if (totalEl) totalEl.textContent = `${totalMinima.toLocaleString('en-US')} MINIMA`;
         }
 
         function populateLpBaseCurrencies() {
-            const sel = document.getElementById('lpBaseCcy');
+            const sel = document.getElementById('lpQuoteCcy');
             if (!sel) return;
-            const all = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw', 'xWiniwa'];
+            const all = ['xWiniwa', 'USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw'];
             sel.innerHTML = all.map((c) => `<option value="${c}" ${c === 'xWiniwa' ? 'selected' : ''}>${c}</option>`).join('');
         }
 
         function syncLpBaseUI() {
-            const sel = document.getElementById('lpBaseCcy');
-            const base = String(sel?.value || 'Winiwa');
+            const quote = String(document.getElementById('lpQuoteCcy')?.value || 'xWiniwa');
             const depLbl = document.getElementById('lpBaseDepositLabel');
-            const tokTag = document.getElementById('lpBaseTokenTag');
             const avail = document.getElementById('lpAvailW');
             const pairTitle = document.getElementById('lpPairTitle');
-            const exBtn = document.getElementById('lpGoExchangeBtn');
-            if (depLbl) depLbl.textContent = `Deposit ${base}`;
-            if (tokTag) tokTag.textContent = base;
-            if (pairTitle) pairTitle.textContent = `${base} / xWiniwa liquidity`;
-            if (exBtn) exBtn.textContent = `Open ${base} ↔ xWiniwa on Exchange`;
+            const qLbl = document.getElementById('lpQuoteDepositLabel');
+            const qAvail = document.getElementById('lpAvailX');
+            if (depLbl) depLbl.textContent = 'Deposit winiwa';
+            if (pairTitle) pairTitle.textContent = `${quote} / Winiwa liquidity`;
             if (avail) {
-                const amt = base === 'Winiwa' ? WALLET_WINIWA : 2500;
-                avail.textContent = `${Number(amt).toLocaleString('en-US', { maximumFractionDigits: 0 })} ${base}`;
+                avail.textContent = `${Number(WALLET_WINIWA).toLocaleString('en-US', { maximumFractionDigits: 0 })} Winiwa`;
+            }
+            if (qLbl) qLbl.textContent = `Deposit ${quote}`;
+            if (qAvail) {
+                const qAmt = quote === 'xWiniwa' ? WALLET_XWM : 2500;
+                qAvail.textContent = `${Number(qAmt).toLocaleString('en-US', { maximumFractionDigits: 0 })} ${quote}`;
             }
             renderLpLiveBins();
         }
 
         function openLpExchangeForBase() {
-            const base = String(document.getElementById('lpBaseCcy')?.value || 'Winiwa');
+            const quote = String(document.getElementById('lpQuoteCcy')?.value || 'xWiniwa');
             const fromSel = document.getElementById('exFromCcy');
             const toSel = document.getElementById('exToCcy');
-            if (fromSel) fromSel.value = base;
-            if (toSel) toSel.value = base === 'xWiniwa' ? 'Winiwa' : 'xWiniwa';
+            if (fromSel) fromSel.value = quote;
+            if (toSel) toSel.value = 'Winiwa';
             if (typeof calcRate === 'function') calcRate();
             navigate('exchange');
         }
 
         function fillLpBaseMax() {
-            const base = String(document.getElementById('lpBaseCcy')?.value || 'Winiwa');
             const input = document.getElementById('lpDepW');
             if (!input) return;
-            input.value = String(base === 'Winiwa' ? WALLET_WINIWA : 2500);
+            input.value = String(WALLET_WINIWA);
+        }
+
+        function fillLpQuoteMax() {
+            const quote = String(document.getElementById('lpQuoteCcy')?.value || 'xWiniwa');
+            const input = document.getElementById('lpDepX');
+            if (!input) return;
+            input.value = String(quote === 'xWiniwa' ? WALLET_XWM : 2500);
         }
 
         function resetWelcomeLangMenuPosition() {
