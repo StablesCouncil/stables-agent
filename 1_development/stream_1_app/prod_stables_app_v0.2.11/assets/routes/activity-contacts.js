@@ -7,6 +7,7 @@
   const SOFT_HIDDEN_TX_KEY = CFG.SOFT_HIDDEN_TX_KEY || 'stables_soft_hidden_tx_ids_v1';
   const HIDDEN_SHOPS_KEY = CFG.HIDDEN_SHOPS_KEY || 'stables_hidden_shop_names_v1';
   const TX_NOTES_KEY = CFG.TX_NOTES_KEY || 'stables_tx_notes_v1';
+  const MERCHANT_RATINGS_KEY = CFG.MERCHANT_RATINGS_KEY || 'stables_merchant_ratings_v1';
   const CONTACT_FAVORITES_KEY = CFG.CONTACT_FAVORITES_KEY || 'stables_contact_favorites_v1';
   const BACKUP_STORAGE_KEY = CFG.BACKUP_STORAGE_KEY || 'stables_last_config_backup_ts';
   const BACKUP_REMINDER_HOURS = CFG.BACKUP_REMINDER_HOURS || 48;
@@ -66,6 +67,7 @@
       id: `TX-${String(100001 + i)}`, dir, icon: ICON_BY_CATEGORY[cp.category] || (dir === 'in' ? '↙' : '↗'),
       counterparty: cp.name, category: cp.category, title: `${dir === 'in' ? 'Received from' : 'Paid'} ${cp.name}`,
       date: dateText, amt, ccy, address: cp.address, fee: Number((Math.max(0.02, Math.abs(amt) * 0.0001)).toFixed(2)),
+      explorerTxId: toDemoTradeId(`TX-${String(100001 + i)}`),
       status: i % 19 === 0 ? 'Pending' : 'Confirmed', note: i % 5 === 0 ? 'Monthly recurring flow' : 'Demo payment',
       directionLabel: dir === 'in' ? 'Incoming' : 'Outgoing'
     });
@@ -127,6 +129,13 @@
       ? JSON.parse(localStorage.getItem(CONTACT_FAVORITES_KEY))
       : DEFAULT_FAVORITES
   );
+  const merchantRatings = Array.isArray(JSON.parse(localStorage.getItem(MERCHANT_RATINGS_KEY) || '[]'))
+    ? JSON.parse(localStorage.getItem(MERCHANT_RATINGS_KEY) || '[]')
+    : [];
+  const MERCHANT_RATING_MIN_SPEND_USD = 3;
+  const MERCHANT_RATING_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24h between edits per shop+rater
+  const MERCHANT_RATING_MAX_COMMENT = 240;
+  let pendingMerchantRatingShop = '';
 
   /** Parsed JSON waiting for user to choose Replace vs Combine in the import modal. */
   let pendingConfigImportPayload = null;
@@ -138,14 +147,39 @@
   function persistNotes() { localStorage.setItem(CONTACT_NOTES_KEY, JSON.stringify(contactNotes)); }
   function persistTxNotes() { localStorage.setItem(TX_NOTES_KEY, JSON.stringify(txNotes)); }
   function persistFavorites() { localStorage.setItem(CONTACT_FAVORITES_KEY, JSON.stringify(Array.from(contactFavorites))); }
+  function persistMerchantRatings() { localStorage.setItem(MERCHANT_RATINGS_KEY, JSON.stringify(merchantRatings)); }
   function getTxById(id) { return DEMO_ACTIVITY.find(x => x.id === id); }
   function getExchangeById(id) { return DEMO_EXCHANGES.find(x => x.id === id); }
+  function getExplorerBaseUrl() {
+    const raw = (window.STABLES_CONFIG && window.STABLES_CONFIG.MINIMA_EXPLORER_TX_BASE_URL) || '';
+    const fallback = 'https://explorer.minima.global/transaction/';
+    return String(raw || fallback).trim();
+  }
+  function toDemoTradeId(txId) {
+    const n = parseInt(String(txId || '').replace(/[^\d]/g, ''), 10) || 1;
+    return '0x' + n.toString(16).padStart(64, '0');
+  }
+  function txExplorerUrl(tx) {
+    const base = getExplorerBaseUrl();
+    const id = encodeURIComponent(String(tx?.explorerTxId || tx?.id || ''));
+    return `${base}${id}`;
+  }
   function getTxNote(tx) {
     if (!tx || !tx.id) return '';
     const saved = String(txNotes[tx.id] || '').trim();
     if (saved) return saved;
     return String(tx.note || '').trim();
   }
+
+  window.openTxExplorer = function () {
+    if (typeof window.openModal === 'function') {
+      window.openModal('minimaExplorerComingModal');
+      return;
+    }
+    if (typeof window.showToast === 'function') {
+      window.showToast('Demo: link to the Minima explorer will be added at a later stage.', { tone: 'amber', durationMs: 3800 });
+    }
+  };
   function activityMatchesDir(x) {
     if (activityFilter === 'all' || activityFilter === 'hidden') return true;
     return x.dir === activityFilter;
@@ -176,6 +210,217 @@
   function txsForShop(shopName) {
     return DEMO_ACTIVITY.filter(x => x.counterparty === shopName);
   }
+
+  function escUi(s) {
+    return String(s ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function usdRateForCcy(ccy) {
+    const code = String(ccy || '').trim();
+    const map = {
+      USDw: 1, EURw: 1.089, GBPw: 1.271, JPYw: 0.0067, CADw: 0.735,
+      AUDw: 0.654, CHFw: 1.123, CNYw: 0.138, MINIMA: 0.00846, Winiwa: 0.00846, xWiniwa: 0.09529
+    };
+    return map[code] || 1;
+  }
+
+  function txAmountUsd(tx) {
+    return Math.abs(Number(tx?.amt || 0)) * usdRateForCcy(tx?.ccy);
+  }
+
+  function getCurrentRaterAddress() {
+    const addr = String(document.getElementById('walletAddr')?.title || '').trim();
+    if (addr && !addr.toLowerCase().includes('loading')) return addr;
+    return 'MxDEMO_RATER_ADDRESS';
+  }
+
+  function getEligibleShopTransactions(shopName) {
+    return DEMO_ACTIVITY
+      .filter(tx => tx.counterparty === shopName && tx.dir === 'out' && !deletedTx.has(tx.id))
+      .slice()
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+  }
+
+  function getShopSpendUsd(shopName) {
+    return getEligibleShopTransactions(shopName).reduce((sum, tx) => sum + txAmountUsd(tx), 0);
+  }
+
+  function getShopRatingRows(shopName) {
+    return merchantRatings.filter(r => r && r.shopName === shopName && r.status !== 'deleted');
+  }
+
+  function getShopRatingSummary(shopName) {
+    const rows = getShopRatingRows(shopName);
+    if (!rows.length) return { count: 0, weighted: 0, rounded: 0 };
+    let weightedNum = 0;
+    let weightedDen = 0;
+    rows.forEach(r => {
+      const score = Number(r.score || 0);
+      const weight = Math.max(1, Number(r.weightUSD || 1));
+      if (score > 0) {
+        weightedNum += score * weight;
+        weightedDen += weight;
+      }
+    });
+    const weighted = weightedDen > 0 ? (weightedNum / weightedDen) : 0;
+    return { count: rows.length, weighted, rounded: Math.round(weighted * 10) / 10 };
+  }
+
+  function buildMerchantRatingSummaryHtml(shopName) {
+    const sum = getShopRatingSummary(shopName);
+    const score = sum.count ? sum.rounded : 4.5;
+    const starsHtml = buildStarsHtml(score, 14);
+    const meta = sum.count
+      ? `${sum.count} reviews · weighted by spent amount`
+      : 'Demo rating preview';
+    return `<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div style="display:flex;gap:2px;align-items:center" aria-label="Merchant rating stars">${starsHtml}</div>
+      </div>
+      <div class="xs mu" style="margin-top:6px">${meta}</div>`;
+  }
+
+  function renderSpendShopRatingBadges() {
+    document.querySelectorAll('[data-stables-shop]').forEach(card => {
+      const name = card.getAttribute('data-stables-shop');
+      if (!name) return;
+      let row = card.querySelector('.shop-rating-line');
+      if (!row) {
+        row = document.createElement('div');
+        row.className = 'shop-rating-line';
+        row.style.cssText = 'margin-top:6px;font-size:11px;font-weight:800;color:var(--m)';
+        const info = card.querySelector('.minfo');
+        if (info) info.appendChild(row);
+      }
+      const sum = getShopRatingSummary(name);
+      const score = sum.count ? sum.rounded : 4.5;
+      row.innerHTML = `<span style="display:flex;gap:2px;align-items:center">${buildStarsHtml(score, 12)}</span>`;
+    });
+  }
+
+  function buildStarsHtml(score, sizePx) {
+    const filled = Math.max(0, Math.min(5, Math.floor(score)));
+    return Array.from({ length: 5 }, (_, i) => {
+      const active = i < filled;
+      return `<span style="font-size:${sizePx}px;line-height:1;color:${active ? '#fbbf24' : 'rgba(255,255,255,.35)'}">${active ? '★' : '☆'}</span>`;
+    }).join('');
+  }
+
+  window.openMerchantRatingComposer = function (shopName, prefillTxId) {
+    const shop = SHOP_PROFILES[shopName];
+    if (!shop) return;
+    pendingMerchantRatingShop = shopName;
+    const raterAddress = getCurrentRaterAddress();
+    const txs = getEligibleShopTransactions(shopName);
+    const spendUsd = getShopSpendUsd(shopName);
+    const canRate = spendUsd >= MERCHANT_RATING_MIN_SPEND_USD;
+    const txOptions = txs.map(tx => {
+      const usd = txAmountUsd(tx);
+      const label = `${tx.id} · ${Math.abs(tx.amt).toFixed(2)} ${tx.ccy} (~$${usd.toFixed(2)})`;
+      return `<option value="${escUi(tx.id)}" ${prefillTxId === tx.id ? 'selected' : ''}>${escUi(label)}</option>`;
+    }).join('');
+    const existing = merchantRatings.find(r => r.shopName === shopName && r.raterAddress === raterAddress && r.status !== 'deleted');
+    const existingNote = existing ? '<div class="xs mu" style="margin-bottom:8px">You already reviewed this merchant. Submitting again updates your signed review after cooldown.</div>' : '';
+    const disabled = (!canRate || !txs.length) ? 'disabled' : '';
+    const body = `<div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);margin-bottom:10px">
+      <div style="font-size:13px;font-weight:900;color:var(--t)">Rate ${escUi(shopName)}</div>
+      <div class="xs mu" style="margin-top:6px">Framework (preview): onchain + signed by interacting address; weighted by spent amount to reduce spam.</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <div style="padding:10px;border-radius:10px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.16)"><div class="xs mu">Interacted spend</div><div style="font-size:13px;font-weight:800;margin-top:4px">$${spendUsd.toFixed(2)}</div></div>
+      <div style="padding:10px;border-radius:10px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.16)"><div class="xs mu">Signer address</div><div style="font-size:12px;font-weight:800;margin-top:4px;word-break:break-all">${escUi(raterAddress)}</div></div>
+    </div>
+    ${existingNote}
+    <label class="flabel" style="margin-bottom:6px">Score</label>
+    <select id="merchantRateScore" class="fsel" style="margin-bottom:10px">
+      <option value="5">5 · Excellent</option><option value="4">4 · Good</option><option value="3" selected>3 · Neutral</option><option value="2">2 · Weak</option><option value="1">1 · Poor</option>
+    </select>
+    <label class="flabel" style="margin-bottom:6px">Linked transaction</label>
+    <select id="merchantRateTx" class="fsel" style="margin-bottom:10px">${txOptions || '<option value="">No eligible payments yet</option>'}</select>
+    <label class="flabel" style="margin-bottom:6px">Comment (optional)</label>
+    <textarea id="merchantRateComment" class="finput" rows="3" maxlength="${MERCHANT_RATING_MAX_COMMENT}" placeholder="Share your experience..." style="resize:vertical;margin-bottom:12px"></textarea>
+    <div class="xs mu" style="margin-bottom:12px">Anti-spam in this framework: one signed review per merchant/address, cooldown between edits, and weight from linked spend amount.</div>
+    <div class="flex gap8" style="justify-content:center"><button class="btn btn-w btn-g" ${disabled} onclick="submitMerchantRating()">Submit signed review</button></div>
+    ${!canRate ? `<div class="xs mu" style="margin-top:10px;color:var(--am)">Need at least $${MERCHANT_RATING_MIN_SPEND_USD.toFixed(2)} spent with this merchant to rate.</div>` : ''}`;
+    document.getElementById('agentActionTitle').textContent = 'Merchant rating';
+    const titleRight = document.getElementById('agentActionTitleRight');
+    if (titleRight) titleRight.innerHTML = '';
+    document.getElementById('agentActionContent').innerHTML = body;
+    document.getElementById('agentActionModal').classList.add('open');
+  };
+
+  window.submitMerchantRating = function () {
+    const shopName = pendingMerchantRatingShop;
+    if (!shopName) return;
+    const score = Math.max(1, Math.min(5, parseInt(document.getElementById('merchantRateScore')?.value || '3', 10)));
+    const txId = String(document.getElementById('merchantRateTx')?.value || '').trim();
+    const commentRaw = String(document.getElementById('merchantRateComment')?.value || '').trim();
+    const comment = commentRaw.slice(0, MERCHANT_RATING_MAX_COMMENT);
+    const tx = getTxById(txId);
+    if (!tx || tx.counterparty !== shopName || tx.dir !== 'out') {
+      if (typeof window.showToast === 'function') window.showToast('Choose a valid linked payment first');
+      return;
+    }
+    const raterAddress = getCurrentRaterAddress();
+    const spendUsd = getShopSpendUsd(shopName);
+    if (spendUsd < MERCHANT_RATING_MIN_SPEND_USD) {
+      if (typeof window.showToast === 'function') window.showToast(`Need at least $${MERCHANT_RATING_MIN_SPEND_USD.toFixed(2)} spent to rate`);
+      return;
+    }
+    const now = Date.now();
+    const existing = merchantRatings.find(r => r.shopName === shopName && r.raterAddress === raterAddress && r.status !== 'deleted');
+    if (existing && (now - Number(existing.updatedAt || existing.createdAt || 0)) < MERCHANT_RATING_COOLDOWN_MS) {
+      if (typeof window.showToast === 'function') window.showToast('Please wait before updating this review again');
+      return;
+    }
+    const review = {
+      reviewId: existing?.reviewId || `MR-${shopName}-${raterAddress}-${now}`,
+      shopName,
+      raterAddress,
+      linkedTxId: tx.id,
+      linkedTxAmount: Math.abs(Number(tx.amt || 0)),
+      linkedTxCurrency: tx.ccy,
+      weightUSD: Math.max(1, Math.min(300, txAmountUsd(tx))),
+      score,
+      comment,
+      status: 'active',
+      createdAt: existing?.createdAt || now,
+      updatedAt: now,
+      // Onchain/signature scaffold for future implementation.
+      onchain: {
+        network: 'minima',
+        signerAddress: raterAddress,
+        signature: 'pending_wallet_signature',
+        anchorTxId: 'pending_onchain_anchor',
+        spamGuard: { minSpendUSD: MERCHANT_RATING_MIN_SPEND_USD, cooldownMs: MERCHANT_RATING_COOLDOWN_MS }
+      }
+    };
+    if (existing) {
+      const idx = merchantRatings.indexOf(existing);
+      if (idx >= 0) merchantRatings[idx] = review;
+    } else {
+      merchantRatings.push(review);
+    }
+    persistMerchantRatings();
+    renderSpendShopRatingBadges();
+    if (typeof window.renderContactsPage === 'function') window.renderContactsPage();
+    if (typeof window.showToast === 'function') window.showToast('Merchant review saved (signed/onchain framework)');
+    window.openShopProfile(shopName);
+  };
+
+  window.openSelectedContactMerchantRating = function () {
+    if (!selectedContactName || !SHOP_PROFILES[selectedContactName]) return;
+    window.openMerchantRatingComposer(selectedContactName);
+  };
+
+  window.openTxMerchantRating = function () {
+    const tx = getTxById(selectedTxId);
+    if (!tx || !SHOP_PROFILES[tx.counterparty]) return;
+    window.openMerchantRatingComposer(tx.counterparty, tx.id);
+  };
 
   window.setActivityFilter = function (f) {
     activityFilter = f;
@@ -326,17 +571,19 @@
     const suspicious = suspiciousTx.has(tx.id);
     const txNote = getTxNote(tx);
     const statusColor = tx.status === 'Confirmed' ? 'var(--gr)' : 'var(--am)';
+    const canRateMerchant = !!SHOP_PROFILES[tx.counterparty] && tx.dir === 'out';
     const body = `<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:${statusColor};display:inline-block"></span><span class="xs mu">${tx.status}</span></div>
       <div style="padding:12px;border-radius:12px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.16);margin-bottom:10px">
         <div class="fbet"><div><button class="btn" style="width:auto;padding:0;border:none;background:none;font-size:16px;font-weight:900;color:var(--t)" onclick="openTxCounterpartyContact()">${tx.counterparty}</button><div class="xs mu">${tx.category} · ${tx.directionLabel}</div></div><div style="text-align:right"><div class="tx-amt ${tx.amt >= 0 ? 'pos' : 'neg'} bal-amount">${tx.amt >= 0 ? '+' : '−'}${Math.abs(tx.amt).toFixed(2)} ${tx.ccy}</div><div class="xs mu">Fee ${tx.fee.toFixed(2)} ${tx.ccy}</div></div></div>
       </div>
       <div class="flex gap8" style="margin-bottom:10px;flex-wrap:wrap;justify-content:center">
         <button class="btn" onclick="repeatTransactionFromDetail()">Repeat</button>
+        ${canRateMerchant ? '<button class="btn btn-w btn-g" onclick="openTxMerchantRating()">Rate merchant</button>' : ''}
       </div>
       <details>
         <summary style="cursor:pointer;font-size:13px;font-weight:800;color:var(--m);margin-bottom:8px">Details</summary>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-          <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Transaction ID</div><div style="font-size:12px;font-weight:800;margin-top:4px;word-break:break-all">${tx.id}</div></div>
+          <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Trade ID</div><button class="btn" style="width:auto;padding:0;border:none;background:none;font-size:12px;font-weight:900;margin-top:4px;word-break:break-all;color:var(--c);text-decoration:underline" onclick="openTxExplorer()">${tx.explorerTxId || tx.id}</button></div>
           <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Date</div><div style="font-size:12px;font-weight:800;margin-top:4px">${tx.date}</div></div>
           <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);grid-column:1 / -1"><div class="xs mu">Counterparty Address</div><div style="font-size:12px;font-weight:800;margin-top:4px;word-break:break-all">${tx.address}</div></div>
         </div>
@@ -474,7 +721,10 @@
     const notes = document.getElementById('contactNotes');
     if (notes) notes.value = contactNotes[c.name] || '';
     const shopBtn = document.getElementById('contactShopBtn');
-    if (shopBtn) shopBtn.style.display = SHOP_PROFILES[c.name] ? '' : 'none';
+    const isShop = !!SHOP_PROFILES[c.name];
+    if (shopBtn) shopBtn.style.display = isShop ? '' : 'none';
+    const rateBtn = document.getElementById('contactRateMerchantBtn');
+    if (rateBtn) rateBtn.style.display = isShop ? '' : 'none';
     if (section) section.style.removeProperty('display');
   };
 
@@ -625,6 +875,7 @@
       const n = el.getAttribute('data-stables-shop');
       el.style.display = n && hiddenShops.has(n) ? 'none' : '';
     });
+    renderSpendShopRatingBadges();
   };
 
   window.shopHideAllTransactions = function (shopName) {
@@ -685,14 +936,17 @@
     const promos = (shop.promos || []).map(p => `<li style="margin:0 0 6px 0">${p}</li>`).join('');
     const sn = JSON.stringify(shop.name);
     const shopHidden = hiddenShops.has(shop.name);
+    const ratingSummary = buildMerchantRatingSummaryHtml(shop.name);
     const body = `<div class="mcard" style="margin-bottom:10px;cursor:default"><div class="mic">${shop.icon}</div><div class="minfo"><div class="mn">${shop.name}</div><div class="mt2">${shop.category} · ${shop.city}</div></div><div class="badge ${shop.status === 'Open' ? 'b-gr' : 'b-cy'}">${shop.status}</div></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px"><div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Open Hours</div><div style="font-size:12px;font-weight:800;margin-top:4px">${shop.openHours}</div></div><div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Average Ticket</div><div style="font-size:12px;font-weight:800;margin-top:4px">${shop.avgTicket}</div></div></div>
       <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);margin-bottom:10px"><div class="xs mu">Accepted Currencies</div><div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">${shop.accepts.map(c => `<span class="ccy-pill on" style="cursor:default">${c}</span>`).join('')}</div></div>
+      <div style="padding:10px;border-radius:10px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.16);margin-bottom:10px"><div style="font-size:13px;font-weight:800;margin-bottom:6px">Merchant rating</div>${ratingSummary}<div class="xs mu" style="margin-top:8px">Onchain + signed review framework (weighted by spend).</div></div>
       <div style="padding:10px;border-radius:10px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.16);margin-bottom:10px"><div style="font-size:13px;font-weight:800;margin-bottom:6px">Current promotions</div><ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.4">${promos}</ul></div>
       <div style="margin-top:14px;padding-top:12px;border-top:1px solid rgba(103,232,249,.12)">
         <div style="font-size:10px;font-weight:800;color:var(--m);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">History &amp; list</div>
         <div class="xs mu" style="margin-bottom:10px">Local demo only. Soft-hidden items use the <strong>Hidden</strong> filter; deleted items stay removed until you reset local data.</div>
         <div class="flex gap8" style="flex-wrap:wrap;justify-content:center">
+          <button class="btn btn-w btn-g" onclick="openMerchantRatingComposer(${sn})">Rate merchant</button>
           <button class="btn" onclick="shopHideAllTransactions(${sn})">Hide all transactions</button>
           <button class="btn" onclick="shopDeleteAllTransactions(${sn})">Delete all (local)</button>
           ${shopHidden
@@ -700,7 +954,7 @@
     : `<button class="btn" onclick="shopHideFromSpend(${sn})">Hide shop from Shops</button>`}
         </div>
       </div>`;
-    document.getElementById('agentActionTitle').textContent = 'Shop profile';
+    document.getElementById('agentActionTitle').textContent = '';
     const titleRight = document.getElementById('agentActionTitleRight');
     if (titleRight) titleRight.innerHTML = '';
     document.getElementById('agentActionContent').innerHTML = body;
@@ -1311,16 +1565,6 @@
 
     if (typeof window.closeWelcomeSetup === 'function') window.closeWelcomeSetup();
 
-    if (showcaseRoute === 'node') {
-      const url = window.STABLES_CONFIG?.MDS_ZIP_URL;
-      if (!url) {
-        if (typeof window.showToast === 'function') {
-          window.showToast('Download link not set', 'Ask Charles to set MDS_ZIP_URL in runtime-config.js.');
-        }
-      } else {
-        window.open(url, '_blank');
-      }
-    }
   };
 
   /** After showcase web/node choice: remember route and open currency step. */
@@ -1329,6 +1573,14 @@
     try {
       sessionStorage.setItem('stables_welcome_showcase_route_v1', r);
     } catch (_) {}
+    if (r === 'node') {
+      const url = String(window.STABLES_CONFIG?.MDS_ZIP_URL || '').trim();
+      if (url) {
+        try {
+          window.open(url, '_blank', 'noopener,noreferrer');
+        } catch (_) {}
+      }
+    }
     showWelcomeStep('currencies');
     if (typeof window.updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
     if (typeof window.updateWelcomePrimaryOptions === 'function') window.updateWelcomePrimaryOptions();

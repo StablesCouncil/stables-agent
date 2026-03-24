@@ -37,8 +37,8 @@ window.STABLES_CONFIG = {
   VAULT_SOFT_REMINDER_LAST_KEY: 'stables_vault_soft_reminder_last_ts_v1',
   /** Days between soft reminders when user opted in. */
   VAULT_SOFT_REMINDER_INTERVAL_DAYS: 60,
-  /** Public demo: MinimaOS install package (MDS zip) link */
-  MDS_ZIP_URL: 'https://github.com/StablesCouncil/StablesCouncil.github.io/releases/latest/download/Stables.mds.zip',
+  /** Public demo: placeholder location for latest MiniDapp package (opens GitHub for now). */
+  MDS_ZIP_URL: 'https://github.com/StablesCouncil/stablescouncil.github.io/tree/main/dapp/latest-version',
   /**
    * Stables Charter on GitHub (Markdown). Governing text for how the Council and community run the protocol.
    * Point this at the published file in your org repo when it is live (path below is a placeholder you can change).
@@ -52,6 +52,11 @@ window.STABLES_CONFIG = {
    * set here if you need a different endpoint or query.
    */
   COINGECKO_MINIMA_URL: '',
+  /**
+   * Minima explorer base URL for transaction links.
+   * Expected format: `${base}${txId}` (example: https://explorer.minima.global/transaction/).
+   */
+  MINIMA_EXPLORER_TX_BASE_URL: 'https://explorer.minima.global/transaction/',
   /** How often to refresh spot price for Treasury stress slider (ms). */
   WINIWA_PRICE_POLL_MS: 120000,
   /**
@@ -59,6 +64,11 @@ window.STABLES_CONFIG = {
    * Publish the real invite here when the channel is live; used from Vault modal “I need help”.
    */
   SECURITY_SUPPORT_TELEGRAM_URL: 'https://t.me/StablesSecuritySupport',
+  /**
+   * Telegram: Ambassador onboarding topics and discussion.
+   * Keep this configurable so the in-app Ambassador CTA can point to the final channel invite.
+   */
+  AMBASSADOR_TOPICS_TELEGRAM_URL: 'https://t.me/stablescommunity',
   /**
    * Official council notices on the Council communications page (security, mandatory updates, critical comms).
    * Replace `items` on each release; keep copy factual and short.

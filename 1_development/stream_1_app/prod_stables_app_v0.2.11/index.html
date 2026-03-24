@@ -3513,7 +3513,7 @@
                                 <div class="ccy-sec-name">Winiwa</div>
                             </div>
                             <div style="text-align:right">
-                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-amt bal-amount">240.00</div>
                                 <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">-</div>
                             </div>
                         </div>
@@ -3666,7 +3666,7 @@
             <!-- INVEST TABS -->
             <div class="tab-row" style="margin-bottom:24px">
                 <button class="tab-btn active" id="iTabCF" onclick="setInvestTab('cf')">Coverage Fund</button>
-                <button class="tab-btn" id="iTabLP" onclick="setInvestTab('lp')">Liquidity Fund</button>
+                <button class="tab-btn" id="iTabLP" onclick="setInvestTab('lp')">Liquidity funds</button>
             </div>
 
             <!-- SECTION 2: COVERAGE FUND -->
@@ -3722,15 +3722,19 @@
             <div id="panelLP" style="display:none">
                 <div class="app-section app-section--caption-bottom">
                 <div class="stitle-row">
-                    <div class="pool-section-title">Liquidity fund</div>
-                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Liquidity Fund')" title="StablesAgent">
+                    <div class="pool-section-title">Liquidity funds</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Liquidity funds')" title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
                 <div class="lp-card app-section-card">
+                    <div style="margin-bottom:12px">
+                        <label class="flabel">Pool base currency</label>
+                        <select class="fsel" id="lpBaseCcy" style="margin-top:6px" onchange="syncLpBaseUI()"></select>
+                    </div>
                     <div class="xs mu" style="margin-bottom:12px;line-height:1.5;font-weight:800">Provide liquidity on the xWiniwa secondary market and earn from trades.</div>
                     <div class="fbet" style="margin-bottom:10px">
-                        <div style="font-size:15px;font-weight:900">xWiniwa Secondary Market</div>
+                        <div style="font-size:15px;font-weight:900" id="lpPairTitle">Winiwa / xWiniwa liquidity</div>
                         <div class="apy"
                             style="background:rgba(167,139,250,.12);color:var(--pu);border-color:rgba(167,139,250,.3)">
                             LP trade fees</div>
@@ -3742,32 +3746,46 @@
                             <div class="xs mu">Current Mid-Point</div>
                             <div style="font-size:14px;font-weight:800;color:var(--c)">$84.60 per Winiwa</div>
                         </div>
+                        <div class="xs mu" style="margin-bottom:10px;font-weight:800">Current liquidity by bucket (demo)</div>
+                        <div style="display:flex;align-items:flex-end;justify-content:space-between;height:80px;margin-bottom:8px;gap:2px"
+                            id="lpLiveBins">
+                            <!-- Javascript populates current liquidity buckets -->
+                        </div>
 
-                        <!-- Liquidity Shapes -->
+                        <div class="fbet xs mu" style="margin-bottom:16px">
+                            <span>$78.00</span>
+                            <span id="lpLiveDepthLabel" style="color:var(--c);font-weight:700">Live depth around spot</span>
+                            <span>$91.00</span>
+                        </div>
+
+                        <button class="btn btn-w" style="margin-top:10px;width:100%" id="lpGoExchangeBtn"
+                            onclick="openLpExchangeForBase()">Open Winiwa ↔ xWiniwa on Exchange</button>
+                    </div>
+
+                    <!-- Dual Token Deposit -->
+                    <div class="xs mu" style="margin:0 0 10px;font-weight:800">Add liquidity</div>
+                    <div
+                        style="padding:12px;background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;margin-bottom:12px">
                         <div
                             style="font-size:13px;font-weight:700;color:var(--m);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em">
-                            Liquidity Shape</div>
-                        <div style="display:flex;gap:6px;margin-bottom:16px">
+                            Liquidity display</div>
+                        <div style="display:flex;gap:6px;margin-bottom:12px">
                             <button class="lp-shape-btn active" id="shapeSpot"
                                 onclick="setLpShape('spot')">Spot</button>
                             <button class="lp-shape-btn" id="shapeCurve" onclick="setLpShape('curve')">Curve</button>
                             <button class="lp-shape-btn" id="shapeBidAsk"
                                 onclick="setLpShape('bidask')">Bid-Ask</button>
                         </div>
-
-                        <!-- 21-Bucket Heatmap Chart -->
                         <div style="display:flex;align-items:flex-end;justify-content:space-between;height:80px;margin-bottom:8px;gap:2px"
                             id="lpHeatmap">
-                            <!-- Javascript will populate 21 buckets here -->
+                            <!-- Javascript will populate add-liquidity display -->
                         </div>
-
-                        <div class="fbet xs mu" style="margin-bottom:16px">
+                        <div class="fbet xs mu" style="margin-bottom:12px">
                             <span>$78.00</span>
                             <span id="lpActiveLabel" style="color:var(--c);font-weight:700">Active range ($84.10 -
                                 $85.10)</span>
                             <span>$91.00</span>
                         </div>
-
                         <div
                             style="text-align:center;padding:12px;background:rgba(103,232,249,.04);border-radius:8px;border:1px dashed rgba(103,232,249,.2)">
                             <div class="xs mu" style="margin-bottom:4px">Target APY</div>
@@ -3776,18 +3794,16 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Dual Token Deposit -->
                     <div class="cb" style="margin-bottom:10px">
-                        <label class="flabel">Deposit Winiwa</label>
+                        <label class="flabel" id="lpBaseDepositLabel">Deposit Winiwa</label>
                         <div class="fbet"
                             style="padding:10px 14px;background:rgba(16,24,38,.8);border:1px solid rgba(255,255,255,.08);border-radius:12px;margin-bottom:6px">
                             <input class="nobg" type="number" id="lpDepW" placeholder="0.00"
                                 style="font-size:18px;font-weight:700;width:100%;color:var(--t)">
                             <div class="fbet" style="gap:8px">
-                                <span style="font-size:13px;font-weight:800;color:var(--c)">Winiwa</span>
+                                <span style="font-size:13px;font-weight:800;color:var(--c)" id="lpBaseTokenTag">Winiwa</span>
                                 <button class="max-btn"
-                                    onclick="document.getElementById('lpDepW').value=WALLET_WINIWA">MAX</button>
+                                    onclick="fillLpBaseMax()">MAX</button>
                             </div>
                         </div>
                         <div class="fbet xs mu">
@@ -3814,7 +3830,7 @@
 
                     <button class="btn btn-w" style="margin-top:6px;width:100%"
                         onclick="showToast('\u2713 Liquidity successfully deployed to targeted bucket')">Deposit to
-                        Liquidity Fund</button>
+                        Liquidity funds</button>
                 </div>
                 </div>
             </div>
@@ -3967,75 +3983,6 @@
                         </div>
                         <button class="btn btn-w btn-lg" onclick="executeMintWables()">Mint
                             Wables</button>
-                        <!-- RESERVE STATUS compact -->
-                        <div
-                            style="margin-top:16px;background:rgba(103,232,249,.04);border:1px solid rgba(103,232,249,.1);border-radius:12px;padding:12px">
-                            <div class="fbet" style="margin-bottom:8px">
-                                <div style="font-size:12px;font-weight:800">Reserve Status</div>
-                                <div class="rs-badge rs-good">&#x1F7E2; Healthy</div>
-                            </div>
-                            <div class="bs-visual" style="margin-bottom:8px">
-                                <div class="bs-seg" style="width:84%;background:rgba(52,211,153,.65)" title="Wables">
-                                </div>
-                                <div class="bs-seg" style="width:6%;background:rgba(251,191,36,.7)" title="cover pool">
-                                </div>
-                                <div class="bs-seg" style="width:10%;background:rgba(167,139,250,.7)" title="xWiniwa">
-                                </div>
-                            </div>
-                            <div class="fbet">
-                                <div style="text-align:center;flex:1">
-                                    <div class="xs mu">Coverage Ratio</div>
-                                    <div style="font-size:16px;font-weight:900;color:var(--gr)">247%</div>
-                                </div>
-                                <div style="text-align:center;flex:1">
-                                    <div class="xs mu">Minting</div>
-                                    <div style="font-size:13px;font-weight:900;color:var(--gr)">OPEN</div>
-                                </div>
-                                <div style="text-align:center;flex:1">
-                                    <div class="xs mu">Capacity left</div>
-                                    <div style="font-size:13px;font-weight:900;color:var(--gr)">$5,680</div>
-                                </div>
-                            </div>
-                            <details class="lm" style="margin-top:8px">
-                                <summary>&#x25BE; Full balance sheet</summary>
-                                <div class="lm-body">
-                                    <div class="fbet xs" style="margin-bottom:4px"><span class="mu">Total
-                                            assets</span><span style="font-weight:800">$84.60 <span
-                                                style="font-weight:normal;color:var(--m)">equiv.
-                                                &nbsp;&middot;&nbsp;
-                                                10,000 Winiwa</span></span></div>
-                                    <div class="fbet xs" style="margin-bottom:4px"><span class="mu">Liabilities
-                                            (senior)</span><span style="font-weight:800">$70.82 <span
-                                                style="font-weight:normal;color:var(--m)">equiv.
-                                                &nbsp;&middot;&nbsp;
-                                                3,450 USDs circulating</span></span></div>
-                                    <div class="fbet xs" style="margin-bottom:4px"><span class="mu">Convertibles (cf
-                                            pool)</span><span style="font-weight:800">$10.49 <span
-                                                style="font-weight:normal;color:var(--m)">equiv.
-                                                &nbsp;&middot;&nbsp;
-                                                1,240 cf tokens</span></span></div>
-                                    <div class="fbet xs" style="margin-bottom:4px"><span class="mu">Equity
-                                            (xWiniwa)</span><span style="font-weight:800;color:var(--pu)">$2.88
-                                            <span style="font-weight:normal;color:var(--m)">equiv.
-                                                &nbsp;&middot;&nbsp;
-                                                340 xWiniwa</span></span></div>
-                                    <table class="threshold-table" style="margin-top:6px">
-                                        <tr>
-                                            <td class="t-ok">CR &gt; 110%</td>
-                                            <td>Above stress band</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="t-warn">&le; 110%</td>
-                                            <td>Minting LOCKED</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="t-crit">CR = 100%</td>
-                                            <td>cover pool converts &rarr; xWiniwa</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </details>
-                        </div>
                         <!-- Burn Wables reclaim -->
                         <div style="margin-top:32px">
                             <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn Wables
@@ -4138,6 +4085,8 @@
                 <button class="btn btn-w btn-lg"
                     onclick="showToast('✓ Exchange confirmed - funds arrive instantly')">Exchange
                     Now</button>
+                <button class="btn btn-w" style="margin-top:8px"
+                    onclick="navigate('invest');setInvestTab('lp')">Provide liquidity</button>
             </div>
             </div>
             <div class="app-section app-section--caption-bottom">
@@ -4158,41 +4107,39 @@
             <header class="app-page-header">
                 <div class="dic" aria-hidden="true">&#x1F91D;</div>
                 <div class="app-page-header__text">
-                    <div class="app-page-header__title">Ambassador</div>
+                    <div class="app-page-header__title">Ambassadors</div>
                 </div>
             </header>
 
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('Ambassador: register with 10 Big Mac®s or via first shop onboarding; regional listing help; merchant listing 20 Big Mac®s 50/50')"
+                        onclick="openAgentExplain('Ambassador listing: 20 Big Mac®; shops also pay 20 Big Mac®; ambassadors help onboarding and receive retrocession when they handle listing')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
                 <div class="card app-section-card" style="padding:18px 16px">
-                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55">
-                        Ambassadors help merchants in <strong>their region</strong> get fully <strong>listed</strong> on
-                        Stables: profiles, QR flows, and local support. Merchants who only run a storefront use
-                        <strong>My shop</strong> for their listing and <strong>Create Invoice</strong>; use
-                        <strong>Exchange</strong> (under <strong>Shops &amp; Exchange</strong> in More) when you need
-                        instant conversion between Wables balances.
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55">
+                        Ambassadors are here to help shops get listed and launch promotions. This page is only about that
+                        onboarding role.
                     </p>
-                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">How you register (preview):</strong> join by paying
-                        <strong style="color:var(--t)">10 Big Mac®s</strong> (value indexed by country using the
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--c)">Listing fees (showcase):</strong> a shop listing is
+                        <strong style="color:var(--t)">20 Big Mac®</strong>, and listing for Ambassadors is also
+                        <strong style="color:var(--t)">20 Big Mac®</strong> (indexed by country via
                         <a href="https://worldpopulationreview.com/country-rankings/big-mac-index-by-country"
                             target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">Big
-                            Mac Index</a>) as a direct Ambassador registration, <strong style="color:var(--t)">or</strong>
-                        start by <strong style="color:var(--t)">onboarding your first shop</strong>—registration can align
-                        with that flow. Exact launch terms will follow Council governance.
+                            Mac Index</a>).
                     </p>
                     <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">Proposed merchant listing fee (showcase):</strong> when a shop is
-                        onboarded through this pathway, the merchant pays <strong style="color:var(--t)">20 Big Mac®s</strong>
-                        (same index), split <strong style="color:var(--t)">50% protocol</strong> /
-                        <strong style="color:var(--t)">50% ambassador</strong>.
+                        <strong style="color:var(--c)">Retrocession model:</strong> the listing flow can split value
+                        <strong style="color:var(--t)">50% to the Council treasury</strong> / <strong style="color:var(--t)">50%
+                            ambassador</strong> when an active listed Ambassador handles onboarding. Separate Ambassador
+                        listing helps prevent merchants from self-capturing that retrocession.
                     </p>
+                    <button class="btn btn-w btn-g" style="width:100%;margin-top:14px"
+                        onclick="openAmbassadorTopicsModal()">Become an ambassador</button>
                 </div>
             </div>
         </div>
@@ -4222,14 +4169,17 @@
                         illustrative; production will tie to your Vault identity and Council rules.
                     </p>
                     <p class="sec-body" style="margin:0 0 14px;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">Need help getting listed?</strong> Work with an
-                        <strong style="color:var(--t)">Ambassador</strong> in <strong style="color:var(--t)">your
-                            region</strong>—open <strong style="color:var(--t)">Ambassador</strong> under
+                        <strong style="color:var(--c)">Need help getting listed?</strong> Work with
+                        <strong style="color:var(--t)">Ambassadors</strong> in <strong style="color:var(--t)">your
+                            region</strong>—open <strong style="color:var(--t)">Ambassadors</strong> under
                         <strong style="color:var(--t)">Shops &amp; Exchange</strong> in More so a local onboarding contact
                         can guide you.
                     </p>
                     <p class="sec-body" style="margin:0;line-height:1.55;font-size:var(--fz-caption);color:var(--m)">
-                        <strong style="color:var(--c)">Fully listed:</strong> when your shop is <strong style="color:var(--t)">fully listed</strong>, you gain the <strong style="color:var(--t)">same privileges as an Ambassador</strong>, including <strong style="color:var(--t)">onboarding other merchants</strong>. Registration paths for Ambassadors (direct fee or via first shop) are described on the <strong style="color:var(--t)">Ambassador</strong> page.
+                        <strong style="color:var(--c)">Listing model:</strong> shop listing and listing for Ambassadors are both
+                        <strong style="color:var(--t)">20 Big Mac®</strong> (indexed). When listed Ambassadors perform
+                        merchant onboarding, the retrocession split applies as described on
+                        <strong style="color:var(--t)">Ambassadors</strong>.
                     </p>
                 </div>
             </div>
@@ -4590,6 +4540,7 @@
                     <button class="btn btn-w btn-g" style="flex:1" onclick="openContactTransactions()">All transactions</button>
                     <button class="btn" style="flex:1" onclick="openContactConversation()">Conversation</button>
                     <button class="btn" id="contactShopBtn" style="flex:1;display:none" onclick="openSelectedContactShop()">Shop profile</button>
+                    <button class="btn" id="contactRateMerchantBtn" style="flex:1;display:none" onclick="openSelectedContactMerchantRating()">Rate merchant</button>
                 </div>
             </div>
             </div>
@@ -4923,7 +4874,6 @@
                         <div class="val" id="treasurySnapEq">-</div>
                     </div>
                 </div>
-                <div class="treasury-snap-bar-label">Full bar = Winiwa-side assets (and related). Green = stables owed. Purple = xWiniwa equity buffer.</div>
                 <div class="treasury-snap-bar-wrap" aria-hidden="true">
                     <div class="treasury-snap-bar-liab" id="treasurySnapBarLiab" style="width:0%"></div>
                     <div class="treasury-snap-bar-eq" id="treasurySnapBarEq" style="width:0%"></div>
@@ -4935,7 +4885,6 @@
                 <div class="treasury-snap-cr">
                     <div class="xs mu" style="font-weight:800;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em">Coverage ratio</div>
                     <div class="cr-num" id="treasurySnapCR">-</div>
-                    <div class="cr-sub">Winiwa-side assets divided by stables liabilities. 100% means assets match stables owed.</div>
                     
                     <div style="margin-top:20px;padding-top:16px;border-top:1px dashed rgba(255,255,255,0.06)">
                         <div class="fbet xs mu" style="margin-bottom:8px">
@@ -4944,8 +4893,8 @@
                         </div>
                         <div style="position:relative; height:64px; margin-bottom:12px;">
                             <!-- Y-axis scale labels -->
-                            <div style="position:absolute; left:0; top:0; font-size:9px; color:rgba(255,255,255,0.4); line-height:1;">130%</div>
-                            <div style="position:absolute; left:0; bottom:8px; font-size:9px; color:rgba(255,255,255,0.4); line-height:1;">110%</div>
+                            <div id="crEvolutionTopLabel" style="position:absolute; left:0; top:0; font-size:9px; color:rgba(255,255,255,0.4); line-height:1;">130%</div>
+                            <div id="crEvolutionBottomLabel" style="position:absolute; left:0; bottom:8px; font-size:9px; color:rgba(255,255,255,0.4); line-height:1;">110%</div>
                             
                             <div id="crEvolutionGraph" style="height:100%; width:100%; position:absolute; inset:0; overflow:hidden; border-radius:4px; pointer-events:none;"></div>
                         </div>
@@ -4972,12 +4921,17 @@
             <div class="card app-section-card" style="padding:16px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
                 <div class="xs mu" style="margin-bottom:10px">Live distribution of Stables by reference unit</div>
 
-                <div class="liab-visual-card">
-                    <div class="fbet xs mu" style="margin-bottom:8px">
-                        <span>Total liabilities represented</span>
-                        <span id="liabDistTotal">-</span>
+                <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                    <div class="fbet xs mu" style="margin-bottom:10px">
+                        <span>Stables in circulation</span>
+                        <span id="liabTimeLabel">Live</span>
                     </div>
-                    <div id="liabDistRows"></div>
+                    <div style="display:flex;justify-content:center;margin-bottom:12px">
+                        <div id="liabPieChart" style="width:130px;height:130px;border-radius:50%;border:1px solid rgba(103,232,249,.22);box-shadow:inset 0 0 0 10px rgba(11,15,20,.45)"></div>
+                    </div>
+                    <div id="liabPieLegend" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:0 0 10px"></div>
+                    <div class="xs mu" style="margin-bottom:8px">Time slider (history)</div>
+                    <input type="range" id="liabTimeSlider" min="0" max="0" value="0" step="1" class="sim-slider" style="width:100%;accent-color:var(--c)" oninput="scrubLiabilityHistory(this.value)">
                 </div>
 
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
@@ -5559,20 +5513,20 @@
                     </ul>
                     <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Social &amp; community (handles)</div>
                     <ul style="margin:0;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
-                        <li><a href="https://x.com/StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">X / Twitter — @StablesCouncil</a></li>
-                        <li><a href="https://www.instagram.com/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Instagram — @stablescouncil</a></li>
-                        <li><a href="https://www.tiktok.com/@stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">TikTok — @stablescouncil</a></li>
-                        <li><a href="https://www.youtube.com/@StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">YouTube — @StablesCouncil</a></li>
-                        <li><a href="https://www.twitch.tv/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Twitch — stablescouncil</a></li>
-                        <li><a href="https://rumble.com/user/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Rumble — @stablescouncil</a></li>
-                        <li><a href="https://www.facebook.com/share/16nCLsLHkg/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables official page</a></li>
-                        <li><a href="https://www.facebook.com/groups/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables Community group</a></li>
                         <li><a href="https://discord.gg/cFq4hHAc" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Discord — Stables server</a></li>
+                        <li><a href="https://www.facebook.com/groups/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables Community group</a></li>
+                        <li><a href="https://www.facebook.com/share/16nCLsLHkg/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables official page</a></li>
+                        <li><a href="https://www.instagram.com/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Instagram — @stablescouncil</a></li>
+                        <li><a href="https://www.moltbook.com/u/stablesagent" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Moltbook — u/stablesagent</a> (StablesAgent)</li>
+                        <li><a href="https://rumble.com/user/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Rumble — @stablescouncil</a></li>
+                        <li><a href="https://t.me/StablesAgentBot" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @StablesAgentBot</a></li>
                         <li><a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @stablescommunity</a> (community)</li>
                         <li><a href="https://t.me/StablesCouncilOfficial" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — StablesCouncilOfficial</a> (announcements)</li>
                         <li><a href="https://t.me/StablesSecuritySupport" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — StablesSecuritySupport</a> (Vault key / security)</li>
-                        <li><a href="https://t.me/StablesAgentBot" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @StablesAgentBot</a></li>
-                        <li><a href="https://www.moltbook.com/u/stablesagent" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Moltbook — u/stablesagent</a> (StablesAgent)</li>
+                        <li><a href="https://www.tiktok.com/@stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">TikTok — @stablescouncil</a></li>
+                        <li><a href="https://www.twitch.tv/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Twitch — stablescouncil</a></li>
+                        <li><a href="https://x.com/StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">X / Twitter — @StablesCouncil</a></li>
+                        <li><a href="https://www.youtube.com/@StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">YouTube — @StablesCouncil</a></li>
                     </ul>
                 </div>
             </div>
@@ -5682,7 +5636,7 @@
                 <div class="ditem" onclick="navigate('ambassador');closeMoreNow()">
                     <div class="dic" aria-hidden="true">&#x1F91D;</div>
                     <div class="dinfo">
-                        <div class="dname">Ambassador</div>
+                        <div class="dname">Ambassadors</div>
                         <div class="ddesc">Merchant onboarding, earn 10 Big Mac®</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
@@ -5969,6 +5923,20 @@
                 <p style="margin:0">First draft of the <strong style="color:#fbbf24">Stables Charter</strong> will be published on <strong style="color:#fbbf24">GitHub</strong> over the <strong style="color:#fbbf24">coming weeks</strong>.</p>
             </div>
             <button type="button" class="btn btn-w btn-lg" onclick="closeModal('stablesCharterComingModal')">OK</button>
+        </div>
+    </div>
+
+    <!-- Minima explorer link: demo notice -->
+    <div class="mback centered" id="minimaExplorerComingModal" style="z-index:640" aria-modal="true" role="dialog"
+        aria-labelledby="minimaExplorerComingTitle"
+        onclick="if(event.target===this)closeModal('minimaExplorerComingModal')">
+        <div class="modal welcome" onclick="event.stopPropagation()" style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.1),rgba(11,15,20,.94));padding:20px 18px 22px">
+            <div class="mhandle" style="background:rgba(251,191,36,.35)"></div>
+            <div class="mttl" id="minimaExplorerComingTitle" style="text-align:center;margin-bottom:12px">Demo notice</div>
+            <div style="margin:0 0 18px;line-height:1.55;text-align:center;color:#fbbf24;font-size:20px;font-weight:800">
+                Link to the Minima explorer will be added at a later stage.
+            </div>
+            <button type="button" class="btn btn-w btn-lg" onclick="closeModal('minimaExplorerComingModal')">OK</button>
         </div>
     </div>
 
@@ -6682,6 +6650,24 @@
             closeModal('vaultHelpChoiceModal');
         }
 
+        function openAmbassadorTopicsModal() {
+            const raw = window.STABLES_CONFIG && window.STABLES_CONFIG.AMBASSADOR_TOPICS_TELEGRAM_URL;
+            const url = String(raw || '').trim();
+            const joinBtn = url
+                ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="btn btn-w btn-g" style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box">Join the discussion</a>`
+                : `<button class="btn btn-w" style="width:100%" onclick="showToast('Ambassadors Telegram link not set yet')">Join the discussion</button>`;
+            document.getElementById('agentActionTitle').textContent = 'Become an ambassador';
+            const titleRight = document.getElementById('agentActionTitleRight');
+            if (titleRight) titleRight.innerHTML = '';
+            document.getElementById('agentActionContent').innerHTML = `
+                <p class="sec-body" style="margin:0 0 12px;line-height:1.55">
+                    For now, the Ambassadors framework will be discussed with the community in this channel in order to reach a common agreement on the objectives and terms of this program.
+                </p>
+                ${joinBtn}
+            `;
+            document.getElementById('agentActionModal').classList.add('open');
+        }
+
         function closeAgent(e) { if (e && e.target !== document.getElementById('agentDrawer')) return; closeAgentNow(); }
         function closeAgentNow() {
             const d = document.getElementById('agentDrawer');
@@ -6699,6 +6685,11 @@
             if (active) active.classList.add('active');
             document.getElementById('panelCF').style.display = t === 'cf' ? '' : 'none';
             document.getElementById('panelLP').style.display = t === 'cf' ? 'none' : '';
+            if (t === 'lp') {
+                renderLpLiveBins();
+                renderHeatmap();
+                syncLpBaseUI();
+            }
         }
 
         // ----- CONCENTRATED LIQUIDITY JS -----
@@ -6772,6 +6763,73 @@
 
             document.getElementById('lpActiveLabel').textContent = labelEst;
             document.getElementById('lpApyDisplay').textContent = apyEst;
+        }
+
+        function renderLpLiveBins() {
+            const container = document.getElementById('lpLiveBins');
+            if (!container) return;
+            container.innerHTML = '';
+            const bins = [22, 25, 31, 37, 45, 54, 62, 71, 79, 88, 94, 100, 96, 90, 82, 74, 66, 57, 49, 40, 33, 28, 24, 21];
+            bins.forEach((h) => {
+                const div = document.createElement('div');
+                const isCore = h >= 90;
+                const isNear = h >= 65 && h < 90;
+                div.style.flex = '1';
+                div.style.height = `${h}%`;
+                div.style.borderRadius = '2px 2px 0 0';
+                div.style.background = isCore
+                    ? 'rgba(103,232,249,.92)'
+                    : isNear
+                        ? 'rgba(103,232,249,.45)'
+                        : 'rgba(103,232,249,.20)';
+                div.style.boxShadow = isCore ? '0 0 8px rgba(103,232,249,.35)' : 'none';
+                container.appendChild(div);
+            });
+            const lbl = document.getElementById('lpLiveDepthLabel');
+            if (lbl) lbl.textContent = 'Current liquidity concentration at spot';
+        }
+
+        function populateLpBaseCurrencies() {
+            const sel = document.getElementById('lpBaseCcy');
+            if (!sel) return;
+            const all = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw', 'xWiniwa'];
+            sel.innerHTML = all.map((c) => `<option value="${c}" ${c === 'xWiniwa' ? 'selected' : ''}>${c}</option>`).join('');
+        }
+
+        function syncLpBaseUI() {
+            const sel = document.getElementById('lpBaseCcy');
+            const base = String(sel?.value || 'Winiwa');
+            const depLbl = document.getElementById('lpBaseDepositLabel');
+            const tokTag = document.getElementById('lpBaseTokenTag');
+            const avail = document.getElementById('lpAvailW');
+            const pairTitle = document.getElementById('lpPairTitle');
+            const exBtn = document.getElementById('lpGoExchangeBtn');
+            if (depLbl) depLbl.textContent = `Deposit ${base}`;
+            if (tokTag) tokTag.textContent = base;
+            if (pairTitle) pairTitle.textContent = `${base} / xWiniwa liquidity`;
+            if (exBtn) exBtn.textContent = `Open ${base} ↔ xWiniwa on Exchange`;
+            if (avail) {
+                const amt = base === 'Winiwa' ? WALLET_WINIWA : 2500;
+                avail.textContent = `${Number(amt).toLocaleString('en-US', { maximumFractionDigits: 0 })} ${base}`;
+            }
+            renderLpLiveBins();
+        }
+
+        function openLpExchangeForBase() {
+            const base = String(document.getElementById('lpBaseCcy')?.value || 'Winiwa');
+            const fromSel = document.getElementById('exFromCcy');
+            const toSel = document.getElementById('exToCcy');
+            if (fromSel) fromSel.value = base;
+            if (toSel) toSel.value = base === 'xWiniwa' ? 'Winiwa' : 'xWiniwa';
+            if (typeof calcRate === 'function') calcRate();
+            navigate('exchange');
+        }
+
+        function fillLpBaseMax() {
+            const base = String(document.getElementById('lpBaseCcy')?.value || 'Winiwa');
+            const input = document.getElementById('lpDepW');
+            if (!input) return;
+            input.value = String(base === 'Winiwa' ? WALLET_WINIWA : 2500);
         }
 
         function resetWelcomeLangMenuPosition() {
@@ -7802,6 +7860,7 @@
 
         // ----- DEMO DATA & SIMULATOR STATE -----
         // Total Genesis Target: $1,032,009.181505
+        const TREASURY_MIN_DISPLAY_CR_PCT = 130;
         let PROTOCOL_WINIWA_ASSETS = 1032009.181505; // Total Protocol Value
         // Liabilities (stables)
         let LIAB_STABLES_CIRC = 520000;              // circulating stables (USD value)
@@ -7823,35 +7882,115 @@
             CHFw: { vol: 'Low volatility', liq: 'Medium liquidity', st: 'High stability' },
             CNYw: { vol: 'Medium volatility', liq: 'Medium liquidity', st: 'Medium stability' }
         };
+        const LIAB_PIE_COLORS = ['#67e8f9', '#a78bfa', '#34d399', '#fbbf24', '#f472b6', '#f97316', '#60a5fa', '#c084fc'];
+        let LIAB_SLIDER_SERIES = [];
+        function colorForLiabCode(code) {
+            let h = 0;
+            const s = String(code || '');
+            for (let i = 0; i < s.length; i++) h = ((h << 5) - h) + s.charCodeAt(i);
+            return LIAB_PIE_COLORS[Math.abs(h) % LIAB_PIE_COLORS.length];
+        }
+        function normalizeLiabilityShares(rawShares) {
+            const rows = Object.entries(rawShares || {})
+                .map(([code, pct]) => ({ code, pct: Math.max(0, Number(pct) || 0) }))
+                .filter(x => x.pct > 0);
+            const total = rows.reduce((a, x) => a + x.pct, 0);
+            if (total <= 0) return [];
+            return rows
+                .map(x => ({ code: x.code, pct: (x.pct / total) * 100 }))
+                .sort((a, b) => b.pct - a.pct);
+        }
+        function buildDemoLiabilityHistory(basePoint, pointsCount) {
+            const rows = normalizeLiabilityShares(basePoint?.shares || {});
+            if (!rows.length) return [];
+            const now = Date.now();
+            const points = [];
+            const totalPoints = Math.max(8, Number(pointsCount) || 20);
+            for (let i = 0; i < totalPoints; i++) {
+                const ts = now - ((totalPoints - 1 - i) * 12 * 3600000);
+                const varied = {};
+                rows.forEach((r, idx) => {
+                    const delta = Math.sin((i + idx * 2.3) / 3.2) * 2.2;
+                    varied[r.code] = Math.max(0.4, r.pct + delta);
+                });
+                const norm = normalizeLiabilityShares(varied);
+                points.push({ ts, shares: Object.fromEntries(norm.map(x => [x.code, Number(x.pct.toFixed(2))])) });
+            }
+            return points;
+        }
+        function renderLiabilityPie(shares, ts) {
+            const pieEl = document.getElementById('liabPieChart');
+            const labelEl = document.getElementById('liabTimeLabel');
+            const legendEl = document.getElementById('liabPieLegend');
+            if (!pieEl || !labelEl || !legendEl) return;
+            const rows = normalizeLiabilityShares(shares);
+            if (!rows.length) {
+                pieEl.style.background = 'rgba(255,255,255,.06)';
+                legendEl.innerHTML = '';
+                labelEl.textContent = 'No data';
+                return;
+            }
+            let acc = 0;
+            const stops = rows.map((r) => {
+                const start = acc;
+                acc += r.pct;
+                const end = Math.min(100, acc);
+                return `${colorForLiabCode(r.code)} ${start.toFixed(2)}% ${end.toFixed(2)}%`;
+            });
+            pieEl.style.background = `conic-gradient(${stops.join(',')})`;
+            legendEl.innerHTML = rows.map((r) =>
+                `<span class="risk-pill" style="display:inline-flex;align-items:center;gap:6px;border-color:rgba(103,232,249,.26)"><span style="width:9px;height:9px;border-radius:50%;background:${colorForLiabCode(r.code)};display:inline-block"></span>${r.code} ${r.pct.toFixed(1)}%</span>`
+            ).join('');
+            if (!ts) {
+                labelEl.textContent = 'Live';
+            } else {
+                const d = new Date(Number(ts) || Date.now());
+                labelEl.textContent = d.toLocaleString('en-GB', { month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: false });
+            }
+        }
+        window.scrubLiabilityHistory = function (idxStr) {
+            const series = Array.isArray(LIAB_SLIDER_SERIES) && LIAB_SLIDER_SERIES.length ? LIAB_SLIDER_SERIES : [];
+            if (!series.length) return;
+            const idx = Math.max(0, Math.min(series.length - 1, parseInt(idxStr, 10) || 0));
+            const point = series[idx];
+            const slider = document.getElementById('liabTimeSlider');
+            if (slider) slider.value = String(idx);
+            renderLiabilityPie(point?.shares || {}, point?.ts || 0);
+        };
 
         function renderCouncilLiabilityStructure() {
-            const rowsWrap = document.getElementById('liabDistRows');
-            const totalEl = document.getElementById('liabDistTotal');
             const riskWrap = document.getElementById('liabRiskRows');
             const concEl = document.getElementById('liabConcentration');
             const largestEl = document.getElementById('liabLargestUnit');
             const trendStateEl = document.getElementById('liabTrendState');
             const trendDetailEl = document.getElementById('liabTrendDetail');
-            if (!rowsWrap || !totalEl || !riskWrap || !concEl || !largestEl || !trendStateEl || !trendDetailEl) return;
+            if (!riskWrap || !concEl || !largestEl || !trendStateEl || !trendDetailEl) return;
 
             const ccyRows = Array.from(document.querySelectorAll('#ccyList .ccy-sec-row'))
                 .filter(r => r && r.dataset && r.dataset.ccy && r.dataset.ccy !== 'MINIMA');
-            const dist = ccyRows.map(r => {
+            let dist = ccyRows.map(r => {
                 const code = r.dataset.ccy;
                 const amount = Number((r.querySelector('.ccy-sec-amt')?.textContent || '0').replace(/,/g, '')) || 0;
                 const usdRate = (RATES[code] && RATES[code].USDw) ? RATES[code].USDw : 1;
                 return { code, amount, usd: amount * usdRate };
             }).filter(x => x.amount > 0);
 
-            const totalUSD = dist.reduce((a, x) => a + x.usd, 0);
-            totalEl.textContent = totalUSD > 0
-                ? '$' + totalUSD.toLocaleString('en-US', { maximumFractionDigits: 0 })
-                : 'No liabilities yet';
+            // Keep CNYw visible in liability composition for consistency with app defaults.
+            const totalUsdRaw = dist.reduce((a, x) => a + x.usd, 0);
+            if (totalUsdRaw > 0) {
+                const hasCny = dist.some(x => x.code === 'CNYw');
+                if (!hasCny) {
+                    const targetShare = 0.08; // showcase floor so CNYw always appears in pie + tags
+                    const cnyUsd = totalUsdRaw * targetShare;
+                    dist = dist.map(x => ({ ...x, usd: x.usd * (1 - targetShare), amount: x.amount * (1 - targetShare) }));
+                    const cnyRate = (RATES.CNYw && RATES.CNYw.USDw) ? RATES.CNYw.USDw : 0.138;
+                    dist.push({ code: 'CNYw', usd: cnyUsd, amount: cnyUsd / cnyRate });
+                }
+            }
 
-            rowsWrap.innerHTML = '';
+            const totalUSD = dist.reduce((a, x) => a + x.usd, 0);
             riskWrap.innerHTML = '';
             if (!dist.length || totalUSD <= 0) {
-                rowsWrap.innerHTML = '<div class="xs mu">No liability positions detected yet.</div>';
                 concEl.textContent = 'No concentration';
                 largestEl.textContent = '-';
                 trendStateEl.textContent = 'No trend';
@@ -7862,13 +8001,6 @@
             dist.sort((a, b) => b.usd - a.usd);
             dist.forEach(x => {
                 const share = (x.usd / totalUSD) * 100;
-                const row = document.createElement('div');
-                row.className = 'liab-row';
-                row.innerHTML = `<div class="liab-unit">${x.code}</div>
-                    <div class="liab-track"><div class="liab-fill" style="width:${Math.max(1.5, share).toFixed(2)}%"></div></div>
-                    <div class="liab-amt">${x.amount.toLocaleString('en-US', { maximumFractionDigits: 2 })} · ${share.toFixed(1)}%</div>`;
-                rowsWrap.appendChild(row);
-
                 const rp = LIAB_RISK_PROFILE[x.code] || { vol: 'Medium volatility', liq: 'Medium liquidity', st: 'Medium stability' };
                 const risk = document.createElement('div');
                 risk.className = 'fbet';
@@ -7908,6 +8040,17 @@
             trendStateEl.textContent = Math.abs(delta) < 1 ? 'Stable mix' : delta > 0 ? 'Concentration rising' : 'Concentration easing';
             trendStateEl.style.color = Math.abs(delta) < 1 ? 'var(--gr)' : delta > 0 ? 'var(--am)' : 'var(--c)';
             trendDetailEl.textContent = `${topCode} share ${delta >= 0 ? '+' : ''}${delta.toFixed(1)}% vs 7d baseline`;
+
+            LIAB_SLIDER_SERIES = buildDemoLiabilityHistory(point, 20);
+            const sliderSeries = LIAB_SLIDER_SERIES.length ? LIAB_SLIDER_SERIES : [point];
+            const slider = document.getElementById('liabTimeSlider');
+            if (slider) {
+                slider.min = '0';
+                slider.max = String(Math.max(0, sliderSeries.length - 1));
+                slider.value = String(Math.max(0, sliderSeries.length - 1));
+            }
+            const latestPoint = sliderSeries[Math.max(0, sliderSeries.length - 1)] || point;
+            renderLiabilityPie(latestPoint.shares, latestPoint.ts);
         }
 
         // Treasury (demo) - Council allocation buckets
@@ -8077,14 +8220,19 @@
 
             // If CR reaches 100% and below, staked stables convert into xMinima (liability shrinks, equity increases)
             const liabUSD_raw = LIAB_STABLES_CIRC + LIAB_REBAL_STAKED;
-            const liabUSD = liabUSD_raw;
             const assetsUSD = (ASSET_PROTOCOL_WINIWA + ASSET_TREASURY_WINIWA + ASSET_REBAL_WINIWA) * SIM_Winiwa_PRICE + ASSET_XWM_USD;
+            // Demo guardrail: keep displayed coverage at or above 130% by adjusting shown liabilities.
+            const minLiabForFloor = assetsUSD > 0 ? (assetsUSD / (TREASURY_MIN_DISPLAY_CR_PCT / 100)) : 0;
+            const liabUSD = (liabUSD_raw > minLiabForFloor) ? minLiabForFloor : liabUSD_raw;
+            const liabScale = liabUSD_raw > 0 ? (liabUSD / liabUSD_raw) : 1;
+            const liabCircDisplay = LIAB_STABLES_CIRC * liabScale;
+            const liabStakedDisplay = LIAB_REBAL_STAKED * liabScale;
             const assetsEl = document.getElementById('protocolAssetsVal');
             if (assetsEl) assetsEl.textContent = fmtBase(assetsUSD);
             const liabEl = document.getElementById('protocolLiabVal');
-            if (liabEl) liabEl.textContent = fmtBase(LIAB_STABLES_CIRC);
+            if (liabEl) liabEl.textContent = fmtBase(liabCircDisplay);
             const stakedEl = document.getElementById('protocolStakedVal');
-            if (stakedEl) stakedEl.textContent = fmtBase(LIAB_REBAL_STAKED);
+            if (stakedEl) stakedEl.textContent = fmtBase(liabStakedDisplay);
             const rebEl = document.getElementById('protocolRebWVal');
             if (rebEl) rebEl.textContent = fmtBase(ASSET_REBAL_WINIWA * SIM_Winiwa_PRICE);
             const xwmEl = document.getElementById('protocolXwmVal');
@@ -8093,7 +8241,7 @@
             // Liabilities split bar
             const liabCircSeg = document.getElementById('liabCircSeg');
             const liabStakedSeg = document.getElementById('liabStakedSeg');
-            const circPct = liabUSD > 0 ? (LIAB_STABLES_CIRC / liabUSD) * 100 : 100;
+            const circPct = liabUSD > 0 ? (liabCircDisplay / liabUSD) * 100 : 100;
             const stakedPct = 100 - circPct;
             if (liabCircSeg) liabCircSeg.style.width = Math.max(0, Math.min(100, circPct)).toFixed(2) + '%';
             if (liabStakedSeg) liabStakedSeg.style.width = Math.max(0, Math.min(100, stakedPct)).toFixed(2) + '%';
@@ -8140,7 +8288,7 @@
         function syncTreasurySnapshot(assetsUSD, liabUSD, crPctRaw) {
             const a = Number(assetsUSD) || 0;
             const l = Number(liabUSD) || 0;
-            const equity = a - l;
+            const equity = Math.max(0, a - l);
             let crPct = Number(crPctRaw);
             if (!Number.isFinite(crPct)) {
                 crPct = l > 0 ? (a / l) * 100 : 999;
@@ -8153,7 +8301,7 @@
             if (aEl) aEl.textContent = fmtBase(a);
             if (lEl) lEl.textContent = fmtBase(l);
             if (eqEl) eqEl.textContent = fmtBase(equity);
-            if (eqCell) eqCell.classList.toggle('neg', equity < 0);
+            if (eqCell) eqCell.classList.remove('neg');
 
             const barL = document.getElementById('treasurySnapBarLiab');
             const barE = document.getElementById('treasurySnapBarEq');
@@ -8182,7 +8330,7 @@
         }
 
         /** Illustrative historical data points */
-        const CR_HIST_DATA = [105, 108, 112, 110, 109, 115, 118, 114, 116, 120, 122, 118, 115, 112, 114, 117, 121, 125, 123, 119];
+        const CR_HIST_DATA = [130, 132, 135, 134, 133, 137, 139, 136, 138, 141, 143, 140, 138, 136, 137, 139, 142, 145, 143, 141];
         
         function scrubCoverageGraph(indexStr) {
             const idx = parseInt(indexStr, 10);
@@ -8211,10 +8359,15 @@
             const container = document.getElementById('crEvolutionGraph');
             if (!container) return;
             
-            const minCr = 100;
-            const maxCr = 130;
+            const minCr = 110;
+            const maxData = Math.max(...CR_HIST_DATA);
+            const maxCr = Math.max(130, Math.ceil((maxData + 2) / 5) * 5);
             const w = 300;
             const h = 64;
+            const topLabel = document.getElementById('crEvolutionTopLabel');
+            const bottomLabel = document.getElementById('crEvolutionBottomLabel');
+            if (topLabel) topLabel.textContent = `${maxCr}%`;
+            if (bottomLabel) bottomLabel.textContent = `${minCr}%`;
             
             const dx = w / (CR_HIST_DATA.length - 1);
             const scaleY = (val) => h - ((val - minCr) / (maxCr - minCr) * h);
@@ -8514,6 +8667,16 @@
                 newCRnum = liabEffective > 0 ? ((simTotalAssets / liabEffective) * 100) : 999;
             }
 
+            // Display guardrail in showcase: keep shown coverage at/above floor.
+            const minLiabForFloorSim = simTotalAssets > 0 ? (simTotalAssets / (TREASURY_MIN_DISPLAY_CR_PCT / 100)) : 0;
+            if (liabEffective > minLiabForFloorSim) {
+                const scale = liabUSD_raw > 0 ? (minLiabForFloorSim / liabUSD_raw) : 1;
+                liabEffective = minLiabForFloorSim;
+                liabStakedEffective = LIAB_REBAL_STAKED * scale;
+            }
+            const liabCircDisplay = Math.max(0, liabEffective - liabStakedEffective);
+            newCRnum = liabEffective > 0 ? ((simTotalAssets / liabEffective) * 100) : 999;
+
             // User's xWiniwa: current market value × equity multiplier
             const basePostTradeXwmVal = postTradeXwmHeld * SIM_XWM_PRICE;
             simXwmVal = basePostTradeXwmVal * equityMultiplier;
@@ -8541,7 +8704,7 @@
             const assetsEl = document.getElementById('protocolAssetsVal');
             if (assetsEl) assetsEl.textContent = fmtBase(simTotalAssets);
             const liabEl = document.getElementById('protocolLiabVal');
-            if (liabEl) liabEl.textContent = fmtBase(LIAB_STABLES_CIRC);
+            if (liabEl) liabEl.textContent = fmtBase(liabCircDisplay);
             const stakedEl = document.getElementById('protocolStakedVal');
             if (stakedEl) stakedEl.textContent = fmtBase(liabStakedEffective);
             const rebEl = document.getElementById('protocolRebWVal');
@@ -8754,6 +8917,9 @@
         }
 
         // Init on load
+        populateLpBaseCurrencies();
+        syncLpBaseUI();
+        renderLpLiveBins();
         calcSlider();
 
 

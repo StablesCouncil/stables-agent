@@ -28,12 +28,12 @@
 
 ---
 
-### `page-ambassador` — Ambassador
+### `page-ambassador` — Ambassadors
 | | |
 |--|--|
-| **Nav** | More / Shops & Exchange · **Ambassador** |
-| **Page header** | Ambassador (no subline) |
-| **Sections** | Agent row → card: regional onboarding; **register** 10 Big Mac®s **or** via first shop (preview); merchant listing **20 Big Mac®s** 50/50 + Big Mac Index link |
+| **Nav** | More / Shops & Exchange · **Ambassadors** |
+| **Page header** | Ambassadors (no subline) |
+| **Sections** | Agent row → card: simplified listing model; shop listing **20 Big Mac®** + listing for Ambassadors **20 Big Mac®**; retrocession split when listed Ambassadors perform onboarding; CTA button **Become an ambassador** → plain welcome message + Telegram join button **Join the discussion** |
 
 ---
 
@@ -81,7 +81,7 @@
 |--|--|
 | **Nav** | More / Shops & Exchange · **Exchange**; `#exchange` |
 | **Page header** | Exchange · Exchange currencies instantly |
-| **Sections** | New conversion → `ex-card`; **Recent exchanges** → `#exchangeRecentList` filled by **`activity-contacts.js`** (`DEMO_EXCHANGES`); rows open **`openExchangeDetail`** → `agentActionModal` (same pattern as transaction details; **Use same pair** → `repeatExchangeFromDetail`) |
+| **Sections** | New conversion → `ex-card` (+ **Provide liquidity** CTA to `invest` LP panel); **Recent exchanges** → `#exchangeRecentList` filled by **`activity-contacts.js`** (`DEMO_EXCHANGES`); rows open **`openExchangeDetail`** → `agentActionModal` (same pattern as transaction details; **Use same pair** → `repeatExchangeFromDetail`) |
 
 ---
 
@@ -110,7 +110,7 @@
 |--|--|
 | **Nav** | Bottom tab |
 | **Page header** | Invest · My holdings, pools, and protocol tools |
-| **Sections** | My holdings → `pool-section-title` + gradient `card` (not `app-section-card` on that card); tab row → **Coverage Fund** / **Liquidity Fund** panels (`pool-section-title`: Coverage fund / Liquidity fund) |
+| **Sections** | My holdings → `pool-section-title` + gradient `card` (not `app-section-card` on that card); tab row → **Coverage Fund** / **Liquidity funds** panels (`pool-section-title`: Coverage fund / Liquidity funds). LP panel includes top selector `#lpBaseCcy` (all currencies, default Winiwa), main graph for **current liquidity by bucket**, then **Add liquidity** form and CTA to Exchange pair. |
 | **Panel CF** | `stitle-row` with `pool-section-title` + agent → `cp-card` |
 | **Panel LP** | `stitle-row` with `pool-section-title` + agent → `lp-card` |
 
@@ -270,7 +270,7 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | `ccyEditPen` | `page-wallet` `stitle-row-actions` (beside agent) | Edit currencies: reorder (drag), enable/disable (`+`/`−`), set main currency (★ on each row); active currencies sorted to top while editing |
 | `contactShopBtn` | `page-contacts` | `openSelectedContactShop()` · Shop profile |
 | `iTabCF` | `page-invest` | `setInvestTab('cf')` · Coverage Fund |
-| `iTabLP` | `page-invest` | `setInvestTab('lp')` · Liquidity Fund |
+| `iTabLP` | `page-invest` | `setInvestTab('lp')` · Liquidity funds |
 | `privToggle` | `recvModal` | `togglePrivacy()` · 🔒 Auto |
 | `shapeBidAsk` | `page-invest` (LP) | `setLpShape('bidask')` |
 | `shapeCurve` | `page-invest` (LP) | `setLpShape('curve')` |
@@ -335,7 +335,10 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | Date | Change |
 |------|--------|
 | 2026-03-19 | **Legal & notices** (`page-settings-legal`): More → **Community** (⚖️); **stablescouncil.org** + github.io + agent subdomain in-app. **Exchange** recent list: `activity-contacts.js` → `openExchangeDetail` / `repeatExchangeFromDetail`. |
-| 2026-03-19 | **Ambassador** / **My shop** copy: regional Ambassadors for listing; fully listed → same privileges + onboard others; Ambassador registration **10 Big Mac®s** or via **first shop** (preview); merchant **20 Big Mac®** 50/50 kept on Ambassador page. |
+| 2026-03-19 | **Ambassador copy simplification**: listing economics clarified (shop listing 20 Big Mac®; Ambassador listing 20 Big Mac®), with concise retrocession explanation and updated drawer text. |
+| 2026-03-19 | **Ambassador CTA**: added **Become an ambassador** button on `page-ambassador`; opens modal: “All these parameters will be discussed within the community…” + Telegram join button (`AMBASSADOR_TOPICS_TELEGRAM_URL`). |
+| 2026-03-19 | **Merchant rating framework scaffold**: `activity-contacts.js` adds signed/onchain-ready review schema, spend-weighted scoring, anti-spam guards (minimum spend + cooldown), and links from transaction detail, contacts, shop profile, and Shops cards. |
+| 2026-03-19 | **Ambassador** / **My shop** copy: regional Ambassadors for listing; fully listed → same privileges + onboard others; Ambassador registration **10 Big Mac®** or via **first shop** (preview); merchant **20 Big Mac®** 50/50 kept on Ambassador page. |
 | 2026-03-19 | Shops & Exchange (was Payments & Trade): `page-ambassador`, `page-my-shop`, `exchange`; Create Invoice section on **My shop**; `#shop-ambassador` → `my-shop`. |
 | 2026-03-19 | **My shop**: **Webshop linking & QR**, **Merchant API kit** (GitHub org link); **Webhooks & callbacks** markup retained but **hidden** (`display:none`); drawer **My shop** ddesc: webshop kit (preview). |
 | 2026-03-19 | Welcome language: globe + `appLangMenuWelcome` (no “Language” label); hidden `#welcomeLang` select; drawer top `drawer-lang-bar` + `#drawerLangGlobeBtn`. |
@@ -348,6 +351,8 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-19 | Vault backup modal: `VAULT_SECURITY_MODAL_DELAY_MS` (default 60s); no countdown banner; no `#vaultBackupReminderMeta` line. |
 | 2026-03-19 | Council: drop Treasury hint + liability block (moved to **Treasury**); charter → amber toast (draft soon). Treasury: MEXC spot for stress price (`MEXC_TICKER_URL`, `SIM_Winiwa_PRICE`); simulator copy tweaks. |
 | 2026-03-19 | More drawer: `.drawer-test-faucet-card` merges “Testing Phase Only” banner + Get Test Wiwina row into one tappable amber card. |
+| 2026-03-19 | Mint / Exchange / Invest alignment: removed **Reserve Status** block from **Mint Wables** (Treasury is single source); Exchange **Provide liquidity** button opens `invest` LP panel; LP naming unified to **Liquidity funds** with base selector `#lpBaseCcy` (Winiwa). |
+| 2026-03-19 | LP UX pass: `#lpBaseCcy` now includes all currencies; graph labelled as current bucket liquidity; add-liquidity form separated below; LP includes direct CTA to open the selected pair on Exchange. |
 | 2026-03-19 | Invest tabs: **Liquidity Fund** (was Provide Liquidity); LP panel `pool-section-title` **Liquidity fund**; primary LP CTA **Deposit to Liquidity Fund**. |
 | 2026-03-19 | Full tables: every `<button id>`, every modal/overlay root `id`, global chrome, settings toggles. |
 | 2026-03-22 | Initial inventory + handshake link to single `<style>` source. |
