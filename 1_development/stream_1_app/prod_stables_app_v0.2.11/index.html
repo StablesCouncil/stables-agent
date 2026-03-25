@@ -3652,12 +3652,58 @@
 
             <!-- INVEST TABS -->
             <div class="tab-row" style="margin-top:20px;margin-bottom:24px">
-                <button class="tab-btn active" id="iTabCF" onclick="setInvestTab('cf')">Coverage fund</button>
+                <button class="tab-btn active" id="iTabMI" onclick="setInvestTab('mi')">My investment</button>
+                <button class="tab-btn" id="iTabCF" onclick="setInvestTab('cf')">Coverage fund</button>
                 <button class="tab-btn" id="iTabLP" onclick="setInvestTab('lp')">Liquidity funds</button>
             </div>
 
-            <!-- SECTION 2: COVERAGE FUND -->
-            <div id="panelCF">
+            <!-- MY INVESTMENT: summary + balances (moved from Coverage fund) -->
+            <div id="panelMI">
+                <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="pool-section-title">My investment</div>
+                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Invest: portfolio summary and fund deposits')" title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="cp-card app-section-card">
+                    <div style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:14px;margin-bottom:12px">
+                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">Portfolio summary</div>
+                        <p class="xs mu" style="margin:0 0 12px;line-height:1.5;color:var(--m)">Wallet and fund positions. Values are approximate, in your principal currency (<strong style="color:var(--t)" id="investSummaryBaseLabel">—</strong>). Liquidity fund deposits are demo-only until positions are tracked on-chain.</p>
+                        <div style="overflow-x:auto">
+                            <table style="width:100%;border-collapse:collapse;font-size:13px;color:var(--m)">
+                                <thead>
+                                    <tr style="border-bottom:1px solid rgba(255,255,255,.08)">
+                                        <th style="padding:4px 8px 6px 0;text-align:left;font-weight:700;color:var(--m)">Position</th>
+                                        <th style="padding:4px 8px 6px 8px;text-align:right;font-weight:700;color:var(--m)">Balance</th>
+                                        <th style="padding:4px 0 6px 8px;text-align:right;font-weight:700;color:var(--m)">≈ Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="investSummaryTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="padding:12px;background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;margin-bottom:12px">
+                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">My available balances</div>
+                        <p class="xs mu" style="margin:0 0 10px;line-height:1.45;color:var(--m)">Use these balances when you <strong style="color:var(--t)">deposit</strong> on the Coverage fund tab.</p>
+                        <div style="overflow-x:auto;margin-bottom:10px">
+                            <table id="cfBalanceTable" style="width:100%;border-collapse:collapse;font-size:13px;color:var(--m)">
+                                <thead>
+                                    <tr style="border-bottom:1px solid rgba(255,255,255,.08)">
+                                        <th style="padding:4px 8px 6px 0;text-align:left;font-weight:700;color:var(--m)">Asset</th>
+                                        <th style="padding:4px 0 6px 8px;text-align:right;font-weight:700;color:var(--m)">Balance</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cfBalanceTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+
+            <!-- SECTION: COVERAGE FUND -->
+            <div id="panelCF" style="display:none">
                 <div class="app-section app-section--caption-bottom">
                 <div class="stitle-row">
                     <div class="pool-section-title">Coverage fund</div>
@@ -3732,18 +3778,8 @@
                         </div>
                     </div>
                     <div style="padding:12px;background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;margin-bottom:12px">
-                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">My available balances</div>
-                        <div style="overflow-x:auto;margin-bottom:10px">
-                            <table id="cfBalanceTable" style="width:100%;border-collapse:collapse;font-size:13px;color:var(--m)">
-                                <thead>
-                                    <tr style="border-bottom:1px solid rgba(255,255,255,.08)">
-                                        <th style="padding:4px 8px 6px 0;text-align:left;font-weight:700;color:var(--m)">Asset</th>
-                                        <th style="padding:4px 0 6px 8px;text-align:right;font-weight:700;color:var(--m)">Balance</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="cfBalanceTableBody"></tbody>
-                            </table>
-                        </div>
+                        <div class="xs mu" style="font-weight:800;margin-bottom:6px">Deposit or withdraw</div>
+                        <p class="xs mu" style="margin:0 0 10px;line-height:1.45;color:var(--m)">See <strong style="color:var(--t)">My investment</strong> for available balances.</p>
                         <div style="margin-bottom:8px">
                             <select class="fsel" id="cfAssetCcy" style="margin-top:0" aria-label="Asset for deposit or withdraw"></select>
                         </div>
@@ -4008,7 +4044,7 @@
                                     <span id="iIssueWablesPriceWiniwa" style="font-weight:700">&mdash;</span>
                                 </div>
                                 <div class="calc-row" style="margin-bottom:0">
-                                    <span class="mu">Winiwa required</span>
+                                    <span class="mu">Estimated stable received</span>
                                     <span id="iCalcM" style="font-weight:800">&mdash;</span>
                                 </div>
                                 <div class="calc-row" style="display:none">
@@ -7017,18 +7053,91 @@
         // Activity/contacts/shop logic moved to:
         // assets/routes/activity-contacts.js
 
+        function investSummaryRateToBase(fromCode, baseCcy) {
+            const f = (fromCode === 'MINIMA') ? 'Winiwa' : String(fromCode || '');
+            const t = (baseCcy === 'MINIMA') ? 'Winiwa' : String(baseCcy || '');
+            if (f === t) return 1;
+            return (RATES[f] && RATES[f][t]) ? RATES[f][t] : 1;
+        }
+
+        function renderInvestSummaryTable() {
+            const tbody = document.getElementById('investSummaryTableBody');
+            if (!tbody) return;
+            const base = typeof BASE_CCY !== 'undefined' ? BASE_CCY : 'EURw';
+            const lbl = document.getElementById('investSummaryBaseLabel');
+            if (lbl) lbl.textContent = base;
+            const fmt2 = (n) => Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const fmtQty = (n, decMin, decMax) => (Number(n) || 0).toLocaleString('en-US', { minimumFractionDigits: decMin, maximumFractionDigits: decMax });
+            let totalEq = 0;
+            const parts = [];
+
+            const w = typeof vaultNumericBalance === 'function' ? vaultNumericBalance(WALLET_WINIWA) : (Number(WALLET_WINIWA) || 0);
+            if (w > 0) {
+                const eq = w * investSummaryRateToBase('MINIMA', base);
+                totalEq += eq;
+                parts.push(`<tr><td style="padding:6px 8px 6px 0;color:var(--t)">Winiwa</td><td style="padding:6px 8px;text-align:right;font-weight:700;color:var(--t)">${fmtQty(w, 2, 2)}</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--gr)">${fmt2(eq)} ${base}</td></tr>`);
+            }
+            const xw = typeof vaultNumericBalance === 'function' ? vaultNumericBalance(WALLET_XWM) : (Number(WALLET_XWM) || 0);
+            if (xw > 0) {
+                const eq = xw * investSummaryRateToBase('xWiniwa', base);
+                totalEq += eq;
+                parts.push(`<tr><td style="padding:6px 8px 6px 0;color:var(--t)">xWiniwa</td><td style="padding:6px 8px;text-align:right;font-weight:700;color:var(--t)">${fmtQty(xw, 2, 4)}</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--gr)">${fmt2(eq)} ${base}</td></tr>`);
+            }
+            if (typeof STABLE_AMT_CODES !== 'undefined') {
+                STABLE_AMT_CODES.forEach(function (c) {
+                    const a = Number(WALLET_STABLE_AMTS[c]) || 0;
+                    if (a <= 0) return;
+                    const eq = a * investSummaryRateToBase(c, base);
+                    totalEq += eq;
+                    const dec = (c === 'JPYw' || c === 'CNYw') ? 0 : 2;
+                    parts.push(`<tr><td style="padding:6px 8px 6px 0;color:var(--t)">${c}</td><td style="padding:6px 8px;text-align:right;font-weight:700;color:var(--t)">${fmtQty(a, dec, dec)}</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--gr)">${fmt2(eq)} ${base}</td></tr>`);
+                });
+            }
+            let cfEq = 0;
+            try {
+                const tok = Number(coverageFundMyTokens) || 0;
+                if (tok > 0 && typeof getCoverageFundSeries === 'function' && typeof cfTokenPrice === 'function') {
+                    const series = getCoverageFundSeries();
+                    const idx = Math.max(0, Math.min(series.length - 1, Number(coverageFundDayIdx) || (series.length - 1)));
+                    const row = series[idx];
+                    const px = cfTokenPrice(row);
+                    const usdVal = tok * px;
+                    cfEq = usdVal * investSummaryRateToBase('USDw', base);
+                    totalEq += cfEq;
+                    parts.push(`<tr><td style="padding:6px 8px 6px 0;color:var(--pu)">Coverage fund (USDwcf)</td><td style="padding:6px 8px;text-align:right;font-weight:700;color:var(--t)">${fmtCfWalletQty(tok, 'USDwcf')}</td><td style="padding:6px 0;text-align:right;font-weight:700;color:var(--gr)">${fmt2(cfEq)} ${base}</td></tr>`);
+                }
+            } catch (_) { /* ignore */ }
+            const out = [];
+            if (!parts.length) {
+                out.push(`<tr><td colspan="3" style="padding:10px 0;color:var(--m)">No wallet or coverage fund positions yet. Use the faucet, mint, or deposit to the coverage fund.</td></tr>`);
+            } else {
+                out.push(parts.join(''));
+            }
+            out.push(`<tr><td style="padding:6px 8px 6px 0;color:var(--m)">Liquidity funds</td><td style="padding:6px 8px;text-align:right;color:var(--m)">Demo</td><td style="padding:6px 0;text-align:right;color:var(--m)">Not tracked</td></tr>`);
+            out.push(`<tr style="border-top:1px solid rgba(255,255,255,.12)"><td style="padding:10px 8px 6px 0;font-weight:900;color:var(--t)">Total (incl. coverage)</td><td style="padding:10px 8px;text-align:right;color:var(--m)">&mdash;</td><td style="padding:10px 0;text-align:right;font-weight:900;color:var(--c)">${fmt2(totalEq)} ${base}</td></tr>`);
+            tbody.innerHTML = out.join('');
+        }
+
         function setInvestTab(t) {
-            ['iTabCF', 'iTabLP'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
-            const active = document.getElementById(t === 'cf' ? 'iTabCF' : 'iTabLP');
+            ['iTabMI', 'iTabCF', 'iTabLP'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
+            const tabId = t === 'cf' ? 'iTabCF' : (t === 'lp' ? 'iTabLP' : 'iTabMI');
+            const active = document.getElementById(tabId);
             if (active) active.classList.add('active');
-            document.getElementById('panelCF').style.display = t === 'cf' ? '' : 'none';
-            document.getElementById('panelLP').style.display = t === 'cf' ? 'none' : '';
+            const panMi = document.getElementById('panelMI');
+            const panCf = document.getElementById('panelCF');
+            const panLp = document.getElementById('panelLP');
+            if (panMi) panMi.style.display = t === 'mi' ? '' : 'none';
+            if (panCf) panCf.style.display = t === 'cf' ? '' : 'none';
+            if (panLp) panLp.style.display = t === 'lp' ? '' : 'none';
             if (t === 'lp') {
                 renderLpLiveBins();
                 renderHeatmap();
                 syncLpBaseUI();
-            } else {
+            } else if (t === 'cf') {
                 renderCoverageFundPanel();
+            } else {
+                renderInvestSummaryTable();
+                syncCfDepositUI();
             }
         }
 
@@ -8873,6 +8982,7 @@
             document.getElementById('rCalcM').textContent = wn != null ? wn.toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' Winiwa' : '\u2014';
             updateWablesAvailMintBurn();
             calcSlider();
+            if (typeof refreshWablesFxOracleUI === 'function') refreshWablesFxOracleUI();
         }
 
         // Burn xWiniwa calc
@@ -9018,14 +9128,16 @@
             const crEl = document.getElementById('iCalcCR');
             if (wrap) wrap.style.display = '';
             if (amt > 0 && p > 0) {
-                const winiwaReq = (amt * usdPU) / p;
-                if (mEl) mEl.textContent = winiwaReq.toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' Winiwa';
+                if (mEl) {
+                    mEl.textContent = amt.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) + ' ' + ccy;
+                }
             } else if (mEl) {
                 mEl.textContent = '\u2014';
             }
             if (crEl) crEl.textContent = '\u2014';
             updateWablesAvailMintBurn();
             calcSlider();
+            if (typeof refreshWablesFxOracleUI === 'function') refreshWablesFxOracleUI();
         }
 
         function calcRate() {
@@ -9589,11 +9701,16 @@
         }
 
         function refreshWablesFxOracleUI() {
-            const txt = 'Wables vs USDw FX: in-app RATES (demo)';
-            ['wablesMintFxOracleSource', 'wablesBurnFxOracleSource'].forEach(function (id) {
-                const el = document.getElementById(id);
-                if (el) el.textContent = txt;
-            });
+            const mintEl = document.getElementById('wablesMintFxOracleSource');
+            if (mintEl) {
+                const ccy = typeof walletParseCcySel === 'function' ? walletParseCcySel('issueCcy') : 'USDw';
+                mintEl.textContent = 'Wables vs ' + ccy + ' FX: in-app RATES (demo)';
+            }
+            const burnEl = document.getElementById('wablesBurnFxOracleSource');
+            if (burnEl) {
+                const ccy = typeof walletParseCcySel === 'function' ? walletParseCcySel('reclaimCcy') : 'USDw';
+                burnEl.textContent = 'Wables vs ' + ccy + ' FX: in-app RATES (demo)';
+            }
         }
 
         function refreshMintWiniwaOracleUI() {
@@ -9887,13 +10004,23 @@
                 if (amt > 0) {
                     eqEl.style.color = 'var(--gr)';
                     eqEl.textContent = `${fmt2(eq)} ${BASE_CCY}`;
-                    if (code === BASE_CCY || r.dataset.walletEnabled === '1') totalBase += eq;
+                    totalBase += eq;
                 } else {
                     eqEl.style.color = 'var(--rd)';
                     eqEl.textContent = '-';
-                    if ((code === BASE_CCY || r.dataset.walletEnabled === '1') && eq > 0) totalBase += eq;
                 }
             });
+
+            try {
+                const tok = Number(typeof coverageFundMyTokens !== 'undefined' ? coverageFundMyTokens : 0) || 0;
+                if (tok > 0 && typeof getCoverageFundSeries === 'function' && typeof cfTokenPrice === 'function') {
+                    const series = getCoverageFundSeries();
+                    const idx = Math.max(0, Math.min(series.length - 1, Number(coverageFundDayIdx) || (series.length - 1)));
+                    const row = series[idx];
+                    const usdVal = tok * cfTokenPrice(row);
+                    totalBase += usdVal * getRate('USDw', BASE_CCY);
+                }
+            } catch (_) { /* ignore */ }
 
             // Wallet total + label should also follow the principal conversion.
             const wTotal = document.querySelector('.w-total');
@@ -9952,6 +10079,7 @@
 
             calcSlider();
             if (typeof syncCfDepositUI === 'function') syncCfDepositUI();
+            if (typeof renderInvestSummaryTable === 'function') renderInvestSummaryTable();
         }
 
         function fmtUSD(v) {
