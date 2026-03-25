@@ -244,6 +244,8 @@ Stables is infrastructure, not a walled garden. The protocol shall be designed s
 - Insurance, savings, and investment instruments
 - Community-specific financial coordination tools
 
+**Borrowing and lenders on top of Stables.** Credit is expected to emerge through **third-party and community-built** products as much as through any reference implementation. **Lenders are welcome** to deploy lending, underwriting, and risk-pricing logic on the Stables banking layer within the immutable monetary core. On the **borrowing** side, **loans to shops and merchants** may be among the **earliest tractable** use cases, because **turnover and trading activity can often be verified or corroborated online**, improving transparency for counterparties without replacing their own credit judgment. The protocol does not mandate a single lending model; it provides settlement, transparency, and invariant boundaries within which lenders and borrowers negotiate.
+
 The Stables Council shall not claim exclusive rights to build upon the infrastructure it governs. Openness is a structural commitment.
 
 ---

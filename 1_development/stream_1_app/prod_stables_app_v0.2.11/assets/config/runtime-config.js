@@ -63,6 +63,11 @@ window.STABLES_CONFIG = {
   /** How often to refresh spot price for Treasury stress slider (ms). */
   WINIWA_PRICE_POLL_MS: 120000,
   /**
+   * When true (default), Mint/Burn vault actions skip Council Executive role — for browser/local demo.
+   * Set false in builds where multisig gating should apply.
+   */
+  DEMO_VAULT_UNLOCK: true,
+  /**
    * Telegram: dedicated security / Vault key support (supergroup or channel invite).
    * Publish the real invite here when the channel is live; used from Vault modal “I need help”.
    */
@@ -108,7 +113,9 @@ window.STABLES_CONFIG = {
     'Transaction notes',
     'Hidden/deleted transaction visibility flags',
     'Soft-hidden transactions and hidden shops (local demo)',
-    'Activity search state and demo-only metadata'
+    'Activity search state and demo-only metadata',
+    'stables_demo_wallet_v1 (browser demo vault balances)',
+    'stables_demo_exchange_hist_v1 (browser demo exchange history)'
   ]
 };
 

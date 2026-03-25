@@ -3504,7 +3504,7 @@
                                 <div class="ccy-pri-full" style="margin-top:4px"></div>
                             </div>
                             <div style="text-align:right;">
-                                <div class="ccy-pri-bal bal-amount">346.23 GBPw</div>
+                                <div class="ccy-pri-bal bal-amount">0.00 GBPw</div>
                             </div>
                         </div>
                     </div>
@@ -3516,8 +3516,8 @@
                                 <div class="ccy-sec-name">US Dollar</div>
                             </div>
                             <div style="text-align:right">
-                                <div class="ccy-sec-amt bal-amount">2150.50</div>
-                                <div class="ccy-sec-usd bal-amount" style="color:var(--gr)">$2150.50</div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">-</div>
                             </div>
                         </div>
                         <div class="ccy-sec-row" data-ccy="MINIMA" data-ccy-default-hidden="1">
@@ -3526,7 +3526,17 @@
                                 <div class="ccy-sec-name">Winiwa</div>
                             </div>
                             <div style="text-align:right">
-                                <div class="ccy-sec-amt bal-amount">240.00</div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">-</div>
+                            </div>
+                        </div>
+                        <div class="ccy-sec-row" data-ccy="xWiniwa" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">xWiniwa</div>
+                                <div class="ccy-sec-name">xWiniwa</div>
+                            </div>
+                            <div style="text-align:right">
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
                                 <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">-</div>
                             </div>
                         </div>
@@ -3536,10 +3546,8 @@
                                 <div class="ccy-sec-name">Euro</div>
                             </div>
                             <div style="text-align:right">
-                                <div class="ccy-sec-amt bal-amount">800.00</div>
-                                <div class="ccy-sec-usd bal-amount" style="color:var(--gr)">
-                                    $864.00
-                                </div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">-</div>
                             </div>
                         </div>
                         <div class="ccy-sec-row" data-ccy="GBPw">
@@ -3548,10 +3556,8 @@
                                 <div class="ccy-sec-name">British Pound</div>
                             </div>
                             <div style="text-align:right">
-                                <div class="ccy-sec-amt bal-amount">346.23</div>
-                                <div class="ccy-sec-usd bal-amount" style="color:var(--gr)">
-                                    $436.25
-                                </div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">-</div>
                             </div>
                         </div>
                         <div class="ccy-sec-row" data-ccy="JPYw" data-ccy-default-hidden="1">
@@ -3761,32 +3767,34 @@
                     </button>
                 </div>
                 <div class="lp-card app-section-card">
-                    <div style="margin-bottom:10px">
-                        <select class="fsel" id="lpQuoteCcy" style="margin-top:6px" onchange="syncLpBaseUI()"></select>
-                    </div>
-                    <div class="fbet" style="margin-bottom:10px">
-                        <div style="font-size:15px;font-weight:900" id="lpPairTitle">xWiniwa / Winiwa liquidity</div>
-                    </div>
-
-                    <div
-                        style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px;margin-bottom:16px">
-                        <div class="xs mu" style="margin-bottom:10px;font-weight:800">Current liquidity</div>
-                        <div style="display:flex;align-items:flex-end;justify-content:space-between;height:80px;margin-bottom:8px;gap:2px"
-                            id="lpLiveBins">
-                            <!-- Javascript populates current liquidity buckets -->
+                    <div id="lpGraphBlock">
+                        <div style="margin-bottom:10px">
+                            <select class="fsel" id="lpQuoteCcy" style="margin-top:6px" onchange="syncLpBaseUI()"></select>
+                        </div>
+                        <div class="fbet" style="margin-bottom:10px">
+                            <div style="font-size:15px;font-weight:900" id="lpPairTitle">xWiniwa / Winiwa liquidity</div>
                         </div>
 
-                        <div class="fbet xs mu" style="margin-bottom:4px">
-                            <span id="lpLiveMinLabel">$78.00</span>
-                            <span id="lpLiveMidLabel" style="color:var(--c);font-weight:700">$84.60</span>
-                            <span id="lpLiveMaxLabel">$91.00</span>
-                        </div>
-                        <div class="xs mu" id="lpLiveHoverLabel" style="text-align:center;margin-bottom:6px">
-                            Hover a bin to view price and quantity of Winiwa
-                        </div>
-                        <div class="xs mu" style="text-align:center;margin-bottom:8px" id="lpLiveDepthLabel">Liquidity bins</div>
-                        <div class="xs mu" style="text-align:center">Total liquidity: <span id="lpLiveTotalMinima" style="color:var(--t);font-weight:800">0 MINIMA</span></div>
+                        <div
+                            style="background:rgba(16,24,38,.5);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:16px;margin-bottom:16px">
+                            <div class="xs mu" style="margin-bottom:10px;font-weight:800">Current liquidity</div>
+                            <div style="display:flex;align-items:flex-end;justify-content:space-between;height:80px;margin-bottom:8px;gap:2px"
+                                id="lpLiveBins">
+                                <!-- Javascript populates current liquidity buckets -->
+                            </div>
 
+                            <div class="fbet xs mu" style="margin-bottom:4px">
+                                <span id="lpLiveMinLabel">$78.00</span>
+                                <span id="lpLiveMidLabel" style="color:var(--c);font-weight:700">$84.60</span>
+                                <span id="lpLiveMaxLabel">$91.00</span>
+                            </div>
+                            <div class="xs mu" id="lpLiveHoverLabel" style="text-align:center;margin-bottom:6px">
+                                Hover a bin to view price and quantity of Winiwa
+                            </div>
+                            <div class="xs mu" style="text-align:center;margin-bottom:8px" id="lpLiveDepthLabel">Liquidity bins</div>
+                            <div class="xs mu" style="text-align:center">Total liquidity: <span id="lpLiveTotalMinima" style="color:var(--t);font-weight:800">0 MINIMA</span></div>
+
+                        </div>
                     </div>
 
                     <!-- Dual Token Deposit -->
@@ -3891,8 +3899,8 @@
                                     <div id="availWiniwaXwm">Available: 0</div>
                                 </div>
                                 <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
-                                    <input class="finput" type="number" id="xwmAmt" placeholder="0" oninput="calcXwm()"
-                                        inputmode="decimal" style="min-width:0">
+                                    <input class="finput" type="text" id="xwmAmt" placeholder="0" oninput="calcXwm()"
+                                        inputmode="decimal" autocomplete="off" style="min-width:0">
                                     <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
                                         onclick="setXwmMax()">MAX</button>
                                 </div>
@@ -3901,7 +3909,7 @@
                             <!-- Under-input values -->
                             <div style="margin-top:12px">
                                 <div class="calc-row">
-                                    <span class="mu">Winiwa price</span>
+                                    <span class="mu">xWiniwa price</span>
                                     <span id="xwmMintWiniwaPriceDisplay" style="font-weight:700">$0.00846</span>
                                 </div>
                                 <div class="calc-row">
@@ -3936,8 +3944,8 @@
                                         <div id="availXwmBurn">Available: 0</div>
                                     </div>
                                     <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
-                                        <input class="finput" type="number" id="xwmBurnAmt" placeholder="xWiniwa to burn"
-                                            oninput="calcXwmBurn()" inputmode="decimal" style="min-width:0">
+                                        <input class="finput" type="text" id="xwmBurnAmt" placeholder="xWiniwa to burn"
+                                            oninput="calcXwmBurn()" inputmode="decimal" autocomplete="off" style="min-width:0">
                                         <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
                                             onclick="setXwmBurnMax()">MAX</button>
                                     </div>
@@ -4021,8 +4029,8 @@
                                     title="Legal &amp; notices · Price oracles">⚖️</a>
                             </div>
                         </div>
-                        <button class="btn btn-w btn-lg" onclick="executeMintWables()">Mint
-                            Wables</button>
+                        <button type="button" class="btn btn-w btn-lg" id="issueMintWablesBtn"
+                            onclick="executeMintWables()">Mint USDw</button>
                         <!-- Burn Wables reclaim -->
                         <div style="margin-top:32px">
                             <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn Wables
@@ -4095,7 +4103,7 @@
                     Send
                 </div>
                 <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
-                    <input class="ex-input" type="number" id="exFrom" value="100" oninput="calcRate()"
+                    <input class="ex-input" type="number" id="exFrom" value="" placeholder="0" oninput="calcRate()"
                         inputmode="decimal" style="min-width:0">
                     <select class="ex-sel" id="exFromCcy" onchange="calcRate()" style="width:90px">
                         <option>USDw</option>
@@ -4118,7 +4126,7 @@
                     Receive
                 </div>
                 <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
-                    <input class="ex-input" type="number" id="exTo" value="91.80" readonly
+                    <input class="ex-input" type="number" id="exTo" value="" readonly placeholder="0"
                         style="opacity:.7;min-width:0">
                     <select class="ex-sel" id="exToCcy" onchange="calcRate()" style="width:90px">
                         <option>EURw</option>
@@ -4134,9 +4142,9 @@
                     </select>
                 </div>
                 <div class="rate-pill" id="ratePill">1 USDw = 0.918 EURw &middot; No fees</div>
-                <button class="btn btn-w btn-lg"
-                    onclick="showToast('✓ Exchange confirmed - funds arrive instantly')">Exchange
+                <button class="btn btn-w btn-lg" type="button" onclick="executeExchangeNow()">Exchange
                     Now</button>
+                <div id="exchangeLpGraphSlot" class="app-section-card" style="padding:14px 18px;margin-top:12px"></div>
                 <button class="btn btn-w" style="margin-top:8px"
                     onclick="navigate('invest');setInvestTab('lp')">Provide liquidity</button>
             </div>
@@ -5333,9 +5341,9 @@
                 <div class="cb">
                     <div class="xs mu" style="margin-bottom:10px;color:var(--am)">Winiwa is the testnet token for this demo. It has <strong style="color:var(--am)">no value</strong>.</div>
                     <select class="fsel" style="margin-bottom:12px" id="faucetWiniwaAmtSel">
-                        <option>10,000 Winiwa (standard)</option>
-                        <option>50,000 Winiwa (large)</option>
                         <option>1,000 Winiwa (small)</option>
+                        <option>5,000 Winiwa (standard)</option>
+                        <option>10,000 Winiwa (large)</option>
                     </select>
                     <button class="btn btn-w btn-lg" onclick="claimFaucetWiniwa()">Get Winiwa</button>
                 </div>
@@ -5512,6 +5520,24 @@
                         <option>AUDw</option>
                         <option>CHFw</option>
                         <option>CNYw</option>
+                    </select>
+                </div>
+                <div class="set-row">
+                    <div>
+                        <div class="set-label">Price display currency</div>
+                        <div class="set-sub">xWiniwa price lines in mint/burn</div>
+                    </div>
+                    <select class="fsel" id="priceDisplayCcySel" style="width:130px;padding:8px 10px" onchange="setPriceDisplayCurrency(this.value)">
+                        <option value="auto" selected>Auto (wallet primary)</option>
+                        <option value="USDw">USDw</option>
+                        <option value="EURw">EURw</option>
+                        <option value="GBPw">GBPw</option>
+                        <option value="JPYw">JPYw</option>
+                        <option value="CADw">CADw</option>
+                        <option value="AUDw">AUDw</option>
+                        <option value="CHFw">CHFw</option>
+                        <option value="CNYw">CNYw</option>
+                        <option value="MINIMA">Winiwa</option>
                     </select>
                 </div>
                 <div style="padding:0 0 14px">
@@ -6085,10 +6111,11 @@
             <div id="sendContactChips" style="display:flex;gap:6px;flex-wrap:wrap;margin:-4px 0 12px 0"></div>
             <label class="flabel">Amount</label>
             <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px">
-                <input class="finput" type="number" id="sendAmtInput" placeholder="0.00" inputmode="decimal" style="min-width:0">
-                <select class="fsel" id="sendCcy" style="width:130px">
+                <input class="finput" type="number" id="sendAmtInput" placeholder="0.00" inputmode="decimal" style="min-width:0" oninput="updateSendFavEq()">
+                <select class="fsel" id="sendCcy" style="width:130px" onchange="updateSendFavEq()">
                 </select>
             </div>
+            <div class="xs mu" id="sendFavEq" style="margin:-6px 0 14px 0;color:var(--m)">—</div>
             <div class="hint" style="margin-bottom:14px">Fee: $0.01 max
                 ·
                 The recipient gets the full amount.</div>
@@ -6109,10 +6136,11 @@
             <div class="msub">Funds arrive instantly, from anywhere</div>
             <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
                 <input class="finput" type="number" id="reqAmt" placeholder="Amount (optional)" inputmode="decimal"
-                    style="min-width:0">
-                <select class="fsel" id="reqCcy" style="width:130px">
+                    style="min-width:0" oninput="updateRecvFavEq()">
+                <select class="fsel" id="reqCcy" style="width:130px" onchange="updateRecvFavEq()">
                 </select>
             </div>
+            <div class="xs mu" id="recvFavEq" style="margin:-4px 0 10px 0;color:var(--m)">—</div>
             <label class="flabel">Sender (optional)</label>
             <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
                 <input class="finput" id="reqFromInput" placeholder="Name or account ID..." style="min-width:0;margin-bottom:0">
@@ -6648,7 +6676,36 @@
             if (typeof openModal === 'function') openModal('stablesCharterComingModal');
         }
 
+        // Exchange page: mount the LP liquidity graph under the conversion inputs.
+        // We move the existing `#lpGraphBlock` DOM node so we don't duplicate the LP graph IDs.
+        let lpGraphBlockMoveState = null;
+        function moveLpGraphBlockToExchange() {
+            const slot = document.getElementById('exchangeLpGraphSlot');
+            const block = document.getElementById('lpGraphBlock');
+            if (!slot || !block) return;
+            if (!lpGraphBlockMoveState) {
+                lpGraphBlockMoveState = {
+                    parent: block.parentNode,
+                    next: block.nextSibling
+                };
+            }
+            slot.appendChild(block);
+            try {
+                if (typeof syncLpBaseUI === 'function') syncLpBaseUI();
+                else if (typeof renderLpLiveBins === 'function') renderLpLiveBins();
+            } catch (_) { /* ignore */ }
+        }
+        function restoreLpGraphBlockToInvest() {
+            if (!lpGraphBlockMoveState) return;
+            const { parent, next } = lpGraphBlockMoveState;
+            const block = document.getElementById('lpGraphBlock');
+            if (!parent || !block) return;
+            if (next && next.parentNode === parent) parent.insertBefore(block, next);
+            else parent.appendChild(block);
+        }
+
         function navigate(p) {
+            const prevPage = curPage;
             PAGES.forEach(id => { const el = document.getElementById('page-' + id); if (el) el.classList.remove('active'); });
             const pg = document.getElementById('page-' + p);
             if (pg) pg.classList.add('active');
@@ -6661,6 +6718,7 @@
                 if (typeof window.refreshSettingsBackupCopy === 'function') window.refreshSettingsBackupCopy();
             }
             if (p === 'exchange') {
+                moveLpGraphBlockToExchange();
                 const quote = String(document.getElementById('lpQuoteCcy')?.value || 'xWiniwa');
                 const fromSel = document.getElementById('exFromCcy');
                 const toSel = document.getElementById('exToCcy');
@@ -6669,6 +6727,7 @@
                 if (typeof calcRate === 'function') calcRate();
                 if (typeof window.renderExchangeRecentList === 'function') window.renderExchangeRecentList();
             }
+            if (prevPage === 'exchange' && p !== 'exchange') restoreLpGraphBlockToInvest();
             if (p === 'activity') {
                 if (typeof setActivityFilter === 'function') setActivityFilter('all');
                 if (typeof setActivityCcyFilter === 'function') setActivityCcyFilter('all');
@@ -8426,6 +8485,7 @@
                     if (amt && pendingModalDraft.amount) amt.value = pendingModalDraft.amount;
                 }
                 if (typeof renderSendContactChips === 'function') renderSendContactChips();
+                updateSendFavEq();
             }
             if (id === 'recvModal') {
                 populateCurrencySelect('reqCcy');
@@ -8437,6 +8497,7 @@
                     if (from && pendingModalDraft.party) from.value = pendingModalDraft.party;
                     if (amt && pendingModalDraft.amount) amt.value = pendingModalDraft.amount;
                 }
+                updateRecvFavEq();
             }
             pendingModalCurrency = '';
             pendingModalDraft = null;
@@ -8448,6 +8509,64 @@
                 if (el && e.target === el) el.classList.remove('open');
             });
         });
+
+        function displayCcyCodeForUI(ccy) {
+            // Wallet settings use MINIMA label; RATES uses Winiwa for the same asset.
+            return String(ccy === 'MINIMA' ? 'Winiwa' : ccy || '');
+        }
+
+        function ratesKeyForCcy(ccy) {
+            return String(ccy === 'MINIMA' ? 'Winiwa' : (ccy || 'USDw'));
+        }
+
+        function decimalsForCcyForUI(ccy) {
+            const c = String(ccy || '');
+            if (c === 'JPYw' || c === 'CNYw') return 0;
+            if (c === 'xWiniwa') return 4;
+            return 2;
+        }
+
+        function convertFromCcyToBaseEq(amount, fromCcy, baseCcy) {
+            const amt = Number(amount) || 0;
+            if (!(amt > 0)) return NaN;
+            const fromKey = ratesKeyForCcy(fromCcy);
+            const toKey = ratesKeyForCcy(baseCcy);
+            if (fromKey === toKey) return amt;
+            if (!RATES || !RATES[fromKey]) return NaN;
+            const rate = RATES[fromKey][toKey];
+            if (typeof rate !== 'number' || !Number.isFinite(rate) || rate <= 0) return NaN;
+            return amt * rate;
+        }
+
+        function updateSendFavEq() {
+            const amtEl = document.getElementById('sendAmtInput');
+            const ccyEl = document.getElementById('sendCcy');
+            const outEl = document.getElementById('sendFavEq');
+            if (!amtEl || !ccyEl || !outEl) return;
+            const amount = parseFloat(String(amtEl.value || '').replace(/,/g, '')) || 0;
+            if (!(amount > 0)) { outEl.textContent = '—'; return; }
+            const base = (typeof BASE_CCY !== 'undefined' && BASE_CCY) ? BASE_CCY : 'USDw';
+            const eq = convertFromCcyToBaseEq(amount, ccyEl.value, base);
+            const baseKey = ratesKeyForCcy(base);
+            if (!Number.isFinite(eq)) { outEl.textContent = '—'; return; }
+            const dec = decimalsForCcyForUI(baseKey);
+            outEl.textContent = `≈ ${eq.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec })} ${displayCcyCodeForUI(baseKey)}`;
+        }
+
+        function updateRecvFavEq() {
+            const amtEl = document.getElementById('reqAmt');
+            const ccyEl = document.getElementById('reqCcy');
+            const outEl = document.getElementById('recvFavEq');
+            if (!amtEl || !ccyEl || !outEl) return;
+            const amount = parseFloat(String(amtEl.value || '').replace(/,/g, '')) || 0;
+            if (!(amount > 0)) { outEl.textContent = '—'; return; }
+            const base = (typeof BASE_CCY !== 'undefined' && BASE_CCY) ? BASE_CCY : 'USDw';
+            const eq = convertFromCcyToBaseEq(amount, ccyEl.value, base);
+            const baseKey = ratesKeyForCcy(base);
+            if (!Number.isFinite(eq)) { outEl.textContent = '—'; return; }
+            const dec = decimalsForCcyForUI(baseKey);
+            outEl.textContent = `≈ ${eq.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec })} ${displayCcyCodeForUI(baseKey)}`;
+        }
 
         function openShopStickerAndPrint() {
             openModal('shopStickerModal');
@@ -8543,6 +8662,13 @@
 
             // Re-apply display rules according to enabled flags.
             applyWalletCcyDisplay();
+
+            try {
+                if (typeof applyPriceDisplaySettings === 'function') applyPriceDisplaySettings();
+                if (typeof refreshXwmPriceDisplays === 'function') refreshXwmPriceDisplays();
+                const sel = document.getElementById('priceDisplayCcySel');
+                if (sel) sel.value = (PRICE_DISPLAY_CCY_PREF || 'auto');
+            } catch (_) { /* ignore */ }
         }
 
         function applyWalletCcyDisplay() {
@@ -8652,6 +8778,13 @@
             modal.classList.add('open');
         }
 
+        function setPriceDisplayCurrency(ccy) {
+            PRICE_DISPLAY_CCY_PREF = String(ccy || 'auto').trim() || 'auto';
+            try { localStorage.setItem(PRICE_DISPLAY_CCY_PREF_KEY, PRICE_DISPLAY_CCY_PREF); } catch (_) { /* ignore */ }
+            try { if (typeof applyPriceDisplaySettings === 'function') applyPriceDisplaySettings(); } catch (_) { }
+            try { if (typeof refreshXwmPriceDisplays === 'function') refreshXwmPriceDisplays(); } catch (_) { }
+        }
+
         function setPrimary(tag, silent) {
             BASE_CCY = tag || 'USDw';
             if (!silent) showToast((tag || 'USDw') + ' set as primary currency');
@@ -8693,7 +8826,7 @@
 
         // xWiniwa calc
         function calcXwm() {
-            const wn = parseFloat(document.getElementById('xwmAmt').value) || 0;
+            const wn = readVaultAmountFromInput(document.getElementById('xwmAmt'));
             const canCalc = (wn > 0 && SIM_Winiwa_PRICE > 0 && SIM_XWM_PRICE > 0);
             const xwm = canCalc ? (wn * SIM_Winiwa_PRICE * SIM_LEVERAGE / SIM_XWM_PRICE) : null;
             document.getElementById('xwmCalcR').textContent = xwm != null ? xwm.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' xWiniwa' : '\u2014';
@@ -8744,7 +8877,7 @@
 
         // Burn xWiniwa calc
         function calcXwmBurn() {
-            const amt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
+            const amt = readVaultAmountFromInput(document.getElementById('xwmBurnAmt'));
             const wn = (amt > 0 && SIM_Winiwa_PRICE > 0 && SIM_XWM_PRICE > 0) ? (amt * SIM_XWM_PRICE / SIM_Winiwa_PRICE) : '\u2014';
             const el = document.getElementById('xwmBurnCalc');
             if (el) el.textContent = wn !== '\u2014' ? wn.toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' Winiwa' : '\u2014';
@@ -8867,6 +9000,8 @@
         function calcIssue() {
             const amt = parseFloat(document.getElementById('issueAmt').value) || 0;
             const ccy = walletParseCcySel('issueCcy');
+            const mintBtn = document.getElementById('issueMintWablesBtn');
+            if (mintBtn) mintBtn.textContent = 'Mint ' + ccy;
             const usdPU = walletStableUsdPerUnit(ccy);
             const p = Number(SIM_Winiwa_PRICE) || 0;
             const priceEl = document.getElementById('iIssueWablesPriceWiniwa');
@@ -8896,10 +9031,60 @@
         function calcRate() {
             const from = document.getElementById('exFromCcy').value;
             const to = document.getElementById('exToCcy').value;
-            const amt = parseFloat(document.getElementById('exFrom').value) || 0;
-            const rate = (RATES[from] && RATES[from][to]) || 1;
-            document.getElementById('exTo').value = (amt * rate).toFixed(4);
+            const amt = parseFloat(String(document.getElementById('exFrom').value || '').replace(/,/g, '')) || 0;
+            const rate = (RATES[from] && typeof RATES[from][to] === 'number') ? RATES[from][to] : 1;
+            const exTo = document.getElementById('exTo');
+            if (exTo) exTo.value = amt > 0 ? (amt * rate).toFixed(4) : '';
             document.getElementById('ratePill').textContent = '1 ' + from + ' = ' + rate.toFixed(4) + ' ' + to + ' \u00b7 No fees';
+        }
+
+        /**
+         * Drive every RATES edge involving Winiwa / xWiniwa from live MINIMA USD spot (SIM_Winiwa_PRICE)
+         * and demo xW price (SIM_XWM_PRICE). Stable\u2194stable crosses stay on seeded RATES[c].USDw.
+         */
+        function syncWiniwaRatesFromSpot() {
+            const p = Number(SIM_Winiwa_PRICE);
+            const xw = Number(SIM_XWM_PRICE);
+            if (!Number.isFinite(p) || p <= 0 || !Number.isFinite(xw) || xw <= 0) return;
+            const inv = 1 / p;
+            const STABLES = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw'];
+            try {
+                if (!RATES.Winiwa) RATES.Winiwa = {};
+                RATES.Winiwa.USDw = p;
+                RATES.Winiwa.Winiwa = 1;
+                RATES.Winiwa.xWiniwa = p / xw;
+                STABLES.forEach(function (c) {
+                    const row = RATES[c];
+                    const u = row && typeof row.USDw === 'number' ? row.USDw : 0;
+                    if (u > 0) RATES.Winiwa[c] = p / u;
+                });
+
+                if (RATES.USDw) RATES.USDw.Winiwa = inv;
+                STABLES.forEach(function (c) {
+                    if (c === 'USDw') return;
+                    const row = RATES[c];
+                    const u = row && typeof row.USDw === 'number' ? row.USDw : 0;
+                    if (u > 0 && RATES[c]) RATES[c].Winiwa = u * inv;
+                });
+
+                if (!RATES.xWiniwa) RATES.xWiniwa = {};
+                RATES.xWiniwa.USDw = xw;
+                RATES.xWiniwa.Winiwa = xw / p;
+                RATES.xWiniwa.xWiniwa = 1;
+                STABLES.forEach(function (c) {
+                    const row = RATES[c];
+                    const u = row && typeof row.USDw === 'number' ? row.USDw : 0;
+                    if (u > 0) RATES.xWiniwa[c] = xw / u;
+                });
+
+                if (RATES.USDw) RATES.USDw.xWiniwa = 1 / xw;
+                STABLES.forEach(function (c) {
+                    if (c === 'USDw') return;
+                    const row = RATES[c];
+                    const u = row && typeof row.USDw === 'number' ? row.USDw : 0;
+                    if (u > 0 && RATES[c]) RATES[c].xWiniwa = u / xw;
+                });
+            } catch (_) { /* ignore */ }
         }
 
         // ----- DEMO DATA & SIMULATOR STATE -----
@@ -9108,17 +9293,283 @@
         let WALLET_XWM = 0;
         let WALLET_WABLES = 0;
         let WALLET_CF = 0;
+        /** Per-currency Wables balances (exchange + mint/burn). WALLET_WABLES is always USD equivalent of this sum. */
+        const STABLE_AMT_CODES = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw'];
+        let WALLET_STABLE_AMTS = {};
+        STABLE_AMT_CODES.forEach(function (c) { WALLET_STABLE_AMTS[c] = 0; });
+        const WALLET_STATE_KEY = 'stables_demo_wallet_v1';
+        const EXCHANGE_HIST_KEY = 'stables_demo_exchange_hist_v1';
+        /** Set on Ctrl+Shift+R (etc.) before unload; next load clears demo wallet only if this is still a reload within the window. */
+        const HARD_RELOAD_WALLET_INTENT_TS_KEY = 'stables_hard_reload_wallet_intent_ts';
+
+        (function registerHardReloadWalletIntentCapture() {
+            window.addEventListener('keydown', function (e) {
+                if (e.defaultPrevented) return;
+                const hardReloadShortcut =
+                    (e.ctrlKey && e.shiftKey && (e.key === 'r' || e.key === 'R')) ||
+                    (e.metaKey && e.shiftKey && (e.key === 'r' || e.key === 'R')) ||
+                    (e.ctrlKey && e.key === 'F5') ||
+                    (e.shiftKey && e.key === 'F5');
+                if (!hardReloadShortcut) return;
+                try { sessionStorage.setItem(HARD_RELOAD_WALLET_INTENT_TS_KEY, String(Date.now())); } catch (_) { /* ignore */ }
+            }, true);
+        })();
+
+        function computeWalletWablesUsdTotal() {
+            let s = 0;
+            STABLE_AMT_CODES.forEach(function (c) {
+                const a = Number(WALLET_STABLE_AMTS[c]) || 0;
+                s += a * walletStableUsdPerUnit(c);
+            });
+            return s;
+        }
+
+        function saveWalletVaultState() {
+            try {
+                WALLET_WABLES = computeWalletWablesUsdTotal();
+                localStorage.setItem(WALLET_STATE_KEY, JSON.stringify({
+                    winiwa: WALLET_WINIWA,
+                    xwm: WALLET_XWM,
+                    cf: WALLET_CF,
+                    stables: Object.assign({}, WALLET_STABLE_AMTS)
+                }));
+            } catch (_) { /* ignore */ }
+        }
+
+        function loadWalletVaultState() {
+            try {
+                const raw = localStorage.getItem(WALLET_STATE_KEY);
+                if (!raw) return;
+                const j = JSON.parse(raw);
+                const has = (k) => Object.prototype.hasOwnProperty.call(j, k);
+                if (has('winiwa')) {
+                    const wn = typeof j.winiwa === 'number' && Number.isFinite(j.winiwa)
+                        ? j.winiwa
+                        : parseVaultInputAmount(String(j.winiwa ?? ''));
+                    if (Number.isFinite(wn)) WALLET_WINIWA = wn;
+                }
+                if (has('xwm')) {
+                    const xw = typeof j.xwm === 'number' && Number.isFinite(j.xwm)
+                        ? j.xwm
+                        : parseVaultInputAmount(String(j.xwm ?? ''));
+                    if (Number.isFinite(xw)) WALLET_XWM = xw;
+                }
+                if (has('cf')) {
+                    const cfv = typeof j.cf === 'number' && Number.isFinite(j.cf)
+                        ? j.cf
+                        : parseVaultInputAmount(String(j.cf ?? ''));
+                    if (Number.isFinite(cfv)) WALLET_CF = cfv;
+                }
+                if (j.stables && typeof j.stables === 'object') {
+                    STABLE_AMT_CODES.forEach(function (c) {
+                        if (!Object.prototype.hasOwnProperty.call(j.stables, c)) return;
+                        const v = j.stables[c];
+                        const a = typeof v === 'number' && Number.isFinite(v) ? v : parseVaultInputAmount(String(v ?? ''));
+                        if (Number.isFinite(a)) WALLET_STABLE_AMTS[c] = a;
+                    });
+                }
+                WALLET_WABLES = computeWalletWablesUsdTotal();
+            } catch (_) { /* ignore */ }
+        }
+
+        function fmtVaultAmt(n, minF, maxF) {
+            const x = Number(n) || 0;
+            return x.toLocaleString('en-US', {
+                minimumFractionDigits: minF != null ? minF : 2,
+                maximumFractionDigits: maxF != null ? maxF : 2
+            });
+        }
+
+        /** Parse mint/exchange inputs: strip grouping commas and NBSP so "1,000" is 1000, not 1. */
+        function parseVaultInputAmount(raw) {
+            const s = String(raw ?? '')
+                .replace(/,/g, '')
+                .replace(/\u00a0/g, '')
+                .replace(/[\s\u200e\u200f\u202a-\u202e\ufeff]/g, '')
+                .trim();
+            const n = parseFloat(s);
+            return Number.isFinite(n) ? n : 0;
+        }
+
+        /** Wallet balance may be a number or a corrupted string from storage; never use Number(str) on "1,000". */
+        function vaultNumericBalance(w) {
+            if (typeof w === 'number' && Number.isFinite(w)) return w;
+            return parseVaultInputAmount(String(w ?? ''));
+        }
+
+        /**
+         * Amount in the field: prefer parsed .value whenever the user entered non-whitespace.
+         * type=number can set validity.badInput or odd valueAsNumber on file:// / paste / locale quirks
+         * while calcXwm still ran from oninput — parsing the string keeps mint in sync with the preview.
+         */
+        function readVaultAmountFromInput(el) {
+            if (!el) return 0;
+            const raw = String(el.value ?? '');
+            const parsed = parseVaultInputAmount(raw);
+            const trimmed = raw
+                .replace(/,/g, '')
+                .replace(/\u00a0/g, '')
+                .replace(/[\s\u200e\u200f\u202a-\u202e\ufeff]/g, '')
+                .trim();
+            if (trimmed !== '') return parsed;
+            try {
+                if (el.type === 'number') {
+                    const vn = el.valueAsNumber;
+                    if (Number.isFinite(vn) && el.validity && !el.validity.badInput) return vn;
+                }
+            } catch (_) { /* ignore */ }
+            return 0;
+        }
+
+        /** Available line for vault actions: floor to 2dp so we never round up above true balance. */
+        function fmtAvailVaultQty(n) {
+            const x = Number(n) || 0;
+            const t = Math.floor(x * 100 + 1e-10) / 100;
+            return t.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        }
+
+        function syncVaultWalletUI() {
+            try {
+                STABLE_AMT_CODES.forEach(function (c) {
+                    const row = document.querySelector('#ccyList .ccy-sec-row[data-ccy="' + c + '"]');
+                    if (!row) return;
+                    const amtEl = row.querySelector('.ccy-sec-amt');
+                    if (amtEl) amtEl.textContent = fmtVaultAmt(WALLET_STABLE_AMTS[c] || 0, 2, 2);
+                });
+                const wit = document.querySelector('#ccyList .ccy-sec-row[data-ccy="MINIMA"]');
+                if (wit) {
+                    const amtEl = wit.querySelector('.ccy-sec-amt');
+                    if (amtEl) amtEl.textContent = fmtVaultAmt(WALLET_WINIWA, 2, 2);
+                }
+                const xt = document.querySelector('#ccyList .ccy-sec-row[data-ccy="xWiniwa"]');
+                if (xt) {
+                    const amtEl = xt.querySelector('.ccy-sec-amt');
+                    if (amtEl) amtEl.textContent = fmtVaultAmt(WALLET_XWM, 2, 4);
+                }
+            } catch (_) { /* ignore */ }
+        }
+
+        function getVaultBalance(ccy) {
+            const c = String(ccy || '');
+            if (c === 'Winiwa') return vaultNumericBalance(WALLET_WINIWA);
+            if (c === 'xWiniwa') return vaultNumericBalance(WALLET_XWM);
+            return Number(WALLET_STABLE_AMTS[c]) || 0;
+        }
+
+        function vaultExecutionAllowed() {
+            const cfg = window.STABLES_CONFIG || {};
+            if (cfg.DEMO_VAULT_UNLOCK !== false) return true;
+            return typeof getCouncilExecutionRole === 'function' && getCouncilExecutionRole() === 'Executor';
+        }
+
+        function pushExchangeHistory(fromCcy, fromAmt, toCcy, toAmt) {
+            let rows = [];
+            try { rows = JSON.parse(localStorage.getItem(EXCHANGE_HIST_KEY) || '[]'); } catch (_) { rows = []; }
+            if (!Array.isArray(rows)) rows = [];
+            rows.unshift({
+                t: Date.now(),
+                from: fromCcy,
+                fromAmt: Number(fromAmt),
+                to: toCcy,
+                toAmt: Number(toAmt)
+            });
+            if (rows.length > 30) rows = rows.slice(0, 30);
+            try { localStorage.setItem(EXCHANGE_HIST_KEY, JSON.stringify(rows)); } catch (_) { /* ignore */ }
+        }
+
+        function renderExchangeRecentList() {
+            const root = document.getElementById('exchangeRecentList');
+            if (!root) return;
+            let rows = [];
+            try { rows = JSON.parse(localStorage.getItem(EXCHANGE_HIST_KEY) || '[]'); } catch (_) { rows = []; }
+            if (!Array.isArray(rows) || !rows.length) {
+                root.innerHTML = '<div class="xs mu" style="padding:12px 14px;color:var(--m)">No exchanges yet</div>';
+                return;
+            }
+            root.innerHTML = rows.map(function (r) {
+                const fa = Number(r.fromAmt);
+                const ta = Number(r.toAmt);
+                const fs = Number.isFinite(fa) ? fa.toLocaleString('en-US', { maximumFractionDigits: 8 }) : '\u2014';
+                const ts = Number.isFinite(ta) ? ta.toLocaleString('en-US', { maximumFractionDigits: 8 }) : '\u2014';
+                return '<div class="tx-row"><div class="tx-ic in-ic" aria-hidden="true">\u21C4</div><div class="tx-info"><div class="tx-t">Exchange</div><div class="tx-d">' +
+                    String(r.from || '') + ' \u2192 ' + String(r.to || '') + '</div></div><div class="tx-amt" style="text-align:right"><div>' + fs + '</div><div class="xs mu" style="margin-top:2px">' + ts + '</div></div></div>';
+            }).join('');
+        }
+        window.renderExchangeRecentList = renderExchangeRecentList;
+
+        function executeExchangeNow() {
+            const from = String(document.getElementById('exFromCcy')?.value || '').trim();
+            const to = String(document.getElementById('exToCcy')?.value || '').trim();
+            const fromAmt = parseFloat(String(document.getElementById('exFrom')?.value || '').replace(/,/g, '')) || 0;
+            if (!from || !to || from === to) return showToast('Pick two different currencies');
+            if (fromAmt <= 0) return showToast('Enter an amount');
+            const rate = (RATES[from] && typeof RATES[from][to] === 'number') ? RATES[from][to] : 0;
+            if (!rate) return showToast('No rate for this pair');
+            const bal = getVaultBalance(from);
+            if (fromAmt > bal + 1e-10) return showToast('Insufficient balance');
+            const toAmt = Number((fromAmt * rate).toFixed(8));
+
+            if (from === 'Winiwa') WALLET_WINIWA -= fromAmt;
+            else if (from === 'xWiniwa') WALLET_XWM -= fromAmt;
+            else WALLET_STABLE_AMTS[from] = (Number(WALLET_STABLE_AMTS[from]) || 0) - fromAmt;
+
+            if (to === 'Winiwa') WALLET_WINIWA += toAmt;
+            else if (to === 'xWiniwa') WALLET_XWM += toAmt;
+            else WALLET_STABLE_AMTS[to] = (Number(WALLET_STABLE_AMTS[to]) || 0) + toAmt;
+
+            WALLET_WABLES = computeWalletWablesUsdTotal();
+            const exToEl = document.getElementById('exTo');
+            if (exToEl) exToEl.value = String(toAmt);
+            saveWalletVaultState();
+            pushExchangeHistory(from, fromAmt, to, toAmt);
+            if (typeof renderExchangeRecentList === 'function') renderExchangeRecentList();
+            if (typeof updateGlobalUI === 'function') updateGlobalUI();
+            showToast('\u2713 Exchange complete');
+        }
+
         let SIM_Winiwa_PRICE = 0.00846;
         const SIM_LEVERAGE = 4.2;
         let SIM_XWM_PRICE = SIM_Winiwa_PRICE / (SIM_LEVERAGE * 10);
 
+        // Price display currency preference for xWiniwa price lines.
+        // "auto" means: use Wallet primary currency (BASE_CCY).
+        const PRICE_DISPLAY_CCY_PREF_KEY = 'stables_price_display_ccy_pref_v1';
+        let PRICE_DISPLAY_CCY_PREF = (() => {
+            try {
+                const v = localStorage.getItem(PRICE_DISPLAY_CCY_PREF_KEY);
+                return (v && String(v).trim()) ? String(v).trim() : 'auto';
+            } catch (_) { return 'auto'; }
+        })();
+        let PRICE_DISPLAY_CCY_EFFECTIVE = 'USDw';
+
+        function applyPriceDisplaySettings() {
+            // BASE_CCY is declared later in the file, but this function is only called after wallet settings sync.
+            PRICE_DISPLAY_CCY_EFFECTIVE = (PRICE_DISPLAY_CCY_PREF === 'auto') ? BASE_CCY : PRICE_DISPLAY_CCY_PREF;
+        }
+
+        function refreshXwmPriceDisplays() {
+            try {
+                const ccy = PRICE_DISPLAY_CCY_EFFECTIVE || 'USDw';
+                const key = (ccy === 'MINIMA') ? 'Winiwa' : ccy;
+                const price = (RATES && RATES.xWiniwa && typeof RATES.xWiniwa[key] === 'number') ? RATES.xWiniwa[key] : SIM_XWM_PRICE;
+                const s = Number.isFinite(price) ? price.toFixed(5) : '—';
+                const label = (ccy === 'MINIMA') ? 'Winiwa' : ccy;
+                const out = (key === 'USDw') ? ('$' + s) : (s + ' ' + label);
+                const bEl = document.getElementById('xwmPriceDisplay');
+                if (bEl) bEl.textContent = out;
+                const mEl = document.getElementById('xwmMintWiniwaPriceDisplay');
+                if (mEl) mEl.textContent = out;
+            } catch (_) { /* ignore */ }
+        }
+
         // Keep the burn panel "xWiniwa price" row consistent with the demo constants.
         try {
-            const el = document.getElementById('xwmPriceDisplay');
-            if (el) el.textContent = '$' + SIM_XWM_PRICE.toFixed(5);
+            refreshXwmPriceDisplays();
         } catch (_) { /* ignore */ }
         if (typeof refreshMintWiniwaOracleUI === 'function') refreshMintWiniwaOracleUI();
         if (typeof refreshWablesFxOracleUI === 'function') refreshWablesFxOracleUI();
+        if (typeof syncWiniwaRatesFromSpot === 'function') syncWiniwaRatesFromSpot();
+        if (typeof calcRate === 'function') calcRate();
 
         /** Last 24h USDT quote volume from MEXC when the ticker response includes it (see `refreshWiniwaSpotFromMexc`). */
         window.WINIWA_24H_QUOTE_USD = null;
@@ -9153,7 +9604,8 @@
             const full = srcTxt ? (px + srcTxt) : (px + ' \u00b7 \u2026');
             try {
                 const mintPx = document.getElementById('xwmMintWiniwaPriceDisplay');
-                if (mintPx) mintPx.textContent = (Number.isFinite(p) && p > 0) ? ('$' + p.toFixed(5)) : '\u2014';
+                // Price display (xWiniwa price) is handled by `refreshXwmPriceDisplays()`.
+                if (typeof refreshXwmPriceDisplays === 'function' && mintPx) refreshXwmPriceDisplays();
             } catch (_) { /* ignore */ }
             ['mintWiniwaOracleSource', 'mintXwmWiniwaOracleSource'].forEach(function (id) {
                 const el = document.getElementById(id);
@@ -9185,13 +9637,13 @@
                 // xWiniwa is demo-leveraged equity; make it meaningfully smaller than base Winiwa.
                 SIM_XWM_PRICE = SIM_Winiwa_PRICE / (SIM_LEVERAGE * 10);
                 try {
-                    const el = document.getElementById('xwmPriceDisplay');
-                    if (el) el.textContent = '$' + SIM_XWM_PRICE.toFixed(5);
+                    if (typeof refreshXwmPriceDisplays === 'function') refreshXwmPriceDisplays();
                 } catch (_) { /* ignore */ }
                 try {
-                    if (RATES.Winiwa) RATES.Winiwa.USDw = n;
+                    if (typeof syncWiniwaRatesFromSpot === 'function') syncWiniwaRatesFromSpot();
                 } catch (_) {}
                 setSrc(label);
+                if (typeof calcRate === 'function') calcRate();
                 if (typeof calcSlider === 'function') calcSlider();
                 if (typeof updateGlobalUI === 'function') updateGlobalUI();
                 return true;
@@ -9361,11 +9813,15 @@
         }
 
         function updateGlobalUI() {
-            document.getElementById('availWiniwaXwm').textContent = `Available: ${WALLET_WINIWA.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
-            document.getElementById('availWiniwaIss').textContent = `Available: ${WALLET_WINIWA.toLocaleString('en-US', { maximumFractionDigits: 0 })} Winiwa`;
+            if (typeof syncVaultWalletUI === 'function') syncVaultWalletUI();
+
+            document.getElementById('availWiniwaXwm').textContent = `Available: ${fmtAvailVaultQty(WALLET_WINIWA)}`;
+            document.getElementById('availWiniwaIss').textContent = `Available: ${fmtAvailVaultQty(WALLET_WINIWA)} Winiwa`;
+            try { if (typeof updateSendFavEq === 'function') updateSendFavEq(); } catch (_) { }
+            try { if (typeof updateRecvFavEq === 'function') updateRecvFavEq(); } catch (_) { }
             const burnAvailEl = document.getElementById('availXwmBurn');
             if (burnAvailEl) {
-                burnAvailEl.textContent = `Available: ${WALLET_XWM.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+                burnAvailEl.textContent = `Available: ${fmtAvailVaultQty(WALLET_XWM)}`;
             }
 
             if (typeof updateWablesAvailMintBurn === 'function') updateWablesAvailMintBurn();
@@ -9387,8 +9843,10 @@
             const meta = CCY_META[BASE_CCY] || { emoji: '💱', name: BASE_CCY };
 
             const getRate = (from, to) => {
-                const f = (from === 'MINIMA') ? 'USDw' : from;
-                const t = (to === 'MINIMA') ? 'USDw' : to;
+                // Treat MINIMA (UI name: Winiwa) as Winiwa for pricing against the RATES table.
+                // Previously MINIMA was mapped to USDw which effectively forced "Winiwa = $1".
+                const f = (from === 'MINIMA') ? 'Winiwa' : from;
+                const t = (to === 'MINIMA') ? 'Winiwa' : to;
                 if (f === t) return 1;
                 return (RATES[f] && RATES[f][t]) ? RATES[f][t] : 1;
             };
@@ -9719,7 +10177,7 @@
             const amt = m ? parseFloat(m[0].replace(/,/g, '')) : 0;
             if (!Number.isFinite(amt) || amt <= 0) return showToast('Pick a valid Winiwa amount');
 
-            WALLET_WINIWA += amt;
+            WALLET_WINIWA = vaultNumericBalance(WALLET_WINIWA) + amt;
 
             if (document.getElementById('xwmAmt')) document.getElementById('xwmAmt').value = '';
             if (document.getElementById('issueAmt')) document.getElementById('issueAmt').value = '';
@@ -9732,8 +10190,12 @@
             if (typeof calcReclaim === 'function') calcReclaim();
             if (typeof updateGlobalUI === 'function') updateGlobalUI();
             if (typeof calcSlider === 'function') calcSlider();
+            if (typeof saveWalletVaultState === 'function') saveWalletVaultState();
 
-            showToast('✓ Winiwa sent to my Vault!');
+            showToast(
+                '✓ Winiwa added to your wallet.\nReady to:\n- mint xWiniwa & Wables\n- invest in funds\n- perform exchange and more',
+                { tone: 'amber', prose: true, centerScreen: true }
+            );
         }
 
         function resetFaucetBalances() {
@@ -9741,6 +10203,9 @@
             WALLET_XWM = 0;
             WALLET_WABLES = 0;
             WALLET_CF = 0;
+            STABLE_AMT_CODES.forEach(function (c) { WALLET_STABLE_AMTS[c] = 0; });
+            try { localStorage.removeItem(WALLET_STATE_KEY); } catch (_) { /* ignore */ }
+            try { localStorage.removeItem(EXCHANGE_HIST_KEY); } catch (_) { /* ignore */ }
 
             ['xwmAmt', 'issueAmt', 'xwmBurnAmt', 'reclaimAmt'].forEach(id => {
                 const el = document.getElementById(id);
@@ -9753,50 +10218,63 @@
             if (typeof calcReclaim === 'function') calcReclaim();
             if (typeof updateGlobalUI === 'function') updateGlobalUI();
             if (typeof calcSlider === 'function') calcSlider();
+            if (typeof saveWalletVaultState === 'function') saveWalletVaultState();
+            if (typeof renderExchangeRecentList === 'function') renderExchangeRecentList();
 
             showToast('Balances reset - Vault cleared');
         }
 
         function executeMintXwm() {
-            const role = getCouncilExecutionRole();
-            if (role !== 'Executor') return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
-            const mintAmt = parseFloat(document.getElementById('xwmAmt').value) || 0;
-            if (mintAmt <= 0 || mintAmt > WALLET_WINIWA) return showToast('Invalid amount or insufficient balance');
+            if (!vaultExecutionAllowed()) return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
+            const amtEl = document.getElementById('xwmAmt');
+            if (!amtEl) return showToast('Mint form not ready — try again');
+            WALLET_WINIWA = vaultNumericBalance(WALLET_WINIWA);
+            const bal = WALLET_WINIWA;
+            const mintRaw = readVaultAmountFromInput(amtEl);
+            const tol = 1e-5;
+            if (mintRaw <= 0 || mintRaw > bal + tol) return showToast('Invalid amount or insufficient balance');
+            const mintAmt = Math.min(mintRaw, bal);
             const earnedXwm = (mintAmt * SIM_Winiwa_PRICE * SIM_LEVERAGE / SIM_XWM_PRICE);
 
             WALLET_WINIWA -= mintAmt;
             WALLET_XWM += earnedXwm;
             PROTOCOL_WINIWA_ASSETS += mintAmt;
-            // XWM value increases because more users minted
-            PROTOCOL_XWM_VAL += (mintAmt * SIM_Winiwa_PRICE);
+            // xWiniwa equity (USD) increases when more is minted (see ASSET_XWM_USD in demo protocol state)
+            ASSET_XWM_USD += (mintAmt * SIM_Winiwa_PRICE);
 
             document.getElementById('xwmAmt').value = '';
             calcXwm();
+            saveWalletVaultState();
             updateGlobalUI();
             showToast(`Successfully minted ${earnedXwm.toLocaleString('en-US', { maximumFractionDigits: 2 })} xWiniwa`);
         }
 
         function executeBurnXwm() {
-            const role = getCouncilExecutionRole();
-            if (role !== 'Executor') return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
-            const burnAmt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
-            if (burnAmt <= 0 || burnAmt > WALLET_XWM) return showToast('Invalid amount or insufficient balance');
+            if (!vaultExecutionAllowed()) return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
+            const burnEl = document.getElementById('xwmBurnAmt');
+            if (!burnEl) return showToast('Burn form not ready — try again');
+            WALLET_XWM = vaultNumericBalance(WALLET_XWM);
+            const xBal = WALLET_XWM;
+            const burnRaw = readVaultAmountFromInput(burnEl);
+            const tol = 1e-5;
+            if (burnRaw <= 0 || burnRaw > xBal + tol) return showToast('Invalid amount or insufficient balance');
+            const burnAmt = Math.min(burnRaw, xBal);
             const earnedWiniwa = (burnAmt * SIM_XWM_PRICE / SIM_Winiwa_PRICE);
 
             WALLET_XWM -= burnAmt;
             WALLET_WINIWA += earnedWiniwa;
             PROTOCOL_WINIWA_ASSETS -= earnedWiniwa;
-            PROTOCOL_XWM_VAL -= (earnedWiniwa * SIM_Winiwa_PRICE);
+            ASSET_XWM_USD -= (earnedWiniwa * SIM_Winiwa_PRICE);
 
             document.getElementById('xwmBurnAmt').value = '';
             calcXwmBurn();
+            saveWalletVaultState();
             updateGlobalUI();
             showToast(`Successfully burned xWiniwa for Winiwa`);
         }
 
         function executeMintWables() {
-            const role = getCouncilExecutionRole();
-            if (role !== 'Executor') return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
+            if (!vaultExecutionAllowed()) return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
             const mintAmt = parseFloat(document.getElementById('issueAmt').value) || 0;
             if (mintAmt <= 0) return showToast('Enter valid amount');
             const issueCcy = walletParseCcySel('issueCcy');
@@ -9806,33 +10284,37 @@
             if (winiwaCost > WALLET_WINIWA) return showToast('Insufficient Winiwa balance');
 
             WALLET_WINIWA -= winiwaCost;
-            WALLET_WABLES += usdEquiv;
+            WALLET_STABLE_AMTS[issueCcy] = (Number(WALLET_STABLE_AMTS[issueCcy]) || 0) + mintAmt;
+            WALLET_WABLES = computeWalletWablesUsdTotal();
             PROTOCOL_WINIWA_ASSETS += winiwaCost;
             PROTOCOL_WABLES_LIAB += usdEquiv;
 
             document.getElementById('issueAmt').value = '';
             calcIssue();
+            saveWalletVaultState();
             updateGlobalUI();
             showToast(`Successfully minted ${mintAmt.toLocaleString('en-US', { maximumFractionDigits: 2 })} Wables`);
         }
 
         function executeBurnWables() {
-            const role = getCouncilExecutionRole();
-            if (role !== 'Executor') return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
+            if (!vaultExecutionAllowed()) return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
             const burnAmt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
             const reclaimCcy = walletParseCcySel('reclaimCcy');
             const reclaimUsdPU = walletStableUsdPerUnit(reclaimCcy);
             const usdEquiv = burnAmt * reclaimUsdPU;
-            if (burnAmt <= 0 || usdEquiv > WALLET_WABLES) return showToast('Invalid amount or insufficient balance');
+            const stableBal = Number(WALLET_STABLE_AMTS[reclaimCcy]) || 0;
+            if (burnAmt <= 0 || burnAmt > stableBal) return showToast('Invalid amount or insufficient balance');
             const earnedWiniwa = usdEquiv / SIM_Winiwa_PRICE;
 
-            WALLET_WABLES -= usdEquiv;
+            WALLET_STABLE_AMTS[reclaimCcy] = stableBal - burnAmt;
+            WALLET_WABLES = computeWalletWablesUsdTotal();
             WALLET_WINIWA += earnedWiniwa;
             PROTOCOL_WINIWA_ASSETS -= earnedWiniwa;
             PROTOCOL_WABLES_LIAB -= usdEquiv;
 
             document.getElementById('reclaimAmt').value = '';
             calcReclaim();
+            saveWalletVaultState();
             updateGlobalUI();
             showToast(`Successfully reclaimed ${earnedWiniwa.toLocaleString('en-US', { maximumFractionDigits: 0 })} Winiwa`);
         }
@@ -9860,16 +10342,16 @@
             if (label2) { label2.textContent = txt; label2.style.color = color; }
 
             // Read all intended trades
-            const mintXwmWiniwa = parseFloat(document.getElementById('xwmAmt').value) || 0;
-            const mintWablesAmt = parseFloat(document.getElementById('issueAmt').value) || 0;
+            const mintXwmWiniwa = parseVaultInputAmount(document.getElementById('xwmAmt').value);
+            const mintWablesAmt = parseVaultInputAmount(document.getElementById('issueAmt').value);
             const issueCcy = walletParseCcySel('issueCcy');
             const issueUsdPU = walletStableUsdPerUnit(issueCcy);
             const mintWablesWiniwa = mintWablesAmt > 0 ? ((mintWablesAmt * issueUsdPU) / SIM_Winiwa_PRICE) : 0;
 
-            const burnXwmAmt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
+            const burnXwmAmt = parseVaultInputAmount(document.getElementById('xwmBurnAmt').value);
             const burnXwmWiniwa = burnXwmAmt > 0 ? (burnXwmAmt * SIM_XWM_PRICE / SIM_Winiwa_PRICE) : 0;
 
-            const burnWablesAmt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
+            const burnWablesAmt = parseVaultInputAmount(document.getElementById('reclaimAmt').value);
             const reclaimCcy = walletParseCcySel('reclaimCcy');
             const reclaimUsdPU = walletStableUsdPerUnit(reclaimCcy);
             const burnWablesWiniwa = burnWablesAmt > 0 ? ((burnWablesAmt * reclaimUsdPU) / SIM_Winiwa_PRICE) : 0;
@@ -10348,8 +10830,10 @@
                 settingsPh.style.display = src ? 'none' : 'block';
             }
 
-            // Execution button lock (demo)
-            const disable = role !== 'Executor';
+            // Execution button lock (demo) — skipped when DEMO_VAULT_UNLOCK is true (see runtime-config.js)
+            const cfg = window.STABLES_CONFIG || {};
+            const vaultUnlock = cfg.DEMO_VAULT_UNLOCK !== false;
+            const disable = !vaultUnlock && role !== 'Executor';
             ['executeMintXwm', 'executeBurnXwm', 'executeMintWables', 'executeBurnWables'].forEach(fn => {
                 const btn = document.querySelector('button[onclick*="' + fn + '"]');
                 if (!btn) return;
@@ -10517,14 +11001,14 @@
             const steps = 40;
             
             // Re-read trade intents for full curve simulation
-            const mintXwmWiniwa = parseFloat(document.getElementById('xwmAmt')?.value) || 0;
-            const mintWablesAmt = parseFloat(document.getElementById('issueAmt')?.value) || 0;
+            const mintXwmWiniwa = parseVaultInputAmount(document.getElementById('xwmAmt')?.value);
+            const mintWablesAmt = parseVaultInputAmount(document.getElementById('issueAmt')?.value);
             const issueCcy = walletParseCcySel('issueCcy');
             const issueUsdPU = walletStableUsdPerUnit(issueCcy);
             const mintWablesWiniwa = mintWablesAmt > 0 ? ((mintWablesAmt * issueUsdPU) / SIM_Winiwa_PRICE) : 0;
-            const burnXwmAmt = parseFloat(document.getElementById('xwmBurnAmt')?.value) || 0;
+            const burnXwmAmt = parseVaultInputAmount(document.getElementById('xwmBurnAmt')?.value);
             const burnXwmWiniwa = burnXwmAmt > 0 ? (burnXwmAmt * SIM_XWM_PRICE / SIM_Winiwa_PRICE) : 0;
-            const burnWablesAmt = parseFloat(document.getElementById('reclaimAmt')?.value) || 0;
+            const burnWablesAmt = parseVaultInputAmount(document.getElementById('reclaimAmt')?.value);
             const reclaimCcy = walletParseCcySel('reclaimCcy');
             const reclaimUsdPU = walletStableUsdPerUnit(reclaimCcy);
             const burnWablesWiniwa = burnWablesAmt > 0 ? ((burnWablesAmt * reclaimUsdPU) / SIM_Winiwa_PRICE) : 0;
@@ -10625,6 +11109,33 @@
         }
         window.addEventListener('hashchange', routeFromHash);
         runBootStep('routeFromHash', routeFromHash);
+        runBootStep('resetDemoWalletAfterHardReloadShortcut', function () {
+            try {
+                const raw = sessionStorage.getItem(HARD_RELOAD_WALLET_INTENT_TS_KEY);
+                try { sessionStorage.removeItem(HARD_RELOAD_WALLET_INTENT_TS_KEY); } catch (_) { /* ignore */ }
+                let isReload = false;
+                try {
+                    const nav = performance && performance.getEntriesByType ? performance.getEntriesByType('navigation')[0] : null;
+                    if (nav && nav.type === 'reload') isReload = true;
+                } catch (_) { /* ignore */ }
+                if (!isReload && performance && performance.navigation && typeof performance.navigation.type === 'number') {
+                    isReload = performance.navigation.type === 1;
+                }
+                if (!isReload || !raw) return;
+                const ts = Number(raw);
+                if (!Number.isFinite(ts)) return;
+                if (Date.now() - ts > 20000) return;
+                try { localStorage.removeItem(WALLET_STATE_KEY); } catch (_) { /* ignore */ }
+                try { localStorage.removeItem(EXCHANGE_HIST_KEY); } catch (_) { /* ignore */ }
+            } catch (_) { /* ignore */ }
+        });
+        runBootStep('loadWalletVaultState', function () {
+            if (typeof loadWalletVaultState === 'function') loadWalletVaultState();
+        });
+        runBootStep('calcRate:initial', calcRate);
+        runBootStep('renderExchangeRecentList:initial', function () {
+            if (typeof window.renderExchangeRecentList === 'function') window.renderExchangeRecentList();
+        });
         // Initialize dynamic variables on load
         runBootStep('updateGlobalUI:initial', updateGlobalUI);
         runBootStep('updateTreasuryUI', () => updateTreasuryUI(0));
