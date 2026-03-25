@@ -33,7 +33,7 @@
 |--|--|
 | **Nav** | More / Shops & Exchange · **Ambassadors** |
 | **Page header** | Ambassadors (no subline) |
-| **Sections** | Agent row → card: simplified listing model; shop listing **20 Big Mac®** + listing for Ambassadors **20 Big Mac®**; retrocession split when listed Ambassadors perform onboarding; CTA button **Become an ambassador** → plain welcome message + Telegram join button **Join the discussion** |
+| **Sections** | Agent row → card: simplified listing model; shop listing **16 Big Mac®** + listing for Ambassadors **16 Big Mac®**; retrocession split when listed Ambassadors perform onboarding; CTA button **Become an ambassador** → plain welcome message + Telegram join button **Join the discussion** |
 
 ---
 
@@ -85,13 +85,22 @@
 
 ---
 
-### `page-faucet` — Get test Winiwa
+### `page-onoff-ramp` — On/Off Ramp
 | | |
 |--|--|
-| **Nav** | More (test) |
-| **Page header** | Get Test Wiwina · Claim test tokens (no real value) |
-| **Extra** | Test banner |
-| **Sections** | Claim test Winiwa → card; Reset test state → card |
+| **Nav** | More / Shops & Exchange · **On/Off Ramp** |
+| **Page header** | On/Off Ramp · Paper money to Stables, and back |
+| **Sections** | **Where MINIMA trades** → card (MEXC, BitMart, XT.COM + Minima DEX on-chain); **On-ramp (paper money → Stables)** → 4-step flow + inline Bridge/DEX route (`mxusd.global` + `minimask.org/dex/public`); **Off-ramp (Stables → paper money)** → 4-step flow + inline Bridge/DEX route |
+
+---
+
+### `page-faucet` — Get Winiwa
+| | |
+|--|--|
+| **Nav** | More |
+| **Page header** | Get Winiwa · Acquire Winiwa to mint Wables tokens |
+| **Extra** | None (testing copy removed) |
+| **Sections** | Claim Winiwa → card; Reset balances → card |
 
 ---
 
@@ -178,7 +187,7 @@
 |--|--|
 | **Nav** | More / Shops & Exchange · **My shop**; Shops tab CTA → `my-shop`; legacy hash `#shop-ambassador` → `my-shop` |
 | **Page header** | My shop · List your business, invoices, and merchant tools |
-| **Sections** | Your shop on Stables → card (regional **Ambassador** for listing help; **fully listed** → same privileges as Ambassador + onboard others; pointer to Ambassador page for registration paths); **Create Invoice** → card (🧾 row → `invoice`); **Webshop linking & QR** → card (QR/payment link payload: address, amount, currency, order ref; demo QR box; StablesAgent mini); **Merchant API kit** → card (integration kit copy + **StablesCouncil** GitHub link; preview, no live API); **Webhooks & callbacks** → in `index.html` but **hidden** (`display:none` on section) until merchant settings; re-enable by removing that style |
+| **Sections** | Your shop on Stables → card (regional **Ambassador** for listing help; **fully listed** → same privileges as Ambassador + onboard others; pointer to Ambassador page for registration paths); **Create Invoice** → card (🧾 row → `invoice`); **Webshop linking & QR** → card (QR/payment link payload: address, amount, currency, order ref; demo QR box; StablesAgent mini); **Merchant API kit** → card (integration kit copy + **StablesCouncil** GitHub link; preview, no live API); **Pay in Stables sticker** → printable card (asset `shop_sticker_minimal_v0.0.01.png`); **Webhooks & callbacks** → in `index.html` but **hidden** (`display:none` on section) until merchant settings; re-enable by removing that style |
 
 ---
 
@@ -242,7 +251,7 @@ Keep `SectionWithCaption` and shared CSS aligned with this inventory and `web_co
 |---------|------------------|------|
 | Top bar sync pill | `#syncNum` inside `.sync-pill` | **MDS**: `MDS.init` → `MDS.cmd('status')` every ~2.2s → `response.response.chain.block` (real height); `.sync-pill--placeholder` removed. **No MDS** (after short wait): text **Only in node** (no fake height); `.sync-pill--placeholder` (muted, no green dot). Tooltip explains MiniDapp host. |
 | Floating actions | (FAB `<button>` nodes have **no** stable `id`) | Wallet / scanner — wired in JS |
-| More menu | `drawer` (`dback`) | `openMore()` / `closeMore`; **Shops & Exchange**: Ambassador, My shop, Exchange; **Messages & Contacts**: Chat, Contacts, Council communications; **Community**: Council, **Legal & notices** ⚖️ (`settings-legal`), Treasury; **Preferences**: My profile, Settings and updates, Security; **Help**: Guided tours, StablesAgent, Feedback; **Test tools**: `.drawer-test-faucet-card` (Testing Phase Only + Get Test Wiwina → `faucet`); top `drawer-lang-bar` + globe |
+| More menu | `drawer` (`dback`) | `openMore()` / `closeMore`; **Shops & Exchange**: Ambassador, My shop, Exchange, On/Off Ramp; **Messages & Contacts**: Chat, Contacts, Council communications; **Community**: Council, **Legal & notices** ⚖️ (`settings-legal`), Treasury; **Preferences**: My profile, Settings and updates, Security; **Help**: Guided tours, StablesAgent, Feedback; **Faucet**: `.drawer-test-faucet-card` (Get Winiwa → `faucet`); top `drawer-lang-bar` + globe |
 | Merchant fullscreen | `merchantDisplay` | Pay display; close sets `display='none'` |
 | Portfolio simulator | `simDrawer` (`dback`) | `closeSim`; opened from Invest (JS) |
 | Toast | `toast` | `showToast()`; optional `{ prose: true }`; `tone: 'amber'`; optional `centerScreen` |
@@ -335,10 +344,10 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | Date | Change |
 |------|--------|
 | 2026-03-19 | **Legal & notices** (`page-settings-legal`): More → **Community** (⚖️); **stablescouncil.org** + github.io + agent subdomain in-app. **Exchange** recent list: `activity-contacts.js` → `openExchangeDetail` / `repeatExchangeFromDetail`. |
-| 2026-03-19 | **Ambassador copy simplification**: listing economics clarified (shop listing 20 Big Mac®; Ambassador listing 20 Big Mac®), with concise retrocession explanation and updated drawer text. |
+| 2026-03-19 | **Ambassador copy simplification**: listing economics clarified (shop listing 16 Big Mac®; Ambassador listing 16 Big Mac®), with concise retrocession explanation and updated drawer text. |
 | 2026-03-19 | **Ambassador CTA**: added **Become an ambassador** button on `page-ambassador`; opens modal: “All these parameters will be discussed within the community…” + Telegram join button (`AMBASSADOR_TOPICS_TELEGRAM_URL`). |
 | 2026-03-19 | **Merchant rating framework scaffold**: `activity-contacts.js` adds signed/onchain-ready review schema, spend-weighted scoring, anti-spam guards (minimum spend + cooldown), and links from transaction detail, contacts, shop profile, and Shops cards. |
-| 2026-03-19 | **Ambassador** / **My shop** copy: regional Ambassadors for listing; fully listed → same privileges + onboard others; Ambassador registration **10 Big Mac®** or via **first shop** (preview); merchant **20 Big Mac®** 50/50 kept on Ambassador page. |
+| 2026-03-19 | **Ambassador** / **My shop** copy: regional Ambassadors for listing; fully listed → same privileges + onboard others; Ambassador registration **8 Big Mac®** or via **first shop** (preview); merchant **16 Big Mac®** 50/50 kept on Ambassador page. |
 | 2026-03-19 | Shops & Exchange (was Payments & Trade): `page-ambassador`, `page-my-shop`, `exchange`; Create Invoice section on **My shop**; `#shop-ambassador` → `my-shop`. |
 | 2026-03-19 | **My shop**: **Webshop linking & QR**, **Merchant API kit** (GitHub org link); **Webhooks & callbacks** markup retained but **hidden** (`display:none`); drawer **My shop** ddesc: webshop kit (preview). |
 | 2026-03-19 | Welcome language: globe + `appLangMenuWelcome` (no “Language” label); hidden `#welcomeLang` select; drawer top `drawer-lang-bar` + `#drawerLangGlobeBtn`. |
@@ -359,7 +368,9 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-22 | Initial inventory + handshake link to single `<style>` source. |
 | 2026-03-22 | Top bar `#syncNum`: **live** `chain.block` via `MDS.init` + `status` poll when MDS present; else showcase anchored estimate after brief wait. |
 | 2026-03-22 | Treasury Winiwa spot: `refreshWiniwaSpotFromMexc` tries **MEXC** via `MDS.net.GET` (MiniDapp), then browser MEXC, then **CoinGecko** (`COINGECKO_MINIMA_URL` optional); updates `#minimaPriceNow` / `SIM_Winiwa_PRICE` / `RATES.Winiwa.USDw`. |
-| 2026-03-22 | More drawer: **Community** section moved to immediately follow **Messages & Contacts** (before Preferences, Help, Test tools). |
+| 2026-03-22 | More drawer: **Community** section moved to immediately follow **Messages & Contacts** (before Preferences, Help, Faucet). |
+
+| 2026-03-25 | Faucet / Winiwa: renamed menu card + page to **Get Winiwa** (removed testing banner/copy); Mint page now explains Winiwa->tokens conversion and links to **On/Off Ramp** for MINIMA acquisition; On/Off Ramp on-ramp now links to `faucet`. |
 | 2026-03-22 | Top bar: **Only in node** when no MDS (no simulated block); `.sync-pill--placeholder`. Treasury stress: Winiwa price stack **above** `%` row, then slider. |
 | 2026-03-22 | Treasury stress: Winiwa **6 dp** (`fmtWiniwaUSD6`); USD tick row above track; **%** tick row (`.treasury-slider-pct-row`) below track; thumb `#treasurySliderThumbPrice` above axis / `#treasurySliderThumbPct` below; removed `#protocolSliderPct`; `calcSlider` falls back to `#protocolSlider`. |
 | 2026-03-23 | **Source path** → `prod_stables_app_v0.2.11/` (see `minidapp_version.md`). |
@@ -368,3 +379,4 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-23 | Primary-currency default: `EURw` is now first/default (wallet initial shell + `BASE_CCY='EURw'`; welcome fallback prefers `EURw` when available). |
 | 2026-03-24 | Treasury: **Concentration & trading depth** (xWiniwa vs Stables, demo Winiwa chain slice vs `WINIWA_24H_QUOTE_USD`); `MEXC_TICKER_URL` default → 24h ticker; `renderTreasuryConcentrationReview` on liability render + Treasury `calcSlider`. |
 | 2026-03-24 | Invest **Coverage fund**: **Last 30 days perf** vs **Historical performance** sections; removed inner duplicate title and third under-graph line; **My available balances**; token/NAV under **Fund composition**. |
+| 2026-03-25 | New `page-onoff-ramp` under **Shops & Exchange** in More; lists 3 exchanges (MEXC, LBank, XT.COM) and explicit on-ramp/off-ramp flows between fiat and Stables. |

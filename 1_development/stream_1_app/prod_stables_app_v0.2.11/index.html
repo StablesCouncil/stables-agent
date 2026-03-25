@@ -178,7 +178,9 @@
         }
 
         .sync-pill--placeholder .dot {
-            display: none;
+            display: inline-block;
+            background: var(--rd);
+            box-shadow: 0 0 6px var(--rd);
         }
 
         /* Treasury stress slider: anchor USD row above track, % row below track */
@@ -3393,12 +3395,12 @@
             </div>
         </div>
     <!-- Column 2: Test Pill (Center) -->
-    <div class="test-pill" onclick="openMore();setTimeout(()=>navigate('faucet'),350)" style="justify-self: center;">
-        🧪 Test Phase - No real value
+    <div class="test-pill" style="justify-self: center;cursor:default">
+        Testing - no value
     </div>
     <!-- Column 3: Sync Pill (Right) -->
-    <div class="sync-pill sync-pill--placeholder" title="Block height appears when you open Stables in the MiniDapp host (node)." style="justify-self: end;">
-        <div class="dot"></div><span id="syncNum">Only in node</span>
+    <div class="sync-pill sync-pill--placeholder" title="Block height from your node (MDS)." style="justify-self: end;">
+        <div class="dot"></div><span id="syncNum">Block height</span>
     </div>
     </div>
 
@@ -3848,6 +3850,10 @@
                     <div class="app-page-header__sub">Mint and burn xWiniwa and Wables</div>
                 </div>
             </header>
+            <p class="hint" style="margin:-8px 14px 16px;font-weight:800;color:var(--m);line-height:var(--lh-caption);border-left:none;padding-left:0">
+                Convert Winiwa into any Stables token on this page. To acquire MINIMA (Winiwa currently in this test phase), use
+                <a href="#" onclick="navigate('onoff-ramp');return false;" style="color:var(--c);text-decoration:underline">On/Off Ramp</a>.
+            </p>
             <div class="tab-row">
                 <button class="tab-btn active" id="vXwm" onclick="setVTab('xwm')">Mint xWiniwa</button>
                 <button class="tab-btn" id="vIssue" onclick="setVTab('issue')">Mint Wables</button>
@@ -3867,34 +3873,35 @@
                             <div style="font-size:16px;font-weight:900">&#x26CF;&#xFE0F; Mint xWiniwa</div>
                         </div>
                         <!-- Input -->
-                        <div style="margin-bottom:10px">
-                            <div class="fbet xs mu" style="margin-bottom:5px">
-                                <div>Winiwa to lock</div>
-                                <div id="availWiniwaXwm">Available: 5,000,000</div>
+                        <div style="display:grid;grid-template-columns:1fr 0.85fr;gap:14px;margin-bottom:14px;align-items:start">
+                            <div>
+                                <div class="fbet xs mu" style="margin-bottom:5px">
+                                    <div>Winiwa to lock</div>
+                                    <div id="availWiniwaXwm">Available: 5,000,000</div>
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
+                                    <input class="finput" type="number" id="xwmAmt" placeholder="0" oninput="calcXwm()"
+                                        inputmode="decimal" style="min-width:0">
+                                    <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
+                                        onclick="setXwmMax()">MAX</button>
+                                    <div
+                                        style="display:flex;align-items:center;padding:0 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:10px;font-size:13px;font-weight:700;color:var(--pu)">
+                                        Mint</div>
+                                </div>
                             </div>
-                            <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
-                                <input class="finput" type="number" id="xwmAmt" placeholder="0" oninput="calcXwm()"
-                                    inputmode="decimal" style="min-width:0">
-                                <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
-                                    onclick="setXwmMax()">MAX</button>
-                                <div
-                                    style="display:flex;align-items:center;padding:0 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:10px;font-size:13px;font-weight:700;color:var(--pu)">
-                                    Mint</div>
-                            </div>
-                        </div>
-                        <!-- Calc - always visible -->
-                        <div class="calc-box">
-                            <div class="calc-row">
-                                <span class="mu">Winiwa price</span>
-                                <span style="font-weight:700">$0.00846</span>
-                            </div>
-                            <div class="calc-row">
-                                <span class="mu">xWiniwa received</span>
-                                <span id="xwmCalcR" style="font-weight:800;color:var(--pu)">&mdash;</span>
-                            </div>
-                            <div class="calc-row" style="margin-bottom:0">
-                                <span class="mu">Effective leverage</span>
-                                <span style="font-weight:800;color:var(--pu)">x4.2</span>
+                            <div>
+                                <div class="calc-row">
+                                    <span class="mu">Winiwa price</span>
+                                    <span style="font-weight:700">$0.00846</span>
+                                </div>
+                                <div class="calc-row">
+                                    <span class="mu">xWiniwa received</span>
+                                    <span id="xwmCalcR" style="font-weight:800;color:var(--pu)">&mdash;</span>
+                                </div>
+                                <div class="calc-row" style="margin-bottom:0">
+                                    <span class="mu">Effective leverage</span>
+                                    <span style="font-weight:800;color:var(--pu)">x4.2</span>
+                                </div>
                             </div>
                         </div>
                         <button class="btn"
@@ -3905,24 +3912,25 @@
                         <!-- BURN xWINIWA - Reclaim Winiwa -->
                         <div style="margin-top:32px">
                             <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn xWiniwa</div>
-                            <div
-                                style="padding:14px;background:rgba(167,139,250,.05);border:1px solid rgba(167,139,250,.18);border-radius:12px">
-                                <div class="xs mu" style="margin-bottom:10px">Requires CR &gt; 110% after burn &middot;
+                            <div style="padding:0;background:transparent;border:none;border-radius:0">
+                                <div class="xs mu" style="margin-bottom:14px;line-height:1.45">Requires CR &gt; 110% after burn &middot;
                                     no fees</div>
-                                <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
-                                    <input class="finput" type="number" id="xwmBurnAmt" placeholder="xWiniwa to burn"
-                                        oninput="calcXwmBurn()" inputmode="decimal" style="min-width:0">
-                                    <div
-                                        style="display:flex;align-items:center;padding:0 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:10px;font-size:12px;font-weight:700;color:var(--pu)">
-                                        xWiniwa</div>
+                                <div style="display:grid;grid-template-columns:1fr 0.85fr;gap:12px;margin-bottom:14px;align-items:start">
+                                    <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+                                        <input class="finput" type="number" id="xwmBurnAmt" placeholder="xWiniwa to burn"
+                                            oninput="calcXwmBurn()" inputmode="decimal" style="min-width:0">
+                                        <div
+                                            style="display:flex;align-items:center;padding:0 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:10px;font-size:12px;font-weight:700;color:var(--pu)">
+                                            xWiniwa</div>
+                                    </div>
+                                    <div>
+                                        <div class="calc-row"><span class="mu">Winiwa received</span><span
+                                                id="xwmBurnCalc" style="font-weight:800">&mdash;</span></div>
+                                        <div class="calc-row" style="margin-bottom:0"><span class="mu">CR after burn</span><span
+                                                style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
+                                    </div>
                                 </div>
-                                <div class="calc-box" style="margin-bottom:10px">
-                                    <div class="calc-row"><span class="mu">Winiwa received</span><span
-                                            id="xwmBurnCalc" style="font-weight:800">&mdash;</span></div>
-                                    <div class="calc-row"><span class="mu">CR after burn</span><span
-                                            style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
-                                </div>
-                                <button class="btn btn-w" style="border-color:rgba(167,139,250,.3)"
+                                <button class="btn btn-w" style="border-color:rgba(167,139,250,.3);white-space:normal;line-height:1.2;margin-top:4px"
                                     onclick="executeBurnXwm()">Burn xWiniwa &rarr;
                                     Reclaim Winiwa</button>
                             </div>
@@ -3944,40 +3952,42 @@
                     <div class="cb">
                         <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x26CF;&#xFE0F; Mint Wables
                         </div>
-                        <div style="margin-bottom:10px">
-                            <div class="fbet xs mu" style="margin-bottom:5px">
-                                <div>Amount to issue</div>
-                                <div id="availWiniwaIss">Available: 5,000,000 Winiwa</div>
+                        <div style="display:grid;grid-template-columns:1fr 0.85fr;gap:14px;margin-bottom:14px;align-items:start">
+                            <div>
+                                <div class="fbet xs mu" style="margin-bottom:5px">
+                                    <div>Amount to issue</div>
+                                    <div id="availWiniwaIss">Available: 5,000,000 Winiwa</div>
+                                </div>
+                                <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
+                                    <input class="finput" type="number" id="issueAmt" placeholder="0.00"
+                                        oninput="calcIssue()" inputmode="decimal" style="min-width:0">
+                                    <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
+                                        onclick="setIssueMax()">MAX</button>
+                                    <select class="ex-sel" id="issueCcy" style="width:74px" onchange="calcIssue()">
+                                        <option>USDw</option>
+                                        <option>EURw</option>
+                                        <option>GBPw</option>
+                                        <option>JPYw</option>
+                                        <option>CADw</option>
+                                        <option>AUDw</option>
+                                        <option>CHFw</option>
+                                        <option>CNYw</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
-                                <input class="finput" type="number" id="issueAmt" placeholder="0.00"
-                                    oninput="calcIssue()" inputmode="decimal" style="min-width:0">
-                                <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
-                                    onclick="setIssueMax()">MAX</button>
-                                <select class="ex-sel" id="issueCcy" style="width:74px" onchange="calcIssue()">
-                                    <option>USDw</option>
-                                    <option>EURw</option>
-                                    <option>GBPw</option>
-                                    <option>JPYw</option>
-                                    <option>CADw</option>
-                                    <option>AUDw</option>
-                                    <option>CHFw</option>
-                                    <option>CNYw</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="calc-box">
-                            <div class="calc-row">
-                                <span class="mu">Winiwa required</span>
-                                <span id="iCalcM" style="font-weight:800">&mdash;</span>
-                            </div>
-                            <div class="calc-row">
-                                <span class="mu">Stables received</span>
-                                <span id="iCalcR" style="font-weight:800;color:var(--gr)">&mdash;</span>
-                            </div>
-                            <div class="calc-row">
-                                <span class="mu">CR after issue</span>
-                                <span id="iCalcCR" style="font-weight:800;color:var(--gr)">247% &#10003;</span>
+                            <div>
+                                <div class="calc-row">
+                                    <span class="mu">Winiwa required</span>
+                                    <span id="iCalcM" style="font-weight:800">&mdash;</span>
+                                </div>
+                                <div class="calc-row">
+                                    <span class="mu">Stables received</span>
+                                    <span id="iCalcR" style="font-weight:800;color:var(--gr)">&mdash;</span>
+                                </div>
+                                <div class="calc-row" style="margin-bottom:0;display:none">
+                                    <span class="mu">CR after issue</span>
+                                    <span id="iCalcCR" style="font-weight:800;color:var(--gr)">247% &#10003;</span>
+                                </div>
                             </div>
                         </div>
                         <button class="btn btn-w btn-lg" onclick="executeMintWables()">Mint
@@ -3986,27 +3996,28 @@
                         <div style="margin-top:32px">
                             <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn Wables
                             </div>
-                            <div
-                                style="padding:14px;background:rgba(52,211,153,.04);border:1px solid rgba(52,211,153,.15);border-radius:12px">
-                                <div class="xs mu" style="margin-bottom:10px">No fees</div>
-                                <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
-                                    <input class="finput" type="number" id="reclaimAmt" placeholder="0.00"
-                                        oninput="calcReclaim()" inputmode="decimal" style="min-width:0">
-                                    <select class="ex-sel" style="width:74px" id="reclaimCcy" onchange="calcReclaim()">
-                                        <option>USDw</option>
-                                        <option>EURw</option>
-                                        <option>GBPw</option>
-                                        <option>JPYw</option>
-                                        <option>CADw</option>
-                                    </select>
+                            <div style="padding:0;background:transparent;border:none;border-radius:0">
+                                <div class="xs mu" style="margin-bottom:14px;line-height:1.45">No fees</div>
+                                <div style="display:grid;grid-template-columns:1fr 0.85fr;gap:12px;margin-bottom:14px;align-items:start">
+                                    <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+                                        <input class="finput" type="number" id="reclaimAmt" placeholder="0.00"
+                                            oninput="calcReclaim()" inputmode="decimal" style="min-width:0">
+                                        <select class="ex-sel" style="width:74px" id="reclaimCcy" onchange="calcReclaim()">
+                                            <option>USDw</option>
+                                            <option>EURw</option>
+                                            <option>GBPw</option>
+                                            <option>JPYw</option>
+                                            <option>CADw</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <div class="calc-row"><span class="mu">Winiwa received</span><span id="rCalcM"
+                                                style="font-weight:800">&mdash;</span></div>
+                                        <div class="calc-row" style="margin-bottom:0"><span class="mu">CR after reclaim</span><span id="rCalcCR"
+                                                style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
+                                    </div>
                                 </div>
-                                <div class="calc-box" style="margin-bottom:10px">
-                                    <div class="calc-row"><span class="mu">Winiwa received</span><span id="rCalcM"
-                                            style="font-weight:800">&mdash;</span></div>
-                                    <div class="calc-row"><span class="mu">CR after reclaim</span><span id="rCalcCR"
-                                            style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
-                                </div>
-                                <button class="btn btn-w" style="border-color:rgba(52,211,153,.25)"
+                                <button class="btn btn-w" style="border-color:rgba(52,211,153,.25);white-space:normal;line-height:1.2;margin-top:4px"
                                     onclick="executeBurnWables()">Burn Wables &rarr;
                                     Reclaim
                                     Winiwa</button>
@@ -4101,6 +4112,94 @@
             </div>
         </div>
 
+        <!-- ON/OFF RAMP (More → Shops & Exchange) -->
+        <div class="page" id="page-onoff-ramp">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F4B5;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">On/Off Ramp</div>
+                    <div class="app-page-header__sub">Paper money to Stables, and back</div>
+                </div>
+            </header>
+
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Where MINIMA trades</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('On/Off Ramp: exchanges listing MINIMA and practical path between fiat and Stables')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px">
+                <div class="xs mu" style="margin-bottom:10px;line-height:1.5">Use centralised exchanges and the on-chain Minima DEX as trading venues around MINIMA.</div>
+                <div style="display:grid;grid-template-columns:1fr;gap:10px">
+                    <div style="padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="fbet" style="margin-bottom:8px">
+                            <div style="font-weight:900;color:var(--t)">MEXC</div>
+                            <a href="https://www.mexc.com/exchange/MINIMA_USDT" target="_blank" rel="noopener noreferrer" class="xs" style="color:var(--c);text-decoration:underline">MINIMA/USDT</a>
+                        </div>
+                        <div class="xs mu">Common route: fiat → USDT → MINIMA.</div>
+                    </div>
+                    <div style="padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="fbet" style="margin-bottom:8px">
+                            <div style="font-weight:900;color:var(--t)">BitMart</div>
+                            <a href="https://www.bitmart.com/en-US/crypto/MINIMA" target="_blank" rel="noopener noreferrer" class="xs" style="color:var(--c);text-decoration:underline">MINIMA market</a>
+                        </div>
+                        <div class="xs mu">Alternative venue for buying/selling MINIMA liquidity.</div>
+                    </div>
+                    <div style="padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="fbet" style="margin-bottom:8px">
+                            <div style="font-weight:900;color:var(--t)">XT.COM</div>
+                            <a href="https://www.xt.com/en/trade/minima_usdt" target="_blank" rel="noopener noreferrer" class="xs" style="color:var(--c);text-decoration:underline">MINIMA/USDT</a>
+                        </div>
+                        <div class="xs mu">Third venue option for price discovery and execution.</div>
+                    </div>
+                    <div style="padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                        <div class="fbet" style="margin-bottom:8px">
+                            <div style="font-weight:900;color:var(--t)">Minima DEX (on-chain)</div>
+                            <a href="https://minimask.org/dex/public/" target="_blank" rel="noopener noreferrer" class="xs" style="color:var(--c);text-decoration:underline">Open DEX</a>
+                        </div>
+                        <div class="xs mu">Peer-to-peer non-custodial venue on Minima (MiniMask extension required).</div>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">On-ramp (paper money → Stables)</div>
+            </div>
+            <div class="card app-section-card" style="padding:14px">
+                <div class="xs mu" style="margin-bottom:10px;line-height:1.5">Goal: move from bank/card money into Stables balances you can use in-app.</div>
+                <div style="display:grid;gap:8px">
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">1) Deposit fiat to exchange</span><span style="font-weight:800;color:var(--t)">Bank/card</span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">2) Buy USDT</span><span style="font-weight:800;color:var(--t)">USDT</span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">3) Optional bridge</span><span style="font-weight:800;color:var(--t)">USDT → MxUSDT via <a href="https://mxusd.global/" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">mxusd.global</a></span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">4) Buy MINIMA</span><span style="font-weight:800;color:var(--t)">Exchange OR Minima DEX</span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">5) Withdraw MINIMA to your Stables wallet</span><span style="font-weight:800;color:var(--t)">On-chain</span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">6) Mint / swap into Stables balances</span><span style="font-weight:800;color:var(--t)">USDw / EURw / ...</span></div>
+                </div>
+                <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.22)">
+                    <div class="xs mu" style="line-height:1.5;color:var(--t);font-weight:800">Test phase - no value.</div>
+                </div>
+            </div>
+            </div>
+
+            <div class="app-section app-section--caption-bottom">
+            <div class="stitle-row">
+                <div class="stitle">Off-ramp (Stables → paper money)</div>
+            </div>
+            <div class="card app-section-card" style="padding:14px">
+                <div class="xs mu" style="margin-bottom:10px;line-height:1.5">Goal: exit from Stables to fiat in your bank/card ecosystem.</div>
+                <div style="display:grid;gap:8px">
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">1) Convert Stables balances to MINIMA</span><span style="font-weight:800;color:var(--t)">USDw → MINIMA</span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">2) Sell MINIMA for USDT</span><span style="font-weight:800;color:var(--t)">Exchange OR Minima DEX → MxUSDT</span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">3) Optional bridge</span><span style="font-weight:800;color:var(--t)">MxUSDT → USDT via <a href="https://mxusd.global/" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">mxusd.global</a></span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">4) Withdraw fiat to bank/card</span><span style="font-weight:800;color:var(--t)">Off-ramp complete</span></div>
+                </div>
+            </div>
+            </div>
+        </div>
+
         <!-- AMBASSADOR (More → Shops & Exchange) -->
         <div class="page" id="page-ambassador">
             <header class="app-page-header">
@@ -4113,7 +4212,7 @@
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('Ambassador listing: 20 Big Mac®; shops also pay 20 Big Mac®; ambassadors help onboarding and receive retrocession when they handle listing')"
+                        onclick="openAgentExplain('Ambassador listing: 16 Big Mac® paid in MINIMA; shops also pay 16 Big Mac® paid in MINIMA; ambassadors help onboarding and receive retrocession when they handle listing')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
@@ -4125,8 +4224,8 @@
                     </p>
                     <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
                         <strong style="color:var(--c)">Listing fees (showcase):</strong> a shop listing is
-                        <strong style="color:var(--t)">20 Big Mac®</strong>, and listing for Ambassadors is also
-                        <strong style="color:var(--t)">20 Big Mac®</strong> (indexed by country via
+                        <strong style="color:var(--t)">16 Big Mac®</strong> paid in MINIMA, and listing for Ambassadors is also
+                        <strong style="color:var(--t)">16 Big Mac®</strong> paid in MINIMA (indexed by country via
                         <a href="https://worldpopulationreview.com/country-rankings/big-mac-index-by-country"
                             target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">Big
                             Mac Index</a>).
@@ -4136,6 +4235,14 @@
                         <strong style="color:var(--t)">50% to the Council treasury</strong> / <strong style="color:var(--t)">50%
                             ambassador</strong> when an active listed Ambassador handles onboarding. Separate Ambassador
                         listing helps prevent merchants from self-capturing that retrocession.
+                    </p>
+                    <div class="xs mu" style="font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 6px;color:var(--c)">Community discussion</div>
+                    <p class="sec-body" style="margin:0 0 10px;line-height:1.55;color:var(--m)">
+                        This framework is far from definitive and represents a first proposal by the core dev team. It will be discussed and debated within the community.
+                    </p>
+                    <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
+                        To join the discussion, share your ideas and opinions in the dedicated Ambassador topic on our Telegram community channel:
+                        <a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">t.me/stablescommunity</a>.
                     </p>
                     <button class="btn btn-w btn-g" style="width:100%;margin-top:14px"
                         onclick="openAmbassadorTopicsModal()">Become an ambassador</button>
@@ -4176,7 +4283,7 @@
                     </p>
                     <p class="sec-body" style="margin:0;line-height:1.55;font-size:var(--fz-caption);color:var(--m)">
                         <strong style="color:var(--c)">Listing model:</strong> shop listing and listing for Ambassadors are both
-                        <strong style="color:var(--t)">20 Big Mac®</strong> (indexed). When listed Ambassadors perform
+                        <strong style="color:var(--t)">16 Big Mac®</strong> (paid in MINIMA, indexed). When listed Ambassadors perform
                         merchant onboarding, the retrocession split applies as described on
                         <strong style="color:var(--t)">Ambassadors</strong>.
                     </p>
@@ -4254,6 +4361,18 @@
                         This preview does not call a live API yet; the button opens the organisation where the kit will
                         land.
                     </p>
+                </div>
+            </div>
+
+            <div class="card app-section-card" style="padding:0;margin-top:4px;overflow:hidden">
+                <div style="width:100%;padding:14px 16px;background:rgba(11,15,20,.35);border-top:1px solid rgba(103,232,249,.12);border-bottom:1px solid rgba(103,232,249,.12)">
+                    <div class="xs mu" style="color:var(--t);font-weight:900;font-size:14px;letter-spacing:.02em">Pay in Stables with our logo</div>
+                </div>
+                <div style="padding:16px 16px 18px 16px">
+                    <div style="border:1px dashed rgba(103,232,249,.28);border-radius:16px;overflow:hidden;background:rgba(103,232,249,.04);page-break-inside:avoid">
+                        <img src="shop_sticker_minimal_v0.0.01.png" alt="Pay in Stables sticker v0.0.01" style="width:100%;height:auto;display:block">
+                    </div>
+                    <div class="xs mu" style="margin-top:10px;color:var(--m);line-height:1.45">Printable sticker, version v0.0.01</div>
                 </div>
             </div>
 
@@ -5125,8 +5244,8 @@
             <header class="app-page-header app-page-header--faucet">
                 <div class="dic" aria-hidden="true">&#x1F6B0;</div>
                 <div class="app-page-header__text">
-                    <div class="app-page-header__title">Get Test Wiwina</div>
-                    <div class="app-page-header__sub">Claim test tokens (no real value)</div>
+                    <div class="app-page-header__title">Get Winiwa</div>
+                    <div class="app-page-header__sub">Acquire Winiwa to mint Wables tokens</div>
                 </div>
             </header>
             <div class="test-banner" style="margin:0 0 16px">
@@ -5139,41 +5258,34 @@
                 final app. Winiwa and all of the token created here have no real-world value.</div>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
-                <div class="stitle">Claim test Winiwa</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Faucet: test Winiwa has no real value; for demos only')" title="StablesAgent">
+                <div class="stitle" style="color:var(--am)">Claim Winiwa</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Faucet: get Winiwa to mint Stables tokens')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
             </div>
             <div class="card app-section-card">
                 <div class="cb">
-                    <div class="xs mu" style="margin-bottom:10px">Winiwa is the testnet token. It has <strong
-                            style="color:var(--am)">zero real-world value</strong>. In production, this will be
-                        Winiwa.
-                    </div>
+                    <div class="xs mu" style="margin-bottom:10px;color:var(--am)">Winiwa is the testnet token for this demo. It has <strong style="color:var(--am)">zero real-world value</strong> in this testing phase.</div>
                     <select class="fsel" style="margin-bottom:12px">
                         <option>10,000 Winiwa (standard)</option>
-                        <option>50,000 Winiwa (stress test)</option>
+                        <option>50,000 Winiwa (large)</option>
                         <option>1,000 Winiwa (small)</option>
                     </select>
-                    <button class="btn btn-w btn-lg" onclick="showToast('✓ Test Winiwa sent to my Vault!')">Get
-                        Test
-                        Winiwa</button>
+                    <button class="btn btn-w btn-lg" onclick="showToast('✓ Winiwa sent to my Vault!')">Get Winiwa</button>
                 </div>
             </div>
             </div>
             <div class="app-section app-section--caption-bottom">
             <div class="stitle-row">
-                <div class="stitle">Reset test state</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Faucet: reset clears local demo balances')" title="StablesAgent">
+                <div class="stitle" style="color:var(--am)">Reset balances</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Faucet: reset clears local balances')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
             </div>
             <div class="card app-section-card">
                 <div class="cb">
-                    <div class="xs mu" style="margin-bottom:10px">Clear all balances and start fresh. Useful for
-                        testing
-                        mission scenarios.</div>
-                    <button class="btn btn-w btn-g" onclick="showToast('Test state reset - Vault cleared')">Reset
+                    <div class="xs mu" style="margin-bottom:10px">Clear all demo balances and start fresh on this device.</div>
+                    <button class="btn btn-w btn-g" onclick="showToast('Balances reset - Vault cleared')">Reset
                         Everything</button>
                 </div>
             </div>
@@ -5189,7 +5301,7 @@
                     <div class="app-page-header__sub">Council identity and avatar</div>
                 </div>
             </header>
-            <p class="hint" style="margin:-8px 0 16px;font-weight:700;color:var(--m);line-height:var(--lh-caption)">
+            <p class="hint" style="margin:-8px 14px 16px;font-weight:700;color:var(--m);line-height:var(--lh-caption)">
                 The Stables community is there to help with questions. For this screen, ask <strong style="color:var(--t)">StablesAgent</strong>.
             </p>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
@@ -5245,7 +5357,7 @@
                     <button class="btn btn-w btn-g" style="flex:1;min-width:220px" onclick="saveCouncilMemberProfile()">Save profile</button>
                     <button class="btn" style="flex:1;min-width:220px" onclick="resetCouncilMemberProfile()">Reset</button>
                 </div>
-                <p class="hint" style="margin:12px 0 0;text-align:center">Saved on this device only.</p>
+            <p class="hint" style="margin:12px 14px 0;text-align:center">Saved on this device only.</p>
             </div>
             </div>
         </div>
@@ -5259,7 +5371,7 @@
                     <div class="app-page-header__sub">Package, theme, display, addresses, sync</div>
                 </div>
             </header>
-            <p class="hint" style="margin:-8px 0 16px">My <strong style="color:var(--t)">Vault key</strong> is only under <strong style="color:var(--t)">Security</strong>.</p>
+                <p class="hint" style="margin:-8px 14px 16px" id="settingsAppVersionHint">App version: -</p>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
                 <div class="stitle">App updates</div>
@@ -5424,7 +5536,7 @@
                 <div class="dic" aria-hidden="true">&#x1F510;</div>
                 <div class="app-page-header__text">
                     <div class="app-page-header__title">Security</div>
-                    <div class="app-page-header__sub">Vault key only: access to your bank</div>
+                    <div class="app-page-header__sub">Vault key: only access to your funds</div>
                 </div>
             </header>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
@@ -5647,6 +5759,10 @@
         <div class="drawer">
             <div class="drawer-lang-bar">
                 <div class="app-lang-switcher">
+                    <button type="button" id="drawerLangLabelBtn"
+                        onclick="toggleAppLangMenu(event, 'drawer')" style="border:none;background:transparent !important;padding:6px 0 6px 8px;font-weight:800;color:var(--t);cursor:pointer;appearance:none;-webkit-appearance:none;box-shadow:none;outline:none;border-radius:0;min-width:0">
+                        <span id="drawerLangCurrent" style="display:none">English</span>
+                    </button>
                     <button type="button" class="app-lang-globe-btn" id="drawerLangGlobeBtn"
                         onclick="toggleAppLangMenu(event, 'drawer')" aria-label="Language" aria-haspopup="true"
                         aria-expanded="false" aria-controls="appLangMenuDrawer">
@@ -5660,8 +5776,15 @@
                         </svg>
                     </button>
                     <div id="appLangMenuDrawer" class="app-lang-menu" role="menu">
-                        <button type="button" class="app-lang-menu-item" role="menuitem"
-                            onclick="setAppLanguage('en')">English</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('en')">English</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('zh')">中文</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('fr')">Français</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('es')">Español</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('de')">Deutsch</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('ja')">日本語</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('ko')">한국어</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('pt')">Português</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('ru')">Русский</button>
                     </div>
                 </div>
             </div>
@@ -5671,7 +5794,7 @@
                     <div class="dic" aria-hidden="true">&#x1F91D;</div>
                     <div class="dinfo">
                         <div class="dname">Ambassadors</div>
-                        <div class="ddesc">Merchant onboarding, earn 10 Big Mac®</div>
+                        <div class="ddesc">Merchant onboarding, earn 8 Big Mac® paid in MINIMA</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
                 <div class="ditem" onclick="navigate('my-shop');closeMoreNow()">
@@ -5681,11 +5804,27 @@
                         <div class="ddesc">List your business · Invoice · Webshop kit (preview)</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
+                <div class="ditem" onclick="navigate('onoff-ramp');closeMoreNow()">
+                    <div class="dic" aria-hidden="true">&#x1F4B5;</div>
+                    <div class="dinfo">
+                        <div class="dname">On/Off Ramp</div>
+                        <div class="ddesc">Move between paper money and Stables</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
                 <div class="ditem" onclick="navigate('exchange');closeMoreNow()">
                     <div class="dic" aria-hidden="true">&#x1F504;</div>
                     <div class="dinfo">
                         <div class="dname">Exchange</div>
                         <div class="ddesc">Exchange currencies instantly</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" style="margin-top:6px;background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.22);cursor:default">
+                    <div class="dic" style="background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28)">
+                        🚰
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname" style="color:var(--am)">Testing - no value</div>
+                        <div class="ddesc">Acquire Winiwa to mint Wables tokens</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -5752,6 +5891,36 @@
             </div>
             <div class="ddiv"></div>
             <div class="dsect">
+                <div class="dsect-t">Help</div>
+                <div class="ditem" onclick="openWelcomeGuidedToursFromMenu();closeMoreNow()">
+                    <div class="dic">🧭</div>
+                    <div class="dinfo">
+                        <div class="dname">Guided tours</div>
+                        <div class="ddesc">Start from the welcome screen, then pick a guided path</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+                <div class="ditem" onclick="openAgent();closeMoreNow()">
+                    <div class="dic">
+                        <img src="agent.png" alt="StablesAgent"
+                            style="width:20px;height:20px;border-radius:7px;flex-shrink:0">
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">StablesAgent</div>
+                        <div class="ddesc">Ask StablesAgent for contextual help</div>
+                    </div><span style="color:var(--m)">&rsaquo;</span>
+                </div>
+                <div class="ditem" onclick="navigate('feedback');closeMoreNow()">
+                    <div class="dic">
+                        📝
+                    </div>
+                    <div class="dinfo">
+                        <div class="dname">Feedback</div>
+                        <div class="ddesc">Reach the team on Telegram</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
+            </div>
+            <div class="ddiv"></div>
+            <div class="dsect">
                 <div class="dsect-t">Preferences</div>
                 <div class="ditem" onclick="navigate('settings-profile');closeMoreNow()">
                     <div class="dic">
@@ -5782,56 +5951,6 @@
                 </div>
             </div>
             <div class="ddiv"></div>
-            <div class="dsect">
-                <div class="dsect-t">Help</div>
-                <div class="ditem" onclick="openWelcomeGuidedToursFromMenu();closeMoreNow()">
-                    <div class="dic">🧭</div>
-                    <div class="dinfo">
-                        <div class="dname">Guided tours</div>
-                        <div class="ddesc">Start from the welcome screen, then pick a guided path</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
-                <div class="ditem" onclick="openAgent();closeMoreNow()">
-                    <div class="dic">
-                        <img src="agent.png" alt="StablesAgent"
-                            style="width:20px;height:20px;border-radius:7px;flex-shrink:0">
-                    </div>
-                    <div class="dinfo">
-                        <div class="dname">StablesAgent</div>
-                        <div class="ddesc">Ask StablesAgent for contextual help</div>
-                    </div><span style="color:var(--m)">&rsaquo;</span>
-                </div>
-                <div class="ditem" onclick="navigate('feedback');closeMoreNow()">
-                    <div class="dic">
-                        📝
-                    </div>
-                    <div class="dinfo">
-                        <div class="dname">Feedback</div>
-                        <div class="ddesc">Reach the team on Telegram</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
-            </div>
-            <div class="ddiv"></div>
-            <div class="dsect" style="padding-top:4px;padding-bottom:12px">
-                <button type="button" class="drawer-test-faucet-card"
-                    onclick="navigate('faucet');closeMoreNow()"
-                    aria-label="Testing phase only. Get test Winiwa. Claim test tokens.">
-                    <div class="drawer-test-faucet-card__banner" aria-hidden="true">
-                        <span>🧪</span>
-                        <span>Testing Phase Only</span>
-                    </div>
-                    <div class="drawer-test-faucet-card__row">
-                        <div class="dic" style="background:rgba(251,191,36,.1);border-color:rgba(251,191,36,.28)">
-                            🚰
-                        </div>
-                        <div class="dinfo">
-                            <div class="dname" style="color:var(--am)">Get Test Wiwina</div>
-                            <div class="ddesc">Claim test tokens (no real value)</div>
-                        </div>
-                        <span style="color:var(--m)">›</span>
-                    </div>
-                </button>
-            </div>
         </div>
     </div>
 
@@ -6035,13 +6154,28 @@
                         </svg>
                     </button>
                     <div id="appLangMenuWelcome" class="app-lang-menu" role="menu">
-                        <button type="button" class="app-lang-menu-item" role="menuitem"
-                            onclick="setAppLanguage('en')">English</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('en')">English</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('zh')">中文</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('fr')">Français</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('es')">Español</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('de')">Deutsch</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('ja')">日本語</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('ko')">한국어</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('pt')">Português</button>
+                        <button type="button" class="app-lang-menu-item" role="menuitem" onclick="setAppLanguage('ru')">Русский</button>
                     </div>
                 </div>
                 <select id="welcomeLang" class="app-visually-hidden" onchange="updateWelcomeLanguage()" tabindex="-1"
                     aria-hidden="true">
                     <option value="en">English</option>
+                    <option value="zh">中文</option>
+                    <option value="fr">Français</option>
+                    <option value="es">Español</option>
+                    <option value="de">Deutsch</option>
+                    <option value="ja">日本語</option>
+                    <option value="ko">한국어</option>
+                    <option value="pt">Português</option>
+                    <option value="ru">Русский</option>
                 </select>
                 <div style="display:flex;justify-content:center;margin-bottom:14px">
                     <img src="stables_icon.png" alt="Stables" style="width:54px;height:54px;border-radius:14px">
@@ -6382,13 +6516,14 @@
 
     <script src="assets/config/runtime-config.js"></script>
     <script>
-        const PAGES = ['wallet', 'invest', 'exchange', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback'];
+        const PAGES = ['wallet', 'invest', 'exchange', 'onoff-ramp', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
         let privacyMode = false; lede = false;
 
         function syncAppUpdatesSection() {
             const url = window.STABLES_CONFIG && window.STABLES_CONFIG.MDS_ZIP_URL;
+            const buildVersion = window.STABLES_CONFIG && window.STABLES_CONFIG.APP_BUILD_VERSION;
             const link = document.getElementById('settingsMdsZipLink');
             const label = document.getElementById('settingsMdsZipUrlLabel');
             if (link) {
@@ -6404,7 +6539,9 @@
                     };
                 }
             }
-            if (label) label.textContent = url || '';
+            if (label) label.textContent = buildVersion ? `App version: ${buildVersion}` : '';
+            const hint = document.getElementById('settingsAppVersionHint');
+            if (hint) hint.textContent = buildVersion ? `App version: ${buildVersion}` : '';
         }
 
         function showStablesCharterComingNotice() {
@@ -7148,6 +7285,11 @@
             const annualizedDayYieldPct = cfCapAnnualisedYieldForDisplay((Number(row.dailyYieldPct) || 0) * 365);
             const tokenPx = cfTokenPrice(row);
             const tokenSupply = Math.max(1, row.navUsd / tokenPx);
+            const avgFeePrimary = cfUsdStableEquivToPrimary(avgFee);
+            const avgFeeCap = 0.01;
+            const avgFeeDisplay = (avgFeePrimary > 0 && avgFeePrimary < avgFeeCap)
+                ? `< ${avgFeeCap.toFixed(2)} ${primary}`
+                : `${avgFeeCap.toFixed(2)} ${primary}`;
 
             const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
             set('cfDayLabel', fmtCfMMDDYYYY(cfCalendarDateForSeriesIndex(activeIdx)));
@@ -7155,7 +7297,7 @@
             set('cfYieldDay', `${fmtCfAnnualisedYieldPct(annualizedDayYieldPct)} annualised yield`);
             set('cfMonthFees', fmtCfPrimaryAmount(cfUsdStableEquivToPrimary(monthFees), primary));
             set('cfMonthTx', `${monthTx.toLocaleString('en-US')}`);
-            set('cfAvgFee', fmtCfPrimaryAmount(cfUsdStableEquivToPrimary(avgFee), primary));
+            set('cfAvgFee', avgFeeDisplay);
             set('cfMonthYield', fmtCfAnnualisedYieldPct(annualizedMonthYieldPct));
             set('cfTokenPrice', `${tokenPx.toFixed(4)} USDw / USDwcf`);
             set('cfFundNav', fmtCfPrimaryAmount(cfUsdStableEquivToPrimary(row.navUsd), primary));
@@ -7571,8 +7713,28 @@
             sel.value = code;
             try { localStorage.setItem('stables_lang_pref', code); } catch (_) {}
             if (typeof updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
+            syncAppLangLabels();
             closeAppLangMenus();
         }
+
+        function syncAppLangLabels() {
+            const sel = document.getElementById('welcomeLang');
+            const code = (sel && sel.value) ? sel.value : 'en';
+            const map = { en: 'English', zh: '中文', fr: 'Français', es: 'Español', de: 'Deutsch', ja: '日本語', ko: '한국어', pt: 'Português', ru: 'Русский' };
+            const label = map[code] || 'English';
+            const drawerCur = document.getElementById('drawerLangCurrent');
+            if (drawerCur) drawerCur.textContent = label;
+        }
+
+        (function initAppLangPref() {
+            const sel = document.getElementById('welcomeLang');
+            if (!sel) return;
+            let pref = 'en';
+            try { pref = localStorage.getItem('stables_lang_pref') || 'en'; } catch (_) { pref = 'en'; }
+            const ok = Array.from(sel.options).some(o => o.value === pref);
+            if (ok) sel.value = pref;
+            syncAppLangLabels();
+        })();
 
         document.addEventListener('click', function (e) {
             if (!e.target.closest('.app-lang-switcher')) closeAppLangMenus();
@@ -8435,10 +8597,10 @@
 
             function setNonNodeLabel() {
                 if (liveTimer) { clearInterval(liveTimer); liveTimer = null; }
-                syncEl.textContent = 'Only in node';
+                syncEl.textContent = 'Block height';
                 if (pill) {
                     pill.classList.add('sync-pill--placeholder');
-                    pill.setAttribute('title', 'Block height appears when you open Stables in the MiniDapp host (node).');
+                    pill.setAttribute('title', 'Block height from your node (MDS).');
                 }
             }
 
