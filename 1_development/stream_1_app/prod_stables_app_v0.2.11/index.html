@@ -1816,6 +1816,16 @@
             padding-bottom: 24px;
         }
 
+        @media print {
+            body * { visibility: hidden !important; }
+            #shopStickerPrintTarget,
+            #shopStickerPrintTarget * { visibility: visible !important; }
+            #shopStickerModal,
+            #shopStickerModal * { visibility: visible !important; }
+            #shopStickerModal { background: transparent !important; }
+            #shopStickerPrintTarget { position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; }
+        }
+
         .modal.welcome {
             border-radius: 22px;
             border-bottom: 1px solid rgba(103, 232, 249, .2);
@@ -3396,7 +3406,7 @@
         </div>
     <!-- Column 2: Test Pill (Center) -->
     <div class="test-pill" style="justify-self: center;cursor:default">
-        Testing - no value
+        Demo version - No value
     </div>
     <!-- Column 3: Sync Pill (Right) -->
     <div class="sync-pill sync-pill--placeholder" title="Block height from your node (MDS)." style="justify-self: end;">
@@ -3812,7 +3822,7 @@
                                 onclick="fillLpQuoteMax()">MAX</button>
                         </div>
                         <div class="fbet xs mu">
-                            <span>Available: <span id="lpAvailX">340 xWiniwa</span></span>
+                            <span>Available: <span id="lpAvailX">0 xWiniwa</span></span>
                         </div>
                     </div>
 
@@ -3825,7 +3835,7 @@
                                 onclick="fillLpBaseMax()">MAX</button>
                         </div>
                         <div class="fbet xs mu">
-                            <span>Available: <span id="lpAvailW">10,000 Winiwa</span></span>
+                            <span>Available: <span id="lpAvailW">0 Winiwa</span></span>
                         </div>
                     </div>
 
@@ -3850,8 +3860,8 @@
                     <div class="app-page-header__sub">Mint and burn xWiniwa and Wables</div>
                 </div>
             </header>
-            <p class="hint" style="margin:-8px 14px 16px;font-weight:800;color:var(--m);line-height:var(--lh-caption);border-left:none;padding-left:0">
-                Convert Winiwa into any Stables token on this page. To acquire MINIMA (Winiwa currently in this test phase), use
+            <p class="hint" style="margin:-8px 0 16px;font-weight:800;color:var(--m);line-height:var(--lh-caption);border-left:none;padding:0 14px">
+                Convert Winiwa into xWiniwa and any Wables token on this page. To acquire MINIMA (Winiwa currently in this test phase), use
                 <a href="#" onclick="navigate('onoff-ramp');return false;" style="color:var(--c);text-decoration:underline">On/Off Ramp</a>.
             </p>
             <div class="tab-row">
@@ -3873,23 +3883,22 @@
                             <div style="font-size:16px;font-weight:900">&#x26CF;&#xFE0F; Mint xWiniwa</div>
                         </div>
                         <!-- Input -->
-                        <div style="display:grid;grid-template-columns:1fr 0.85fr;gap:14px;margin-bottom:14px;align-items:start">
+                        <div style="margin-bottom:14px">
                             <div>
                                 <div class="fbet xs mu" style="margin-bottom:5px">
                                     <div>Winiwa to lock</div>
-                                    <div id="availWiniwaXwm">Available: 5,000,000</div>
+                                    <div id="availWiniwaXwm">Available: 0</div>
                                 </div>
-                                <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
+                                <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
                                     <input class="finput" type="number" id="xwmAmt" placeholder="0" oninput="calcXwm()"
                                         inputmode="decimal" style="min-width:0">
                                     <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
                                         onclick="setXwmMax()">MAX</button>
-                                    <div
-                                        style="display:flex;align-items:center;padding:0 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:10px;font-size:13px;font-weight:700;color:var(--pu)">
-                                        Mint</div>
                                 </div>
                             </div>
-                            <div>
+
+                            <!-- Under-input values -->
+                            <div style="margin-top:12px">
                                 <div class="calc-row">
                                     <span class="mu">Winiwa price</span>
                                     <span style="font-weight:700">$0.00846</span>
@@ -3899,7 +3908,7 @@
                                     <span id="xwmCalcR" style="font-weight:800;color:var(--pu)">&mdash;</span>
                                 </div>
                                 <div class="calc-row" style="margin-bottom:0">
-                                    <span class="mu">Effective leverage</span>
+                                    <span class="mu">Current leverage</span>
                                     <span style="font-weight:800;color:var(--pu)">x4.2</span>
                                 </div>
                             </div>
@@ -3913,26 +3922,31 @@
                         <div style="margin-top:32px">
                             <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn xWiniwa</div>
                             <div style="padding:0;background:transparent;border:none;border-radius:0">
-                                <div class="xs mu" style="margin-bottom:14px;line-height:1.45">Requires CR &gt; 110% after burn &middot;
-                                    no fees</div>
-                                <div style="display:grid;grid-template-columns:1fr 0.85fr;gap:12px;margin-bottom:14px;align-items:start">
+                                
+                                <div style="margin-bottom:14px">
+                                    <div class="fbet xs mu" style="margin-bottom:5px">
+                                        <div>xWiniwa to lock</div>
+                                        <div id="availXwmBurn">Available: 0</div>
+                                    </div>
                                     <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
                                         <input class="finput" type="number" id="xwmBurnAmt" placeholder="xWiniwa to burn"
                                             oninput="calcXwmBurn()" inputmode="decimal" style="min-width:0">
-                                        <div
-                                            style="display:flex;align-items:center;padding:0 12px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.2);border-radius:10px;font-size:12px;font-weight:700;color:var(--pu)">
-                                            xWiniwa</div>
+                                        <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
+                                            onclick="setXwmBurnMax()">MAX</button>
                                     </div>
-                                    <div>
-                                        <div class="calc-row"><span class="mu">Winiwa received</span><span
-                                                id="xwmBurnCalc" style="font-weight:800">&mdash;</span></div>
-                                        <div class="calc-row" style="margin-bottom:0"><span class="mu">CR after burn</span><span
-                                                style="font-weight:800;color:var(--gr)">247% &#10003;</span></div>
+                                    <div style="margin-top:12px">
+                                        <div class="calc-row">
+                                            <span class="mu">xWiniwa price</span>
+                                            <span id="xwmPriceDisplay" style="font-weight:700">$0.00020</span>
+                                        </div>
+                                        <div class="calc-row" style="margin-bottom:0">
+                                            <span class="mu">Winiwa received</span><span
+                                                    id="xwmBurnCalc" style="font-weight:800">&mdash;</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <button class="btn btn-w" style="border-color:rgba(167,139,250,.3);white-space:normal;line-height:1.2;margin-top:4px"
-                                    onclick="executeBurnXwm()">Burn xWiniwa &rarr;
-                                    Reclaim Winiwa</button>
+                                    onclick="executeBurnXwm()">Burn xWiniwa</button>
                             </div>
                         </div>
                     </div>
@@ -3956,7 +3970,7 @@
                             <div>
                                 <div class="fbet xs mu" style="margin-bottom:5px">
                                     <div>Amount to issue</div>
-                                    <div id="availWiniwaIss">Available: 5,000,000 Winiwa</div>
+                                    <div id="availWiniwaIss">Available: 0 Winiwa</div>
                                 </div>
                                 <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
                                     <input class="finput" type="number" id="issueAmt" placeholder="0.00"
@@ -4178,9 +4192,10 @@
                     <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">5) Withdraw MINIMA to your Stables wallet</span><span style="font-weight:800;color:var(--t)">On-chain</span></div>
                     <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">6) Mint / swap into Stables balances</span><span style="font-weight:800;color:var(--t)">USDw / EURw / ...</span></div>
                 </div>
-                <div style="margin-top:12px;padding:12px;border-radius:12px;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.22)">
-                    <div class="xs mu" style="line-height:1.5;color:var(--t);font-weight:800">Test phase - no value.</div>
-                </div>
+                <button type="button" class="btn btn-w btn-lg" onclick="navigate('faucet')"
+                    style="margin-top:12px;width:100%;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.22);color:var(--am);font-weight:900">
+                    Get Winiwa - No value
+                </button>
             </div>
             </div>
 
@@ -4212,7 +4227,7 @@
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('Ambassador listing: 16 Big Mac® paid in MINIMA; shops also pay 16 Big Mac® paid in MINIMA; ambassadors help onboarding and receive retrocession when they handle listing')"
+                        onclick="openAgentExplain('Ambassador listing: 16 Big Mac® (paid in MINIMA); shops also pay 16 Big Mac®; ambassadors help onboarding and receive retrocession when they handle listing')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
@@ -4224,8 +4239,8 @@
                     </p>
                     <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
                         <strong style="color:var(--c)">Listing fees (showcase):</strong> a shop listing is
-                        <strong style="color:var(--t)">16 Big Mac®</strong> paid in MINIMA, and listing for Ambassadors is also
-                        <strong style="color:var(--t)">16 Big Mac®</strong> paid in MINIMA (indexed by country via
+                        <strong style="color:var(--t)">16 Big Mac®</strong> (paid in MINIMA) and listing for Ambassadors is also
+                        <strong style="color:var(--t)">16 Big Mac®</strong> (indexed by country via
                         <a href="https://worldpopulationreview.com/country-rankings/big-mac-index-by-country"
                             target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">Big
                             Mac Index</a>).
@@ -4366,17 +4381,30 @@
 
             <div class="card app-section-card" style="padding:0;margin-top:4px;overflow:hidden">
                 <div style="width:100%;padding:14px 16px;background:rgba(11,15,20,.35);border-top:1px solid rgba(103,232,249,.12);border-bottom:1px solid rgba(103,232,249,.12)">
-                    <div class="xs mu" style="color:var(--t);font-weight:900;font-size:14px;letter-spacing:.02em">Pay in Stables with our logo</div>
+                    <div class="xs mu" style="color:var(--t);font-weight:900;font-size:14px;letter-spacing:.02em">Print it for your shop</div>
                 </div>
                 <div style="padding:16px 16px 18px 16px">
-                    <div style="border:1px dashed rgba(103,232,249,.28);border-radius:16px;overflow:hidden;background:rgba(103,232,249,.04);page-break-inside:avoid">
+                    <div style="border-radius:16px;overflow:hidden;background:transparent;page-break-inside:avoid;cursor:pointer"
+                        onclick="openShopStickerAndPrint()" title="Open sticker and print">
                         <img src="shop_sticker_minimal_v0.0.01.png" alt="Pay in Stables sticker v0.0.01" style="width:100%;height:auto;display:block">
                     </div>
-                    <div class="xs mu" style="margin-top:10px;color:var(--m);line-height:1.45">Printable sticker, version v0.0.01</div>
                 </div>
             </div>
 
             <!-- Webhooks & callbacks: kept in markup; hidden until merchant settings ship (remove display:none to show). -->
+            <div class="mback centered" id="shopStickerModal" onclick="if(event.target===this)closeModal('shopStickerModal')" style="z-index:620">
+                <div class="modal" onclick="event.stopPropagation()" style="padding:18px 18px 22px;max-width:720px;border-radius:22px">
+                    <div class="mhandle"></div>
+                    <div class="mttl" style="text-align:center;margin-bottom:12px">Print it for your shop - Click the image</div>
+                    <div id="shopStickerPrintTarget" style="width:100%;display:flex;justify-content:center;align-items:center">
+                        <img src="shop_sticker_minimal_v0.0.01.png" alt="Pay in Stables sticker v0.0.01" style="width:100%;height:auto;display:block;max-height:80vh;object-fit:contain">
+                    </div>
+                    <div style="margin-top:14px;display:flex;gap:10px">
+                        <button class="btn btn-w btn-g" style="flex:1" onclick="window.print();return false;">Print</button>
+                        <button class="btn btn-w" style="flex:1" onclick="closeModal('shopStickerModal');return false;">Close</button>
+                    </div>
+                </div>
+            </div>
             <div class="app-section app-section--caption-bottom" style="display:none" aria-hidden="true">
                 <div class="stitle-row">
                     <div class="stitle">Webhooks &amp; callbacks</div>
@@ -4410,7 +4438,7 @@
         <!-- WHERE TO SPEND -->
         <div class="page" id="page-spend">
             <header class="app-page-header" style="margin-bottom:16px">
-                <div class="dic" aria-hidden="true">&#x1F3EA;</div>
+                <div class="dic" aria-hidden="true">&#x1F6D2;</div>
                 <div class="app-page-header__text">
                     <div class="app-page-header__title">Shops</div>
                     <div class="app-page-header__sub">Merchants accepting Wables</div>
@@ -5255,7 +5283,7 @@
                 These tools will NOT
                 exist in
                 the
-                final app. Winiwa and all of the token created here have no real-world value.</div>
+                final app. Winiwa and all of the token created here have no value.</div>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
                 <div class="stitle" style="color:var(--am)">Claim Winiwa</div>
@@ -5265,13 +5293,13 @@
             </div>
             <div class="card app-section-card">
                 <div class="cb">
-                    <div class="xs mu" style="margin-bottom:10px;color:var(--am)">Winiwa is the testnet token for this demo. It has <strong style="color:var(--am)">zero real-world value</strong> in this testing phase.</div>
-                    <select class="fsel" style="margin-bottom:12px">
+                    <div class="xs mu" style="margin-bottom:10px;color:var(--am)">Winiwa is the testnet token for this demo. It has <strong style="color:var(--am)">no value</strong>.</div>
+                    <select class="fsel" style="margin-bottom:12px" id="faucetWiniwaAmtSel">
                         <option>10,000 Winiwa (standard)</option>
                         <option>50,000 Winiwa (large)</option>
                         <option>1,000 Winiwa (small)</option>
                     </select>
-                    <button class="btn btn-w btn-lg" onclick="showToast('✓ Winiwa sent to my Vault!')">Get Winiwa</button>
+                    <button class="btn btn-w btn-lg" onclick="claimFaucetWiniwa()">Get Winiwa</button>
                 </div>
             </div>
             </div>
@@ -5285,7 +5313,7 @@
             <div class="card app-section-card">
                 <div class="cb">
                     <div class="xs mu" style="margin-bottom:10px">Clear all demo balances and start fresh on this device.</div>
-                    <button class="btn btn-w btn-g" onclick="showToast('Balances reset - Vault cleared')">Reset
+                    <button class="btn btn-w btn-g" onclick="resetFaucetBalances()">Reset
                         Everything</button>
                 </div>
             </div>
@@ -5301,9 +5329,7 @@
                     <div class="app-page-header__sub">Council identity and avatar</div>
                 </div>
             </header>
-            <p class="hint" style="margin:-8px 14px 16px;font-weight:700;color:var(--m);line-height:var(--lh-caption)">
-                The Stables community is there to help with questions. For this screen, ask <strong style="color:var(--t)">StablesAgent</strong>.
-            </p>
+            
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
                 <div class="stitle">Council profile</div>
@@ -5371,7 +5397,7 @@
                     <div class="app-page-header__sub">Package, theme, display, addresses, sync</div>
                 </div>
             </header>
-                <p class="hint" style="margin:-8px 14px 16px" id="settingsAppVersionHint">App version: -</p>
+                <p class="hint" style="margin:-8px 0 16px;font-weight:800;color:var(--m);line-height:var(--lh-caption);border-left:none;padding:0 14px" id="settingsAppVersionHint">App version: -</p>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
                 <div class="stitle">App updates</div>
@@ -5794,7 +5820,7 @@
                     <div class="dic" aria-hidden="true">&#x1F91D;</div>
                     <div class="dinfo">
                         <div class="dname">Ambassadors</div>
-                        <div class="ddesc">Merchant onboarding, earn 8 Big Mac® paid in MINIMA</div>
+                        <div class="ddesc">Merchant onboarding, earn 8 Big Mac®</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
                 <div class="ditem" onclick="navigate('my-shop');closeMoreNow()">
@@ -5818,12 +5844,12 @@
                         <div class="ddesc">Exchange currencies instantly</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
-                <div class="ditem" style="margin-top:6px;background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.22);cursor:default">
+                <div class="ditem" onclick="navigate('faucet');closeMoreNow()" style="margin-top:6px;background:rgba(251,191,36,.06);border-color:rgba(251,191,36,.22)">
                     <div class="dic" style="background:rgba(251,191,36,.10);border-color:rgba(251,191,36,.28)">
                         🚰
                     </div>
                     <div class="dinfo">
-                        <div class="dname" style="color:var(--am)">Testing - no value</div>
+                        <div class="dname" style="color:var(--am)">Get Winiwa - No value</div>
                         <div class="ddesc">Acquire Winiwa to mint Wables tokens</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
@@ -6056,7 +6082,7 @@
             <div class="mttl" id="seedSecurityAppTitle" style="text-align:center;margin-bottom:12px">Minima Security app</div>
             <div style="margin:0 0 18px;line-height:var(--lh-body);text-align:center;color:var(--t);font-size:var(--fz-body);font-weight:500">
                 <p style="margin:0 0 14px">Opening the <strong style="color:#fbbf24">Minima Security app</strong> from Stables will be added in a <strong style="color:#fbbf24">coming version</strong>. When it is available, it will open the app on your node so you can view or check your <strong style="color:#fbbf24">Vault key</strong>, also called <strong style="color:#fbbf24">Seed phrase</strong> (24 words). Only do this in a private place.</p>
-                <p style="margin:0;color:var(--m);font-size:calc(var(--fz-body) - 1px)">The Stables community is there to help with questions.</p>
+                
             </div>
             <button type="button" class="btn btn-w btn-lg" onclick="closeModal('seedSecurityAppModal')">OK</button>
         </div>
@@ -6508,7 +6534,7 @@
                 class="nlabel">Invest</span></button>
         <button class="ntab active" id="tab-wallet" onclick="navigate('wallet')"><span
                 class="nicon">&#x1F4B0;</span><span class="nlabel">Wallet</span></button>
-        <button class="ntab" id="tab-spend" onclick="navigate('spend')"><span class="nicon">&#x1F3EA;</span><span
+        <button class="ntab" id="tab-spend" onclick="navigate('spend')"><span class="nicon">&#x1F6D2;</span><span
                 class="nlabel">Shops</span></button>
         <button class="ntab" id="tab-more" onclick="openMore()"><span class="nicon">⋯</span><span
                 class="nlabel">More</span></button>
@@ -8319,11 +8345,18 @@
         }
         function closeModal(id) { document.getElementById(id).classList.remove('open'); }
         window.addEventListener('click', e => {
-            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'stablesCharterComingModal', 'vaultHelpChoiceModal'].forEach(id => {
+            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'stablesCharterComingModal', 'vaultHelpChoiceModal', 'shopStickerModal'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el && e.target === el) el.classList.remove('open');
             });
         });
+
+        function openShopStickerAndPrint() {
+            openModal('shopStickerModal');
+            setTimeout(() => {
+                try { window.print(); } catch (e) { /* ignore */ }
+            }, 250);
+        }
 
         // Merchant mode: Receive goes to Invoice page
         function doReceive() { if (merchantMode) navigate('invoice'); else openModal('recvModal'); }
@@ -8551,22 +8584,23 @@
         }
 
         // xWiniwa calc
-        const XWM_PRICE = 0.00846, XWM_LEV = 4.2;
         function calcXwm() {
             const wn = parseFloat(document.getElementById('xwmAmt').value) || 0;
-            const xwm = wn > 0 ? (wn * 0.00846 * XWM_LEV / SIM_XWM_PRICE) : '\u2014';
-            document.getElementById('xwmCalcR').textContent = wn > 0 ? xwm.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' xWiniwa' : '\u2014';
+            const canCalc = (wn > 0 && SIM_Winiwa_PRICE > 0 && SIM_XWM_PRICE > 0);
+            const xwm = canCalc ? (wn * SIM_Winiwa_PRICE * SIM_LEVERAGE / SIM_XWM_PRICE) : null;
+            document.getElementById('xwmCalcR').textContent = xwm != null ? xwm.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' xWiniwa' : '\u2014';
             renderCouncilLiabilityStructure();
             calcSlider();
         }
         function setXwmMax() {
-            document.getElementById('xwmAmt').value = '10000';
+            document.getElementById('xwmAmt').value = String(Math.max(0, WALLET_WINIWA));
             calcXwm();
         }
 
         // ISSUE Wables calc
         function setIssueMax() {
-            document.getElementById('issueAmt').value = '84.60'; // 10000 Winiwa * $0.00846
+            const v = (SIM_Winiwa_PRICE > 0) ? (WALLET_WINIWA * SIM_Winiwa_PRICE) : 0;
+            document.getElementById('issueAmt').value = String(Math.max(0, v));
             calcIssue();
         }
 
@@ -8581,10 +8615,15 @@
         // Burn xWiniwa calc
         function calcXwmBurn() {
             const amt = parseFloat(document.getElementById('xwmBurnAmt').value) || 0;
-            const wn = amt > 0 ? (amt * XWM_PRICE / 0.00846) : '\u2014';
+            const wn = (amt > 0 && SIM_Winiwa_PRICE > 0 && SIM_XWM_PRICE > 0) ? (amt * SIM_XWM_PRICE / SIM_Winiwa_PRICE) : '\u2014';
             const el = document.getElementById('xwmBurnCalc');
             if (el) el.textContent = wn !== '\u2014' ? wn.toLocaleString('en-US', { maximumFractionDigits: 0 }) + ' Winiwa' : '\u2014';
             calcSlider();
+        }
+
+        function setXwmBurnMax() {
+            document.getElementById('xwmBurnAmt').value = String(Math.max(0, WALLET_XWM));
+            calcXwmBurn();
         }
 
         // Top bar block height: real from MDS in MiniDapp host; otherwise label only (no fake height)
@@ -8681,8 +8720,8 @@
             AUDw: { USDw: .654, EURw: .6, GBPw: .515, JPYw: 97.7, CADw: .889, CHFw: .583, CNYw: 4.73, AUDw: 1, Winiwa: 77.3, xWiniwa: 6.86 },
             CHFw: { USDw: 1.123, EURw: 1.031, GBPw: .884, JPYw: 167.9, CADw: 1.528, AUDw: 1.715, CNYw: 8.13, CHFw: 1, Winiwa: 132.7, xWiniwa: 11.77 },
             CNYw: { USDw: .138, EURw: .127, GBPw: .109, JPYw: 20.64, CADw: .188, AUDw: .211, CHFw: .123, CNYw: 1, Winiwa: 16.3, xWiniwa: 1.45 },
-            Winiwa: { USDw: .00846, EURw: .00777, GBPw: .00665, JPYw: 1.263, CADw: .01150, AUDw: .01294, CHFw: .00753, CNYw: .0614, Winiwa: 1, xWiniwa: .0888 },
-            xWiniwa: { USDw: .09529, EURw: .08752, GBPw: .07497, JPYw: 14.25, CADw: .12957, AUDw: .14579, CHFw: .08495, CNYw: .6920, Winiwa: 11.26, xWiniwa: 1 }
+            Winiwa: { USDw: .00846, EURw: .00777, GBPw: .00665, JPYw: 1.263, CADw: .01150, AUDw: .01294, CHFw: .00753, CNYw: .0614, Winiwa: 1, xWiniwa: 42.3 },
+            xWiniwa: { USDw: .00020, EURw: .000184, GBPw: .000157, JPYw: .02993, CADw: .000272, AUDw: .000306, CHFw: .000178, CNYw: .001453, Winiwa: .02365, xWiniwa: 1 }
         };
         function calcRate() {
             const from = document.getElementById('exFromCcy').value;
@@ -8895,13 +8934,19 @@
         const TREASURY_ALLOC = { ops: 0.15, growth: 0.15, incent: 0.08, sec: 0.07, mp: 0.55 };
         const TREASURY_NEXT_VOTE_UTC = new Date('2026-04-01T12:00:00Z').getTime();
 
-        let WALLET_WINIWA = 10000;
-        let WALLET_XWM = 340;
-        let WALLET_WABLES = 3450.75;
-        let WALLET_CF = 1240;
+        let WALLET_WINIWA = 0;
+        let WALLET_XWM = 0;
+        let WALLET_WABLES = 0;
+        let WALLET_CF = 0;
         let SIM_Winiwa_PRICE = 0.00846;
-        const SIM_XWM_PRICE = 10.49;
         const SIM_LEVERAGE = 4.2;
+        let SIM_XWM_PRICE = SIM_Winiwa_PRICE / (SIM_LEVERAGE * 10);
+
+        // Keep the burn panel "xWiniwa price" row consistent with the demo constants.
+        try {
+            const el = document.getElementById('xwmPriceDisplay');
+            if (el) el.textContent = '$' + SIM_XWM_PRICE.toFixed(5);
+        } catch (_) { /* ignore */ }
 
         /** Last 24h USDT quote volume from MEXC when the ticker response includes it (see `refreshWiniwaSpotFromMexc`). */
         window.WINIWA_24H_QUOTE_USD = null;
@@ -8926,6 +8971,12 @@
                 const n = Number(p);
                 if (!Number.isFinite(n) || n <= 0 || n > 1e7) return false;
                 SIM_Winiwa_PRICE = n;
+                // xWiniwa is demo-leveraged equity; make it meaningfully smaller than base Winiwa.
+                SIM_XWM_PRICE = SIM_Winiwa_PRICE / (SIM_LEVERAGE * 10);
+                try {
+                    const el = document.getElementById('xwmPriceDisplay');
+                    if (el) el.textContent = '$' + SIM_XWM_PRICE.toFixed(5);
+                } catch (_) { /* ignore */ }
                 try {
                     if (RATES.Winiwa) RATES.Winiwa.USDw = n;
                 } catch (_) {}
@@ -9101,6 +9152,10 @@
         function updateGlobalUI() {
             document.getElementById('availWiniwaXwm').textContent = `Available: ${WALLET_WINIWA.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
             document.getElementById('availWiniwaIss').textContent = `Available: ${WALLET_WINIWA.toLocaleString('en-US', { maximumFractionDigits: 0 })} Winiwa`;
+            const burnAvailEl = document.getElementById('availXwmBurn');
+            if (burnAvailEl) {
+                burnAvailEl.textContent = `Available: ${WALLET_XWM.toLocaleString('en-US', { maximumFractionDigits: 0 })}`;
+            }
 
             // Wallet currency block: keep quantities fixed, but recalc all equivalents in the current principal (BASE_CCY).
             const CCY_META = {
@@ -9440,6 +9495,51 @@
             const h = Math.floor((ms % 86400000) / 3600000);
             const m = Math.floor((ms % 3600000) / 60000);
             el.textContent = `${d}d ${h}h ${m}m`;
+        }
+
+        function claimFaucetWiniwa() {
+            const sel = document.getElementById('faucetWiniwaAmtSel');
+            const txt = sel && sel.options && sel.options[sel.selectedIndex] ? sel.options[sel.selectedIndex].text : '';
+            const m = String(txt).match(/[\d,.]+/);
+            const amt = m ? parseFloat(m[0].replace(/,/g, '')) : 0;
+            if (!Number.isFinite(amt) || amt <= 0) return showToast('Pick a valid Winiwa amount');
+
+            WALLET_WINIWA += amt;
+
+            if (document.getElementById('xwmAmt')) document.getElementById('xwmAmt').value = '';
+            if (document.getElementById('issueAmt')) document.getElementById('issueAmt').value = '';
+            if (document.getElementById('xwmBurnAmt')) document.getElementById('xwmBurnAmt').value = '';
+            if (document.getElementById('reclaimAmt')) document.getElementById('reclaimAmt').value = '';
+
+            if (typeof calcXwm === 'function') calcXwm();
+            if (typeof calcIssue === 'function') calcIssue();
+            if (typeof calcXwmBurn === 'function') calcXwmBurn();
+            if (typeof calcReclaim === 'function') calcReclaim();
+            if (typeof updateGlobalUI === 'function') updateGlobalUI();
+            if (typeof calcSlider === 'function') calcSlider();
+
+            showToast('✓ Winiwa sent to my Vault!');
+        }
+
+        function resetFaucetBalances() {
+            WALLET_WINIWA = 0;
+            WALLET_XWM = 0;
+            WALLET_WABLES = 0;
+            WALLET_CF = 0;
+
+            ['xwmAmt', 'issueAmt', 'xwmBurnAmt', 'reclaimAmt'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+
+            if (typeof calcXwm === 'function') calcXwm();
+            if (typeof calcIssue === 'function') calcIssue();
+            if (typeof calcXwmBurn === 'function') calcXwmBurn();
+            if (typeof calcReclaim === 'function') calcReclaim();
+            if (typeof updateGlobalUI === 'function') updateGlobalUI();
+            if (typeof calcSlider === 'function') calcSlider();
+
+            showToast('Balances reset - Vault cleared');
         }
 
         function executeMintXwm() {
