@@ -11,9 +11,10 @@ To ensure the system remains balanced and professional, we define five primary r
 
 1.  **The Community (Users):** Citizens and customers who spend Stables at verified locations. They provide the fundamental demand for the merchant network.
 2.  **The Merchants:** Business owners who accept Stables. They pay the 16 Big Mac® fee to be "Verified" and listed in the official directory.
-3.  **The Direct Ambassador (Active):** The participant who performs the actual onboarding or pitch. They are the primary human layer of growth.
-4.  **The Second Level Ambassador (Mentor):** The participant who successfully onboarded and trained a Direct Ambassador. They receive a reward for the performance of their "cells" (mentored hub).
-5.  **The Council & Treasury:** The autonomous heart of the protocol. It collects the anchor fees and arbitrage yield to fund community-voted growth.
+3.  **The Independent Participant:** A merchant or future ambassador who registers directly through the app without an external pitch. They are anchored to the protocol via the **Universal Anchor**.
+4.  **The Direct Ambassador (Active):** The participant who performs the actual onboarding or pitch for another merchant.
+5.  **The Second Level Ambassador (Mentor):** The participant who successfully onboarded and trained a Direct Ambassador.
+6.  **The Council & Treasury:** The autonomous heart of the protocol. It collects the anchor fees and arbitrage yield to fund community-voted growth.
 
 ---
 
@@ -31,60 +32,112 @@ In an open system, there is a risk that a merchant might try to bypass the Ambas
 We solve this by ensuring the entry cost and the active reward are decoupled, and by making the Treasury the default mentor.
 
 ### **Economic Core:**
-- **Entry Fee:** 16 Big Mac® is a sunk cost for everyone (Merchants and Ambassadors alike).
-- **Onboarding Split:** 
-    - 8 Big Mac® **Direct Ambassador** (in a mentored hub) or 9 Big Mac® (if direct)
-    - 1 Big Mac® **Second Level Ambassador** Reward (if the direct one was themselves mentored)
-    - 7 Big Mac® Council Share
-- **Treasury Captures:** The Council Treasury captures **7, 8, or 16 Big Mac®** depending on the scenario.
-- **Listing Duration:** The 16 Big Mac® entry fee covers a **12-month listing**. Renewals follow the same economic logic.
-- **Future Utility:** This same logic applies to merchant publicity campaigns, with a **8/1/7 split** per 16 Big Mac® spent.
+- **Universal Anchor Fee:** **16 Big Mac®** (Sunk cost for Independent Registration).
+- **Mentored Registration Fee:** **15 Big Mac®** (1 Big Mac® Discount for being mentored by an Ambassador).
+- **Active Reward:** **8 Big Mac®** (Fixed for the Direct Ambassador).
+- **Mentor Reward:** **1 Big Mac®** (For the Second Level Ambassador).
+- **Council Share:** **6-16 Big Mac®** (Standard: 6; plus any unclaimed mentor/premium shares).
+- **Listing Duration:** The fee covers a **12-month registration**. Renewals follow the same economic logic.
+- **Future Utility:** This same logic applies to merchant publicity campaigns, with a tiered split per 15-16 Big Mac® spent.
 
 ---
 
 ## 🏗️ 5. Scenario Breakdown
 
-### **Scenario 1: The Universal Anchor (Self-Onboarding)**
-This is the starting point for every participant. Whether you are an aspiring Ambassador or a local Merchant choosing to perform an **Independent Registration** without an external pitch, your first entry into the official directory is the **Universal Anchor**.
-- **Action:** Merchant B completes an **Independent Registration** directly through the app.
-- **On-chain Lookup:** The `mentor` field for B is empty (NULL).
+### **Scenario 1: Independent Registration (The Universal Anchor)**
+This is the starting point for every participant. Whether you are an aspiring Ambassador or a local Merchant, choosing to join via a **Direct-to-Protocol Registration** (without an external pitch) makes you an **Independent Participant**.
+- **Fee Paid:** **16 Big Mac®** (Standard Anchor Price).
+- **On-chain Lookup:** The `mentor` field is empty (NULL), defaulting to the Universal Anchor.
 - **Distribution:** 100% (16 Big Mac®) → **Council Treasury**.
-- **Result:** B is now a "Verified" registered participant. By choosing to self-onboard, B has paid the full anchor fee to the Treasury, establishing the base value of the network. B can now act as an Ambassador for others.
+- **Result:** The participant is now "Verified" and anchored to the protocol. They can now list their shop in the app and act as a Direct Ambassador for others.
 
-### **Scenario 2: Standard Mentored Onboarding**
-Ambassador A (Mentor) onboards a new merchant Shop B.
-- **Action:** Shop B is registered by A.
-- **On-chain Lookup:** B's mentor is set to A.
-- **Distribution:** 7 Big Mac® → **Council Treasury** and 9 Big Mac® → **Ambassador A**.
-- **Result:** A is rewarded for the pitch and support. Council gets 7.
+### **Scenario 2: Mentored Registration (Direct Pitch)**
+A Direct Ambassador (A) onboards a new merchant (B).
+- **Fee Paid:** **15 Big Mac®** (Includes 1 Big Mac® Mentorship Discount).
+- **Condition:** Ambassador A has no mentor (they are an Independent Participant).
+- **Distribution:** 7 Big Mac® → **Council Treasury** and 8 Big Mac® → **Ambassador A**.
+- **Result:** The merchant saves 1 Big Mac® compared to self-onboarding. Ambassador A earns the fixed active reward (8).
 
-### **Scenario 3: Hub Expansion (Mentor Reward)**
-Merchant B (who was onboarded by A) now onboards Shop C.
-- **Action:** Shop C is registered by B.
-- **On-chain Lookup:** B has a mentor (A).
-- **Distribution:** 7 Big Mac® → **Council Treasury**, 8 Big Mac® → **Merchant B (Direct Ambassador)**, and 1 Big Mac® → **Ambassador A (Second Level Ambassador)**.
-- **Result:** Merchant B earns for their active work, and A earns for mentoring B. Council gets 7.
-
-### **Scenario 4: Independent Onboarding (The Shield)**
-Merchant B chooses to bypass Ambassador A and self-onboards to "go independent." Then B onboards Shop C.
-- **Action:** Shop C is registered by B.
-- **On-chain Lookup:** B has NO mentor (self-listed).
-- **Distribution:** 8 Big Mac® → **Council Treasury** and 8 Big Mac® → **Merchant B (Direct Ambassador)**.
-- **Result:** Merchant B still only earns 8 Big Mac®. The "unclaimed second-level share" reverts to the Council. This means B has zero financial benefit to bypassing A.
+### **Scenario 3: Hub Registration (Deep Expansion)**
+A Direct Ambassador (B) onboards a new merchant (C).
+- **Fee Paid:** **15 Big Mac®** (Mentorship Discount).
+- **Condition:** Ambassador B was themselves mentored by Ambassador A.
+- **Distribution:** 6 Big Mac® → **Council Treasury**, 8 Big Mac® → **Ambassador B (Active)**, and 1 Big Mac® → **Ambassador A (Mentor)**.
+- **Result:** The hub grows. Both the active worker and the trainer are rewarded.
 
 ---
 
-## ⚙️ 6. Technical Implementation: How the System Distinguishes
+### **🛡️ The Shield Principle (Neutrality)**
+The economic model is designed so that bypassing a mentor provides **zero financial advantage**. Whether an Ambassador is independent (Scenario 2) or part of a hub (Scenario 3), their active reward for onboarding a new shop is **always exactly 8 Big Mac®**. The extra 1 Big Mac® (the second-level share) is never "captured" by the active worker; it simply defaults to the Council Treasury if no mentor exists.
+
+---
+
+## 🛠️ 6. The Ambassador's Service Lifecycle
+
+The relationship between an Ambassador and a Merchant is not a one-time transaction; it is a professional partnership built on three pillars of service:
+
+1.  **Phase 1: Expert Setup & Verification:**
+    -   Walking the merchant through the 15 Big Mac® registration.
+    -   Configuring the merchant's Minima node and Stables wallet.
+    -   Ensuring the shop is correctly geolocated and categorized on the global map.
+    -   Providing physical signage (stickers/QR codes) to signal "Stables Accepted Here."
+2.  **Phase 2: Continued Technical Support:**
+    -   Acting as the first point of contact for technical issues or ledger updates.
+    -   Training staff on how to accept payments and handle refunds.
+    -   Providing periodic health checks on the merchant's listing and node connectivity.
+3.  **Phase 3: Marketing & Ads Campaign Management:**
+    -   Helping the merchant launch protocol-wide publicity campaigns using the 8/1/6 split.
+    -   Analyzing customer review data and responding to feedback.
+    -   Strategizing on local promotions to increase Stables spending at the location.
+
+---
+
+## 📅 7. The Annual Renewal Cycle: Sustaining Value
+
+To ensure merchants choose to maintain their listing with their original Ambassador (rather than going "independent" on renewal), the protocol enforces a persistent incentive:
+
+-   **The Renewal Discount:** Merchants who renew via their Ambassador keep the **15 Big Mac®** mentored price.
+-   **Service Continuity:** Moving to an independent listing (Universal Anchor) results in a **16 Big Mac®** fee and the loss of the dedicated Ambassador support layer.
+-   **Long-term Hub Integrity:** The protocol recognizes the value of the trainer (Second Level Ambassador) by maintaining the 1 Big Mac® mentor share on all renewals, ensuring the original hub that grew the network is rewarded for its stability.
+
+---
+
+## 💻 8. Stables Platform: Supporting the Ambassador
+
+The Stables platform is built to empower Ambassadors with professional-grade tools to manage their "Hub" like a business:
+
+1.  **Ambassador Dashboard (CRM):** A specialized view in the app to track all mentored merchants, their status, renewal dates, and performance.
+2.  **Merchant Communication Tools:** Integrated messaging to broadcast updates, tips, or promotion ideas to the entire hub.
+3.  **Campaign Templates:** Pre-built marketing assets (posters, social media kits, and ad templates) that Ambassadors can customize for their local merchants.
+4.  **Training Resources:** A library of educational content and "Pitch Decks" to help Ambassadors close more deals and train their mentored merchants effectively.
+
+---
+
+## 🌟 9. The Merchant's Choice: Why Stables? Why an Ambassador?
+
+### **Why Stables?**
+-   **Zero Middleman Fees:** Accept payments directly on-chain with no bank fees or card processor cuts.
+-   **Global Professional Network:** Be visible to a growing world of Stables users looking for verified real-world utility.
+-   **Full Sovereignty:** You own your node, your keys, and your customer relationships.
+
+### **Why use an Ambassador?**
+-   **Instant Discount:** Save 1 Big Mac® immediately compared to self-onboarding.
+-   **Expert Deployment:** Avoid technical hurdles; get it right the first time with a dedicated professional.
+-   **Peace of Mind:** Have a local human contact who is financially incentivized to see your business grow.
+
+---
+
+## ⚙️ 10. Technical Implementation: How the System Distinguishes
 
 The Stables ledger tracks an optional `mentor` address for every listed participant. This `mentor` is set only during the very first listing (Scenario 1) and can never be changed.
 
 - **Self-Onboarded Merchant**: The `mentor` field is NULL.
 - **Mentored Merchant**: The `mentor` field is set to the Ambassador who performed the onboarding.
 
-When a participant (B) onboards a new merchant (C), the code checks **B’s record**:
+When an Ambassador (B) registers a new merchant (C), the code checks **B’s record**:
 1. Does B have a mentor?
-   - **Yes (A mentored B):** B is part of a Hub. Split is **8 to B, 1 to A, 7 to Council**.
-   - **No (B is independent):** B is solo. Split is **8 to B, 8 to Council** (the mentor unit reverts to Treasury).
+   - **Yes (A mentored B):** B is part of a Hub. Split is **8 to B, 1 to A, 6 to Council** (Total 15).
+   - **No (B is independent):** B is solo. Split is **8 to B, 7 to Council** (The 1 mentor share reverts to Treasury. Total 15).
 2. The active reward for B is **always 8 Big Mac®**. This fixed reward ensures B has no financial incentive to bypass their original mentor.
 
 ### **No-Cost Payment Acceptance**
@@ -117,16 +170,16 @@ To ensure the quality of the Stables merchant network, the app includes a star r
 
 ---
 
-## 💎 7. Council Treasury: The Autonomous Protocol Heart
+## 💎 11. Council Treasury: The Autonomous Protocol Heart
 
 The Stables Council Treasury is the protocol's economic engine, designed around the following core principles:
 
-- **Code-Based Ownership:** The treasury is owned by no one. It is fully governed by the protocol's code and rules to support the long-term growth of the ecosystem.
-- **Free Economic Agent:** The treasury acts as an autonomous economic agent. It actively seeks financial opportunities to grow its base, primarily through arbitrage opportunities across the network and linked markets.
-- **Budget Governance:** While the treasury is automated, its growth budget is allocated via community governance.
-- **Time-Weighted Voting:** Community votes on the budget are held periodically. Voting power is determined on a **time-weighted token holding basis**, rewarding those who have committed their "skin-in-the-game" to the protocol for the longest duration.
+-   **Code-Based Ownership:** The treasury is owned by no one. It is fully governed by the protocol's code and rules to support the long-term growth of the ecosystem.
+-   **Free Economic Agent:** The treasury acts as an autonomous economic agent. It actively seeks financial opportunities to grow its base, primarily through arbitrage opportunities across the network and linked markets.
+-   **Budget Governance:** While the treasury is automated, its growth budget is allocated via community governance.
+-   **Time-Weighted Voting:** Community votes on the budget are held periodically. Voting power is determined on a **time-weighted token holding basis**, rewarding those who have committed their "skin-in-the-game" to the protocol for the longest duration.
 
 ---
 
-## 🎬 8. Summary
+## 🎬 12. Summary
 This framework demonstrates a "ruled by code" economy that rewards mentorship while protecting the treasury. It turns human competition into a collaborative cells-and-hubs structure where the treasury always grows.
