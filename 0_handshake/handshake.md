@@ -13,6 +13,7 @@
     - `3_archive`: Historical record (Never delete; always move here).
 - **The Validation Pipeline (CRITICAL)**: AI Agents work exclusively in `1_development`. Before any code, asset, or document is published to GitHub or moved to `2_current`, the AI MUST explain the contents to the user and receive explicit approval. Do not bypass the user's review.
 - **Zero Loose Files**: NO files are allowed at the root of the project or at the root of any stream/phase folder. Everything must be in a named `prod_` or `task_` folder.
+- **Documentation by Page (UI Parity)**: Within `stream_1_app/ui_inventory/`, all technical, functional, or economic documentation MUST be organized into numbered folders mirroring the app's UI hierarchy (e.g., `01_shops_exchange/02_ambassadors/`). This ensures every UI element mirrors its documentation in the directory tree. **CRITICAL**: When a page is added or the navigation order changes in `index.html`, the `ui_inventory` folder structure and [app_pages_ordered.md](file:///c:/Users/Charles/Documents/Stables/1_development/stream_1_app/ui_inventory/app_pages_ordered.md) MUST be updated immediately to maintain 1:1 parity between the code and the documentation hierarchy.
 - **Atomic Folder Rule**: 
     - `task_[description]`: For active/sandbox work.
     - `prod_[description]`: For stable, finalized deliverables.

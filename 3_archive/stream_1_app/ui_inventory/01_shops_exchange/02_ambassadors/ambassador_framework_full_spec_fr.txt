@@ -1,0 +1,138 @@
+PROGRAMME D'AMBASSADEURS STABLES : L'ÉCONOMIE DES 16 BIG MAC®
+=========================================================
+
+Ce document définit l'architecture centrale du programme d'Ambassadeurs Stables, 
+plus précisément "l'économie des 16 Big Mac®".
+
+1. OBJECTIF
+-----------
+Notre objectif principal est de construire un réseau professionnel et motivé 
+d'Ambassadeurs rémunérés pour soutenir la croissance du réseau de commerçants 
+acceptant les paiements Stables. Les Ambassadeurs constituent la couche humaine 
+qui intègre les commerçants dans la boucle économique de Stables et garantit 
+un répertoire de haute qualité et de confiance.
+
+2. CONTRAINTES
+--------------
+* Entièrement Ouvert : Nous avons une structure totalement ouverte où n'importe 
+  qui peut devenir Ambassadeur.
+* Équitable et Mondial : Tous les frais sont indexés sur l'Indice Big Mac pour 
+  rester équitables à l'échelle mondiale.
+  Référence : https://worldpopulationreview.com/country-rankings/big-mac-index-by-country
+
+3. LE PROBLÈME : LE CONTOURNEMENT PAR AUTO-INSCRIPTION
+------------------------------------------------------
+Comment s'assurer que les commerçants n'ont pas d'incitation financière à 
+s'inscrire eux-mêmes pour capter la rémunération de l'Ambassadeur ?
+
+Dans un système ouvert, il existe un risque qu'un commerçant tente de contourner 
+l'Ambassadeur qui lui a présenté le projet pour "auto-capturer" la récompense 
+d'inscription.
+
+4. NOTRE SOLUTION : L'ÉCONOMIE DES 16 BIG MAC®
+----------------------------------------------
+Nous résolvons ce problème en veillant à ce que le coût d'entrée et la récompense 
+active soient déconnectés, et en faisant de la Trésorerie le mentor par défaut.
+
+Cœur Économique :
+* Frais d'Entrée : 16 Big Mac® est un coût fixe pour tout le monde 
+  (commerçants et Ambassadeurs).
+* Répartition de l'Inscription :
+    - 8 Big Mac® pour l'Ambassadeur Actif (dans un hub mentoré) ou 9 Big Mac® (si direct)
+    - 1 Big Mac® de Récompense Mentor (si l'Ambassadeur a lui-même été mentoré)
+    - 7 Big Mac® pour la Trésorerie du Conseil
+* Captations de la Trésorerie : La Trésorerie du Conseil capte 7, 8 ou 16 Big Mac® 
+  selon le scénario.
+* Durée de l'Inscription : Les frais d'entrée de 16 Big Mac® couvrent une 
+  inscription de 12 mois. Les renouvellements suivent la même logique économique.
+* Utilité Future : Cette même logique s'applique aux campagnes publicitaires 
+  des commerçants, avec une répartition 8/1/7 par tranche de 16 Big Mac® dépensés.
+
+5. LES SCÉNARIOS TYPE
+---------------------
+
+S1. L'ANCRE UNIVERSELLE (L'AUTO-INSCRIPTION)
+    C'est le point de départ pour chaque participant. Que vous soyez un futur 
+    Ambassadeur ou un commerçant local choisissant de s'inscrire lui-même sans 
+    présentation externe, votre première entrée dans le répertoire officiel 
+    est l'Ancre Universelle.
+    - Action : L'utilisateur B s'inscrit directement. Pas de mentor.
+    - Distrib : 100% (16 Big Mac®) vers Trésorerie du Conseil.
+    - Résultat : B est désormais un participant référencé "Vérifié".
+
+S2. INSCRIPTION MENTORÉE STANDARD
+    Action : Shop B inscrit par A.
+    Distrib : 7 Big Mac® Trésorerie / 9 Big Mac® Ambassadeur A.
+
+S3. EXPANSION DU HUB (RÉCOMPENSE MENTOR)
+    Action : Shop C inscrit par B (B a été mentoré par A).
+    Distrib : 7 Big Mac® Trésorerie / 8 Big Mac® B (Actif) / 1 Big Mac® A (Mentor).
+
+S4. INSCRIPTION INDÉPENDANTE (LE BOUCLIER)
+    Action : Shop C inscrit par B (B s'est auto-inscrit sans mentor).
+    Distrib : 8 Big Mac® Trésorerie / 8 Big Mac® B (Actif).
+    Note : B ne gagne pas plus en contournant son mentor éventuel.
+
+6. MISE EN ŒUVRE TECHNIQUE : COMMENT LE SYSTÈME FAIT LA DISTINCTION
+-------------------------------------------------------------------
+
+Le registre Stables suit une adresse optionnelle de 'mentor' pour chaque participant 
+inscrit. Ce 'mentor' est défini uniquement lors de la toute première inscription 
+(Scénario 1) et ne peut jamais être modifié.
+
+* Commerçant Auto-Inscrit : Le champ 'mentor' est NULL.
+* Commerçant Mentoré : Le champ 'mentor' est défini sur l'adresse de l'Ambassadeur 
+  qui a effectué l'inscription.
+
+Lorsqu'un participant (B) inscrit un nouveau commerçant (C), le code vérifie 
+le profil de B :
+
+1. B a-t-il un mentor ?
+   - Oui (A a mentoré B) : B fait partie d'un Hub. La répartition est 
+     8 pour B, 1 pour A, 7 pour le Conseil.
+   - Non (B est indépendant) : B est solo. La répartition est 
+     8 pour B, 8 pour le Conseil (l'unité du mentor revient à la Trésorerie).
+
+2. La récompense active pour B est toujours de 8 Big Mac®. Cette récompense fixe 
+   garantit que B n'a aucune incitation financière à contourner son mentor d'origine.
+
+[Acceptation des Paiements sans Frais]
+Stables repose sur une technologie de protocole ouvert. Tout commerçant peut 
+accepter des paiements Stables immédiatement et sans frais, simplement en générant 
+une adresse Minima. L'acceptation des paiements est gratuite et sans permission.
+
+[Les Avantages d'être Référencé]
+Choisir de payer les frais d'entrée de 16 Big Mac® pour être référencé dans 
+l'application officielle Stables offre des avantages cruciaux :
+* Visibilité : Mise en avant sur la carte mondiale Stables et dans le répertoire.
+* Confiance : Le référencement confère un statut "Vérifié".
+* Découvrabilité : Recherche par catégories et géolocalisation.
+* Réseau : Accès au support local et aux campagnes marketing.
+
+[Les Ambassadeurs comme Commerçants Spécialisés]
+Les Ambassadeurs sont référencés comme un type de commerçant. Cela leur permet 
+de présenter leurs services et d'être trouvés par les commerçants locaux pour 
+une formation ou un support technique.
+
+[Accords de "Side Letter"]
+Le protocole permet des accords de "Side Letter" pour partager les commissions :
+* Transparence : Conditions intégrables au contrat d'inscription (visibles on-chain).
+* Flexibilité : Accords indépendants et privés pour des relations sur mesure.
+
+[Système d'Évaluation sur la Chaîne]
+* Vérification : Chaque avis est lié à une transaction réelle.
+* Anti-Spam : Seuls les avis après un montant d'achat minimum sont publiés.
+* Modération : Rôle des Ambassadeurs dans le suivi de la qualité.
+
+7. LA TRÉSORERIE DU CONSEIL
+---------------------------
+* Propriété Basée sur le Code : N'appartient à personne, régie par le protocole.
+* Agent Économique : Recherche active d'opportunités d'arbitrage.
+* Gouvernance : Budget alloué par vote communautaire périodique.
+* Vote Pondéré : Pouvoir de vote basé sur la durée de détention des jetons.
+
+8. RÉSUMÉ
+----------
+Ce cadre démontre une économie "régie par le code" qui récompense le mentorat 
+tout en protégeant la trésorerie. Elle transforme la compétition humaine en 
+collaboration structurée.

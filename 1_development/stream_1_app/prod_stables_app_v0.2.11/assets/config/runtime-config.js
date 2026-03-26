@@ -112,7 +112,7 @@ window.STABLES_CONFIG = {
     'Suspicious transaction flags',
     'Transaction notes',
     'Hidden/deleted transaction visibility flags',
-    'Soft-hidden transactions and hidden shops (local demo)',
+    'Soft-hidden transactions and hidden merchants (local demo)',
     'Activity search state and demo-only metadata',
     'stables_demo_wallet_v1 (browser demo vault balances)',
     'stables_demo_exchange_hist_v1 (browser demo exchange history)'

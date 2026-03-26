@@ -3905,8 +3905,8 @@
                     <div class="app-page-header__sub">Mint and burn xWiniwa and Wables</div>
                 </div>
             </header>
-            <p class="hint" style="margin:-8px 0 16px;font-weight:800;color:var(--m);line-height:var(--lh-caption);border-left:none;padding:0 14px">
-                Convert Winiwa into xWiniwa and any Wables token on this page. To acquire MINIMA (Winiwa currently in this test phase), use
+            <p class="hint" style="margin:-8px 0 16px;font-weight:800;color:var(--am);line-height:var(--lh-caption);border-left:none;padding:0 14px">
+                To acquire MINIMA (Winiwa currently in this test phase), use
                 <a href="#" onclick="navigate('onoff-ramp');return false;" style="color:var(--c);text-decoration:underline">On/Off Ramp</a>.
             </p>
             <div class="tab-row">
@@ -4022,8 +4022,8 @@
                                 <div id="availWiniwaIss">Available: 0 Winiwa</div>
                             </div>
                             <div style="display:grid;grid-template-columns:1fr auto auto;gap:8px">
-                                <input class="finput" type="number" id="issueAmt" placeholder="0.00"
-                                    oninput="calcIssue()" inputmode="decimal" style="min-width:0">
+                                <input class="finput" type="text" id="issueAmt" placeholder="0.00"
+                                    oninput="calcIssue()" inputmode="decimal" autocomplete="off" style="min-width:0">
                                 <button class="btn btn-g" style="width:auto;padding:10px 12px;font-size:12px"
                                     onclick="setIssueMax()">MAX</button>
                                 <select class="ex-sel" id="issueCcy" style="width:74px" onchange="calcIssue()">
@@ -4078,8 +4078,8 @@
                                         <div id="availWablesBurn">&mdash;</div>
                                     </div>
                                     <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
-                                        <input class="finput" type="number" id="reclaimAmt" placeholder="0.00"
-                                            oninput="calcReclaim()" inputmode="decimal" style="min-width:0">
+                                        <input class="finput" type="text" id="reclaimAmt" placeholder="0.00"
+                                            oninput="calcReclaim()" inputmode="decimal" autocomplete="off" style="min-width:0">
                                         <select class="ex-sel" style="width:74px" id="reclaimCcy" onchange="calcReclaim()">
                                             <option>USDw</option>
                                             <option>EURw</option>
@@ -4198,7 +4198,7 @@
             </div>
         </div>
 
-        <!-- ON/OFF RAMP (More → Shops & Exchange) -->
+        <!-- ON/OFF RAMP (More → Merchants & Exchange) -->
         <div class="page" id="page-onoff-ramp">
             <header class="app-page-header">
                 <div class="dic" aria-hidden="true">&#x1F4B5;</div>
@@ -4297,7 +4297,7 @@
             </div>
         </div>
 
-        <!-- AMBASSADOR (More → Shops & Exchange) -->
+        <!-- AMBASSADOR (More → Merchants & Exchange) -->
         <div class="page" id="page-ambassador">
             <header class="app-page-header">
                 <div class="dic" aria-hidden="true">&#x1F91D;</div>
@@ -4309,29 +4309,31 @@
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('Ambassador listing: 16 Big Mac® (paid in MINIMA); shops also pay 16 Big Mac®; ambassadors help onboarding and receive retrocession when they handle listing')"
+                        onclick="openAgentExplain('Ambassadors: pay the standard 16 Big Mac® fee to list. Once active, receive a 7 Big Mac® reward for your work, while your mentor receives 1 Big Mac®. 8 Big Mac® (50%) always goes to the treasury.')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
                 <div class="card app-section-card" style="padding:18px 16px">
                     <p class="sec-body" style="margin:0 0 12px;line-height:1.55">
-                        Ambassadors are here to help shops get listed and launch promotions. This page is only about that
+                        Ambassadors are here to help merchants get listed and launch promotions. This page is only about that
                         onboarding role.
                     </p>
                     <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">Listing fees (showcase):</strong> a shop listing is
-                        <strong style="color:var(--t)">16 Big Mac®</strong> (paid in MINIMA) and listing for Ambassadors is also
-                        <strong style="color:var(--t)">16 Big Mac®</strong> (indexed by country via
-                        <a href="https://worldpopulationreview.com/country-rankings/big-mac-index-by-country"
-                            target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">Big
-                            Mac Index</a>).
+                        <strong style="color:var(--c)">1. Entry (Skin-in-the-game):</strong> Everyone starts equal. Both merchants and Ambassadors pay the full 
+                        <strong style="color:var(--t)">16 Big Mac®</strong> (paid in MINIMA, indexed) to be listed. 100% of this fee goes directly to the Council treasury to anchor the protocol.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--c)">2. Active Reward:</strong> For every new merchant you successfully onboard, you receive a kickback of
+                        <strong style="color:var(--t)">7 Big Mac®</strong>. This reward is fixed, ensuring there is no financial incentive to bypass your mentor.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--c)">3. Mentor Reward:</strong> If a merchant you onboarded becomes an Ambassador themselves, you receive a 
+                        <strong style="color:var(--t)">1 Big Mac®</strong> override on their future onboarding work as a reward for your mentorship and support.
                     </p>
                     <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">Retrocession model:</strong> the listing flow can split value
-                        <strong style="color:var(--t)">50% to the Council treasury</strong> / <strong style="color:var(--t)">50%
-                            ambassador</strong> when an active listed Ambassador handles onboarding. Separate Ambassador
-                        listing helps prevent merchants from self-capturing that retrocession.
+                        <strong style="color:var(--c)">Treasury Share:</strong> The remaining 
+                        <strong style="color:var(--t)">8 Big Mac®</strong> (50%) always goes to the Council treasury to ensure long-term protocol stability.
                     </p>
                     <div class="xs mu" style="font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 6px;color:var(--c)">Community discussion</div>
                     <p class="sec-body" style="margin:0 0 10px;line-height:1.55;color:var(--m)">
@@ -4347,21 +4349,21 @@
             </div>
         </div>
 
-        <!-- MY SHOP (More → Shops & Exchange) -->
+        <!-- MY MERCHANT (More → Merchants & Exchange) -->
         <div class="page" id="page-my-shop">
             <header class="app-page-header">
                 <div class="dic" aria-hidden="true">&#x1F3EA;</div>
                 <div class="app-page-header__text">
-                    <div class="app-page-header__title">My shop</div>
+                    <div class="app-page-header__title">Merchants</div>
                     <div class="app-page-header__sub">List your business, invoices, and merchant tools</div>
                 </div>
             </header>
 
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div class="stitle-row">
-                    <div class="stitle">Your shop on Stables</div>
+                    <div class="stitle">Merchants on Stables</div>
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('My shop: listing, regional Ambassador for help, fully listed equals Ambassador privileges, Create Invoice, webshop QR and merchant API kit')"
+                        onclick="openAgentExplain('Merchants: listing, regional Ambassador for help, fully listed equals Ambassador privileges, Create Invoice, webshop QR and merchant API kit')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
@@ -4375,11 +4377,11 @@
                         <strong style="color:var(--c)">Need help getting listed?</strong> Work with
                         <strong style="color:var(--t)">Ambassadors</strong> in <strong style="color:var(--t)">your
                             region</strong>—open <strong style="color:var(--t)">Ambassadors</strong> under
-                        <strong style="color:var(--t)">Shops &amp; Exchange</strong> in More so a local onboarding contact
+                        <strong style="color:var(--t)">Merchants &amp; Exchange</strong> in More so a local onboarding contact
                         can guide you.
                     </p>
                     <p class="sec-body" style="margin:0;line-height:1.55;font-size:var(--fz-caption);color:var(--m)">
-                        <strong style="color:var(--c)">Listing model:</strong> shop listing and listing for Ambassadors are both
+                        <strong style="color:var(--c)">Listing model:</strong> merchant listing and listing for Ambassadors are both
                         <strong style="color:var(--t)">16 Big Mac®</strong> (paid in MINIMA, indexed). When listed Ambassadors perform
                         merchant onboarding, the retrocession split applies as described on
                         <strong style="color:var(--t)">Ambassadors</strong>.
@@ -4411,14 +4413,14 @@
                 <div class="stitle-row">
                     <div class="stitle">Webshop linking &amp; QR</div>
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('My shop webshop: QR and payment links open the app with address and amount; Merchant API kit on GitHub')"
+                        onclick="openAgentExplain('Merchants webshop: QR and payment links open the app with address and amount; Merchant API kit on GitHub')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
                 <div class="card app-section-card" style="padding:18px 16px">
                     <p class="sec-body" style="margin:0 0 14px;line-height:1.55">
-                        Online shops can point customers to Stables the same way as a physical checkout: a
+                        Online merchants can point customers to Stables the same way as a physical checkout: a
                         <strong style="color:var(--t)">QR code</strong> or
                         <strong style="color:var(--t)">payment link</strong> encodes your
                         <strong style="color:var(--t)">receive address</strong>, <strong style="color:var(--t)">amount</strong>,
@@ -4522,14 +4524,14 @@
             <header class="app-page-header" style="margin-bottom:16px">
                 <div class="dic" aria-hidden="true">&#x1F6D2;</div>
                 <div class="app-page-header__text">
-                    <div class="app-page-header__title">Shops</div>
+                    <div class="app-page-header__title">Merchants</div>
                     <div class="app-page-header__sub">Merchants accepting Wables</div>
                 </div>
             </header>
             <div
                 style="display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:10px;margin:0 auto 20px;padding:0 12px;box-sizing:border-box;max-width:420px;width:100%">
                 <button type="button" class="btn btn-lg" style="width:100%;min-height:64px;line-height:1.25;white-space:normal"
-                    onclick="navigate('my-shop')">List my shop</button>
+                    onclick="navigate('my-shop')">Merchants</button>
                 <button type="button" class="btn btn-lg" style="width:100%;min-height:64px;line-height:1.25;white-space:normal"
                     onclick="navigate('ambassador')">Become an ambassador</button>
             </div>
@@ -4538,7 +4540,7 @@
             <div class="stitle-row">
                 <div class="stitle">Cafés
                 &amp; Food</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Shops: cafés and food merchants accepting Wables')" title="StablesAgent">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Merchants: cafés and food merchants accepting Wables')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
             </div>
@@ -4573,7 +4575,7 @@
             <div class="app-section app-section--caption-bottom">
             <div class="stitle-row">
                 <div class="stitle">Retail</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Shops: retail merchants accepting Wables')" title="StablesAgent">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Merchants: retail merchants accepting Wables')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
             </div>
@@ -4767,7 +4769,7 @@
                 <div class="flex gap8">
                     <button class="btn btn-w btn-g" style="flex:1" onclick="openContactTransactions()">All transactions</button>
                     <button class="btn" style="flex:1" onclick="openContactConversation()">Conversation</button>
-                    <button class="btn" id="contactShopBtn" style="flex:1;display:none" onclick="openSelectedContactShop()">Shop profile</button>
+                    <button class="btn" id="contactShopBtn" style="flex:1;display:none" onclick="openSelectedContactShop()">Merchant profile</button>
                     <button class="btn" id="contactRateMerchantBtn" style="flex:1;display:none" onclick="openSelectedContactMerchantRating()">Rate merchant</button>
                 </div>
             </div>
@@ -5951,7 +5953,14 @@
                 </div>
             </div>
             <div class="dsect">
-                <div class="dsect-t">Shops &amp; Exchange</div>
+                <div class="dsect-t">Merchants &amp; Exchange</div>
+                <div class="ditem" onclick="navigate('onoff-ramp');closeMoreNow()">
+                    <div class="dic" aria-hidden="true">&#x1F4B5;</div>
+                    <div class="dinfo">
+                        <div class="dname">On/Off Ramp</div>
+                        <div class="ddesc">Move between paper money and Stables</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
                 <div class="ditem" onclick="navigate('ambassador');closeMoreNow()">
                     <div class="dic" aria-hidden="true">&#x1F91D;</div>
                     <div class="dinfo">
@@ -5962,15 +5971,8 @@
                 <div class="ditem" onclick="navigate('my-shop');closeMoreNow()">
                     <div class="dic" aria-hidden="true">&#x1F3EA;</div>
                     <div class="dinfo">
-                        <div class="dname">My shop</div>
+                        <div class="dname">Merchants</div>
                         <div class="ddesc">List your business · Invoice · Webshop kit (preview)</div>
-                    </div><span style="color:var(--m)">›</span>
-                </div>
-                <div class="ditem" onclick="navigate('onoff-ramp');closeMoreNow()">
-                    <div class="dic" aria-hidden="true">&#x1F4B5;</div>
-                    <div class="dinfo">
-                        <div class="dname">On/Off Ramp</div>
-                        <div class="ddesc">Move between paper money and Stables</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
                 <div class="ditem" onclick="navigate('exchange');closeMoreNow()">
@@ -6373,7 +6375,7 @@
                     <button class="btn btn-w btn-g" id="welcomeTourPersonBtn" style="width:100%;min-width:220px;line-height:1.4"
                         onclick="setWelcomeTourChoice('person')">I'm a person. I want to understand what I'll be able to do with my own bank.</button>
                     <button class="btn btn-w btn-g" id="welcomeTourShopAmbassadorBtn" style="width:100%;min-width:220px;line-height:1.4"
-                        onclick="setWelcomeTourChoice('shop_ambassador')">I want to become a shop ambassador and explore what the earning opportunities are.</button>
+                        onclick="setWelcomeTourChoice('shop_ambassador')">I want to become a merchant ambassador and explore what the earning opportunities are.</button>
                     <button class="btn btn-w btn-g" id="welcomeTourMerchantBtn" style="width:100%;min-width:220px;line-height:1.4"
                         onclick="setWelcomeTourChoice('merchant')">I'm a merchant. I want to know how this will streamline my business process.</button>
                     <button class="btn btn-w btn-g" id="welcomeTourNerdBtn" style="width:100%;min-width:220px;line-height:1.4"
@@ -6673,7 +6675,7 @@
         <button class="ntab active" id="tab-wallet" onclick="navigate('wallet')"><span
                 class="nicon">&#x1F4B0;</span><span class="nlabel">Wallet</span></button>
         <button class="ntab" id="tab-spend" onclick="navigate('spend')"><span class="nicon">&#x1F6D2;</span><span
-                class="nlabel">Shops</span></button>
+                class="nlabel">Merchants</span></button>
         <button class="ntab" id="tab-more" onclick="openMore()"><span class="nicon">⋯</span><span
                 class="nlabel">More</span></button>
     </nav>
@@ -8957,7 +8959,7 @@
             }
             const ccy = walletParseCcySel('issueCcy');
             const usdPU = walletStableUsdPerUnit(ccy);
-            const usdBudget = WALLET_WINIWA * p;
+            const usdBudget = vaultNumericBalance(WALLET_WINIWA) * p;
             const v = usdPU > 0 ? (usdBudget / usdPU) : 0;
             document.getElementById('issueAmt').value = String(Math.max(0, v));
             calcIssue();
@@ -8965,7 +8967,7 @@
 
         // Reclaim calc
         function calcReclaim() {
-            const amt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
+            const amt = readVaultAmountFromInput(document.getElementById('reclaimAmt'));
             const ccy = walletParseCcySel('reclaimCcy');
             const usdPU = walletStableUsdPerUnit(ccy);
             const p = Number(SIM_Winiwa_PRICE) || 0;
@@ -9108,7 +9110,7 @@
 
         // Vault calc - Wables mint (uses RATES + SIM_Winiwa_PRICE)
         function calcIssue() {
-            const amt = parseFloat(document.getElementById('issueAmt').value) || 0;
+            const amt = readVaultAmountFromInput(document.getElementById('issueAmt'));
             const ccy = walletParseCcySel('issueCcy');
             const mintBtn = document.getElementById('issueMintWablesBtn');
             if (mintBtn) mintBtn.textContent = 'Mint ' + ccy;
@@ -10403,42 +10405,53 @@
 
         function executeMintWables() {
             if (!vaultExecutionAllowed()) return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
-            const mintAmt = parseFloat(document.getElementById('issueAmt').value) || 0;
-            if (mintAmt <= 0) return showToast('Enter valid amount');
+            const amtEl = document.getElementById('issueAmt');
+            if (!amtEl) return showToast('Mint form not ready — try again');
+            const mintAmt = readVaultAmountFromInput(amtEl);
+            if (!(mintAmt > 0)) return showToast('Enter valid amount');
             const issueCcy = walletParseCcySel('issueCcy');
             const issueUsdPU = walletStableUsdPerUnit(issueCcy);
+            const p = Number(SIM_Winiwa_PRICE) || 0;
+            if (!(p > 0)) return showToast('Oracle price unavailable');
             const usdEquiv = mintAmt * issueUsdPU;
-            const winiwaCost = usdEquiv / SIM_Winiwa_PRICE;
-            if (winiwaCost > WALLET_WINIWA) return showToast('Insufficient Winiwa balance');
+            const winiwaCost = usdEquiv / p;
+
+            WALLET_WINIWA = vaultNumericBalance(WALLET_WINIWA);
+            const tol = 1e-5;
+            if (winiwaCost > WALLET_WINIWA + tol) return showToast('Insufficient Winiwa balance');
 
             WALLET_WINIWA -= winiwaCost;
             WALLET_STABLE_AMTS[issueCcy] = (Number(WALLET_STABLE_AMTS[issueCcy]) || 0) + mintAmt;
             WALLET_WABLES = computeWalletWablesUsdTotal();
             PROTOCOL_WINIWA_ASSETS += winiwaCost;
-            PROTOCOL_WABLES_LIAB += usdEquiv;
+            LIAB_STABLES_CIRC += usdEquiv;
 
             document.getElementById('issueAmt').value = '';
             calcIssue();
             saveWalletVaultState();
             updateGlobalUI();
-            showToast(`Successfully minted ${mintAmt.toLocaleString('en-US', { maximumFractionDigits: 2 })} Wables`);
+            showToast(`Successfully minted ${mintAmt.toLocaleString('en-US', { maximumFractionDigits: 2 })} ${issueCcy}`);
         }
 
         function executeBurnWables() {
             if (!vaultExecutionAllowed()) return showToast('Council execution locked - only Executive (Multisig) can execute council decisions.');
-            const burnAmt = parseFloat(document.getElementById('reclaimAmt').value) || 0;
+            const amtEl = document.getElementById('reclaimAmt');
+            if (!amtEl) return showToast('Burn form not ready — try again');
+            const burnAmt = readVaultAmountFromInput(amtEl);
             const reclaimCcy = walletParseCcySel('reclaimCcy');
             const reclaimUsdPU = walletStableUsdPerUnit(reclaimCcy);
             const usdEquiv = burnAmt * reclaimUsdPU;
             const stableBal = Number(WALLET_STABLE_AMTS[reclaimCcy]) || 0;
             if (burnAmt <= 0 || burnAmt > stableBal) return showToast('Invalid amount or insufficient balance');
-            const earnedWiniwa = usdEquiv / SIM_Winiwa_PRICE;
+            const p = Number(SIM_Winiwa_PRICE) || 0;
+            if (!(p > 0)) return showToast('Oracle price unavailable');
+            const earnedWiniwa = usdEquiv / p;
 
             WALLET_STABLE_AMTS[reclaimCcy] = stableBal - burnAmt;
             WALLET_WABLES = computeWalletWablesUsdTotal();
-            WALLET_WINIWA += earnedWiniwa;
+            WALLET_WINIWA = vaultNumericBalance(WALLET_WINIWA) + earnedWiniwa;
             PROTOCOL_WINIWA_ASSETS -= earnedWiniwa;
-            PROTOCOL_WABLES_LIAB -= usdEquiv;
+            LIAB_STABLES_CIRC -= usdEquiv;
 
             document.getElementById('reclaimAmt').value = '';
             calcReclaim();

@@ -133,7 +133,7 @@
     ? JSON.parse(localStorage.getItem(MERCHANT_RATINGS_KEY) || '[]')
     : [];
   const MERCHANT_RATING_MIN_SPEND_USD = 3;
-  const MERCHANT_RATING_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24h between edits per shop+rater
+  const MERCHANT_RATING_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24h between edits per merchant+rater
   const MERCHANT_RATING_MAX_COMMENT = 240;
   let pendingMerchantRatingShop = '';
 
@@ -599,7 +599,7 @@
           <textarea class="finput" id="txDetailNoteInput" rows="2" placeholder="Add a note for this transaction..." style="resize:vertical;margin-bottom:8px">${txNote}</textarea>
           <div class="flex gap8" style="justify-content:center"><button class="btn btn-w btn-g" onclick="saveTransactionNote()">Save note</button></div>
         </div>
-        <div class="xs mu">Use the <strong>Hidden</strong> filter on All Transactions to review soft-hidden payments. Deleted items stay gone unless you reset local config. Hiding a shop removes it from the Shops tab and drops its payments from the main activity list until you show the shop again from its profile.</div>
+        <div class="xs mu">Use the <strong>Hidden</strong> filter on All Transactions to review soft-hidden payments. Deleted items stay gone unless you reset local config. Hiding a merchant removes it from the Merchants tab and drops its payments from the main activity list until you show the merchant again from its profile.</div>
       </details>`;
     document.getElementById('agentActionTitle').textContent = 'Transaction details';
     const titleRight = document.getElementById('agentActionTitleRight');
@@ -691,7 +691,7 @@
       const row = document.createElement('div');
       row.className = 'tx-row';
       row.style.cssText = 'display:flex;align-items:center;gap:8px;';
-      row.innerHTML = `<div class="tx-ic in-ic">${isFav ? '⭐' : '👤'}</div><div class="tx-info" style="flex:1;min-width:0"><div class="tx-t">${c.name}</div><div class="tx-d">${c.category} · ${txCount} transactions${shopHidden ? ' · Shop hidden from Spend' : ''}</div></div><div class="badge ${c.saved ? 'b-gr' : 'b-cy'}" style="flex-shrink:0">${c.saved ? 'Saved' : 'Demo'}</div><button type="button" title="${isFav ? 'Remove from favourites' : 'Add to favourites'}" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:16px;padding:4px 6px;color:${isFav ? '#fbbf24' : 'var(--m)'}" onclick="event.stopPropagation();toggleContactFavorite('${c.name.replace(/'/g, "\\'")}')">★</button>`;
+      row.innerHTML = `<div class="tx-ic in-ic">${isFav ? '⭐' : '👤'}</div><div class="tx-info" style="flex:1;min-width:0"><div class="tx-t">${c.name}</div><div class="tx-d">${c.category} · ${txCount} transactions${shopHidden ? ' · Merchant hidden from Spend' : ''}</div></div><div class="badge ${c.saved ? 'b-gr' : 'b-cy'}" style="flex-shrink:0">${c.saved ? 'Saved' : 'Demo'}</div><button type="button" title="${isFav ? 'Remove from favourites' : 'Add to favourites'}" style="flex-shrink:0;background:none;border:none;cursor:pointer;font-size:16px;padding:4px 6px;color:${isFav ? '#fbbf24' : 'var(--m)'}" onclick="event.stopPropagation();toggleContactFavorite('${c.name.replace(/'/g, "\\'")}')">★</button>`;
       row.querySelector('.tx-info').addEventListener('click', () => { selectedContactName = c.name; window.renderSelectedContact(); });
       row.querySelector('.tx-ic').addEventListener('click', () => { selectedContactName = c.name; window.renderSelectedContact(); });
       list.appendChild(row);
@@ -712,7 +712,7 @@
     const latestIn = latestContactTx(c.name, 'in');
     document.getElementById('contactDetailName').textContent = c.name;
     const shopHid = hiddenShops.has(c.name);
-    document.getElementById('contactDetailMeta').textContent = `${c.category} · ${txCount} tx · ${c.city}${shopHid ? ' · Shop hidden on Spend' : ''}`;
+    document.getElementById('contactDetailMeta').textContent = `${c.category} · ${txCount} tx · ${c.city}${shopHid ? ' · Merchant hidden on Spend' : ''}`;
     document.getElementById('contactDetailAddress').textContent = c.address;
     const latestSentEl = document.getElementById('contactLatestSent');
     const latestRecvEl = document.getElementById('contactLatestReceived');
@@ -886,7 +886,7 @@
     window.closeAgentActionModal();
     window.renderActivity();
     window.renderWalletRecentActivity();
-    if (typeof window.showToast === 'function') window.showToast('All payments with this shop are soft-hidden');
+    if (typeof window.showToast === 'function') window.showToast('All payments with this merchant are soft-hidden');
   };
 
   window.shopDeleteAllTransactions = function (shopName) {
@@ -914,7 +914,7 @@
     window.renderActivity();
     window.renderWalletRecentActivity();
     if (typeof window.renderContactsPage === 'function') window.renderContactsPage();
-    if (typeof window.showToast === 'function') window.showToast('Shop hidden from Shops tab');
+    if (typeof window.showToast === 'function') window.showToast('Merchant hidden from Merchants tab');
   };
 
   window.shopUnhideFromSpend = function (shopName) {
@@ -927,12 +927,12 @@
     window.renderWalletRecentActivity();
     if (typeof window.renderContactsPage === 'function') window.renderContactsPage();
     window.openShopProfile(n);
-    if (typeof window.showToast === 'function') window.showToast('Shop visible on Shops again');
+    if (typeof window.showToast === 'function') window.showToast('Merchant visible on Merchants again');
   };
 
   window.openShopProfile = function (name) {
     const shop = SHOP_PROFILES[name];
-    if (!shop) { if (typeof window.showToast === 'function') window.showToast('No shop profile available yet'); return; }
+    if (!shop) { if (typeof window.showToast === 'function') window.showToast('No merchant profile available yet'); return; }
     const promos = (shop.promos || []).map(p => `<li style="margin:0 0 6px 0">${p}</li>`).join('');
     const sn = JSON.stringify(shop.name);
     const shopHidden = hiddenShops.has(shop.name);
@@ -950,8 +950,8 @@
           <button class="btn" onclick="shopHideAllTransactions(${sn})">Hide all transactions</button>
           <button class="btn" onclick="shopDeleteAllTransactions(${sn})">Delete all (local)</button>
           ${shopHidden
-    ? `<button class="btn btn-w btn-g" onclick="shopUnhideFromSpend(${sn})">Show shop on Shops</button>`
-    : `<button class="btn" onclick="shopHideFromSpend(${sn})">Hide shop from Shops</button>`}
+    ? `<button class="btn btn-w btn-g" onclick="shopUnhideFromSpend(${sn})">Show merchant on Merchants</button>`
+    : `<button class="btn" onclick="shopHideFromSpend(${sn})">Hide merchant from Merchants</button>`}
         </div>
       </div>`;
     document.getElementById('agentActionTitle').textContent = '';

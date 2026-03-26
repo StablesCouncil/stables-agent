@@ -636,6 +636,7 @@ Risk categories to be addressed:
 | 19 | **Fiat Regime Transition Risk** | Erosion, loss of confidence in, or structural replacement of fiat as the dominant reference settlement layer Stables bridges to |
 | 20 | **CBDC Regime Risk** | Advent and dominance of central bank digital currencies (regional or global) reshaping payment rails, privacy, and interoperability |
 | 21 | **Competing Monetary Standard Risk** | Return to commodity standards (e.g. gold), or emergence of novel means of exchange (including energy- or power-linked units and other non-fiat reference systems) |
+| 22 | **Human Concentration Risk (Core Development)** | Dependence on a small set of core Minima developers and key maintainers; delivery bottlenecks, continuity risk, and elevated exposure if one or more key contributors become unavailable |
 
 Each risk shall be paired with:
 
