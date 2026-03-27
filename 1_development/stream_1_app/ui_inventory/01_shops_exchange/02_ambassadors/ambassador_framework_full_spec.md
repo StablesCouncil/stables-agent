@@ -3,12 +3,12 @@
 *<span style="color: #fbbf24;">This document represents an initial draft intended to stimulate protocol-wide community discussion and governance.</span>*
 
 ## 📋 1. Purpose
-This document defines the core architecture of the Stables Ambassador program. Our primary objective is to build a professional, incentivized, **Fair & Global** network of paid Ambassadors to support the growth of the Stables payment accepting merchant network.
+This document defines the core architecture of the Stables Ambassador program. Our primary objective is to build a professional, incentivized, Fair & Global network of paid Ambassadors to support the growth of the Stables payment accepting merchant network.
 
 ### **Core Principles:**
--   **Permissionless Entry:** There is **no acceptance mechanism** or gatekeeping; any participant (whether joining as a merchant or purely as an independent professional) can act as an Ambassador as soon as they are registered in the protocol.
+-   **Permissionless Entry:** There is **no acceptance mechanism** or gatekeeping; any participant (whether joining as a merchant or purely as an independent professional) can act as an Ambassador as soon as they register themselves in the protocol.
 -   **The Human Layer:** Ambassadors are the human layer that integrates merchants into the Stables economic loop and ensures a high-quality, trusted directory.
--   **Fair & Global Constraint:** The economic model is designed to be universally applicable and fair across all geographies, anchored to the protocol's decentralized logic and the [Big Mac Index](https://worldpopulationreview.com/country-rankings/big-mac-index-by-country).
+-   Fair & Global Constraint: The economic model is designed to be universally applicable and fair across all geographies, anchored to the protocol's decentralized logic and the [Big Mac Index](https://worldpopulationreview.com/country-rankings/big-mac-index-by-country).
 
 ## 💎 2. The Ecosystem: Five Primary Roles
 
@@ -38,6 +38,7 @@ We solve this by ensuring the entry cost and the active reward are decoupled, an
 - **Mentor Reward:** **1 Big Mac®** (For the Second Level Ambassador).
 - **Council Share:** **6-16 Big Mac®** (Standard: 6; plus any unclaimed mentor/premium shares).
 - **Listing Duration:** The fee covers a **12-month registration**. Renewals follow the same economic logic.
+- **Settlement:** The 16 Big Mac® fee and all Ambassador rewards (retrocession) can be paid and settled in **any token of Stables including Minima** (USDs, EURs, CADs, etc.). It may also be paid in **xMinima** or any other coverage funds share of the participant's choice.
 
 ---
 
@@ -195,7 +196,7 @@ Every 16 Big Mac® entry fee is a direct contribution to the network's liquidity
 ### **Governance & Control: Who Watches the Code?**
 To ensure the protocol remains "Unstoppable," the control of the Treasury is divided between autonomous code and human governance:
 - **Rule of Code (No Arbitrary Access):** The Treasury funds are locked in a protocol-owned contract. No individual, Council member, or developer can withdraw funds for personal gain or arbitrary reasons.
-- **The Council’s Role:** The Council acts as the protocol’s **Authorized Signatories** and **Curators**. They are responsible for executing the strategic releases already approved by the community. 
+- **The Council’s Role:** The **executive branch of the Council** acts as the protocol’s **Authorized Signatories** and **Curators**. They are responsible for executing the strategic releases already approved by the community. 
 - **The Community’s Power:** All major budget allocations, protocol upgrades, and utility expansions are subject to **Time-Weighted Voting**. Community members with skin-in-the-game control the direction of the Treasury’s growth engine.
 - **Real-Time Audit:** Because Stables is built on the Minima ledger, every Big Mac® equivalent that enters or leaves the Treasury is **fully visible on-chain**. Anyone can audit the Treasury’s health at any time.
 

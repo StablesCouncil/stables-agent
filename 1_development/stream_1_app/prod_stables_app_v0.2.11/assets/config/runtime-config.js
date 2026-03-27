@@ -60,6 +60,13 @@ window.STABLES_CONFIG = {
    * Expected format: `${base}${txId}` (example: https://explorer.minima.global/transaction/).
    */
   MINIMA_EXPLORER_TX_BASE_URL: 'https://explorer.minima.global/transaction/',
+  /**
+   * Minima explorer base URL for address (wallet) pages.
+   * Expected format: `${base}${address}` (example: https://explorer.minima.global/address/).
+   */
+  MINIMA_EXPLORER_ADDRESS_BASE_URL: 'https://explorer.minima.global/address/',
+  /** Public Council treasury Minima address (replace with live value when known). */
+  COUNCIL_TREASURY_MINIMA_ADDRESS: 'MxCOUNCIL_TREASURY_DEMO',
   /** How often to refresh spot price for Treasury stress slider (ms). */
   WINIWA_PRICE_POLL_MS: 120000,
   /**

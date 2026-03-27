@@ -4531,7 +4531,7 @@
             <div
                 style="display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:10px;margin:0 auto 20px;padding:0 12px;box-sizing:border-box;max-width:420px;width:100%">
                 <button type="button" class="btn btn-lg" style="width:100%;min-height:64px;line-height:1.25;white-space:normal"
-                    onclick="navigate('my-shop')">Merchants</button>
+                    onclick="navigate('my-shop')">Become a merchant</button>
                 <button type="button" class="btn btn-lg" style="width:100%;min-height:64px;line-height:1.25;white-space:normal"
                     onclick="navigate('ambassador')">Become an ambassador</button>
             </div>
@@ -5346,6 +5346,43 @@
                         <span>0%</span>
                         <span>+30%</span>
                     </div>
+                </div>
+            </div>
+            </div>
+
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Council treasury on-chain</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council treasury: the Minima address that holds protocol funds. Open the explorer to verify movements. The transaction list mixes automatic protocol events with council notes and Integritas invoice links for expenses.')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
+                <div class="xs mu" style="margin-bottom:8px;font-weight:800;text-transform:uppercase;letter-spacing:.06em">Treasury address</div>
+                <div id="treasuryOnchainAddress" style="font-size:13px;font-weight:800;word-break:break-all;margin-bottom:10px;color:var(--t)">-</div>
+                <div class="flex gap8" style="flex-wrap:wrap">
+                    <a id="treasuryExplorerAddressLink" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-w" style="width:auto;padding:10px 14px;text-decoration:none;box-sizing:border-box;display:inline-block">Open address in explorer</a>
+                </div>
+                <p class="xs mu" style="margin:12px 0 0;line-height:1.55;color:var(--m)">Below, every movement includes a short plain-language explanation. Some lines are generated automatically by the protocol; others carry a note published by the Council (for example operational expenses), sometimes with a link to the invoice attestation in Integritas.</p>
+            </div>
+            </div>
+
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div class="stitle-row">
+                <div class="stitle">Treasury transactions</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Search treasury movements like personal activity: by description, council note, amount, or transaction id. Automatic rows need no council input; expense rows can show Integritas invoice links.')" title="StablesAgent">
+                    <img src="agent.png" alt="StablesAgent">
+                </button>
+            </div>
+            <div class="card app-section-card" style="padding:14px;margin-bottom:16px;border:1px solid rgba(103,232,249,.12)">
+                <input class="finput" id="treasuryTxSearchInput" placeholder="Search treasury activity by description, council note, amount or tx id..."
+                    style="margin-bottom:10px" oninput="setTreasuryTxSearch(this.value)">
+                <div class="tx-list" id="treasuryTxList"></div>
+                <div class="flex gap8" id="treasuryTxPagerWrap">
+                    <button class="show-more-btn" id="treasuryTxPrevBtn" style="display:none;flex:1"
+                        onclick="showPrevTreasuryTxPage()">◂ Previous 25</button>
+                    <button class="show-more-btn" id="treasuryTxMoreBtn" style="display:none;flex:1"
+                        onclick="showNextTreasuryTxPage()">See next 25 ▸</button>
                 </div>
             </div>
             </div>
@@ -6775,6 +6812,8 @@
             if (p === 'council-comms' && typeof window.renderCouncilCommunicationPanels === 'function') window.renderCouncilCommunicationPanels();
             if (p === 'treasury') {
                 if (typeof renderCouncilLiabilityStructure === 'function') renderCouncilLiabilityStructure();
+                if (typeof syncTreasuryOnchainHeader === 'function') syncTreasuryOnchainHeader();
+                if (typeof renderTreasuryTransactionsList === 'function') renderTreasuryTransactionsList();
             }
             if (p === 'treasury' && typeof updateGlobalUI === 'function') updateGlobalUI();
             if (p === 'feedback') {
@@ -9299,6 +9338,209 @@
             const slider = document.getElementById('liabTimeSlider');
             if (slider) slider.value = String(idx);
             renderLiabilityPie(point?.shares || {}, point?.ts || 0);
+        };
+
+        /** Demo treasury ledger: production would load from indexer + council CMS. */
+        const DEMO_TREASURY_TRANSACTIONS = [
+            {
+                id: 'ttx-001',
+                date: '2026-03-22 09:41',
+                txId: '0x8f2a1c9d4e7b003344556677889900aabbccddeeff00112233445566778899',
+                title: 'Ambassador listing fee — treasury share',
+                explanation: 'When a new ambassador is listed, half of the listing fee is sent to the Council treasury by protocol rules. No manual note is required.',
+                source: 'auto',
+                councilNote: '',
+                amountLabel: '+1,240 MINIMA',
+                dir: 'in',
+                integritasUrl: ''
+            },
+            {
+                id: 'ttx-002',
+                date: '2026-03-21 16:05',
+                txId: '0x7e1b0b8c3d6a0022334455667788990011223344556677889900aabbccddee',
+                title: 'Mint corridor — backing top-up',
+                explanation: 'Automatic movement when circulating Stables increased and the vault added Winiwa backing to keep coverage inside policy.',
+                source: 'auto',
+                councilNote: '',
+                amountLabel: '−18,400 USDw (equiv.)',
+                dir: 'out',
+                integritasUrl: ''
+            },
+            {
+                id: 'ttx-003',
+                date: '2026-03-18 11:20',
+                txId: '0x6d0a9a7b2c5d11223344556677889900112233445566778899aabbccddeeff',
+                title: 'Legal counsel — Q1 retainer',
+                explanation: 'Council-approved operational spend. The line below is the public note published with the payment.',
+                source: 'council',
+                councilNote: 'Retainer for external counsel covering governance documents and exchange listings review (invoice INV-2026-0142).',
+                amountLabel: '−4,500 USDw',
+                dir: 'out',
+                integritasUrl: 'https://stablescouncil.github.io/'
+            },
+            {
+                id: 'ttx-004',
+                date: '2026-03-15 08:55',
+                txId: '0x5c099681b4a0011223344556677889900112233445566778899aabbccddee',
+                title: 'Infrastructure — hosting & RPC',
+                explanation: 'Recurring infrastructure billed monthly; council note summarises scope for transparency.',
+                source: 'council',
+                councilNote: 'March hosting, archive nodes, and read-only RPC endpoints used by the app demo (invoice INV-2026-0098).',
+                amountLabel: '−890 USDw',
+                dir: 'out',
+                integritasUrl: 'https://stablescouncil.github.io/'
+            },
+            {
+                id: 'ttx-005',
+                date: '2026-03-12 14:33',
+                txId: '0x4b088570a390011223344556677889900112233445566778899aabbccddee',
+                title: 'Protocol fee — merchant spotlight',
+                explanation: 'Share of a merchant campaign fee routed to treasury automatically when the campaign was activated.',
+                source: 'auto',
+                councilNote: '',
+                amountLabel: '+320 MINIMA',
+                dir: 'in',
+                integritasUrl: ''
+            },
+            {
+                id: 'ttx-006',
+                date: '2026-03-10 19:12',
+                txId: '0x3a07746982900011223344556677889900112233445566778899aabbccdd',
+                title: 'Redemption batch settlement',
+                explanation: 'End-of-day settlement consolidating user redemptions; amounts net per oracle and vault rules.',
+                source: 'auto',
+                councilNote: '',
+                amountLabel: '+62,100 USDw (equiv.)',
+                dir: 'in',
+                integritasUrl: ''
+            }
+        ];
+
+        let treasuryTxSearch = '';
+        let treasuryTxPage = 0;
+
+        function escTreasuryHtml(s) {
+            return String(s ?? '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        function getTreasuryMinimaAddress() {
+            const raw = (window.STABLES_CONFIG && window.STABLES_CONFIG.COUNCIL_TREASURY_MINIMA_ADDRESS) || '';
+            return String(raw || 'MxCOUNCIL_TREASURY_DEMO').trim();
+        }
+
+        function getTreasuryExplorerTxBase() {
+            const raw = (window.STABLES_CONFIG && window.STABLES_CONFIG.MINIMA_EXPLORER_TX_BASE_URL) || '';
+            return String(raw || 'https://explorer.minima.global/transaction/').trim();
+        }
+
+        function getTreasuryExplorerAddressBase() {
+            const raw = (window.STABLES_CONFIG && window.STABLES_CONFIG.MINIMA_EXPLORER_ADDRESS_BASE_URL) || '';
+            return String(raw || 'https://explorer.minima.global/address/').trim();
+        }
+
+        function treasuryTxExplorerHref(txId) {
+            return getTreasuryExplorerTxBase() + encodeURIComponent(String(txId || '').trim());
+        }
+
+        window.syncTreasuryOnchainHeader = function () {
+            const addrEl = document.getElementById('treasuryOnchainAddress');
+            const linkEl = document.getElementById('treasuryExplorerAddressLink');
+            const addr = getTreasuryMinimaAddress();
+            if (addrEl) addrEl.textContent = addr;
+            if (linkEl) {
+                linkEl.href = getTreasuryExplorerAddressBase() + encodeURIComponent(addr);
+            }
+        };
+
+        function getFilteredTreasuryTransactions() {
+            const q = (treasuryTxSearch || '').toLowerCase().trim();
+            const rows = Array.isArray(DEMO_TREASURY_TRANSACTIONS) ? DEMO_TREASURY_TRANSACTIONS.slice() : [];
+            rows.sort((a, b) => String(b.date).localeCompare(String(a.date)));
+            if (!q) return rows;
+            return rows.filter(x => {
+                const hay = [
+                    x.title, x.explanation, x.councilNote, x.amountLabel, x.txId, x.id, x.date,
+                    x.source === 'auto' ? 'automatic' : 'council'
+                ].join(' ').toLowerCase();
+                return hay.includes(q);
+            });
+        }
+
+        window.setTreasuryTxSearch = function (value) {
+            treasuryTxSearch = String(value || '');
+            treasuryTxPage = 0;
+            window.renderTreasuryTransactionsList();
+        };
+
+        window.showNextTreasuryTxPage = function () {
+            const pageSize = (window.STABLES_CONFIG && window.STABLES_CONFIG.ACTIVITY_PAGE_SIZE) || 25;
+            const items = getFilteredTreasuryTransactions();
+            const maxPage = Math.max(0, Math.ceil(items.length / pageSize) - 1);
+            treasuryTxPage = Math.min(maxPage, treasuryTxPage + 1);
+            window.renderTreasuryTransactionsList();
+        };
+
+        window.showPrevTreasuryTxPage = function () {
+            treasuryTxPage = Math.max(0, treasuryTxPage - 1);
+            window.renderTreasuryTransactionsList();
+        };
+
+        window.renderTreasuryTransactionsList = function () {
+            const list = document.getElementById('treasuryTxList');
+            if (!list) return;
+            window.syncTreasuryOnchainHeader();
+            const pageSize = (window.STABLES_CONFIG && window.STABLES_CONFIG.ACTIVITY_PAGE_SIZE) || 25;
+            const items = getFilteredTreasuryTransactions();
+            const start = treasuryTxPage * pageSize;
+            const end = Math.min(items.length, start + pageSize);
+            const prevBtn = document.getElementById('treasuryTxPrevBtn');
+            const moreBtn = document.getElementById('treasuryTxMoreBtn');
+            list.innerHTML = '';
+            if (!items.length) {
+                list.innerHTML = '<div class="xs mu" style="padding:14px;text-align:center;color:var(--m)">No treasury movements match this search.</div>';
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (moreBtn) moreBtn.style.display = 'none';
+                return;
+            }
+            items.slice(start, end).forEach(x => {
+                const row = document.createElement('div');
+                row.className = 'tx-row';
+                row.style.cursor = 'default';
+                row.style.alignItems = 'flex-start';
+                const badge = x.source === 'auto'
+                    ? '<span class="xs mu" style="display:inline-block;margin-top:4px;padding:2px 8px;border-radius:8px;background:rgba(103,232,249,.12);color:var(--c);font-weight:800">Automatic</span>'
+                    : '<span class="xs mu" style="display:inline-block;margin-top:4px;padding:2px 8px;border-radius:8px;background:rgba(167,139,250,.14);color:var(--pu);font-weight:800">Council note</span>';
+                const noteBlock = (x.source === 'council' && String(x.councilNote || '').trim())
+                    ? `<div class="xs mu" style="margin-top:8px;line-height:1.5;color:var(--t);font-style:italic">${escTreasuryHtml(x.councilNote)}</div>`
+                    : '';
+                const integritas = String(x.integritasUrl || '').trim()
+                    ? `<a href="${escTreasuryHtml(x.integritasUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn-w" style="width:auto;padding:6px 10px;font-size:12px;text-decoration:none;box-sizing:border-box;display:inline-block" onclick="event.stopPropagation()">Invoice (Integritas)</a>`
+                    : '';
+                const txHref = treasuryTxExplorerHref(x.txId);
+                const explorerTx = `<a href="${escTreasuryHtml(txHref)}" target="_blank" rel="noopener noreferrer" class="btn btn-w" style="width:auto;padding:6px 10px;font-size:12px;text-decoration:none;box-sizing:border-box;display:inline-block" onclick="event.stopPropagation()">Transaction in explorer</a>`;
+                const amtClass = x.dir === 'in' ? 'pos' : 'neg';
+                row.innerHTML = `<div class="tx-ic ${x.dir === 'in' ? 'in-ic' : 'out-ic'}" style="flex-shrink:0">${x.dir === 'in' ? '↓' : '↑'}</div>
+                    <div class="tx-info" style="min-width:0;flex:1">
+                        <div class="tx-t">${escTreasuryHtml(x.title)}</div>
+                        <div class="tx-d">${escTreasuryHtml(x.date)} · ${badge}</div>
+                        <p class="xs mu" style="margin:8px 0 0;line-height:1.55;color:var(--m)">${escTreasuryHtml(x.explanation)}</p>
+                        ${noteBlock}
+                        <div class="flex gap8" style="margin-top:10px;flex-wrap:wrap">${explorerTx}${integritas ? ' ' + integritas : ''}</div>
+                    </div>
+                    <div class="tx-amt ${amtClass} bal-amount" style="flex-shrink:0;text-align:right">${escTreasuryHtml(x.amountLabel)}</div>`;
+                list.appendChild(row);
+            });
+            const hasPrev = treasuryTxPage > 0;
+            const hasNext = end < items.length;
+            if (prevBtn) prevBtn.style.display = hasPrev ? '' : 'none';
+            if (moreBtn) {
+                moreBtn.style.display = hasNext ? '' : 'none';
+                if (hasNext) moreBtn.textContent = `See next ${Math.min(pageSize, items.length - end)} ▸`;
+            }
         };
 
         function renderCouncilLiabilityStructure() {
