@@ -1,9 +1,14 @@
 # Stables Ambassador Program: The 16 Big Mac® Economy
+**Version 0.0.01 | Community Draft**
+*This document represents an initial draft intended to stimulate protocol-wide community discussion and governance.*
 
-This document defines the core architecture of the Stables Ambassador program, specifically the "16 Big Mac® economy."
+## 📋 1. Purpose
+This document defines the core architecture of the Stables Ambassador program. Our primary objective is to build a professional, incentivized, **Fair & Global** network of paid Ambassadors to support the growth of the Stables payment accepting merchant network.
 
-## 🎯 1. Objective
-Our primary objective is to build a professional, incentivized network of paid Ambassadors to support the growth of the Stables payment accepting merchant network. Ambassadors are the human layer that integrates merchants into the Stables economic loop and ensures a high-quality, trusted directory.
+### **Core Principles:**
+-   **Permissionless Entry:** There is **no acceptance mechanism** or gatekeeping; any participant can become an Ambassador by simply successfully onboarding a merchant. 
+-   **The Human Layer:** Ambassadors are the human layer that integrates merchants into the Stables economic loop and ensures a high-quality, trusted directory.
+-   **Fair & Global Constraint:** The economic model is designed to be universally applicable and fair across all geographies, anchored to the protocol's decentralized logic.
 
 ## 💎 2. The Ecosystem: Involved Parties
 
@@ -18,11 +23,6 @@ To ensure the system remains balanced and professional, we define five primary r
 
 ---
 
-## ⚖️ 3. Constraints
-- **Fully Open:** We have a fully open structure where everyone can become an Ambassador.
-- **Fair & Global:** All fees are pegged to the Big Mac Index to remain globally fair.
-  Reference: [Big Mac Index by Country](https://worldpopulationreview.com/country-rankings/big-mac-index-by-country)
-
 ## 🛑 3. The Problem: Self-Onboarding Bypass
 How do we make sure that the merchants don't have a financial incentive to onboard themselves and capture the Ambassador pay? 
 
@@ -34,36 +34,30 @@ We solve this by ensuring the entry cost and the active reward are decoupled, an
 ### **Economic Core:**
 - **Universal Anchor Fee:** **16 Big Mac®** (Sunk cost for Independent Registration).
 - **Mentored Registration Fee:** **15 Big Mac®** (1 Big Mac® Discount for being mentored by an Ambassador).
+- **Global Fairness:** All fees are pegged to the [Big Mac Index](https://worldpopulationreview.com/country-rankings/big-mac-index-by-country) to remained globally fair.
 - **Active Reward:** **8 Big Mac®** (Fixed for the Direct Ambassador).
 - **Mentor Reward:** **1 Big Mac®** (For the Second Level Ambassador).
 - **Council Share:** **6-16 Big Mac®** (Standard: 6; plus any unclaimed mentor/premium shares).
 - **Listing Duration:** The fee covers a **12-month registration**. Renewals follow the same economic logic.
-- **Future Utility:** This same logic applies to merchant publicity campaigns, with a tiered split per 15-16 Big Mac® spent.
 
 ---
 
-## 🏗️ 5. Scenario Breakdown
+## 🏗️ 5. Scenario Breakdown: The Ambassador Paths
 
-### **Scenario 1: Independent Registration (The Universal Anchor)**
-This is the starting point for every participant. Whether you are an aspiring Ambassador or a local Merchant, choosing to join via a **Direct-to-Protocol Registration** (without an external pitch) makes you an **Independent Participant**.
-- **Fee Paid:** **16 Big Mac®** (Standard Anchor Price).
-- **On-chain Lookup:** The `mentor` field is empty (NULL), defaulting to the Universal Anchor.
-- **Distribution:** 100% (16 Big Mac®) → **Council Treasury**.
-- **Result:** The participant is now "Verified" and anchored to the protocol. They can now list their shop in the app and act as a Direct Ambassador for others.
+The Ambassador Program focuses on two primary onboarding paths, both of which utilize the 15 Big Mac® mentored price to incentivize professional support.
 
-### **Scenario 2: Mentored Registration (Direct Pitch)**
-A Direct Ambassador (A) onboards a new merchant (B).
-- **Fee Paid:** **15 Big Mac®** (Includes 1 Big Mac® Mentorship Discount).
-- **Condition:** Ambassador A has no mentor (they are an Independent Participant).
-- **Distribution:** 7 Big Mac® → **Council Treasury** and 8 Big Mac® → **Ambassador A**.
-- **Result:** The merchant saves 1 Big Mac® compared to self-onboarding. Ambassador A earns the fixed active reward (8).
+### **Scenario 1: Standard Onboarding (Direct Ambassador)**
+An Independent Ambassador (A) onboards a new merchant (B).
+- **Fee Paid by Merchant:** **15 Big Mac®** (Mentorship Discount).
+- **Active Reward (A):** **8 Big Mac®**.
+- **Council Share:** **7 Big Mac®** (The 1 mentor share defaults to the Council Treasury).
 
-### **Scenario 3: Hub Registration (Deep Expansion)**
-A Direct Ambassador (B) onboards a new merchant (C).
-- **Fee Paid:** **15 Big Mac®** (Mentorship Discount).
-- **Condition:** Ambassador B was themselves mentored by Ambassador A.
-- **Distribution:** 6 Big Mac® → **Council Treasury**, 8 Big Mac® → **Ambassador B (Active)**, and 1 Big Mac® → **Ambassador A (Mentor)**.
-- **Result:** The hub grows. Both the active worker and the trainer are rewarded.
+### **Scenario 2: Mentored Onboarding (Ambassador + Mentor)**
+A Direct Ambassador (B), who was themselves trained by Mentor (A), onboards a new merchant (C).
+- **Fee Paid by Merchant:** **15 Big Mac®** (Mentorship Discount).
+- **Active Reward (B):** **8 Big Mac®**.
+- **Mentor Reward (A):** **1 Big Mac®**.
+- **Council Share:** **6 Big Mac®**.
 
 ---
 
@@ -85,8 +79,9 @@ The relationship between an Ambassador and a Merchant is not a one-time transact
     -   Acting as the first point of contact for technical issues or ledger updates.
     -   Training staff on how to accept payments and handle refunds.
     -   Providing periodic health checks on the merchant's listing and node connectivity.
-3.  **Phase 3: Marketing & Ads Campaign Management:**
-    -   Helping the merchant launch protocol-wide publicity campaigns using the 8/1/6 split.
+3.  **Phase 3: Strategic Ads Campaign Management:**
+    -   Helping the merchant launch protocol-wide publicity campaigns.
+    -   **Strategic Parameters:** Managing campaigns with varying **scope, target audience, and duration** to maximize merchant ROI.
     -   Analyzing customer review data and responding to feedback.
     -   Strategizing on local promotions to increase Stables spending at the location.
 
@@ -159,8 +154,6 @@ The Stables protocol defines the standard on-chain distribution of fees. However
 - **Private Flexibility:** Alternatively, these agreements can be made independently as a private second step outside the primary listing protocol.
 While the protocol default is the 7/8/16 split, these side letters allow for bespoke commercial relationships while the 16 Big Mac® anchor always protects the Treasury's baseline.
 
-### **Future Publicity Campaigns**
-The mentorship logic established here is not limited to the initial onboarding. The same mechanism will apply to future publicity campaigns run by listed merchants. When a merchant pays to launch a network-wide promotion or campaign, the reward follows the hub model: 8 Big Mac® to the active Ambassador, 1 Big Mac® to the Mentor, and 7 Big Mac® to the Council Treasury.
 
 ### **On-chain Review & Rating System**
 To ensure the quality of the Stables merchant network, the app includes a star review and comment system.
@@ -177,6 +170,7 @@ The Stables Council Treasury is the protocol's economic engine, designed around 
 -   **Code-Based Ownership:** The treasury is owned by no one. It is fully governed by the protocol's code and rules to support the long-term growth of the ecosystem.
 -   **Free Economic Agent:** The treasury acts as an autonomous economic agent. It actively seeks financial opportunities to grow its base, primarily through arbitrage opportunities across the network and linked markets.
 -   **Budget Governance:** While the treasury is automated, its growth budget is allocated via community governance.
+-   **Future Utility & Evolution:** All future protocol features, utility expansions (including publicity campaigns), and ecosystem changes are **subject to community decision** through established governance processes.
 -   **Time-Weighted Voting:** Community votes on the budget are held periodically. Voting power is determined on a **time-weighted token holding basis**, rewarding those who have committed their "skin-in-the-game" to the protocol for the longest duration.
 
 ---
