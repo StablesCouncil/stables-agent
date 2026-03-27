@@ -61,4 +61,5 @@
 | **056** | 2026-03-24 | `1_development/stream_1_app/prod_stables_app_v0.2.11/index.html` | [FIX] | Portfolio Math Projection. Replaced linear xWiniwa proxy with correct residual formula and updated pen icon to wallet style. | `991f10a` |
 | **057** | 2026-03-24 | `1_development/stream_1_app/prod_stables_app_v0.2.11/index.html` | [FIX] | xWiniwa Self-Anchor. Fixed equity multiplier to anchor to spot-price (multiplier=1 at p=0), ensuring neutral trades. | `55dfb63` |
 | **058** | 2026-03-24 | `1_development/stream_2_community/task_simulator_announcement/` | [ADD] | Telegram Communication Draft. Created Handshake-compliant message (no emojis/em-dashes) for the simulator update. | `877eec1` |
+| **059** | 2026-03-27 | `1_development/stream_2_community/prod_presentation_v02/index.html`, `2_current/stream_2_community/prod_presentation_v02/index.html` | [UPDATE] | Public presentation v02: replaced “Coming Soon” sub-label on Start Testing CTA with April 1 showcase copy in HTML fallbacks and all translation locales. | `91d0550` |
 
