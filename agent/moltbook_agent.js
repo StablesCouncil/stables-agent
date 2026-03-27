@@ -5,13 +5,13 @@
  * 3. Browses feed, comments on relevant posts from other agents
  * Run via cron every 30 min: (e.g. 0,30 * * * * ... node moltbook_agent.js)
  *
- * Requires: MOLTBOOK_API_KEY, GROQ_API_KEY in .env
+ * Requires: MOLTBOOK_API_KEY, OPENROUTER_API_KEY in .env
  */
 
 const path = require("path");
-const BRAIN = require("fs").existsSync(path.join(__dirname, "..", "task_stablesagent-brain-base")) ? "task_stablesagent-brain-base" : "brain";
-require("dotenv").config({ path: path.join(__dirname, "..", BRAIN, ".env") });
+require("dotenv").config({ path: path.join(__dirname, "..", "task_stablesagent-brain-base", ".env") });
 const fs = require("fs");
+const crypto = require("crypto");
 const { MemoryVectorStore } = require("langchain/vectorstores/memory");
 const OpenAI = require("openai");
 
@@ -19,16 +19,124 @@ const API_BASE = "https://www.moltbook.com/api/v1";
 const DB_FILE = path.join(__dirname, "vector_db.json");
 const STATE_FILE = path.join(__dirname, "moltbook_state.json");
 
+function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+}
+
+function extractReplyText(completion) {
+    const txt = completion?.choices?.[0]?.message?.content;
+    return typeof txt === "string" ? txt.trim() : null;
+}
+
+function parseSuspendedUntil(message) {
+    if (!message || typeof message !== "string") return null;
+    const m = message.match(/suspended until\s+(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z)/i);
+    return m ? m[1] : null;
+}
+
+function normalizeForFingerprint(text) {
+    return String(text || "")
+        .toLowerCase()
+        .replace(/\s+/g, " ")
+        .replace(/[^\p{L}\p{N}\s]/gu, "")
+        .trim();
+}
+
+function commentFingerprint(text) {
+    const normalized = normalizeForFingerprint(text);
+    return crypto.createHash("sha256").update(normalized).digest("hex");
+}
+
+/** Diverse posting angles (id used for rotation / cooldown). */
+const POST_ANGLE_SEEDS = [
+    { id: "structure", prompt: "How Stables fits together structurally: stablecoins, validation, and banking mechanics in plain terms." },
+    { id: "cr", prompt: "Coverage Ratio: what it measures and why it matters for solvency." },
+    { id: "merchants", prompt: "Merchant network and the everyday price peg — how real commerce relates to the design." },
+    { id: "transition", prompt: "Transition doctrine and stages: how the system is meant to evolve over time." },
+    { id: "minima", prompt: "Why Minima and many validating nodes matter for this banking model." },
+    { id: "mint_burn", prompt: "Minting and burning USDs: when it happens and what backs it." },
+    { id: "oracle", prompt: "Oracle or price signals: how external prices feed into the protocol." },
+    { id: "self_custody", prompt: "Self-custody and keys: who controls funds in this setup." },
+    { id: "governance", prompt: "Governance or council: factual role, not a sales pitch." },
+    { id: "xminima", prompt: "xMinima and liquidity: factual bridge role, no jargon dump." },
+    { id: "balance_sheet", prompt: "Balance sheet or reserve picture in simple language." },
+    { id: "peg", prompt: "What keeps the peg credible in practice (mechanics, not hype)." },
+    { id: "minidapp", prompt: "MiniDapps or on-chain apps users might touch." },
+    { id: "pseudonymous", prompt: "Pseudonymous or privacy-oriented participation where the docs support it." },
+    { id: "stages_ops", prompt: "Operational stages: what is live vs planned, without promising dates." },
+    { id: "usd_vs_collateral", prompt: "How USDs relate to collateral or backing concepts in the docs." },
+    { id: "risk_limits", prompt: "Risk limits, thresholds, or guardrails described in the knowledge base." },
+];
+
+function pickPostAngle(state) {
+    const recent = state.recentPostAngleIds || [];
+    const lastN = recent.slice(-8);
+    let pool = POST_ANGLE_SEEDS.filter((s) => !lastN.includes(s.id));
+    if (!pool.length) pool = [...POST_ANGLE_SEEDS];
+    return pool[Math.floor(Math.random() * pool.length)];
+}
+
+/** Strip model junk like "Title: ..." from the first line. */
+function sanitizeMoltbookTitle(raw) {
+    let t = String(raw || "").trim();
+    t = t.replace(/^#+\s*/, "");
+    t = t.replace(/^title\s*:\s*/i, "").trim();
+    return t.slice(0, 80);
+}
+
+function textMentionsFees(s) {
+    const x = String(s || "").toLowerCase();
+    if (/\bfees?\b/.test(x)) return true;
+    if (/transaction\s+fees?/.test(x)) return true;
+    if (/what\s+happens\s+to\s+fees/.test(x)) return true;
+    if (/\bfee\s+manag/.test(x)) return true;
+    if (/miner\s+fees?/.test(x)) return true;
+    return false;
+}
+
+/** Block fee-themed posts unless we explicitly allow (we no longer use a fee angle). */
+function postViolatesFeeGuard(title, content) {
+    return textMentionsFees(title) || textMentionsFees(content);
+}
+
+function normalizeTitleKey(title) {
+    return normalizeForFingerprint(title).replace(/\s+/g, " ").slice(0, 120);
+}
+
 function loadState() {
-    if (!fs.existsSync(STATE_FILE)) return { lastPostAt: null, commentedPostIds: [] };
+    if (!fs.existsSync(STATE_FILE)) return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null };
     try {
-        return JSON.parse(fs.readFileSync(STATE_FILE, "utf-8"));
-    } catch { return { lastPostAt: null, commentedPostIds: [] }; }
+        const raw = JSON.parse(fs.readFileSync(STATE_FILE, "utf-8"));
+        return {
+            lastPostAt: null,
+            commentedPostIds: [],
+            suspendedUntil: null,
+            commentFingerprints: [],
+            recentPostAngleIds: [],
+            recentPostTitles: [],
+            ...raw,
+        };
+    } catch {
+        return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null };
+    }
 }
 
 function saveState(state) {
     const kept = (state.commentedPostIds || []).slice(-100);
-    fs.writeFileSync(STATE_FILE, JSON.stringify({ ...state, commentedPostIds: kept }), "utf-8");
+    const keptFps = (state.commentFingerprints || []).slice(-200);
+    const keptAngles = (state.recentPostAngleIds || []).slice(-24);
+    const keptTitles = (state.recentPostTitles || []).slice(-20);
+    fs.writeFileSync(
+        STATE_FILE,
+        JSON.stringify({
+            ...state,
+            commentedPostIds: kept,
+            commentFingerprints: keptFps,
+            recentPostAngleIds: keptAngles,
+            recentPostTitles: keptTitles,
+        }),
+        "utf-8"
+    );
 }
 
 function checkEnv() {
@@ -36,23 +144,36 @@ function checkEnv() {
         console.error("MOLTBOOK_API_KEY not set in .env");
         process.exit(1);
     }
-    if (!process.env.GROQ_API_KEY) {
-        console.error("GROQ_API_KEY not set in .env");
+    if (!process.env.OPENROUTER_API_KEY) {
+        console.error("OPENROUTER_API_KEY not set in .env");
         process.exit(1);
     }
 }
 
 async function moltbookFetch(endpoint, options = {}) {
     const url = endpoint.startsWith("http") ? endpoint : `${API_BASE}${endpoint}`;
-    const res = await fetch(url, {
-        ...options,
-        headers: {
-            Authorization: `Bearer ${process.env.MOLTBOOK_API_KEY}`,
-            "Content-Type": "application/json",
-            ...options.headers,
-        },
-    });
-    return res.json();
+    // Basic timeout + retry to reduce transient ETIMEDOUT failures.
+    for (let attempt = 1; attempt <= 2; attempt++) {
+        const controller = new AbortController();
+        const t = setTimeout(() => controller.abort(), 15000);
+        try {
+            const res = await fetch(url, {
+                ...options,
+                signal: controller.signal,
+                headers: {
+                    Authorization: `Bearer ${process.env.MOLTBOOK_API_KEY}`,
+                    "Content-Type": "application/json",
+                    ...options.headers,
+                },
+            });
+            return await res.json();
+        } catch (e) {
+            if (attempt === 2) throw e;
+            await sleep(1500);
+        } finally {
+            clearTimeout(t);
+        }
+    }
 }
 
 async function moltbookGet(path) {
@@ -82,62 +203,100 @@ async function loadVectorStore(embeddings) {
     return vs;
 }
 
-async function generateReply(query, vectorStore, groq) {
+async function generateReply(query, vectorStore, llm) {
     const results = await vectorStore.similaritySearch(query, 3);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+    const completion = await llm.chat.completions.create({
+        model: "openrouter/free",
         temperature: 0.3,
         max_tokens: 200,
         messages: [
             {
                 role: "system",
-                content: `You are StablesAgent on Moltbook. Reply helpfully using the context. Keep it short (1-3 sentences). No emojis. No em-dashes. Same language as the question.`,
+                content: `You are StablesAgent on Moltbook. Reply helpfully using ONLY the context. Keep it short (1-3 sentences). No emojis. No em-dashes. Same language as the question. Avoid crypto or DeFi jargon like "decentralized" or "DeFi" — use simple, plain language instead.`,
             },
             { role: "user", content: `Question: "${query}"\n\nContext:\n${context}` },
         ],
     });
-    return completion.choices[0].message.content.trim().replace(/^["']|["']$/g, "");
+    const txt = extractReplyText(completion);
+    if (!txt) throw new Error("Empty completion content");
+    return txt.replace(/^["']|["']$/g, "");
 }
 
-async function generatePost(vectorStore, groq) {
-    const seed = ["self-custody", "stablecoins", "Minima", "Be your own bank", "decentralized banking"][Math.floor(Math.random() * 5)];
-    const results = await vectorStore.similaritySearch(seed, 4);
+async function generatePost(vectorStore, llm, angleEntry) {
+    const seed = angleEntry.prompt;
+    // Bias retrieval toward structural topics so chunks are less often fee-centric.
+    const query = `${seed} solvency reserves merchants mint burn custody validation peg Coverage Ratio`;
+    const results = await vectorStore.similaritySearch(query, 4);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
-        temperature: 0.6,
+    const completion = await llm.chat.completions.create({
+        model: "openrouter/free",
+        temperature: 0.55,
         max_tokens: 150,
         messages: [
             {
                 role: "system",
-                content: `You are StablesAgent. Write one short Moltbook post (title + 1-2 sentence body) about Stables or decentralized finance, using ONLY the context. No emojis. No em-dashes. Title max 80 chars, body max 200 chars.`,
+                content: `You are StablesAgent. Write one short Moltbook post (title + 1-2 sentence body), using ONLY the context.
+
+You will be given an ASSIGNED ANGLE. The title and body MUST stay on that angle.
+
+HARD RULE: Do not use the words "fee", "fees", "transaction fee", or "miner fee" in the title or body. Do not ask "what happens to fees" or any fee question. If the context only talks about fees, pick the nearest non-fee detail (nodes, peg, minting, Coverage Ratio, merchants).
+
+CRITICAL: Brief factual reflection, neutral observation, or a simple question. NOT an ad or promo.
+FORBIDDEN words and phrases: zero, instant, guarantee, rewards, yield-bearing, strengthens, backbone, 100% control, simple and powerful, secure transactions, superlatives, benefit-pitch. Never use markdown (#) in the title.
+Good title examples: "How does minting show up on the balance sheet?" / "Why does Coverage Ratio matter for solvency?"
+No emojis. No em-dashes. No "decentralized" or "DeFi". Title max 80 chars (no #), body max 200 chars.
+
+Output format: Line 1 is ONLY the title text — no "Title:" prefix, no quotes around the title.`,
             },
-            { role: "user", content: `Context:\n${context}\n\nWrite one post.` },
+            {
+                role: "user",
+                content: `ASSIGNED ANGLE: ${angleEntry.prompt}
+
+Context:
+${context}
+
+Write one post: line 1 = title only (no prefix), following lines = body.`,
+            },
         ],
     });
-    const text = completion.choices[0].message.content.trim();
+    let text = extractReplyText(completion);
+    if (!text) throw new Error("Empty completion content");
+    text = text.replace(/^#+\s*/, "");
     const lines = text.split("\n").map((l) => l.trim()).filter(Boolean);
-    const title = (lines[0] || text).slice(0, 80);
-    const content = (lines.slice(1).join(" ") || lines[0] || "").slice(0, 400);
+    const rawTitle = lines[0] || text;
+    const title = sanitizeMoltbookTitle(rawTitle);
+    let content = (lines.slice(1).join(" ") || title).replace(/^#+\s*/, "").trim().slice(0, 400);
     return { title, content };
 }
 
-async function shouldCommentAndGenerate(post, vectorStore, groq) {
+async function shouldCommentAndGenerate(post, vectorStore, llm) {
     const text = `${post.title || ""} ${post.content || ""}`.slice(0, 800);
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+    const completion = await llm.chat.completions.create({
+        model: "openrouter/free",
         temperature: 0.2,
         max_tokens: 120,
         messages: [
             {
                 role: "system",
-                content: `Stables is decentralized banking on Minima (stablecoins, self-custody). You decide if we can add value. Reply with ONLY the comment text (1-2 sentences, helpful, no promo) or exactly "NO" if we shouldn't comment. No emojis. No em-dashes.`,
+                content: `Stables is a banking system built on Minima (stablecoins, self-custody).
+
+Your job is to decide whether to comment on another agent's post.
+
+Very strict rules:
+- COMMENT RARELY. Most of the time you should reply exactly "NO".
+- Only comment when the post is clearly about money, banking, stablecoins, Minima, protocol design, or something Stables can add real value to.
+- When you do comment, talk about THEIR idea, not about Stables. One short, concrete observation is enough.
+- Do NOT describe Stables' community energy, tools, outreach, or "what Stables is" unless the post directly asks.
+- FORBIDDEN words: innovative, empowering, strong community energy, amplify, aggressive outreach, frustrated with traditional banking, vibrant community, marketing-style phrases.
+- Reply with ONLY the final comment text (1-2 sentences, helpful, neutral, no promo) or exactly "NO" if we should skip.
+- No emojis. No em-dashes. Avoid crypto/DeFi jargon like "decentralized" or "DeFi".`,
             },
             { role: "user", content: `Post: "${text}"\n\nCan we add a useful comment? If yes, write it. If no, reply NO.` },
         ],
     });
-    const out = completion.choices[0].message.content.trim();
+    const out = extractReplyText(completion);
+    if (!out) return null;
     return out.toUpperCase() === "NO" ? null : out.slice(0, 2000);
 }
 
@@ -175,9 +334,9 @@ function parseMathChallenge(challengeText) {
     return null;
 }
 
-async function solveVerification(groq, challengeText) {
-    const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+async function solveVerification(llm, challengeText) {
+    const completion = await llm.chat.completions.create({
+        model: "openrouter/free",
         temperature: 0,
         max_tokens: 20,
         messages: [
@@ -188,7 +347,9 @@ async function solveVerification(groq, challengeText) {
             { role: "user", content: challengeText },
         ],
     });
-    const ans = completion.choices[0].message.content.trim().replace(/[^0-9.\-]/g, "");
+    const txt = extractReplyText(completion);
+    if (!txt) return null;
+    const ans = txt.replace(/[^0-9.\-]/g, "");
     const num = parseFloat(ans);
     return isNaN(num) ? null : num.toFixed(2);
 }
@@ -198,17 +359,19 @@ async function main() {
 
     const status = await moltbookGet("/agents/status");
     if (status.status !== "claimed") {
-        console.log("Not claimed yet. Skipping.");
+        console.log("Status not claimed, raw status:", JSON.stringify(status));
         return;
     }
+    console.log("Agent status OK:", JSON.stringify(status));
 
     const home = await moltbookGet("/home");
     if (!home.your_account) {
-        console.log("No home data.");
+        console.log("No home data from /home, raw response:", JSON.stringify(home));
         return;
     }
+    console.log("Home data OK, your_account:", JSON.stringify(home.your_account));
 
-    const groq = new OpenAI({ apiKey: process.env.GROQ_API_KEY, baseURL: "https://api.groq.com/openai/v1" });
+    const llm = new OpenAI({ apiKey: process.env.OPENROUTER_API_KEY, baseURL: "https://openrouter.ai/api/v1" });
     const embeddings = await initXenova();
     const vectorStore = await loadVectorStore(embeddings);
     if (!vectorStore) {
@@ -217,28 +380,85 @@ async function main() {
     }
 
     const state = loadState();
+    console.log("Loaded state:", JSON.stringify(state));
 
-    // 1. Create new post (max 1 per 30 min)
+    const suspendedUntilMs = state.suspendedUntil ? new Date(state.suspendedUntil).getTime() : 0;
+    if (suspendedUntilMs && Date.now() < suspendedUntilMs) {
+        console.log("Agent is suspended until", state.suspendedUntil, "Skipping all Moltbook actions.");
+        return;
+    }
+
+    // 1. Create new post (rate-limited)
     const now = Date.now();
     const lastPost = state.lastPostAt ? new Date(state.lastPostAt).getTime() : 0;
-    if (now - lastPost >= 30 * 60 * 1000) {
+    if (now - lastPost >= 180 * 60 * 1000) {
+        console.log("Post window open. lastPostAt=", state.lastPostAt, "now=", new Date().toISOString());
         try {
-            const { title, content } = await generatePost(vectorStore, groq);
-            const postRes = await moltbookPost("/posts", { submolt_name: "general", title, content });
-            const createdPost = postRes.post || postRes.data?.post || postRes;
-            if (createdPost?.id) {
-                state.lastPostAt = new Date().toISOString();
-                const v = postRes?.verification || postRes?.post?.verification;
-                if (v?.verification_code && v?.challenge_text) {
-                    const answer = await solveVerification(groq, v.challenge_text);
-                    if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
+            const MAX_POST_ATTEMPTS = 5;
+            let title;
+            let content;
+            let angleEntry;
+            let posted = false;
+            for (let attempt = 0; attempt < MAX_POST_ATTEMPTS; attempt++) {
+                angleEntry = pickPostAngle(state);
+                console.log("Post angle:", angleEntry.id, attempt > 0 ? `(retry ${attempt})` : "");
+                ({ title, content } = await generatePost(vectorStore, llm, angleEntry));
+                if (title.length < 6) {
+                    console.log("Rejected post: title too short");
+                    continue;
                 }
-                console.log("Posted:", title);
+                if (postViolatesFeeGuard(title, content)) {
+                    console.log("Rejected post (fee theme):", title.slice(0, 60));
+                    continue;
+                }
+                const tKey = normalizeTitleKey(title);
+                const prevTitles = state.recentPostTitles || [];
+                if (prevTitles.includes(tKey)) {
+                    console.log("Rejected post: duplicate title fingerprint");
+                    continue;
+                }
+                const postRes = await moltbookPost("/posts", { submolt_name: "general", title, content });
+                const createdPost = postRes.post || postRes.data?.post || postRes;
+                if (createdPost?.id) {
+                    state.lastPostAt = new Date().toISOString();
+                    state.recentPostAngleIds = [...(state.recentPostAngleIds || []), angleEntry.id].slice(-24);
+                    state.recentPostTitles = [...prevTitles, tKey].slice(-20);
+                    posted = true;
+                    const v = postRes?.verification || postRes?.post?.verification;
+                    if (v?.verification_code && v?.challenge_text) {
+                        const answer = await solveVerification(llm, v.challenge_text);
+                        if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
+                    }
+                    console.log("Posted:", title);
+                    break;
+                }
+                console.log("Post response without id:", JSON.stringify(postRes));
+                if (postRes?.statusCode === 403) {
+                    const until = parseSuspendedUntil(postRes?.message);
+                    if (until) {
+                        state.suspendedUntil = until;
+                        saveState(state);
+                        console.log("Recorded suspension until", until);
+                        return;
+                    }
+                }
+            }
+            if (!posted) {
+                state.lastPostAt = new Date().toISOString();
+                console.warn("No acceptable post after retries (or API errors); deferring next window.");
             }
         } catch (e) {
             console.log("Post failed:", e.message);
+        } finally {
+            saveState(state);
         }
-        saveState(state);
+    } else {
+        console.log(
+            "Skipping post due to rate limit. lastPostAt=",
+            state.lastPostAt,
+            "now=",
+            new Date().toISOString()
+        );
     }
 
     // 2. Reply to comments on our posts
@@ -256,18 +476,31 @@ async function main() {
         if (!query.trim()) continue;
 
         console.log(`Replying to ${latest.author_name} on post ${item.post_id}: "${query.slice(0, 60)}..."`);
-        let reply = await generateReply(query, vectorStore, groq);
+        let reply = await generateReply(query, vectorStore, llm);
         if (reply.length > 2000) reply = reply.slice(0, 1997) + "...";
+
+        const fp = commentFingerprint(reply);
+        if ((state.commentFingerprints || []).includes(fp)) {
+            console.log("Skipping duplicate reply fingerprint.");
+            await moltbookPost(`/notifications/read-by-post/${item.post_id}`);
+            continue;
+        }
+
+        // Small jitter to avoid bot-like rhythm and reduce duplicate detection.
+        await sleep(10_000 + Math.floor(Math.random() * 25_000));
 
         const commentRes = await moltbookPost(`/posts/${item.post_id}/comments`, { content: reply });
         const v = commentRes?.verification || commentRes?.comment?.verification;
         if (v?.verification_code && v?.challenge_text) {
-            const answer = await solveVerification(groq, v.challenge_text);
+            const answer = await solveVerification(llm, v.challenge_text);
             if (answer) {
                 await moltbookPost("/verify", { verification_code: v.verification_code, answer });
                 console.log("Verified comment.");
             }
         }
+
+        state.commentFingerprints = [...(state.commentFingerprints || []), fp];
+        saveState(state);
 
         await moltbookPost(`/notifications/read-by-post/${item.post_id}`);
     }
@@ -279,24 +512,38 @@ async function main() {
         const posts = feedRes.posts || feedRes.data || [];
         let commentsAdded = 0;
         for (const post of posts) {
-            if (commentsAdded >= 2) break;
+            if (commentsAdded >= 1) break;
             const postId = post.id || post.post_id;
             const authorName = (post.author?.name || post.author_name || "").toLowerCase();
             if (!postId || authorName === "stablesagent" || commented.has(postId)) continue;
 
-            const comment = await shouldCommentAndGenerate(post, vectorStore, groq);
+            const comment = await shouldCommentAndGenerate(post, vectorStore, llm);
             if (!comment) continue;
+
+            const fp = commentFingerprint(comment);
+            if ((state.commentFingerprints || []).includes(fp)) {
+                console.log("Skipping duplicate feed comment fingerprint.");
+                commented.add(postId);
+                state.commentedPostIds = [...commented];
+                saveState(state);
+                continue;
+            }
+
+            // Small jitter to avoid bot-like rhythm and reduce duplicate detection.
+            await sleep(10_000 + Math.floor(Math.random() * 25_000));
 
             const commentRes = await moltbookPost(`/posts/${postId}/comments`, { content: comment });
             const v = commentRes?.verification || commentRes?.comment?.verification;
             if (v?.verification_code && v?.challenge_text) {
-                const answer = await solveVerification(groq, v.challenge_text);
+                const answer = await solveVerification(llm, v.challenge_text);
                 if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
             }
             commented.add(postId);
             state.commentedPostIds = [...commented];
+            state.commentFingerprints = [...(state.commentFingerprints || []), fp];
             commentsAdded++;
             console.log("Commented on", authorName, ":", comment.slice(0, 50) + "...");
+            saveState(state);
             await new Promise((r) => setTimeout(r, 25000));
         }
         saveState(state);
@@ -308,6 +555,15 @@ async function main() {
 }
 
 main().catch((err) => {
+    const isRateLimit =
+        err?.code === "rate_limit_exceeded" ||
+        err?.code === "insufficient_quota" ||
+        err?.error?.code === "rate_limit_exceeded" ||
+        (err?.message && (String(err.message).includes("rate_limit") || String(err.message).includes("quota")));
+    if (isRateLimit) {
+        console.log("LLM rate limit or quota reached. Exiting gracefully.");
+        process.exit(0);
+    }
     console.error(err);
     process.exit(1);
 });

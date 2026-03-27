@@ -26,11 +26,12 @@ async function initXenova() {
     };
 }
 
-// Supports: server (task_stablesagent-brain-base), repo (brain/), laptop (nested path)
+// Supports two layouts:
+// - Laptop: task_x_agent_node is 3 levels inside Stables root
+// - Server: task_x_agent_node sits next to task_stablesagent-brain-base
 const BRAIN_SIBLING = path.resolve(__dirname, "..", "task_stablesagent-brain-base");
-const BRAIN_REPO = path.resolve(__dirname, "..", "brain");
 const BRAIN_IN_REPO = path.resolve(__dirname, "..", "..", "..", "1_development", "stream_3_governance", "task_stablesagent-brain-base");
-const DOC_DIR = require("fs").existsSync(BRAIN_SIBLING) ? BRAIN_SIBLING : (require("fs").existsSync(BRAIN_REPO) ? BRAIN_REPO : BRAIN_IN_REPO);
+const DOC_DIR = require("fs").existsSync(BRAIN_SIBLING) ? BRAIN_SIBLING : BRAIN_IN_REPO;
 const DB_FILE = path.join(__dirname, "vector_db.json");
 
 function findMarkdownFiles(dir, fileList = []) {

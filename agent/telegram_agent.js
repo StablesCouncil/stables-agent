@@ -1,6 +1,5 @@
 const path = require("path");
-const BRAIN = require("fs").existsSync(path.join(__dirname, "..", "task_stablesagent-brain-base")) ? "task_stablesagent-brain-base" : "brain";
-require("dotenv").config({ path: path.join(__dirname, "..", BRAIN, ".env") });
+require("dotenv").config({ path: path.join(__dirname, "..", "task_stablesagent-brain-base", ".env") });
 const fs = require("fs");
 const TelegramBot = require("node-telegram-bot-api");
 const { MemoryVectorStore } = require("langchain/vectorstores/memory");
@@ -19,18 +18,59 @@ if (!token) {
     process.exit(1);
 }
 
-const groqApiKey = process.env.GROQ_API_KEY;
-if (!groqApiKey) {
-    console.error("ERROR: GROQ_API_KEY is not set in .env.");
+const openRouterKey = process.env.OPENROUTER_API_KEY;
+if (!openRouterKey) {
+    console.error("ERROR: OPENROUTER_API_KEY is not set in .env.");
     process.exit(1);
 }
 
 const bot = new TelegramBot(token, { polling: true });
 
-const groq = new OpenAI({
-    apiKey: groqApiKey,
-    baseURL: "https://api.groq.com/openai/v1",
+const llm = new OpenAI({
+    apiKey: openRouterKey,
+    baseURL: "https://openrouter.ai/api/v1",
 });
+
+function sleep(ms) {
+    return new Promise((r) => setTimeout(r, ms));
+}
+
+function extractReplyText(completion) {
+    const txt = completion?.choices?.[0]?.message?.content;
+    return typeof txt === "string" ? txt.trim() : null;
+}
+
+function isQuotaError(err) {
+    const msg = err?.message ? String(err.message) : "";
+    return (
+        err?.code === "rate_limit_exceeded" ||
+        err?.code === "insufficient_quota" ||
+        msg.includes("rate_limit") ||
+        msg.includes("quota")
+    );
+}
+
+function isBusyError(err) {
+    return err?.status === 429 || err?.code === 429;
+}
+
+async function chatCompletionWithRetry(payload) {
+    try {
+        const completion = await llm.chat.completions.create(payload);
+        const reply = extractReplyText(completion);
+        if (!reply) throw new Error("Empty completion content");
+        return reply;
+    } catch (err) {
+        if (isBusyError(err)) {
+            await sleep(1500);
+            const completion = await llm.chat.completions.create(payload);
+            const reply = extractReplyText(completion);
+            if (!reply) throw new Error("Empty completion content");
+            return reply;
+        }
+        throw err;
+    }
+}
 
 // 1. Initialize Embeddings & Vector DB
 async function initXenova() {
@@ -67,12 +107,12 @@ async function startAgent() {
     console.log("=========================================");
     console.log("🤖 STABLES TELEGRAM AGENT STARTING 🤖");
     console.log("=========================================");
-    console.log("Initializing local Brain (Xenova embeddings + Groq API)...");
+    console.log("Initializing local Brain (Xenova embeddings + OpenRouter)...");
 
     const embeddings = await initXenova();
     const vectorStore = await loadVectorStore(embeddings);
 
-    console.log("✅ Brain Loaded! Groq API active.");
+    console.log("✅ Brain Loaded! OpenRouter API active.");
     console.log("📡 Listening for Telegram messages on @StablesAgentBot...");
 
     bot.on("message", async (msg) => {
@@ -103,10 +143,10 @@ async function startAgent() {
             let context = "";
             results.forEach((res, i) => context += `\n[Context ${i + 1}]: ${res.pageContent}\n`);
 
-            // 2. Call Groq API
-            console.log("🤖 Calling Groq API...");
-            const completion = await groq.chat.completions.create({
-                model: "llama-3.3-70b-versatile",
+            // 2. Call OpenRouter
+            console.log("🤖 Calling OpenRouter...");
+            const replyTextRaw = await chatCompletionWithRetry({
+                model: "openrouter/free",
                 temperature: 0.3,
                 max_tokens: 400,
                 messages: [
@@ -128,8 +168,7 @@ RULES:
                 ]
             });
 
-            let replyText = completion.choices[0].message.content.trim();
-            replyText = replyText.replace(/"/g, "").trim();
+            let replyText = replyTextRaw.replace(/"/g, "").trim();
 
             console.log("✨ REPLY:");
             console.log(replyText);
@@ -151,7 +190,13 @@ RULES:
 
         } catch (error) {
             console.error("❌ Error generating response:", error);
-            bot.sendMessage(chatId, "I'm currently undergoing maintenance. Please try again shortly.");
+            const errorMsg = isQuotaError(error)
+                ? "Sorry, I'm done for today. Heading for a break. Please come back a bit later."
+                : isBusyError(error)
+                    ? "Sorry, I'm handling multiple requests at the same time. Please try again in a minute."
+                    : "I'm currently undergoing maintenance. Please try again shortly.";
+            const sendOptions = msg.message_thread_id ? { message_thread_id: msg.message_thread_id } : {};
+            bot.sendMessage(chatId, errorMsg, sendOptions);
         }
     });
 }

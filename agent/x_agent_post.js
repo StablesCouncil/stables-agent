@@ -10,8 +10,7 @@
  */
 
 const path = require("path");
-const BRAIN = require("fs").existsSync(path.join(__dirname, "..", "task_stablesagent-brain-base")) ? "task_stablesagent-brain-base" : "brain";
-require("dotenv").config({ path: path.join(__dirname, "..", BRAIN, ".env") });
+require("dotenv").config({ path: path.join(__dirname, "..", "task_stablesagent-brain-base", ".env") });
 const fs = require("fs");
 const { TwitterApi } = require("twitter-api-v2");
 const { MemoryVectorStore } = require("langchain/vectorstores/memory");

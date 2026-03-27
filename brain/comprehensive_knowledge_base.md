@@ -26,11 +26,17 @@ Stables is not a traditional DeFi project. It is a **floating collateralized syn
 - **The Structural Buffer:** xMinima represents the equity layer. The holders of xMinima voluntarily absorb the volatility of the Minima collateral. They provide the structural foundation that keeps the Stablecoin backing ratio robust in exchange for leveraged exposure to Minima's native growth.
 - **Proportional Voting:** Power resides with those who assume this structural risk: **1 xMinima token = 1 vote**. No tiers, no admin keys, no quadratic voting.
 
-## 4. The Transition Doctrine
-Stables does not claim to be the final form of human money. It is a necessary bridge from the fiat present to a sovereign future.
-- **Stage 1 (Present - Merchant Opt-In):** Because the world still runs on fiat pricing, Stables provides synthetic pegged assets (USDs, EURs) so that merchants and users can opt-in to a sovereign, zero-fee network today without abandoning familiar pricing.
-- **Stage 2 (Minima-Native):** As the network grows and Minima distribution widens, the reliance on fiat pegs will fade as participants begin pricing goods directly in Minima.
-- **Stage 3 (The Circular Horizon):** A future state where monetary power is recognized as a fundamental human right, flowing continuously rather than accumulating in centralized silos. Stables is building the infrastructure to make this horizon accessible.
+## 4. The Transition Doctrine (The Arc of Money)
+Stables does not claim to be the final form of human money. It is a necessary bridge from the centralised present to a sovereign future. We view monetary history as a sequence of stages:
+
+- **Stage −2 (Commodity Money):** Direct exchange and intermediary assets with intrinsic value (shells, salt, metals). Trust was local and mutual.
+- **Stage −1 (Sound Money/State Capture):** Standardisation of gold/silver coins. Trust shifted from community to state. Coercion entered via legal tender and mandated taxation.
+- **Stage 0 (Fiat/Centralised Control):** The current world. Money is issued by decree and managed by central banks. Individuals are assigned a currency by jurisdiction. Participation is mandatory; exclusion is common.
+- **Stage 1 (Stables - Sovereign Opt-In):** The current phase. Stables provides synthetic pegged assets (USDs, EURs, CADs, IRTs) so participants can opt-in to a sovereign network today while maintaining familiar pricing. Minima is listed alongside these as the native destination.
+- **Stage 2 (Minima-Native Economy):** As adoption deepens, participants begin pricing goods and services directly in Minima. The reliance on fiat-pegged bridges fades. Everyone becomes their own bank on infrastructure they validate themselves.
+- **Stage 3 (The Circular Horizon):** A future state where monetary power is a fundamental human right. It recognises the right of every human to live with dignity and operates in service of the planet.
+
+**The StablesAgent's Role:** The Agent exists to facilitate Stage 1, guiding users and merchants across the bridge from Stage 0 to Stage 2. 
 
 ### Communication & Pitch
 - **Target Audience:** Your mother, your uncle, the local shop owner.
@@ -76,3 +82,30 @@ In both cases, the result is the same: more users and merchants hold and use Sta
 5. The Treasury and Liquidity Fund together ensure that xMinima remains liquid so that equity‑side participants can come and go, while ordinary users just experience instant, fee‑less payments in money that holds its value.
 
 The core mechanic is therefore simple: **People and merchants use Stables as day‑to‑day money, while the Coverage Fund, Liquidity Fund and xMinima layer quietly absorb volatility and route fees in the background so that the system stays solvent and resilient over time.**
+
+## 8. The Ambassador Program (The 16 Big Mac® Economy)
+
+The Stables Ambassador program is a professional, incentivized network designed to grow the merchant base in a Fair & Global manner. It is a "Ruled by Code" economy that rewards mentorship while protecting the treasury.
+
+### 8.1 The Economic Core (V0.0.01)
+- **Universal Anchor Fee:** 16 Big Mac® (Independent Registration).
+- **Mentored Registration Fee:** 15 Big Mac® (1 BM Discount for using an Ambassador).
+- **Active Reward (Ambassador):** 8 Big Mac® (Fixed).
+- **Mentor Reward (Trainer):** 1 Big Mac®.
+- **Council Share:** 6-16 Big Mac® (Treasury Growth).
+- **Fairness Anchor:** All fees are pegged to the global **Big Mac Index**.
+- **Settlement:** Paid and settled in any token of Stables (USDs, EURs, CADs, etc.), Minima, or xMinima.
+
+### 8.2 The Merchant's Choice
+- **Why Stables?** Secure, Pseudonymous, Unstoppable. Zero middleman fees and instant settlement.
+- **Why Listing?** Visibility on the global map, "Verified" status, and discoverability.
+- **Wait, is Listing Mandatory?** No. Stables is an open protocol. Any merchant can accept Stables for free without being listed. Listing is a professional services choice.
+
+### 8.3 The Integrity & Investment Principle
+- **100% Investment:** The 16 Big Mac® fee is not a payment; it is a 100% investment into the Stables infrastructure, owned collectively by its participants and managed by the Council Treasury.
+- **Risk Disclosure:** Stables is a pioneer journey. While sovereignty (node/keys) is the ultimate shield, early ambassadors acknowledge the lack of protocol track record.
+
+### 8.4 Technical Guardrail: The Shield Principle
+The system is mathematically balanced so that "self-onboarding" (bypassing an ambassador) is always more expensive than joining a mentored hub. This ensures the human layer (Ambassadors) is protected by the ledger's logic.
+
+**The StablesAgent's Role (Ambassador Support):** The Agent provides 24/7 technical and strategic support for Ambassadors, helping them manage their Hubs and merchant campaigns.
