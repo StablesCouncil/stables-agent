@@ -106,4 +106,4 @@ Merchant B chooses to bypass Ambassador A and self-onboards to "go independent."
 ---
 
 ## 🎬 7. Summary
-This framework demonstrates a "ruled by code" economy that rewards mentorship while protecting the treasury. It turns human competition into a collaborative cells-and-hubs structure where the treasury always grows.
+This framework demonstrates a "ruled by code" economy that rewards mentorship while protecting the treasury. It turns human competition into a collaborative cells-and-hubs structure where the community always grows.

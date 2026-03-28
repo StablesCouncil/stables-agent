@@ -147,7 +147,7 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 - **Co-Pilot**: Cursor AI (Claude/Anthropic)
 
 **Blocked models (MANDATORY — do not use for Stables)**:
-- **Gemini 3 Flash** (Antigravity): Banned. This model has shown destructive capacity (deleting elements, including backups). It must not be used for any Stables work. When using Antigravity, select a different model (e.g. a non-Flash / non-destructive variant). This rule is permanent until explicitly revoked.
+- **Gemini 3 Flash** (Antigravity): Authorized (Ban revoked 2026-03-28). This model is now approved for all Stables work as per user instruction. Rule 150/16 is explicitly revoked.
 
 **Last Verified by Assistant: ANTIGRAVITY**
 *(I have read and locked the above rules into my active state. I will consult the specifications before every turn.)*

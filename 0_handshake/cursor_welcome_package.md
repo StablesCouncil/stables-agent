@@ -32,7 +32,7 @@ Copy and paste the following block into the **Cursor Composer** or **Cursor Chat
 ### **Current Project State**
 - **Lead Pilot**: Antigravity (Google DeepMind)
 - **Co-Pilot**: Cursor AI (Claude/Anthropic)
-- **Blocked model**: Gemini 3 Flash (Antigravity) — banned for destructive behavior (deleting elements/backups). Do not recommend or use it for Stables.
+- **Authorized model**: Gemini 3 Flash (Antigravity) — Formerly banned, now authorized for all Stables work (revoked 2026-03-28).
 - **Shared Brain**: `2_current/stream_3_governance/prod_project_ledger/task.md`
 - **Git Root**: `C:\Users\Charles\Documents\Stables`
 
