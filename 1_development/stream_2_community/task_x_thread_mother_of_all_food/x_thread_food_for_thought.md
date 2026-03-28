@@ -1,25 +1,25 @@
-# Stables "Food for Thoughts" X Thread Draft
+# Stables "Food for Thoughts" X Thread Draft (v2)
 
 Post 1
-What is Stables? At this stage, let's be honest and modest. What do we want Stables to be? Stables will be Minima outstretched hand to the world. We want people to use Minima because we are convinced they will be better off.
+What is Stables? Let us be honest and modest about our goal. Stables is the outstretched hand of Minima to the world. We want you to use Minima because we are certain you will be better off for it.
 #Minima #Stables #BeYourOwnBank #stablecoin
 
 Post 2
-We don't fully do it as a charity act. We want you to use Minima because a stronger network empowers all of us to use it better. After all, it is a network, so we will be better off. We do it first for ourselves and we will help you by doing it too.
+We do not view this as a pure act of charity. When you use Minima, the entire network grows stronger. This empowers all of us to use it more effectively. We build for ourselves, and we are convinced that by doing so, we help everyone else too. 
 #Minima #Stables #BeYourOwnBank #stablecoin
 
 Post 3
-The issues people face today include being captive to their own country by one mean: debt. No need to have debt in the financial sense. Think about it in terms of obligations. People have financial obligations as simple as paying for food in paper currency. 
+Many people today are held captive by their own countries through financial obligations. It is not just about formal debt. It is the simple necessity of paying for food and daily life in a local paper currency that loses value. 
 #Minima #Stables #BeYourOwnBank #stablecoin
 
 Post 4
-We can't ask them at this stage to move fully by using a crypto currency for their daily life. That's asking them to take a foreign exchange risk. In the general crypto community, there is a consensus that it's not a risk that makes sense to take. 
+We cannot expect everyone to switch fully to a volatile crypto currency for their daily needs. That requires taking a foreign exchange risk that most people simply cannot afford. The consensus in crypto is that daily life should not be a gamble. 
 #Minima #Stables #BeYourOwnBank #stablecoin
 
 Post 5
-In this respect, we have to see blockchain as a virtual sovereign country. Expecting people to jump into a foreign currency for daily needs is a massive leap. That’s why we see the proliferation of stablecoins across all blockchains today.
+Think of a blockchain as a virtual sovereign country. Asking people to jump in using a foreign currency for their daily bread is a massive leap. This is why stablecoins are appearing everywhere. They are the bridge that makes the leap possible. 
 #Minima #Stables #BeYourOwnBank #stablecoin
 
 Post 6
-These are the outstretched hand. Stables provides that bridge. Secure, Pseudonymous and Unstoppable. Money that is truly yours. Be your own bank.
+These stable coins are the outstretched hand. Stables provides that essential bridge. Secure, Pseudonymous and Unstoppable. Money that is truly yours. Be your own bank.
 #Minima #Stables #BeYourOwnBank #stablecoin
