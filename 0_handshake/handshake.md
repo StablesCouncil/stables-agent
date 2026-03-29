@@ -122,7 +122,7 @@ Acknowledge the specific design tokens:
 
 ### [Step 5] Content Strategy Sync (If applicable)
 - Consult `2_current/plan/multi_platform_content_strategy.md`.
-- Tone: Use "share" not "teach", positive tone, no AI markers (no emojis/bullets for socials).
+- Tone: Use "share" not "teach", positive tone. Avoid AI-voice markers in public copy (see **§4 Community Communication Rules**). **Exception on X:** **icons** used to signpost a thread on the hook tweet (e.g. **🧵👇** or any equivalent thread/continuation cue) are allowed and are not treated as AI markers.
 
 ## 3. ACTIVE OBJECTIVES
 - **Restoration**: Maintaining high-fidelity economic diagrams and roadmaps.
@@ -133,7 +133,11 @@ Acknowledge the specific design tokens:
 When drafting replies for community channels (Telegram, Discord, X, etc.):
 - **Keep it brief**: Give all necessary information but stay concise. We want members to come back with more questions, not dump everything at once. An active chat is the goal.
 - **Personalize (MANDATORY)**: Always thank the person for asking and **always use their name** (e.g., "Thanks for the question [Name]"). Make it feel human.
-- **No AI markers (CRITICAL GRAMMAR RULE)**: No emojis, no icons, no bullet points, no structured lists. **NEVER use an em-dash (—) or en-dash (–) to connect sentences.** This is a grammatical mistake and a dead giveaway for AI. Use standard commas or periods only. (Note: Bullet points are allowed in Telegram ONLY if they significantly improve readability for complex information, but should be avoided in short replies).
+- **No AI markers (CRITICAL GRAMMAR RULE)**:
+    - **Definition (permanent):** **“Icons”** means the **whole class** of pictographic tokens: emoji, pictographs, and other symbols used as little pictures or reactions (not only specific characters such as **🧵** or **👇**). When this doc says “no icons” on Telegram/Discord, it means **none** from that class. When it allows “thread signposting icons” on X, it means **any** icon or short combo that does that job, not a fixed pair.
+    - **Telegram / Discord / short community replies**: No emojis, **no icons**, no bullet points, no structured lists in short replies. (Bullet points are allowed in Telegram **only** when they clearly help dense information, not in one-liner replies.)
+    - **Grammar**: **NEVER use an em-dash (—) or en-dash (–) to connect sentences.** Use commas or periods only. This rule applies to **all** channels, including X.
+    - **X / Twitter (permanent exception for thread signposting)**: On X only, **icons** at the end of the **opening tweet of a thread** are **allowed and encouraged** when they **tell the reader a thread continues** (continuation below, swipe, read on). **🧵👇** is one example; **any icon or short icon combo** used for that same job counts as permitted signposting, not as an AI marker. **Still avoid** icons used only as decoration (random stacks, “vibe” padding, **🔗** before a URL when the plain URL is enough). Plain URLs on their own line are preferred. On follow-up tweets in the same thread, keep extra icons sparse unless they carry meaning (e.g. one clear cue per tweet).
 - **X/Twitter Specifics (STRICT)**:
     - **Character Limit**: Maximum 280 characters per post.
     - **Hashtags**: You MUST include hashtags for X/Twitter posts. 
