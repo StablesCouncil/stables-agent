@@ -1,0 +1,6 @@
+# Copy this file to deploy.local.ps1 (same folder) and fill in your values.
+# deploy.local.ps1 is gitignored — never commit it.
+
+$global:STABLES_AGENT_SSH = "YOUR_USER@YOUR_SERVER"   # e.g. ubuntu@203.0.113.50
+$global:STABLES_AGENT_REMOTE_DIR = "/full/path/to/task_x_agent_node"   # folder that contains web_agent.js on the server
+$global:STABLES_AGENT_RESTART = "pm2 restart all"      # or: sudo systemctl restart stables-web-agent  (whatever you already use)
