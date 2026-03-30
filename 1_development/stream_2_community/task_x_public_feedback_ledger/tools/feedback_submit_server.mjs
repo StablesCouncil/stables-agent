@@ -96,6 +96,13 @@ async function writeGithub(contentStr, fname) {
   };
 }
 
+/** Path only, no query; strip trailing slash (match web_agent.js routing). */
+function requestPath(url) {
+  let p = (url && url.split('?')[0]) || '/';
+  if (p.length > 1 && p.endsWith('/')) p = p.slice(0, -1);
+  return p;
+}
+
 const server = http.createServer(async (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204, {
@@ -108,7 +115,8 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  if (req.method !== 'POST' || req.url !== '/api/feedback') {
+  const reqPath = requestPath(req.url);
+  if (req.method !== 'POST' || reqPath !== '/api/feedback') {
     sendJson(res, 404, { ok: false, error: 'Not found' });
     return;
   }

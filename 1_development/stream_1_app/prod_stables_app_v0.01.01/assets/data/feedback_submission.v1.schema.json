@@ -30,6 +30,7 @@
     "topic_domain": {
       "type": "string",
       "enum": [
+        "general_concept",
         "financial_structure",
         "technical_decision",
         "app",

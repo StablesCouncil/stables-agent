@@ -4,6 +4,8 @@
  */
 (function () {
   const FEEDBACK_SCHEMA_VERSION = 1;
+  const TOPIC_ACTIVE = ['general_concept', 'financial_structure', 'technical_decision'];
+  const KIND_ACTIVE = ['comment'];
 
   const APP_PAGE_OPTIONS = [
     { id: 'wallet', label: 'Wallet' },
@@ -46,7 +48,7 @@
     var primary = c.FEEDBACK_SUBMIT_URL != null ? String(c.FEEDBACK_SUBMIT_URL).trim() : '';
     if (!primary) primary = 'https://agent.stablescouncil.org/api/feedback';
     var h = (window.location && window.location.hostname) || '';
-    var isLocalHost = h === 'localhost' || h === '127.0.0.1';
+    var isLocalHost = h === 'localhost' || h === '127.0.0.1' || h === '::1';
     if (isLocalHost && !c.FEEDBACK_SKIP_LOCAL_SUBMIT) {
       return 'http://127.0.0.1:8788/api/feedback';
     }
@@ -90,24 +92,23 @@
       '<button type="button" class="agent-mini-btn" onclick="openAgentExplain(\'Feedback: public ledger on GitHub; Send posts JSON when the Council wires the endpoint; no secrets\')" title="StablesAgent">' +
       '<img src="agent.png" alt="StablesAgent">' +
       '</button></div>' +
-      '<div id="feedbackSubmitResult" class="card app-section-card" style="display:none;margin-bottom:14px;padding:14px 16px;border:1px solid rgba(52,211,153,0.35);background:rgba(52,211,153,0.1)">' +
-      '<div style="font-size:13px;font-weight:900;color:#34d399;margin-bottom:6px">Added to the public ledger</div>' +
-      '<p class="xs mu" id="feedbackSubmitResultBody" style="margin:0;line-height:1.5;font-weight:800;color:var(--t)"></p></div>' +
       '<div class="card app-section-card" style="padding:14px 16px;margin-bottom:14px;border:1px solid rgba(251,191,36,0.35);background:rgba(251,191,36,0.08)">' +
       '<div style="font-size:12px;font-weight:900;color:#fbbf24;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em">Public ledger</div>' +
       '<p class="sec-body" style="margin:0 0 10px;line-height:1.55;font-weight:800;color:var(--t)">Do not include personal data, private keys, seed phrases, or anything you are not comfortable sharing <strong>forever</strong> in the open.</p>' +
-      '<p class="xs mu" style="margin:0;line-height:1.5;font-weight:700">Submissions go to a <strong>public GitHub</strong> folder. Anyone can read them. Optional fields below are still <strong>public</strong>.</p>' +
+      '<p class="xs mu" style="margin:0;line-height:1.5;font-weight:700">Submissions go to a <a href="' + dbUrl + '" target="_blank" rel="noopener noreferrer" style="color:var(--c);font-weight:900;text-decoration:underline">public GitHub folder</a>. Anyone can read them. Optional fields below are still <strong>public</strong>.</p>' +
       '</div>' +
       '<div class="card app-section-card" style="padding:14px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">' +
       '<label class="xs mu" style="display:block;font-weight:900;margin-bottom:6px;color:var(--muted)">Topic area</label>' +
-      '<select class="fsel" id="feedbackStructDomain" style="width:100%;margin-bottom:12px" aria-label="Topic area">' +
+      '<select class="fsel" id="feedbackStructDomain" style="width:100%;margin-bottom:8px" aria-label="Topic area">' +
       '<option value="">Choose…</option>' +
+      '<option value="general_concept">General concept</option>' +
       '<option value="financial_structure">Financial structure</option>' +
       '<option value="technical_decision">Technical decision</option>' +
-      '<option value="app">App (MiniDapp)</option>' +
-      '<option value="other">Other (structured)</option>' +
-      '<option value="open_text">Open topic (free form)</option>' +
+      '<option value="app" disabled>App (MiniDapp) - available shortly</option>' +
+      '<option value="other" disabled>Other (structured) - available shortly</option>' +
+      '<option value="open_text" disabled>Open topic (free form) - available shortly</option>' +
       '</select>' +
+      '<p class="xs mu" style="margin:0 0 10px;line-height:1.45;color:var(--am);font-weight:800">Some topic areas are not active yet. These will be made available shortly (you are early).</p>' +
       '<div id="feedbackGroupFinancial" style="display:none">' +
       '<label class="xs mu" style="display:block;font-weight:900;margin-bottom:6px;color:var(--muted)">Financial structure: detail</label>' +
       '<select class="fsel" id="feedbackStructFinancialSub" style="width:100%;margin-bottom:8px">' +
@@ -138,11 +139,12 @@
       '<div id="feedbackGroupOtherHint" style="display:none">' +
       '<p class="xs mu" style="margin:0;line-height:1.5;font-weight:700;color:var(--muted)">Use the title and description below to name the area (protocol, ops, docs, …).</p></div>' +
       '<label class="xs mu" style="display:block;font-weight:900;margin-bottom:6px;color:var(--muted)">Feedback type</label>' +
-      '<select class="fsel" id="feedbackStructKind" style="width:100%;margin-bottom:12px">' +
-      '<option value="improvement">Improvement</option>' +
-      '<option value="bug">Bug</option>' +
+      '<select class="fsel" id="feedbackStructKind" style="width:100%;margin-bottom:8px">' +
       '<option value="comment">Comment</option>' +
-      '<option value="other">Other</option></select>' +
+      '<option value="improvement" disabled>Improvement - available shortly</option>' +
+      '<option value="bug" disabled>Bug - available shortly</option>' +
+      '<option value="other" disabled>Other - available shortly</option></select>' +
+      '<p class="xs mu" style="margin:0 0 12px;line-height:1.45;color:var(--am);font-weight:800">For now, only Comment is active. More feedback types are coming shortly.</p>' +
       '<label class="xs mu" style="display:block;font-weight:900;margin-bottom:6px;color:var(--muted)">Title (short)</label>' +
       '<input class="finput" id="feedbackStructTitle" type="text" maxlength="200" style="width:100%;margin-bottom:12px" placeholder="One line summary" />' +
       '<label class="xs mu" style="display:block;font-weight:900;margin-bottom:6px;color:var(--muted)">Details</label>' +
@@ -191,6 +193,9 @@
   function buildPayload() {
     var domain = el('feedbackStructDomain').value;
     if (!domain) return { error: 'Choose a topic area.' };
+    if (TOPIC_ACTIVE.indexOf(domain) === -1) {
+      return { error: 'This topic area is not active yet. Please use General concept, Financial structure, or Technical decision.' };
+    }
     var title = (el('feedbackStructTitle').value || '').trim();
     var body = (el('feedbackStructBody').value || '').trim();
     if (!title) return { error: 'Add a short title.' };
@@ -213,6 +218,10 @@
     }
 
     var topicSub = collectTopicSub(domain);
+    var kind = el('feedbackStructKind').value;
+    if (KIND_ACTIVE.indexOf(kind) === -1) {
+      return { error: 'This feedback type is not active yet. Please choose Comment.' };
+    }
 
     return {
       payload: {
@@ -222,7 +231,7 @@
         topic_domain: domain,
         topic_sub: topicSub,
         app_context: appCtx,
-        kind: el('feedbackStructKind').value,
+        kind: kind,
         title: title,
         body: body,
         optional_minima_address: minimaAddr || null,
@@ -239,15 +248,19 @@
   }
 
   function hideSubmitSuccess() {
-    var box = el('feedbackSubmitResult');
-    if (box) box.style.display = 'none';
+    if (typeof window.closeModal === 'function' && el('feedbackSuccessModal')) {
+      window.closeModal('feedbackSuccessModal');
+    }
   }
 
   function showSubmitSuccess(text) {
-    var box = el('feedbackSubmitResult');
-    var p = el('feedbackSubmitResultBody');
+    var p = el('feedbackSuccessModalBody');
     if (p) p.textContent = text;
-    if (box) box.style.display = 'block';
+    if (typeof window.openModal === 'function' && el('feedbackSuccessModal')) {
+      window.openModal('feedbackSuccessModal');
+    } else {
+      feedbackNotify(text, true);
+    }
   }
 
   window.feedbackSend = function () {
@@ -283,7 +296,12 @@
       })
       .then(function (out) {
         if (!out.res.ok || !out.data.ok) {
-          var err = (out.data && out.data.error) || 'Send failed (' + out.res.status + ')';
+          var rawErr = (out.data && out.data.error) || '';
+          var err = rawErr || 'Send failed (' + out.res.status + ')';
+          if (out.res.status === 404 && String(rawErr).trim() === 'Not found') {
+            err =
+              'Feedback API missing (404). Deploy web_agent with POST /api/feedback, or test at http://127.0.0.1 with feedback_submit_server on port 8788.';
+          }
           throw new Error(err);
         }
         var msg =
@@ -291,7 +309,6 @@
           (out.data.id || 'a new file') +
           (out.data.html_url ? '. Open GitHub to view it.' : '. It is in the public folder.');
         showSubmitSuccess(msg);
-        feedbackNotify('Thanks. Your feedback was added to the public ledger.', true);
         el('feedbackStructTitle').value = '';
         el('feedbackStructBody').value = '';
         el('feedbackStructContact').value = '';
@@ -323,6 +340,7 @@
   function wireFeedbackForm(root) {
     var d = root.querySelector('#feedbackStructDomain');
     if (d) d.addEventListener('change', updateFeedbackTopicUI);
+    if (d && !d.value) d.value = 'general_concept';
     updateFeedbackTopicUI();
   }
 

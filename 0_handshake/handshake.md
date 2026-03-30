@@ -18,7 +18,7 @@
     - `task_[description]`: For active/sandbox work.
     - `prod_[description]`: For stable, finalized deliverables.
 - **Single Master Rule**: The MiniDapp **active development** tree is always:
-    `1_development/stream_1_app/prod_stables_app_v0.2.12/` (entry: `index.html`).  
+    `1_development/stream_1_app/prod_stables_app_v0.01.01/` (entry: `index.html`).  
     **Version pointer for agents** (frozen zips, bumps, inventory paths): `0_handshake/minidapp_version.md`.
 - **Packaging Rule**: Zip the *contents* of the active `prod_stables_app_...` folder directly to create the `.mds.zip`. **Exclude** a sibling `build/` folder if present (it only holds generated zips + notes). No file renaming inside the zip.
 - **Brand Sovereignty**: All visual assets must derive from the official branding masters. NO AI-generated logos or "ad-hoc" modifications to symbols.

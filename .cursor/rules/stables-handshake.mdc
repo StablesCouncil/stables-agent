@@ -14,7 +14,7 @@ At the start of **every session**, before any work, read these in order:
 
 Then follow the calibration steps in `0_handshake/handshake.md` (including **Step 0b** when the task touches protocol economics or how Stables works in copy).
 
-**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first so you edit the **active** `prod_stables_app_*` folder (currently **v0.2.12**).
+**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first so you edit the **active** `prod_stables_app_*` folder (currently **v0.01.01**).
 
 **Protocol economics / mint / burn / xMinima / fees / treasury / protocol comms:** run **handshake Step 0b** before answering: read `0_handshake/protocol_mechanics_spec.md` then `stables_master_reference.md` §14. If any text conflicts, **`protocol_mechanics_spec.md` wins**; note the conflict for review.
 

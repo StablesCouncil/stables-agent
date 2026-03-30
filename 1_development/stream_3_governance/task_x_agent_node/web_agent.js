@@ -120,7 +120,12 @@ async function startWebAgent() {
             return res.end();
         }
 
-        const reqPath = (req.url && req.url.split("?")[0]) || "";
+        function normalizePath(url) {
+            let p = (url && url.split("?")[0]) || "";
+            if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
+            return p;
+        }
+        const reqPath = normalizePath(req.url);
 
         /** Public MiniDapp feedback ledger (JSON v1). Same contract as task_x_public_feedback_ledger server. */
         if (req.method === "POST" && reqPath === "/api/feedback") {
@@ -171,7 +176,7 @@ async function startWebAgent() {
             return;
         }
 
-        if (req.method === "GET" && req.url === "/health") {
+        if (req.method === "GET" && reqPath === "/health") {
             res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
             return res.end(JSON.stringify({ status: "ok", ts: Date.now() }));
         }
@@ -189,7 +194,7 @@ async function startWebAgent() {
             }
         }
 
-        if (req.method === "GET" && (req.url === "/" || req.url.split("?")[0] === "/chat")) {
+        if (req.method === "GET" && (reqPath === "/" || reqPath === "/chat")) {
             const chatPath = path.join(__dirname, "web_chat.html");
             if (!fs.existsSync(chatPath)) {
                 res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
@@ -200,7 +205,7 @@ async function startWebAgent() {
             return res.end(html);
         }
 
-        if (req.method === "POST" && req.url === "/api/chat") {
+        if (req.method === "POST" && reqPath === "/api/chat") {
             let body = "";
             req.on("data", (chunk) => {
                 body += chunk.toString("utf-8");

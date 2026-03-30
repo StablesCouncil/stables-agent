@@ -1,14 +1,14 @@
 // Runtime configuration for UI behavior and local persistence.
 window.STABLES_CONFIG = {
   /** Shipped build (keep in sync with dapp.conf "version" when you release). */
-  APP_BUILD_VERSION: '0.2.11',
+  APP_BUILD_VERSION: '0.01.01',
   /**
    * Council-side view of the newest MiniDapp. If latestPublishedVersion sorts above APP_BUILD_VERSION,
    * the Council communications page shows criticality + what changed + zip link.
    * To preview the update banner locally, temporarily set APP_BUILD_VERSION lower than latestPublishedVersion.
    */
   APP_UPDATE_POLICY: {
-    latestPublishedVersion: '0.2.11',
+    latestPublishedVersion: '0.01.01',
     whenUpdateNeeded: {
       criticality: 'high',
       whatChanged:
@@ -93,10 +93,10 @@ window.STABLES_CONFIG = {
    */
   SECURITY_SUPPORT_TELEGRAM_URL: 'https://t.me/StablesSecuritySupport',
   /**
-   * Telegram: Ambassador onboarding topics and discussion.
-   * Keep this configurable so the in-app Ambassador CTA can point to the final channel invite.
+   * Telegram: Ambassador program specification discussion (community topic thread).
+   * @see https://stablescouncil.org/ambassadorsprogramdesc.html
    */
-  AMBASSADOR_TOPICS_TELEGRAM_URL: 'https://t.me/stablescommunity',
+  AMBASSADOR_TOPICS_TELEGRAM_URL: 'https://t.me/stablescommunity/358',
   /**
    * Official council notices on the Council communications page (security, mandatory updates, critical comms).
    * Replace `items` on each release; keep copy factual and short.

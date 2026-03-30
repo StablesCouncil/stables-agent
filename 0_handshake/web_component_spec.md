@@ -41,7 +41,7 @@ When you change a global pattern (e.g. title row alignment), change the **one** 
 
 **Rule**: At the top of every in-app screen, use the **same icon, title, and subtitle** as the **More** drawer row (`.ditem`) for that destination. For primary tabs that are **not** in the drawer, use the **bottom nav** icon + label, plus one short subtitle line that matches the screen purpose.
 
-**Markup** (implemented in `prod_stables_app_v0.2.12/index.html`; see `minidapp_version.md` if the folder bumps):
+**Markup** (implemented in `prod_stables_app_v0.01.01/index.html`; see `minidapp_version.md` if the folder bumps):
 
 - Wrapper: `header.app-page-header`
 - Icon: `div.dic` with the same emoji (or `agent.png` inside `.dic` if the menu row uses the agent image)
@@ -63,7 +63,7 @@ When you change a global pattern (e.g. title row alignment), change the **one** 
 3. **Content box**: `div.card` (or `.ex-card`, `.xwm-card`, `.cp-card`, `.lp-card`, `.treasury-snap-card`, etc.) **plus** `app-section-card`. **Do not** put `agent-mini-btn` inside the card when a section title exists in the outer row.
 4. **In-card titles** (e.g. proposal / voting cards): `div.stitle-row.stitle-row--in-card` **first inside the box**, with `div.stitle-inline` (or `stitle-inline--sm`) plus the same `agent-mini-btn`; separator is a **bottom** border under the title row, not a gap above the card.
 
-**Reference**: `1_development/stream_1_app/prod_stables_app_v0.2.12/index.html` (`.app-section--caption-bottom`, `.stitle-row`, `.agent-mini-btn`, `.app-section-card` in the page `<style>` block).
+**Reference**: `1_development/stream_1_app/prod_stables_app_v0.01.01/index.html` (`.app-section--caption-bottom`, `.stitle-row`, `.agent-mini-btn`, `.app-section-card` in the page `<style>` block).
 
 ---
 

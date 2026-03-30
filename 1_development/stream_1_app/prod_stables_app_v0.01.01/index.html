@@ -908,6 +908,23 @@
             border-radius: 15px
         }
 
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(103, 232, 249, .3), rgba(167, 139, 250, .3));
+            border-color: rgba(103, 232, 249, .3);
+            box-shadow: 0 0 20px rgba(103, 232, 249, .12);
+            color: var(--t)
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 24px rgba(103, 232, 249, .2)
+        }
+
+        .btn-secondary {
+            background: rgba(15, 23, 42, .6);
+            border-color: rgba(103, 232, 249, .25);
+            color: var(--t)
+        }
+
         /* INPUTS */
         .finput {
             width: 100%;
@@ -2820,6 +2837,7 @@
         .toggle {
             width: 44px;
             height: 24px;
+            flex-shrink: 0;
             background: rgba(103, 232, 249, .12);
             border: 1px solid rgba(103, 232, 249, .25);
             border-radius: 12px;
@@ -2901,6 +2919,44 @@
             background: rgba(103, 232, 249, .15);
             border-color: rgba(103, 232, 249, .3);
             color: var(--t)
+        }
+
+        /* Merchants → Promotions: total ads running (badge) */
+        @keyframes promotions-count-pulse {
+            0%, 100% {
+                box-shadow: 0 0 14px rgba(103, 232, 249, .35), 0 0 24px rgba(167, 139, 250, .15), inset 0 1px 0 rgba(255, 255, 255, .14);
+            }
+            50% {
+                box-shadow: 0 0 22px rgba(103, 232, 249, .5), 0 0 34px rgba(167, 139, 250, .22), inset 0 1px 0 rgba(255, 255, 255, .18);
+            }
+        }
+
+        .promotions-ad-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            height: 28px;
+            padding: 0 10px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 900;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            letter-spacing: -0.02em;
+            color: var(--t);
+            background: linear-gradient(135deg, rgba(103, 232, 249, .38), rgba(167, 139, 250, .34));
+            border: 1px solid rgba(103, 232, 249, .45);
+            box-shadow: 0 0 14px rgba(103, 232, 249, .35), 0 0 24px rgba(167, 139, 250, .15), inset 0 1px 0 rgba(255, 255, 255, .14);
+            text-shadow: 0 0 12px rgba(103, 232, 249, .65), 0 1px 2px rgba(0, 0, 0, .4);
+            flex-shrink: 0;
+            animation: promotions-count-pulse 2.8s ease-in-out infinite;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .promotions-ad-count {
+                animation: none;
+            }
         }
 
         /* LEARN MORE - collapsible hints */
@@ -3407,7 +3463,7 @@
         </div>
     <!-- Column 2: Test Pill (Center) -->
     <div class="test-pill" style="justify-self: center;cursor:default">
-        No value for Showcase
+        Showcase · v0.01.01
     </div>
     <!-- Column 3: Sync Pill (Right) -->
     <div class="sync-pill sync-pill--placeholder" title="Block height from your node (MDS)." style="justify-self: end;">
@@ -4297,67 +4353,103 @@
             </div>
         </div>
 
-        <!-- AMBASSADOR (More → Merchants & Exchange) -->
+        <!-- AMBASSADOR (More → Merchants & Exchange) — aligned with stablescouncil.org/ambassadorsprogramdesc.html -->
         <div class="page" id="page-ambassador">
             <header class="app-page-header">
                 <div class="dic" aria-hidden="true">&#x1F91D;</div>
                 <div class="app-page-header__text">
                     <div class="app-page-header__title">Ambassadors</div>
+                    <div class="app-page-header__sub">16 Big Mac® economy · community draft</div>
                 </div>
             </header>
 
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
-                <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+                <div class="stitle-row">
+                    <div class="stitle">Ambassador program</div>
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('Ambassadors: pay the standard 16 Big Mac® fee to list. Once active, receive a 7 Big Mac® reward for your work, while your mentor receives 1 Big Mac®. 8 Big Mac® (50%) always goes to the treasury.')"
+                        onclick="openAgentExplain('Ambassadors (draft spec): permissionless entry once you register in protocol. Universal anchor 16 Big Mac® independent to Treasury. Mentored merchant listing 15 BM: 8 BM to Direct Ambassador, 6–7 BM Council, 1 BM to mentor when the Ambassador was mentored. Shield principle blocks self-onboarding games. Full detail on stablescouncil.org.')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
                 <div class="card app-section-card" style="padding:18px 16px">
-                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55">
-                        Ambassadors are here to help merchants get listed and launch promotions. This page is only about that
-                        onboarding role.
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55">
+                        The <strong style="color:var(--t)">Ambassador program</strong> is a fair, global layer that helps merchants join the Stables directory and grow spending.
+                        <strong style="color:var(--c)">Permissionless entry:</strong> no gatekeeper—once you register in the protocol you can act as an Ambassador.
+                        Ambassadors are the human layer for onboarding, support, and quality listings (see the
+                        <a href="https://stablescouncil.org/ambassadorsprogramdesc.html" target="_blank" rel="noopener noreferrer" style="color:var(--c);font-weight:800;text-decoration:underline">full specification</a>).
                     </p>
                     <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">1. Entry (Skin-in-the-game):</strong> Everyone starts equal. Both merchants and Ambassadors pay the full 
-                        <strong style="color:var(--t)">16 Big Mac®</strong> (paid in MINIMA, indexed) to be listed. 100% of this fee goes directly to the Council treasury to anchor the protocol.
+                        <strong style="color:var(--c)">Fees (Big Mac® index, ~12‑month listing):</strong>
+                        <strong style="color:var(--t)">16 BM</strong> universal anchor if you list independently (goes to Council Treasury).
+                        <strong style="color:var(--t)">15 BM</strong> if you are mentored in—<strong style="color:var(--t)">1 BM</strong> discount vs self-serve.
                     </p>
                     <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">2. Active Reward:</strong> For every new merchant you successfully onboard, you receive a kickback of
-                        <strong style="color:var(--t)">7 Big Mac®</strong>. This reward is fixed, ensuring there is no financial incentive to bypass your mentor.
+                        <strong style="color:var(--c)">On a mentored onboarding (15 BM):</strong> the <strong style="color:var(--t)">Direct Ambassador</strong> earns
+                        <strong style="color:var(--t)">8 BM</strong>. The <strong style="color:var(--t)">Council</strong> receives
+                        <strong style="color:var(--t)">6 BM</strong> (or <strong style="color:var(--t)">7 BM</strong> if the Ambassador has no mentor—the extra BM stays with Treasury).
+                        If the Ambassador was mentored, the <strong style="color:var(--t)">Mentor</strong> earns <strong style="color:var(--t)">1 BM</strong>.
                     </p>
-                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">3. Mentor Reward:</strong> If a merchant you onboarded becomes an Ambassador themselves, you receive a 
-                        <strong style="color:var(--t)">1 Big Mac®</strong> override on their future onboarding work as a reward for your mentorship and support.
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--c)">Shield principle:</strong> it is always cheaper for a merchant to use an Ambassador (15 vs 16 BM) and economically irrational to “self-capture” rewards in ways that bypass the protocol’s mentorship rules—see scenarios in the spec.
                     </p>
-                    <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
-                        <strong style="color:var(--c)">Treasury Share:</strong> The remaining 
-                        <strong style="color:var(--t)">8 Big Mac®</strong> (50%) always goes to the Council treasury to ensure long-term protocol stability.
+                    <p class="sec-body" style="margin:0 0 14px;line-height:1.55;color:var(--m)">
+                        The program also covers <strong style="color:var(--t)">renewals</strong>, <strong style="color:var(--t)">hub tools</strong>, <strong style="color:var(--t)">campaigns</strong>, and <strong style="color:var(--t)">reviews</strong> tied to real spend—governance and implementation evolve with the community.
                     </p>
-                    <div class="xs mu" style="font-weight:900;text-transform:uppercase;letter-spacing:.06em;margin:12px 0 6px;color:var(--c)">Community discussion</div>
-                    <p class="sec-body" style="margin:0 0 10px;line-height:1.55;color:var(--m)">
-                        This framework is far from definitive and represents a first proposal by the core dev team. It will be discussed and debated within the community.
-                    </p>
-                    <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
-                        To join the discussion, share your ideas and opinions in the dedicated Ambassador topic on our Telegram community channel:
-                        <a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">t.me/stablescommunity</a>.
-                    </p>
-                    <button class="btn btn-w btn-g" style="width:100%;margin-top:14px"
-                        onclick="openAmbassadorTopicsModal()">Become an ambassador</button>
+                    <div class="buttons" style="display:flex;flex-direction:column;gap:10px;margin-top:4px">
+                        <a class="btn btn-w btn-primary" href="https://stablescouncil.org/ambassadorsprogramdesc.html" target="_blank" rel="noopener noreferrer"
+                            style="text-align:center;text-decoration:none;box-sizing:border-box">Full specification (web)</a>
+                        <a class="btn btn-w btn-secondary" href="https://t.me/stablescommunity/358" target="_blank" rel="noopener noreferrer"
+                            style="text-align:center;text-decoration:none;box-sizing:border-box">Ambassador topic — Telegram</a>
+                    </div>
+                    <button type="button" class="btn btn-w btn-g" disabled style="width:100%;margin-top:14px;cursor:not-allowed;opacity:.72"
+                        aria-disabled="true" title="Sign-up flow not live yet">Become an ambassador — coming soon</button>
                 </div>
             </div>
         </div>
 
-        <!-- MY MERCHANT (More → Merchants & Exchange) -->
+        <!-- MY SHOP (More → Merchants & Exchange) -->
         <div class="page" id="page-my-shop">
             <header class="app-page-header">
                 <div class="dic" aria-hidden="true">&#x1F3EA;</div>
                 <div class="app-page-header__text">
-                    <div class="app-page-header__title">Merchants</div>
-                    <div class="app-page-header__sub">List your business, invoices, and merchant tools</div>
+                    <div class="app-page-header__title">My shop</div>
+                    <div class="app-page-header__sub">Your business tools, invoices, and dashboard</div>
                 </div>
             </header>
+
+            <div id="myShopRoleNotice" class="card app-section-card" style="padding:14px 16px;margin-bottom:12px;display:none;background:rgba(251,191,36,.08);border-color:rgba(251,191,36,.28)">
+                <div class="xs mu" style="line-height:1.55;color:var(--am)">
+                    <strong style="color:var(--t)">My shop</strong> is locked. Go to <strong style="color:var(--t)">Settings → Appearance &amp; behaviour</strong> and turn <strong style="color:var(--t)">Merchant</strong> on.
+                    Your wallet stays a normal Participant account—this toggle only unlocks shop tools in More → My shop. Browse shops and <strong style="color:var(--t)">Promotions</strong> on the <strong style="color:var(--t)">Merchants</strong> tab.
+                </div>
+            </div>
+            <div id="myShopMerchantBody">
+
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Create ad campaign</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Create ad campaign: when live, spotlights appear under Promotions on the Merchants tab. Council billing and protocol fee to treasury per governance.')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:16px">
+                    <p class="xs mu" style="margin:0 0 14px;line-height:1.55;color:var(--m)">
+                        Draft a promotion for your shop. Production will use Council rules, budgets, and on-chain or indexed settlement—this build keeps a local preview only.
+                    </p>
+                    <label class="flabel" for="merchantCampaignTitle">Campaign title</label>
+                    <input class="finput" id="merchantCampaignTitle" placeholder="e.g. Spring lunch menu" style="margin-bottom:10px">
+                    <label class="flabel" for="merchantCampaignBody">Short message</label>
+                    <textarea class="finput" id="merchantCampaignBody" rows="3" placeholder="What should people see in the ad?"
+                        style="resize:vertical;margin-bottom:10px;font-family:inherit"></textarea>
+                    <label class="flabel" for="merchantCampaignLink">Link or promo code (optional)</label>
+                    <input class="finput" id="merchantCampaignLink" placeholder="https://… or code" style="margin-bottom:12px">
+                    <button type="button" class="btn" style="width:100%;min-height:52px" onclick="submitMerchantAdCampaignDraft()">Save draft (preview)</button>
+                    <p class="xs mu" style="margin:12px 0 0;line-height:1.45;color:var(--m)">Turn <strong style="color:var(--t)">Merchant</strong> on in Settings to use <strong style="color:var(--t)">My shop</strong>. Live publishing is not wired in this preview.</p>
+                </div>
+            </div>
 
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div class="stitle-row">
@@ -4386,6 +4478,38 @@
                         merchant onboarding, the retrocession split applies as described on
                         <strong style="color:var(--t)">Ambassadors</strong>.
                     </p>
+                </div>
+            </div>
+
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Merchant dashboard</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Merchant dashboard: sales history and validated participants from your checkout flow.')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:16px">
+                    <div id="myShopStats" class="sec-body" style="margin:0 0 10px;color:var(--m)">No sales recorded yet.</div>
+                    <label class="flabel">Search participant user name in your sales</label>
+                    <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
+                        <input class="finput" id="myShopParticipantSearch" placeholder="e.g. alice_berlin" style="margin-bottom:0"
+                            oninput="renderMyShopDashboard()">
+                        <button type="button" class="btn btn-w btn-g" style="width:auto;padding:10px 14px"
+                            onclick="renderMyShopDashboard()">Search</button>
+                    </div>
+                    <div id="myShopParticipantSearchResult" class="xs mu" style="margin:0 0 10px;color:var(--m)">Search only runs on this merchant's own history.</div>
+                    <div style="display:grid;grid-template-columns:1fr;gap:10px">
+                        <div style="padding:10px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                            <div class="xs mu" style="margin-bottom:6px">Recent sales</div>
+                            <div id="myShopSalesList" class="xs mu">No sales yet.</div>
+                        </div>
+                        <div style="padding:10px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
+                            <div class="xs mu" style="margin-bottom:6px">Validated participants</div>
+                            <div id="myShopParticipantsList" class="xs mu">No validations yet.</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -4517,25 +4641,78 @@
                         style="margin-bottom:0;font-size:12px;opacity:.95;cursor:default;font-family:ui-monospace,monospace">
                 </div>
             </div>
+            </div>
         </div>
 
-        <!-- WHERE TO SPEND -->
+        <!-- WHERE TO SPEND (bottom tab Merchants) -->
         <div class="page" id="page-spend">
-            <header class="app-page-header" style="margin-bottom:16px">
+            <header class="app-page-header" style="margin-bottom:8px">
                 <div class="dic" aria-hidden="true">&#x1F6D2;</div>
                 <div class="app-page-header__text">
                     <div class="app-page-header__title">Merchants</div>
                     <div class="app-page-header__sub">Merchants accepting Wables</div>
                 </div>
             </header>
-            <div
-                style="display:grid;grid-template-columns:repeat(auto-fit,minmax(152px,1fr));gap:10px;margin:0 auto 20px;padding:0 12px;box-sizing:border-box;max-width:420px;width:100%">
-                <button type="button" class="btn btn-lg" style="width:100%;min-height:64px;line-height:1.25;white-space:normal"
-                    onclick="navigate('my-shop')">Become a merchant</button>
-                <button type="button" class="btn btn-lg" style="width:100%;min-height:64px;line-height:1.25;white-space:normal"
+
+            <div class="flex gap8" style="flex-wrap:wrap;align-items:center;justify-content:center;margin:0 0 10px 0">
+                <button type="button" class="ccy-pill" style="border-color:rgba(103,232,249,.22);color:var(--t)"
+                    onclick="navigate('my-shop')">Open My shop</button>
+                <button type="button" class="ccy-pill" style="border-color:rgba(103,232,249,.22);color:var(--t)"
                     onclick="navigate('ambassador')">Become an ambassador</button>
             </div>
-            <input class="finput" placeholder="🔍 Search merchants..." style="margin-bottom:14px">
+            <input class="finput" id="spendMerchantsSearchInput" placeholder="🔍 Search merchants…"
+                style="margin:0 0 14px 0;padding:8px 12px;font-size:13px;line-height:1.35;min-height:40px;box-sizing:border-box;width:100%">
+
+            <div class="app-section app-section--caption-bottom" id="merchantPromotionsSection" style="margin-bottom:4px">
+                <div class="stitle-row">
+                    <div class="stitle" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+                        <span>Promotions</span>
+                        <span id="promotionsAdCountBadge" class="promotions-ad-count" role="status" aria-live="polite" title="Total ads running in this feed">3</span>
+                    </div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Promotions: merchant spotlight and offers on the Merchants tab. Use All, My merchants, or Hide to control what you see. Live campaigns follow Council rules.')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:12px 14px">
+                    <div class="flex gap8" style="margin-bottom:10px;flex-wrap:wrap">
+                        <button type="button" class="ccy-pill on" id="promoFilterAll" onclick="setMerchantPromotionsFilter('all')">All</button>
+                        <button type="button" class="ccy-pill" id="promoFilterMy" onclick="setMerchantPromotionsFilter('my')">My merchants</button>
+                        <button type="button" class="ccy-pill" id="promoFilterHide" onclick="setMerchantPromotionsFilter('hide')">Hide</button>
+                    </div>
+                    <div id="merchantPromotionsList" style="display:grid;gap:12px">
+                        <div class="merchant-promo-card" data-promo-my="1"
+                            style="padding:14px;border-radius:16px;border:1px solid rgba(103,232,249,.18);background:rgba(11,15,20,.5)">
+                            <div style="font-size:11px;font-weight:800;color:var(--c);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Sponsored</div>
+                            <div class="sec-body" style="margin:0 0 6px;font-weight:800;color:var(--t)">Weekend 10% off whole-bean coffee</div>
+                            <div class="xs mu" style="margin:0 0 10px;line-height:1.45">Ground Coffee Roasters · Berlin</div>
+                            <button type="button" class="btn btn-w" style="width:100%;min-height:48px"
+                                onclick="openShopProfile('Ground Coffee Roasters')">View merchant</button>
+                        </div>
+                        <div class="merchant-promo-card" data-promo-my="1"
+                            style="padding:14px;border-radius:16px;border:1px solid rgba(167,139,250,.22);background:rgba(11,15,20,.5)">
+                            <div style="font-size:11px;font-weight:800;color:var(--pu, #a78bfa);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Spotlight</div>
+                            <div class="sec-body" style="margin:0 0 6px;font-weight:800;color:var(--t)">New fiction table — pay with Wables</div>
+                            <div class="xs mu" style="margin:0 0 10px;line-height:1.45">Open Pages Bookshop · London</div>
+                            <button type="button" class="btn btn-w" style="width:100%;min-height:48px"
+                                onclick="openShopProfile('Open Pages Bookshop')">View merchant</button>
+                        </div>
+                        <div class="merchant-promo-card" data-promo-my=""
+                            style="padding:14px;border-radius:16px;border:1px solid rgba(103,232,249,.12);background:rgba(11,15,20,.35)">
+                            <div style="font-size:11px;font-weight:800;color:var(--m);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Offer</div>
+                            <div class="sec-body" style="margin:0 0 6px;font-weight:800;color:var(--t)">Tuesday sourdough bundle</div>
+                            <div class="xs mu" style="margin:0 0 10px;line-height:1.45">The Bread Collective · Amsterdam</div>
+                            <button type="button" class="btn btn-w" style="width:100%;min-height:48px"
+                                onclick="openShopProfile('The Bread Collective')">View merchant</button>
+                        </div>
+                    </div>
+                    <p id="merchantPromotionsHiddenNote" class="xs mu" style="display:none;margin:0;line-height:1.55;color:var(--m)">
+                        Promotions are hidden. Tap <strong style="color:var(--t)">All</strong> or <strong style="color:var(--t)">My merchants</strong> to show ads again.
+                    </p>
+                </div>
+            </div>
+
             <div class="app-section app-section--caption-bottom" style="margin-top:4px">
             <div class="stitle-row">
                 <div class="stitle">Cafés
@@ -5577,7 +5754,7 @@
             <div class="app-section app-section--caption-bottom">
             <div class="stitle-row">
                 <div class="stitle">Appearance &amp; behaviour</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: appearance, light mode, merchant mode, address privacy')" title="StablesAgent">
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Settings: appearance, light mode, Merchant toggle for My shop in More, address privacy')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
             </div>
@@ -5592,12 +5769,12 @@
                     <div class="toggle" id="themeToggle" onclick="toggleTheme()"></div>
                 </div>
                 <div class="set-row">
-                    <div>
+                    <div style="min-width:0;flex:1;padding-right:12px">
                         <div class="set-label">
-                            🯧
-                            Merchant Mode
+                            🏪
+                            Merchant on / off
                         </div>
-                        <div class="set-sub">Receive opens as invoice by default</div>
+                        <div class="set-sub">Unlocks <strong style="color:var(--t)">More → My shop</strong> (invoices, dashboard, ad drafts). Browse merchants and <strong style="color:var(--t)">Promotions</strong> on the <strong style="color:var(--t)">Merchants</strong> tab anytime. You keep all Participant wallet features.</div>
                     </div>
                     <div class="toggle" id="merchantToggle" onclick="toggleMerchant()"></div>
                 </div>
@@ -5887,7 +6064,11 @@
                 </header>
                 <button class="btn btn-g" style="width:auto;padding:8px 12px;font-size:12px;flex-shrink:0"
                     onclick="toggleMerchantDisplay()">💻
-                    Merchant Display</button>
+                    Customer display</button>
+            </div>
+            <div style="margin:0 0 10px 0;display:flex;justify-content:flex-start">
+                <button class="btn btn-w" style="width:auto;padding:8px 12px;font-size:12px"
+                    onclick="goInvoiceStepOne()">← Back to step 1</button>
             </div>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
@@ -5900,8 +6081,9 @@
                 <div class="cb">
                     <label class="flabel">Amount</label>
                     <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:12px">
-                        <input class="finput" type="number" placeholder="0.00" style="margin-bottom:0">
-                        <select class="fsel" style="width:96px;margin-bottom:0">
+                        <input class="finput" id="invAmt" type="number" placeholder="0.00" style="margin-bottom:0"
+                            oninput="updateInvoice()">
+                        <select class="fsel" id="invCcy" style="width:96px;margin-bottom:0" onchange="updateInvoice()">
                             <option>USDw</option>
                             <option>EURw</option>
                             <option>GBPw</option>
@@ -5910,7 +6092,6 @@
                             <option>CNYw</option>
                         </select>
                     </div>
-                </div>
                 <label class="flabel">Note / Item description</label>
                 <input class="finput" placeholder="e.g. Coffee + pastry" style="margin-bottom:12px" id="invNote"
                     oninput="updateInvoice()">
@@ -5923,7 +6104,48 @@
                     </button>
                 </div>
                 <div class="xs mu" style="margin-bottom:4px">Payer can add optional tip to this address</div>
+                <label class="flabel">Invoice reference</label>
+                <input class="finput" id="invRef" placeholder="e.g. INV-2026-0042" style="margin-bottom:12px"
+                    oninput="updateInvoice()">
+                <div class="fbet" style="gap:8px;align-items:center;margin-bottom:8px">
+                    <button type="button" class="btn btn-w btn-g" style="flex:1" onclick="recordMerchantSale()">Record settled sale</button>
+                </div>
+                <div class="xs mu" style="margin-bottom:0">Customer display opens a full-screen QR view for cashier-facing checkout.</div>
+                </div>
             </div>
+            </div>
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
+                    <div class="stitle">Checkout recognition</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Recognize this customer: merchant-only, multi-step validation after real checkout interaction.')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:16px">
+                    <div id="invRecognitionGate" class="xs mu" style="margin-bottom:10px;color:var(--m)">
+                        Recognition unlocks after a settled sale and a short delay.
+                    </div>
+                    <div id="invRecognitionCountdown" class="xs mu" style="margin-bottom:10px;color:var(--am);display:none"></div>
+                    <div id="invRecognitionForm" style="display:none">
+                    <label class="flabel">Participant user name (required)</label>
+                    <input class="finput" id="invParticipantUsername" placeholder="e.g. alice_berlin" style="margin-bottom:10px">
+                    <label class="flabel">Participant wallet / user id (optional)</label>
+                    <input class="finput" id="invParticipantId" placeholder="e.g. Mxabc..." style="margin-bottom:10px">
+                    <label class="flabel">Settlement reference (optional: tx hash, POS ticket, or payment terminal ref)</label>
+                    <input class="finput" id="invSettlementRef" placeholder="e.g. 0xabc..., POS-4472, TICKET-18" style="margin-bottom:10px">
+                    <label style="display:flex;align-items:flex-start;gap:8px;margin-bottom:12px">
+                        <input type="checkbox" id="invInteractionConfirm" style="margin-top:3px">
+                        <span class="xs mu" style="line-height:1.5">I confirm this validation is based on a real checkout interaction. One merchant can validate one participant once.</span>
+                    </label>
+                    <div id="invValidationCheck" class="xs mu" style="margin-bottom:10px;color:var(--m)">Step 1: complete invoice fields and participant id, then run checks.</div>
+                    <button type="button" class="btn btn-w btn-g" style="width:100%;margin-bottom:10px" onclick="prepareCheckoutValidation()">Run checks</button>
+                    <label class="flabel">Final confirmation code</label>
+                    <input class="finput" id="invValidationCode" placeholder="Type VALIDATE to confirm" style="margin-bottom:10px">
+                    <button type="button" class="btn btn-w btn-g" style="width:100%" onclick="submitCheckoutValidation()">Recognize this customer</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -6001,11 +6223,11 @@
                         <div class="ddesc">Merchant onboarding, earn 8 Big Mac®</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
-                <div class="ditem" onclick="navigate('my-shop');closeMoreNow()">
+                <div class="ditem" id="drawerMyShopItem" onclick="openMyShopFromDrawer()">
                     <div class="dic" aria-hidden="true">&#x1F3EA;</div>
                     <div class="dinfo">
-                        <div class="dname">Merchants</div>
-                        <div class="ddesc">List your business · Invoice · Webshop kit (preview)</div>
+                        <div class="dname">My shop</div>
+                        <div class="ddesc" id="drawerMyShopDesc">Invoices · dashboard · campaigns (preview)</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
                 <div class="ditem" onclick="navigate('exchange');closeMoreNow()">
@@ -6211,7 +6433,7 @@
                 <button class="tab-btn" style="flex:1" onclick="switchSendReceive('sendModal')">Send</button>
                 <button class="tab-btn active" style="flex:1">Receive</button>
             </div>
-            <div class="msub">Funds arrive instantly, from anywhere</div>
+            <div class="msub">Personal receive request (simple address + amount)</div>
             <div style="display:grid;grid-template-columns:1fr auto;gap:8px;margin-bottom:10px">
                 <input class="finput" type="number" id="reqAmt" placeholder="Amount (optional)" inputmode="decimal"
                     style="min-width:0" oninput="updateRecvFavEq()">
@@ -6247,7 +6469,7 @@
                 </div>
             </details>
             <button class="btn btn-w btn-g" style="margin-bottom:8px"
-                onclick="closeModal('recvModal');navigate('invoice')">Create a Merchant Invoice
+                onclick="closeModal('recvModal');navigate('invoice')">Open merchant checkout (invoice)
                 →</button>
         </div>
     </div>
@@ -6531,6 +6753,22 @@
         </div>
     </div>
 
+    <!-- Feedback: success after POST /api/feedback (opened from feedback.js) -->
+    <div class="mback centered" id="feedbackSuccessModal" style="z-index:628" aria-modal="true" role="dialog"
+        aria-labelledby="feedbackSuccessModalTitle"
+        onclick="if(event.target===this)closeModal('feedbackSuccessModal')">
+        <div class="modal welcome" onclick="event.stopPropagation()"
+            style="max-width:420px;border:1px solid rgba(52,211,153,0.45);box-shadow:0 0 0 1px rgba(52,211,153,0.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(52,211,153,0.12),rgba(11,15,20,.94));padding:20px 18px 22px">
+            <div id="feedbackSuccessModalTitle"
+                style="font-size:13px;font-weight:900;color:#34d399;margin-bottom:10px;text-align:center">Added to the
+                public ledger</div>
+            <p class="xs mu" id="feedbackSuccessModalBody"
+                style="margin:0 0 18px;line-height:1.55;font-weight:800;color:var(--t);text-align:center"></p>
+            <button type="button" class="btn btn-w btn-lg" style="width:100%"
+                onclick="closeModal('feedbackSuccessModal')">OK</button>
+        </div>
+    </div>
+
     <!-- CONTACT PICKER OVERLAY -->
     <div id="contactPickerOverlay" onclick="if(event.target===this)closeContactPicker()">
         <div id="contactPickerSheet" onclick="event.stopPropagation()">
@@ -6725,7 +6963,254 @@
         const PAGES = ['wallet', 'invest', 'exchange', 'onoff-ramp', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback', 'help-links'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
-        let privacyMode = false; lede = false;
+        const MERCHANT_MODE_KEY = 'stables_user_role_merchant_v1';
+        const MERCHANT_SELF_ID_KEY = 'stables_merchant_self_id_v1';
+        const MERCHANT_SALES_KEY = 'stables_merchant_sales_v1';
+        const MERCHANT_PROMOTIONS_FILTER_KEY = 'stables_promotions_filter_v1';
+        const MERCHANT_CAMPAIGN_DRAFT_KEY = 'stables_merchant_campaign_draft_v1';
+        const MERCHANT_RECOG_DELAY_MS = 45000;
+        let merchantMode = localStorage.getItem(MERCHANT_MODE_KEY) === '1';
+        let privacyMode = false;
+        let lede = false;
+
+        function getMerchantSelfId() {
+            const current = String(localStorage.getItem(MERCHANT_SELF_ID_KEY) || '').trim();
+            if (current) return current;
+            const fallback = 'merchant-my-shop';
+            localStorage.setItem(MERCHANT_SELF_ID_KEY, fallback);
+            return fallback;
+        }
+        function readJsonArray(key) {
+            try {
+                const parsed = JSON.parse(localStorage.getItem(key) || '[]');
+                return Array.isArray(parsed) ? parsed : [];
+            } catch (_) {
+                return [];
+            }
+        }
+        function writeJsonArray(key, arr) {
+            localStorage.setItem(key, JSON.stringify(Array.isArray(arr) ? arr : []));
+        }
+        function getTrustValidationsKey() {
+            const cfgKey = window.StablesTrustRetro && window.StablesTrustRetro.keys && window.StablesTrustRetro.keys.validations;
+            return cfgKey || (window.STABLES_CONFIG && window.STABLES_CONFIG.TRUST_VALIDATIONS_KEY) || 'stables_trust_validations_v1';
+        }
+        function getMerchantSales() {
+            return readJsonArray(MERCHANT_SALES_KEY);
+        }
+        function applyMerchantRoleUI() {
+            const tog = document.getElementById('merchantToggle');
+            if (tog) tog.classList.toggle('on', merchantMode);
+            const roleNotice = document.getElementById('myShopRoleNotice');
+            const myShopBody = document.getElementById('myShopMerchantBody');
+            if (roleNotice) roleNotice.style.display = merchantMode ? 'none' : 'block';
+            if (myShopBody) {
+                myShopBody.style.opacity = merchantMode ? '1' : '.45';
+                myShopBody.style.pointerEvents = merchantMode ? 'auto' : 'none';
+                myShopBody.style.filter = merchantMode ? 'none' : 'grayscale(0.35)';
+            }
+            const drawerItem = document.getElementById('drawerMyShopItem');
+            if (drawerItem) {
+                drawerItem.style.opacity = merchantMode ? '1' : '.6';
+                drawerItem.style.cursor = merchantMode ? 'pointer' : 'not-allowed';
+            }
+            const drawerDesc = document.getElementById('drawerMyShopDesc');
+            if (drawerDesc) {
+                drawerDesc.textContent = merchantMode
+                    ? 'Invoices · dashboard · campaigns (preview)'
+                    : 'Settings → Appearance: turn Merchant on for My shop';
+            }
+        }
+        function setMerchantPromotionsFilter(mode) {
+            localStorage.setItem(MERCHANT_PROMOTIONS_FILTER_KEY, mode);
+            applyMerchantPromotionsFilter();
+        }
+        function applyMerchantPromotionsFilter() {
+            const mode = localStorage.getItem(MERCHANT_PROMOTIONS_FILTER_KEY) || 'all';
+            const list = document.getElementById('merchantPromotionsList');
+            const note = document.getElementById('merchantPromotionsHiddenNote');
+            const bAll = document.getElementById('promoFilterAll');
+            const bMy = document.getElementById('promoFilterMy');
+            const bHide = document.getElementById('promoFilterHide');
+            [bAll, bMy, bHide].forEach((b) => {
+                if (b) b.classList.remove('on');
+            });
+            if (mode === 'all' && bAll) bAll.classList.add('on');
+            if (mode === 'my' && bMy) bMy.classList.add('on');
+            if (mode === 'hide' && bHide) bHide.classList.add('on');
+            if (!list) return;
+            const badge = document.getElementById('promotionsAdCountBadge');
+            const totalRunning = list.querySelectorAll('.merchant-promo-card').length;
+            if (badge) {
+                badge.textContent = String(totalRunning);
+                badge.title = `${totalRunning} ad${totalRunning !== 1 ? 's' : ''} running (total in feed)`;
+                badge.setAttribute('aria-label', `${totalRunning} ads running`);
+            }
+            if (mode === 'hide') {
+                list.style.display = 'none';
+                if (note) note.style.display = 'block';
+            } else {
+                list.style.display = 'grid';
+                if (note) note.style.display = 'none';
+                list.querySelectorAll('.merchant-promo-card').forEach((card) => {
+                    const isMy = card.getAttribute('data-promo-my') === '1';
+                    const hideCard = mode === 'my' && !isMy;
+                    card.style.display = hideCard ? 'none' : '';
+                });
+            }
+        }
+        function loadMerchantCampaignDraft() {
+            try {
+                const raw = localStorage.getItem(MERCHANT_CAMPAIGN_DRAFT_KEY);
+                if (!raw) return;
+                const d = JSON.parse(raw);
+                const t = document.getElementById('merchantCampaignTitle');
+                const b = document.getElementById('merchantCampaignBody');
+                const l = document.getElementById('merchantCampaignLink');
+                if (t && d.title) t.value = d.title;
+                if (b && d.body) b.value = d.body;
+                if (l && d.link) l.value = d.link;
+            } catch (_) { /* ignore */ }
+        }
+        function submitMerchantAdCampaignDraft() {
+            if (!merchantMode) {
+                showToast('Turn Merchant on in Settings → Appearance first to use My shop.');
+                return;
+            }
+            const titleEl = document.getElementById('merchantCampaignTitle');
+            const bodyEl = document.getElementById('merchantCampaignBody');
+            const linkEl = document.getElementById('merchantCampaignLink');
+            const title = String(titleEl?.value || '').trim();
+            const body = String(bodyEl?.value || '').trim();
+            const link = String(linkEl?.value || '').trim();
+            if (!title && !body) {
+                showToast('Add a title or message for your campaign draft.');
+                return;
+            }
+            localStorage.setItem(MERCHANT_CAMPAIGN_DRAFT_KEY, JSON.stringify({
+                title,
+                body,
+                link,
+                updated_at: new Date().toISOString(),
+                merchant_id: getMerchantSelfId()
+            }));
+            showToast('Campaign draft saved locally (preview).');
+        }
+        function renderMyShopDashboard() {
+            const stats = document.getElementById('myShopStats');
+            const salesList = document.getElementById('myShopSalesList');
+            const participantList = document.getElementById('myShopParticipantsList');
+            const searchInput = document.getElementById('myShopParticipantSearch');
+            const searchResult = document.getElementById('myShopParticipantSearchResult');
+            if (!stats || !salesList || !participantList) return;
+            const merchantId = getMerchantSelfId();
+            const sales = getMerchantSales().filter(s => s && s.merchant_id === merchantId);
+            const validations = readJsonArray(getTrustValidationsKey()).filter(v => v && v.merchant_id === merchantId && v.status !== 'revoked');
+            const uniqueUsers = new Set(validations.map(v => String(v.user_id || '').trim()).filter(Boolean));
+            const totalSalesAmount = sales.reduce((sum, s) => sum + (Number(s.amount || 0) || 0), 0);
+            stats.textContent = `${sales.length} sale(s) recorded · ${uniqueUsers.size} validated participant(s) · ${totalSalesAmount.toFixed(2)} total amount`;
+            const searchName = String(searchInput?.value || '').trim().toLowerCase();
+            const salesForSearch = searchName
+                ? sales.filter(s => String(s.participant_username || '').trim().toLowerCase() === searchName)
+                : [];
+            if (searchResult) {
+                searchResult.textContent = searchName
+                    ? `${salesForSearch.length} transaction(s) found for "${searchName}" in this merchant history only.`
+                    : 'Search only runs on this merchant\'s own history.';
+            }
+            salesList.innerHTML = sales.length
+                ? sales.slice(-8).reverse().map(s => {
+                    const amount = Number(s.amount || 0).toFixed(2);
+                    const ccy = String(s.currency || 'USDw');
+                    const ref = String(s.invoice_ref || '-');
+                    const note = String(s.note || '-');
+                    const uname = String(s.participant_username || '-');
+                    const at = String(s.created_at || '').replace('T', ' ').slice(0, 16);
+                    return `<div style="margin-bottom:6px">${amount} ${ccy} · ${ref} · @${uname} · ${note} <span style="opacity:.8">(${at})</span></div>`;
+                }).join('')
+                : 'No sales yet.';
+            participantList.innerHTML = validations.length
+                ? validations.slice(-8).reverse().map(v => {
+                    const user = String(v.user_id || '-');
+                    const ref = String(v.tx_ref || '-');
+                    const at = String(v.created_at || '').replace('T', ' ').slice(0, 16);
+                    return `<div style="margin-bottom:6px">${user} · ${ref} <span style="opacity:.8">(${at})</span></div>`;
+                }).join('')
+                : 'No validations yet.';
+            if (searchName) {
+                participantList.innerHTML += salesForSearch.length
+                    ? `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(103,232,249,.14)">` +
+                        salesForSearch.slice(-8).reverse().map(s => {
+                            const amount = Number(s.amount || 0).toFixed(2);
+                            const ccy = String(s.currency || 'USDw');
+                            const ref = String(s.invoice_ref || '-');
+                            const at = String(s.created_at || '').replace('T', ' ').slice(0, 16);
+                            return `<div style="margin-bottom:6px">@${searchName} · ${amount} ${ccy} · ${ref} <span style="opacity:.8">(${at})</span></div>`;
+                        }).join('') +
+                      `</div>`
+                    : `<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(103,232,249,.14)">No transactions found for @${searchName}.</div>`;
+            }
+        }
+        function refreshInvoiceRecognitionAvailability() {
+            const gate = document.getElementById('invRecognitionGate');
+            const countdown = document.getElementById('invRecognitionCountdown');
+            const form = document.getElementById('invRecognitionForm');
+            if (!gate || !countdown || !form) return;
+            if (!merchantMode) {
+                gate.textContent = 'Recognition is available when Merchant is on (My shop).';
+                countdown.style.display = 'none';
+                form.style.display = 'none';
+                return;
+            }
+            const merchantId = getMerchantSelfId();
+            const sales = getMerchantSales().filter(s => s && s.merchant_id === merchantId);
+            if (!sales.length) {
+                gate.textContent = 'Recognition unlocks after a settled sale and a short delay.';
+                countdown.style.display = 'none';
+                form.style.display = 'none';
+                return;
+            }
+            const lastTs = Math.max(...sales.map(s => Date.parse(s.created_at || '')));
+            if (!Number.isFinite(lastTs)) {
+                gate.textContent = 'Recognition unlocks after a settled sale and a short delay.';
+                countdown.style.display = 'none';
+                form.style.display = 'none';
+                return;
+            }
+            const elapsed = Date.now() - lastTs;
+            const remaining = MERCHANT_RECOG_DELAY_MS - elapsed;
+            if (remaining > 0) {
+                gate.textContent = 'Recognition is delayed to make validation thoughtful after settlement.';
+                countdown.style.display = 'block';
+                countdown.textContent = `Available in ${Math.ceil(remaining / 1000)}s`;
+                form.style.display = 'none';
+                return;
+            }
+            gate.textContent = 'Recognition unlocked for your latest settled sale.';
+            countdown.style.display = 'none';
+            form.style.display = 'block';
+        }
+        function goInvoiceStepOne() {
+            const fieldsToClear = [
+                'invParticipantUsername',
+                'invParticipantId',
+                'invSettlementRef',
+                'invValidationCode'
+            ];
+            fieldsToClear.forEach(function (id) {
+                const el = document.getElementById(id);
+                if (el) el.value = '';
+            });
+            const confirm = document.getElementById('invInteractionConfirm');
+            if (confirm) confirm.checked = false;
+            const checkEl = document.getElementById('invValidationCheck');
+            if (checkEl) checkEl.textContent = 'Step 1: complete invoice fields and participant user name, then run checks.';
+            const scroller = document.querySelector('.scroll-area');
+            if (scroller) scroller.scrollTop = 0;
+            else window.scrollTo(0, 0);
+            const amountInput = document.getElementById('invAmt');
+            if (amountInput && typeof amountInput.focus === 'function') amountInput.focus();
+        }
 
         function syncAppUpdatesSection() {
             const url = window.STABLES_CONFIG && window.STABLES_CONFIG.MDS_ZIP_URL;
@@ -6783,6 +7268,17 @@
         }
 
         function navigate(p) {
+            if (p === 'my-shop') {
+                applyMerchantRoleUI();
+                loadMerchantCampaignDraft();
+                renderMyShopDashboard();
+            }
+            if (p === 'spend') {
+                applyMerchantPromotionsFilter();
+            }
+            if (p === 'invoice') {
+                refreshInvoiceRecognitionAvailability();
+            }
             const prevPage = curPage;
             PAGES.forEach(id => { const el = document.getElementById('page-' + id); if (el) el.classList.remove('active'); });
             const pg = document.getElementById('page-' + p);
@@ -6836,6 +7332,15 @@
             }
             refreshAgentContextIfOpen();
             window.scrollTo(0, 0);
+        }
+        function openMyShopFromDrawer() {
+            if (!merchantMode) {
+                showToast('Open Settings → Appearance & behaviour and turn Merchant on to use My shop.');
+                closeMoreNow();
+                return;
+            }
+            navigate('my-shop');
+            closeMoreNow();
         }
 
         // ----- STABLESAGENT (page-aware, persistent session) -----
@@ -7061,17 +7566,19 @@
 
         function openAmbassadorTopicsModal() {
             const raw = window.STABLES_CONFIG && window.STABLES_CONFIG.AMBASSADOR_TOPICS_TELEGRAM_URL;
-            const url = String(raw || '').trim();
+            const url = String(raw || 'https://t.me/stablescommunity/358').trim();
+            const specUrl = 'https://stablescouncil.org/ambassadorsprogramdesc.html';
             const joinBtn = url
-                ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="btn btn-w btn-g" style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box">Join the discussion</a>`
-                : `<button class="btn btn-w" style="width:100%" onclick="showToast('Ambassadors Telegram link not set yet')">Join the discussion</button>`;
+                ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="btn btn-w btn-g" style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box">Open Ambassador topic on Telegram</a>`
+                : `<button class="btn btn-w" style="width:100%" onclick="showToast('Ambassadors Telegram link not set yet')">Open Ambassador topic on Telegram</button>`;
             document.getElementById('agentActionTitle').textContent = 'Become an ambassador';
             const titleRight = document.getElementById('agentActionTitleRight');
             if (titleRight) titleRight.innerHTML = '';
             document.getElementById('agentActionContent').innerHTML = `
                 <p class="sec-body" style="margin:0 0 12px;line-height:1.55">
-                    For now, the Ambassadors framework will be discussed with the community in this channel in order to reach a common agreement on the objectives and terms of this program.
+                    Read the <strong style="color:var(--t)">Ambassador Program Specification</strong> on the Council site, then join the dedicated Telegram thread for feedback and hub coordination (same document references this topic).
                 </p>
+                <a href="${specUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-w" style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box;margin-bottom:10px">Open full specification</a>
                 ${joinBtn}
             `;
             document.getElementById('agentActionModal').classList.add('open');
@@ -11118,6 +11625,78 @@
             if (da) da.textContent = amt ? amt + ' ' + ccy : '';
             if (dn) dn.textContent = note || (amt ? 'Scan to pay' : 'Enter an amount to generate QR');
         }
+        function recordMerchantSale() {
+            if (!merchantMode) return showToast('Turn Merchant on in Settings → Appearance to use My shop.');
+            const amount = Number(document.getElementById('invAmt')?.value || 0);
+            const currency = String(document.getElementById('invCcy')?.value || 'USDw').trim();
+            const note = String(document.getElementById('invNote')?.value || '').trim();
+            const invoiceRef = String(document.getElementById('invRef')?.value || '').trim();
+            const participantUsername = String(document.getElementById('invParticipantUsername')?.value || '').trim();
+            if (!Number.isFinite(amount) || amount <= 0) return showToast('Enter a valid invoice amount');
+            if (!invoiceRef) return showToast('Invoice reference is required to record a sale');
+            if (!participantUsername) return showToast('Participant user name is required');
+            const sales = getMerchantSales();
+            sales.push({
+                sale_id: `SALE-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+                merchant_id: getMerchantSelfId(),
+                amount,
+                currency,
+                note,
+                participant_username: participantUsername,
+                invoice_ref: invoiceRef,
+                created_at: new Date().toISOString(),
+            });
+            writeJsonArray(MERCHANT_SALES_KEY, sales);
+            renderMyShopDashboard();
+            refreshInvoiceRecognitionAvailability();
+            showToast('Sale recorded');
+        }
+        function prepareCheckoutValidation() {
+            const checkEl = document.getElementById('invValidationCheck');
+            if (!checkEl) return;
+            const participantUsername = String(document.getElementById('invParticipantUsername')?.value || '').trim();
+            const invoiceRef = String(document.getElementById('invRef')?.value || '').trim();
+            const amount = Number(document.getElementById('invAmt')?.value || 0);
+            const confirm = !!document.getElementById('invInteractionConfirm')?.checked;
+            if (!merchantMode) return void (checkEl.textContent = 'Turn Merchant on in Settings for My shop first.');
+            if (!confirm) return void (checkEl.textContent = 'Step failed: confirm real interaction first.');
+            if (!participantUsername || !invoiceRef || !(amount > 0)) return void (checkEl.textContent = 'Step failed: participant user name, invoice reference, and amount are required.');
+            const merchantId = getMerchantSelfId();
+            const validations = readJsonArray(getTrustValidationsKey());
+            const duplicate = validations.some(v => v && v.merchant_id === merchantId && v.user_id === participantUsername && v.status !== 'revoked');
+            const today = new Date().toISOString().slice(0, 10);
+            const issuedToday = validations.filter(v => v && v.merchant_id === merchantId && String(v.created_at || '').slice(0, 10) === today).length;
+            checkEl.textContent = duplicate
+                ? `Duplicate warning: this participant is already validated by this merchant. Issued today: ${issuedToday}.`
+                : `Checks passed: no duplicate found. Issued today: ${issuedToday}. Type VALIDATE to finalize.`;
+        }
+        function submitCheckoutValidation() {
+            if (!merchantMode) return showToast('Turn Merchant on in Settings → Appearance to use My shop.');
+            const participantUsername = String(document.getElementById('invParticipantUsername')?.value || '').trim();
+            const participantId = String(document.getElementById('invParticipantId')?.value || '').trim();
+            const settlementRef = String(document.getElementById('invSettlementRef')?.value || '').trim();
+            const confirm = !!document.getElementById('invInteractionConfirm')?.checked;
+            const code = String(document.getElementById('invValidationCode')?.value || '').trim();
+            if (!confirm) return showToast('Confirm real checkout interaction first');
+            if (!participantUsername) return showToast('Participant user name is required');
+            if (code !== 'VALIDATE') return showToast('Type VALIDATE to confirm');
+            if (!window.StablesTrustRetro || typeof window.StablesTrustRetro.issueMerchantValidation !== 'function') {
+                return showToast('Validation service unavailable in this build');
+            }
+            const res = window.StablesTrustRetro.issueMerchantValidation({
+                merchant_id: getMerchantSelfId(),
+                user_id: participantUsername,
+                tx_ref: settlementRef || participantId || String(document.getElementById('invRef')?.value || '').trim() || null,
+            });
+            const checkEl = document.getElementById('invValidationCheck');
+            if (!res || !res.ok) {
+                if (checkEl) checkEl.textContent = `Validation blocked: ${res && res.error ? res.error : 'Unknown error'}`;
+                return showToast((res && res.error) ? res.error : 'Validation failed');
+            }
+            if (checkEl) checkEl.textContent = 'Validation issued successfully.';
+            renderMyShopDashboard();
+            showToast('Participant recognized');
+        }
         function toggleMerchantDisplay() {
             const amt = document.getElementById('invAmt').value;
             const ccy = document.getElementById('invCcy').value;
@@ -11139,9 +11718,13 @@
         }
         function toggleMerchant() {
             merchantMode = !merchantMode;
+            localStorage.setItem(MERCHANT_MODE_KEY, merchantMode ? '1' : '0');
             const tog = document.getElementById('merchantToggle');
             if (tog) tog.classList.toggle('on', merchantMode);
-            showToast(merchantMode ? 'Merchant Mode ON' : 'Merchant Mode off');
+            showToast(merchantMode ? 'Merchant on — My shop unlocked in More' : 'Merchant off — My shop locked in More');
+            applyMerchantRoleUI();
+            renderMyShopDashboard();
+            refreshInvoiceRecognitionAvailability();
         }
         function openSeedPhrase() {
             openModal('seedSecurityAppModal');
@@ -11515,6 +12098,11 @@
         });
         // Initialize dynamic variables on load
         runBootStep('updateGlobalUI:initial', updateGlobalUI);
+        runBootStep('merchant:apply-role-ui', applyMerchantRoleUI);
+        runBootStep('merchant:promotions-filter', applyMerchantPromotionsFilter);
+        runBootStep('merchant:render-dashboard', renderMyShopDashboard);
+        runBootStep('merchant:invoice-recognition-gate', refreshInvoiceRecognitionAvailability);
+        setInterval(refreshInvoiceRecognitionAvailability, 1000);
         runBootStep('updateTreasuryUI', () => updateTreasuryUI(0));
         runBootStep('updateBudgetDraft', updateBudgetDraft);
         runBootStep('initCcyReorder', initCcyReorder);

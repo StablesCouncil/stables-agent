@@ -428,12 +428,11 @@
   };
 
   window.openMerchantValidationComposer = function (shopName) {
-    const shop = SHOP_PROFILES[shopName];
-    if (!shop) return;
-    pendingMerchantValidationShop = shopName;
+    const shopNameSafe = normalizeId(shopName) || 'My merchant';
+    pendingMerchantValidationShop = shopNameSafe;
     const suggestedUser = normalizeId(selectedContactName && CONTACTS_BOOK.has(selectedContactName) ? CONTACTS_BOOK.get(selectedContactName).address : '');
     const body = `<div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);margin-bottom:10px">
-      <div style="font-size:13px;font-weight:900;color:var(--t)">Validate participant from ${escUi(shopName)}</div>
+      <div style="font-size:13px;font-weight:900;color:var(--t)">Validate participant from ${escUi(shopNameSafe)}</div>
       <div class="xs mu" style="margin-top:6px">Pseudonymous trust anchor (phase 1): one validation per merchant + user pair.</div>
     </div>
     <label class="flabel" style="margin-bottom:6px">Merchant id</label>
@@ -474,7 +473,11 @@
     if (typeof window.showToast === 'function') {
       window.showToast(`Validation issued. Trust score now ${profile.trust_score_v1}`);
     }
-    window.openShopProfile(pendingMerchantValidationShop);
+    if (SHOP_PROFILES[pendingMerchantValidationShop]) {
+      window.openShopProfile(pendingMerchantValidationShop);
+    } else if (typeof window.closeAgentActionModal === 'function') {
+      window.closeAgentActionModal();
+    }
   };
 
   window.setActivityFilter = function (f) {
@@ -1002,7 +1005,6 @@
         <div class="xs mu" style="margin-bottom:10px">Local demo only. Soft-hidden items use the <strong>Hidden</strong> filter; deleted items stay removed until you reset local data.</div>
         <div class="flex gap8" style="flex-wrap:wrap;justify-content:center">
           <button class="btn btn-w btn-g" onclick="openMerchantRatingComposer(${sn})">Rate merchant</button>
-          <button class="btn btn-w btn-g" onclick="openMerchantValidationComposer(${sn})">Validate participant</button>
           <button class="btn" onclick="shopHideAllTransactions(${sn})">Hide all transactions</button>
           <button class="btn" onclick="shopDeleteAllTransactions(${sn})">Delete all (local)</button>
           ${shopHidden
