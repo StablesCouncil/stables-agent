@@ -31,6 +31,7 @@
 - [Article III — Structural Layers and Modularity](stables_charter.md#article-iii--structural-layers-and-modularity)  
   - [III.3 Execution, Settlement, and Value Transfer Model](stables_charter.md#iii3-execution-settlement-and-value-transfer-model)  
 - [Article IV — Merchant Activation Doctrine (Growth Architecture)](stables_charter.md#article-iv--merchant-activation-doctrine-growth-architecture)  
+  - [IV.6 Merchant-First Distribution and Credit Loop](stables_charter.md#iv6-merchant-first-distribution-and-credit-loop)  
 - [Article V — Oracle Framework](stables_charter.md#article-v--oracle-framework)  
 - [Article VI — Transparency Doctrine](stables_charter.md#article-vi--transparency-doctrine)  
 - [Article VII — Governance Evolution (Code-First Structural Limitation)](stables_charter.md#article-vii--governance-evolution-code-first-structural-limitation)  
@@ -206,6 +207,7 @@ Full financial sovereignty is achieved through:
 - **On-chain credit primitives** — credit scoring and history built from verifiable behaviour
 - **Lending infrastructure** — personal and commercial lending governed by smart contracts
 - **Circulation-first payment instruments** — the payment layer shall allow not only stable monetary units but also eligible resilience-layer claims (e.g. Coverage Fund shares such as USDsy) to be used for payment, with clear pricing and conversion rules in the application, so resilience participation does not become locked outside everyday exchange
+- **Merchant working-capital credit pathways** — merchant credit and loan products, including zero-interest or near-zero-interest structures where economically sustainable, designed to help merchants service obligations in national systems while expanding Stables-native circulation
 - **Treasury-driven equity reinforcement** — protocol-level capital management
 - **Comprehensive on-chain banking functions** — evolving over time toward a complete financial life
 
@@ -485,6 +487,19 @@ Agents are not employees. They are economically aligned participants whose incen
 ### IV.5 Cluster Economics
 
 Economic relevance grows **endogenously** — from the ground up, cluster by cluster. A cluster is a geographic or community-based concentration of merchants and users transacting in Stables. Critical mass at the cluster level demonstrates viability before global scale is attempted.
+
+### IV.6 Merchant-First Distribution and Credit Loop
+
+Stables distribution begins with merchants. Merchants are the practical edge of the monetary network: they convert day-to-day payment behavior (cash, card, and credit spending) into Stables circulation through direct acceptance and settlement.
+
+In this model, merchants function as local distribution points for the Stables economy, while users gain immediate utility through freedom of movement, pseudonymous control, and direct settlement access. Merchant participation is reinforced by financing and retention effects:
+
+- lower transaction friction compared with legacy rails;
+- ability to build loyalty through recurring in-network spending;
+- ability, where implemented, to pass cost savings to users (including discounts);
+- access to merchant credit pathways that can be serviced through future consumption and circulation.
+
+The merchant-credit loop is designed as a circulation engine: credit extended to merchant activity is repaid through real economic turnover rather than speculative extraction. Conceptually, this behaves like a non-expiring value claim backed by future exchange capacity, while remaining governed by deterministic settlement and transparent accounting.
 
 ---
 

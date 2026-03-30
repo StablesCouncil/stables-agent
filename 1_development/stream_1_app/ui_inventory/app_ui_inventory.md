@@ -1,6 +1,6 @@
 # Stables MiniDapp — UI inventory
 **Status**: MANDATORY reference when adding/removing screens or sections.  
-**Source**: `1_development/stream_1_app/prod_stables_app_v0.2.11/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Active folder**: `0_handshake/minidapp_version.md`.  
+**Source**: `1_development/stream_1_app/prod_stables_app_v0.2.12/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Active folder**: `0_handshake/minidapp_version.md`.  
 **Companion**: `web_component_spec.md` (patterns), `handshake.md` (single executable + this map).
 
 ## How to use
@@ -383,7 +383,7 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-25 | Faucet / Winiwa: renamed menu card + page to **Get Winiwa** (removed testing banner/copy); Mint page now explains Winiwa->tokens conversion and links to **On/Off Ramp** for MINIMA acquisition; On/Off Ramp on-ramp now links to `faucet`. |
 | 2026-03-22 | Top bar: **Only in node** when no MDS (no simulated block); `.sync-pill--placeholder`. Treasury stress: Winiwa price stack **above** `%` row, then slider. |
 | 2026-03-22 | Treasury stress: Winiwa **6 dp** (`fmtWiniwaUSD6`); USD tick row above track; **%** tick row (`.treasury-slider-pct-row`) below track; thumb `#treasurySliderThumbPrice` above axis / `#treasurySliderThumbPct` below; removed `#protocolSliderPct`; `calcSlider` falls back to `#protocolSlider`. |
-| 2026-03-23 | **Source path** → `prod_stables_app_v0.2.11/` (see `minidapp_version.md`). |
+| 2026-03-30 | **Source path** → `prod_stables_app_v0.2.12/` (see `minidapp_version.md`). |
 | 2026-03-23 | Currency defaults: `CNYw` is **on** by default in **Settings → Currencies to Display** and **Welcome → Preferred currencies**. |
 | 2026-03-23 | CNY presentation copy/icon: `Renminbi Yuan`; primary card emoji in `CCY_META` uses `🐼` for parity with themed currency icons (🍁, 🦘, 🧀, etc.). |
 | 2026-03-23 | Primary-currency default: `EURw` is now first/default (wallet initial shell + `BASE_CCY='EURw'`; welcome fallback prefers `EURw` when available). |
@@ -392,3 +392,4 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-25 | New `page-onoff-ramp` under **Shops & Exchange** in More; lists 3 exchanges (MEXC, LBank, XT.COM) and explicit on-ramp/off-ramp flows between fiat and Stables. |
 | 2026-03-29 | More drawer **Preferences → Security** `ddesc`: Vault key: the only access to your bank (was Vault key only: access to your bank). |
 | 2026-03-29 | **Feedback**: structured public JSON form (first section) + Telegram; `FEEDBACK_PUBLIC_DB_URL` in `runtime-config.js`; schema `assets/data/feedback_submission.v1.schema.json`. |
+| 2026-03-30 | Phase 1 scaffold for pseudonymous validation/trust/retro added (non-UI): `assets/routes/trust-retro.js` + runtime config keys (`TRUST_*`, `RETRO_*`, `ABUSE_*`), script loaded in `index.html`. |
