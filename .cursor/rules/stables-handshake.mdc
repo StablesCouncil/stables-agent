@@ -5,17 +5,22 @@ alwaysApply: true
 
 # Stables Mandatory Handshake
 
-At the start of **every session**, before any work, read these two files in order:
+At the start of **every session**, before any work, read these in order:
 
-1. `0_handshake/README.md` — orientation and calibration order
-2. `0_handshake/session_map.md` — full file map and task→file matrix
+1. `0_handshake/README.md` — orientation and calibration order  
+2. `0_handshake/session_map.md` — full file map and task→file matrix  
+3. `0_handshake/global_knowledge_base.md` — handshake KB index (layers, tie-breakers, what to open next)  
+4. **`2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt` — entire file** — **StablesAgent parity**: same consolidated public knowledge as the in-app / Telegram agent corpus (and as ChatGPT-style “paste one URL”). Rebuild with `node build_llms_txt.js` in that folder if the brain `.md` files changed and the rollup is stale.
 
-Then follow the calibration steps in `0_handshake/handshake.md`.
+Then follow the calibration steps in `0_handshake/handshake.md` (including **Step 0b** when the task touches protocol economics or how Stables works in copy).
 
 **MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first so you edit the **active** `prod_stables_app_*` folder (currently **v0.2.11**).
 
+**Protocol economics / mint / burn / xMinima / fees / treasury / protocol comms:** run **handshake Step 0b** before answering: read `0_handshake/protocol_mechanics_spec.md` then `stables_master_reference.md` §14. If any text conflicts, **`protocol_mechanics_spec.md` wins**; note the conflict for review.
+
 Confirm calibration by stating:
-> "Calibration Active: Working on the basis of the Unified Handshake."
+> "Calibration Active: Working on the basis of the Unified Handshake."  
+> Add if Step 0c was read this session: *"StablesAgent KB loaded (prod `llms.txt`)."*
 
 **Never start work without this confirmation.**
 

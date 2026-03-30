@@ -251,7 +251,7 @@ When any branding asset is required, you must perform an **On-Demand Extraction*
 
 ## 14. CORE PROTOCOL MECHANICS (LOCKED)
 > [!IMPORTANT]
-> **DO NOT RE-DISCUSS** these decisions unless the user explicitly requests a change. They are settled. Full specification: `2_current/docs/protocol_mechanics_spec.md`
+> **DO NOT RE-DISCUSS** these decisions unless the user explicitly requests a change. They are settled. Full specification: **`0_handshake/protocol_mechanics_spec.md`** (authoritative for agents). Promoted copy: `2_current/stream_3_governance/prod_protocol_specs/protocol_mechanics_spec.md`.
 
 ### Balance Sheet Structure
 
@@ -313,30 +313,35 @@ All mint/burn operations settle at blockchain confirmation speed.
 
 ### The Balance Sheet Identity
 
+**Must match the table and equation in §14 above.** Do not simplify away **cf tokens** or mis-route **fees**.
+
 | Layer | Role | Instrument |
 | :--- | :--- | :--- |
 | **Assets** | Collateral held by the protocol | **Minima** |
-| **Liabilities** | Money issued to users (the protocol owes value) | **Stablecoins** (USDs, EURs, CADs…) |
-| **Equity** | Ownership stake in the protocol | **xMinima** |
+| **Senior liabilities** | Value the protocol owes users as redeemable coins | **Stablecoins** (USDs, EURs, CADs…) |
+| **Convertible / junior liabilities** | Coverage Fund; fee accrual; first-loss / conversion risk | **cf tokens** |
+| **Equity** | Leveraged ownership in surplus (not txn-fee yield) | **xMinima** |
 
-**The fundamental equation:**
-> **Minima (Assets) = Stablecoins (Liabilities) + xMinima (Equity)**
+**The fundamental equation (full, locked):**
+> **Minima (Assets) = Stablecoins + cf tokens + xMinima**
 
 ### What This Means in Practice
-- **Minting stablecoins** = Creating a liability, backed by Minima collateral
-- **Protocol revenue** (transaction fees, merchant treasury) = Accrues to xMinima holders (equity layer)
-- **Coverage Ratio** = Health of the balance sheet (are assets sufficient to cover liabilities?)
-- **Surplus** (assets > liabilities) = Belongs to equity → xMinima appreciates
-- **Rebalance pool event** = An equity recapitalization event
-- **Lending system + hardware device** = The operating business generating revenue that feeds equity
+- **Minting stablecoins** = Creating **senior** liability, backed by Minima collateral (oracle-priced in the shipped demo).
+- **Transaction fees** (locked formula) → **Coverage Fund** → **cf token holders**. **xMinima does not receive transaction fees.**
+- **xMinima** = Leveraged **equity**; upside/downside from surplus and locked mechanics (e.g. formula pricing), **not** from routing user txn fees to xMinima.
+- **Coverage Ratio** = Health of the balance sheet (assets vs liabilities).
+- **Surplus** (when present) = reflected in **equity** valuation; do not conflate with “fee revenue to xMinima”.
+- **Merchant / Council treasury** = Governance and operations; **do not** fold into “all fees to xMinima”.
+- **Rebalance / stress paths** = See **`protocol_mechanics_spec.md`** (conversion, CR thresholds).
+- **Lending + hardware roadmap** = Future operating layers; they **do not** override the locked fee and cf/xMinima split above.
 
-### The Full System
+### The Full System (schematic — fee path corrected)
 ```
-Minima Node on Chip (Hardware Device)
-  └── Mints Stablecoins (Liabilities) ← backed by Minima (Assets)
-  └── Issues Loans (Personal + Commercial)
-  └── Generates Transaction Fees → Rebalance Pool → xMinima (Equity)
-  └── Merchant Listings → Council Treasury → Governance
+Minima node (MiniDapp on user node)
+  └── Mint / burn Stablecoins (senior liabilities) ← Minima collateral
+  └── Transaction fees → Coverage Fund → cf token holders
+  └── xMinima (equity) ← no txn-fee revenue per locked spec; value from equity / surplus mechanics
+  └── Merchants / listings → Council treasury → governance
 ```
 
 ---

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "submitted_at": "2026-03-29T20:00:00.000Z",
+  "source": { "app_build": "0.2.11", "client": "manual-test" },
+  "topic_domain": "open_text",
+  "topic_sub": null,
+  "app_context": { "page_id": null, "section_hint": null, "element_hint": null },
+  "kind": "comment",
+  "title": "Example",
+  "body": "Replace with real content; POST to http://127.0.0.1:8788/api/feedback",
+  "optional_minima_address": null,
+  "public_contact": null,
+  "consent_public_ledger": true,
+  "flags": { "low_priority_freeform": true }
+}

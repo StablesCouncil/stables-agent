@@ -4228,7 +4228,7 @@
                     <div style="padding:12px;border-radius:12px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)">
                         <div class="fbet" style="margin-bottom:8px">
                             <div style="font-weight:900;color:var(--t)">BitMart</div>
-                            <a href="https://www.bitmart.com/en-US/crypto/MINIMA" target="_blank" rel="noopener noreferrer" class="xs" style="color:var(--c);text-decoration:underline">MINIMA market</a>
+                            <a href="https://www.bitmart.com/en-US/trade/MINIMA_USDT?type=spot" target="_blank" rel="noopener noreferrer" class="xs" style="color:var(--c);text-decoration:underline">MINIMA market</a>
                         </div>
                         <div class="xs mu">Alternative venue for buying/selling MINIMA liquidity.</div>
                     </div>
@@ -4288,7 +4288,7 @@
             <div class="card app-section-card" style="padding:14px">
                 <div class="xs mu" style="margin-bottom:10px;line-height:1.5">Goal: exit from Stables to paper money in your bank/card ecosystem.</div>
                 <div style="display:grid;gap:8px">
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">1) Convert Stables balances to MINIMA</span><span style="font-weight:800;color:var(--t)">USDw → MINIMA</span></div>
+                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">1) Burn Stables balances to MINIMA</span><span style="font-weight:800;color:var(--t)">USDw → MINIMA</span></div>
                     <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">2) Sell MINIMA for USDT</span><span style="font-weight:800;color:var(--t)">Exchange OR Minima DEX → MxUSDT</span></div>
                     <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">3) Optional bridge</span><span style="font-weight:800;color:var(--t)">MxUSDT → USDT via <a href="https://mxusd.global/" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">mxusd.global</a></span></div>
                     <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">4) Withdraw paper money to bank/card</span><span style="font-weight:800;color:var(--t)">Off-ramp complete</span></div>
@@ -4782,28 +4782,67 @@
                 <div class="dic" aria-hidden="true">&#x1F4DD;</div>
                 <div class="app-page-header__text">
                     <div class="app-page-header__title">Feedback</div>
-                    <div class="app-page-header__sub">Reach the team on Telegram</div>
+                    <div class="app-page-header__sub">Structured public feedback &amp; Telegram</div>
                 </div>
             </header>
-            <div id="feedbackApp">
-                <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+            <div id="feedbackApp"></div>
+        </div>
+
+        <!-- HELP: ALL LINKS (More → Help) -->
+        <div class="page" id="page-help-links">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F517;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">All links</div>
+                    <div class="app-page-header__sub">Official Council properties</div>
+                </div>
+            </header>
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div class="stitle-row">
-                    <div class="stitle">Telegram</div>
-                    <button type="button" class="agent-mini-btn" onclick="openAgentExplain('Feedback: reach Stables on Telegram (community and core team)')" title="StablesAgent">
+                    <div class="stitle">Official Council properties</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('All links: official Council sites, repos, and accounts. Use these to verify sources.')"
+                        title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
                 </div>
-                <div class="card app-section-card" style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
-                    <div style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:12px">Community &amp; team</div>
-                    <p style="margin:0 0 16px;font-size:14px;line-height:1.6;font-weight:800;color:var(--muted)">
-                        There are two ways to reach us, both on Telegram. Use the button below to open the Stables community: share feedback there with everyone and join the discussion. To contact the core dev team in private, open Telegram and start a chat with <strong style="color:var(--t)">@stablescouncil</strong>.
+                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:24px;border:1px solid rgba(103,232,249,.12)">
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.5;font-size:var(--fz-caption);color:var(--m)">
+                        Domains, accounts, and repos below are <strong style="color:var(--t)">operated for the Council</strong>.
+                        The live directory may also appear at
+                        <a href="https://stablescouncil.github.io/links.html" target="_blank" rel="noopener noreferrer"
+                            style="color:var(--c);text-decoration:underline">stablescouncil.github.io/links.html</a>.
                     </p>
-                    <a href="https://t.me/stablescommunity" id="feedbackTelegramMain" target="_blank" rel="noopener"
-                        class="btn btn-w"
-                        style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box;padding:16px 18px;font-size:15px;font-weight:900;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.35), rgba(167,139,250,0.35));color:rgba(255,255,255,.96);box-shadow:0 0 20px rgba(103,232,249,0.18)">
-                        Open Stables on Telegram: t.me/stablescommunity
-                    </a>
-                </div>
+                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Domains &amp; sites</div>
+                    <ul style="margin:0 0 14px;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
+                        <li><a href="https://stablescouncil.org/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">stablescouncil.org</a> — public site · Be your own bank</li>
+                        <li><a href="https://stablescouncil.github.io/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">stablescouncil.github.io</a> — GitHub Pages presentation &amp; resources</li>
+                        <li><a href="https://agent.stablescouncil.org/chat" target="_blank" rel="noopener noreferrer" style="color:var(--c)">agent.stablescouncil.org</a> — StablesAgent web chat</li>
+                    </ul>
+                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Code &amp; email</div>
+                    <ul style="margin:0 0 14px;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
+                        <li><a href="https://github.com/StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">github.com/StablesCouncil</a> — public organisation</li>
+                        <li><a href="https://github.com/StablesCouncilExec" target="_blank" rel="noopener noreferrer" style="color:var(--c)">github.com/StablesCouncilExec</a> — Council admin account</li>
+                        <li><a href="mailto:StablesCouncil@protonmail.com" style="color:var(--c)">StablesCouncil@protonmail.com</a></li>
+                        <li><a href="mailto:StablesCouncil@gmail.com" style="color:var(--c)">StablesCouncil@gmail.com</a></li>
+                    </ul>
+                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Social &amp; community (handles)</div>
+                    <ul style="margin:0;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
+                        <li><a href="https://discord.gg/cFq4hHAc" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Discord — Stables server</a></li>
+                        <li><a href="https://www.facebook.com/groups/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables Community group</a></li>
+                        <li><a href="https://www.facebook.com/share/16nCLsLHkg/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables official page</a></li>
+                        <li><a href="https://www.instagram.com/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Instagram — @stablescouncil</a></li>
+                        <li><a href="https://www.moltbook.com/u/stablesagent" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Moltbook — u/stablesagent</a> (StablesAgent)</li>
+                        <li><a href="https://rumble.com/user/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Rumble — @stablescouncil</a></li>
+                        <li><a href="https://t.me/StablesAgentBot" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @StablesAgentBot</a></li>
+                        <li><a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @stablescommunity</a> (community)</li>
+                        <li><a href="https://t.me/StablesCouncilOfficial" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — StablesCouncilOfficial</a> (announcements)</li>
+                        <li><a href="https://t.me/StablesSecuritySupport" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — StablesSecuritySupport</a> (Vault key / security)</li>
+                        <li><a href="https://www.tiktok.com/@stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">TikTok — @stablescouncil</a></li>
+                        <li><a href="https://www.twitch.tv/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Twitch — stablescouncil</a></li>
+                        <li><a href="https://x.com/StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">X / Twitter — @StablesCouncil</a></li>
+                        <li><a href="https://www.youtube.com/@StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">YouTube — @StablesCouncil</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -5834,49 +5873,6 @@
                         onclick="navigate('settings-security')">Open Security (Vault key)</button>
                 </div>
             </div>
-            <div class="app-section app-section--caption-bottom">
-                <div class="stitle-row">
-                    <div class="stitle">Official Council properties</div>
-                </div>
-                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:24px;border:1px solid rgba(103,232,249,.12)">
-                    <p class="sec-body" style="margin:0 0 12px;line-height:1.5;font-size:var(--fz-caption);color:var(--m)">
-                        Domains, accounts, and repos below are <strong style="color:var(--t)">operated for the Council</strong>.
-                        The live directory may also appear at
-                        <a href="https://stablescouncil.github.io/links.html" target="_blank" rel="noopener noreferrer"
-                            style="color:var(--c);text-decoration:underline">stablescouncil.github.io/links.html</a>.
-                    </p>
-                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Domains &amp; sites</div>
-                    <ul style="margin:0 0 14px;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
-                        <li><a href="https://stablescouncil.org/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">stablescouncil.org</a> — public site · Be your own bank</li>
-                        <li><a href="https://stablescouncil.github.io/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">stablescouncil.github.io</a> — GitHub Pages presentation &amp; resources</li>
-                        <li><a href="https://agent.stablescouncil.org/chat" target="_blank" rel="noopener noreferrer" style="color:var(--c)">agent.stablescouncil.org</a> — StablesAgent web chat</li>
-                    </ul>
-                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Code &amp; email</div>
-                    <ul style="margin:0 0 14px;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
-                        <li><a href="https://github.com/StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">github.com/StablesCouncil</a> — public organisation</li>
-                        <li><a href="https://github.com/StablesCouncilExec" target="_blank" rel="noopener noreferrer" style="color:var(--c)">github.com/StablesCouncilExec</a> — Council admin account</li>
-                        <li><a href="mailto:StablesCouncil@protonmail.com" style="color:var(--c)">StablesCouncil@protonmail.com</a></li>
-                        <li><a href="mailto:StablesCouncil@gmail.com" style="color:var(--c)">StablesCouncil@gmail.com</a></li>
-                    </ul>
-                    <div class="xs mu" style="font-weight:800;margin:0 0 8px;color:var(--t)">Social &amp; community (handles)</div>
-                    <ul style="margin:0;padding-left:1.15em;line-height:1.55;font-size:13px;color:var(--m)">
-                        <li><a href="https://discord.gg/cFq4hHAc" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Discord — Stables server</a></li>
-                        <li><a href="https://www.facebook.com/groups/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables Community group</a></li>
-                        <li><a href="https://www.facebook.com/share/16nCLsLHkg/" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Facebook — Stables official page</a></li>
-                        <li><a href="https://www.instagram.com/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Instagram — @stablescouncil</a></li>
-                        <li><a href="https://www.moltbook.com/u/stablesagent" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Moltbook — u/stablesagent</a> (StablesAgent)</li>
-                        <li><a href="https://rumble.com/user/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Rumble — @stablescouncil</a></li>
-                        <li><a href="https://t.me/StablesAgentBot" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @StablesAgentBot</a></li>
-                        <li><a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — @stablescommunity</a> (community)</li>
-                        <li><a href="https://t.me/StablesCouncilOfficial" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — StablesCouncilOfficial</a> (announcements)</li>
-                        <li><a href="https://t.me/StablesSecuritySupport" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Telegram — StablesSecuritySupport</a> (Vault key / security)</li>
-                        <li><a href="https://www.tiktok.com/@stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">TikTok — @stablescouncil</a></li>
-                        <li><a href="https://www.twitch.tv/stablescouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">Twitch — stablescouncil</a></li>
-                        <li><a href="https://x.com/StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">X / Twitter — @StablesCouncil</a></li>
-                        <li><a href="https://www.youtube.com/@StablesCouncil" target="_blank" rel="noopener noreferrer" style="color:var(--c)">YouTube — @StablesCouncil</a></li>
-                    </ul>
-                </div>
-            </div>
         </div>
 
         <!-- MERCHANT INVOICE PAGE -->
@@ -6110,13 +6106,20 @@
                         <div class="ddesc">Ask StablesAgent for contextual help</div>
                     </div><span style="color:var(--m)">&rsaquo;</span>
                 </div>
+                <div class="ditem" onclick="navigate('help-links');closeMoreNow()">
+                    <div class="dic">🔗</div>
+                    <div class="dinfo">
+                        <div class="dname">All links</div>
+                        <div class="ddesc">Official Council properties</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
                 <div class="ditem" onclick="navigate('feedback');closeMoreNow()">
                     <div class="dic">
                         📝
                     </div>
                     <div class="dinfo">
                         <div class="dname">Feedback</div>
-                        <div class="ddesc">Reach the team on Telegram</div>
+                        <div class="ddesc">Structured public feedback &amp; Telegram</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -6147,7 +6150,7 @@
                     </div>
                     <div class="dinfo">
                         <div class="dname">Security</div>
-                        <div class="ddesc">Vault key only: access to your bank</div>
+                        <div class="ddesc">Vault key: the only access to your bank</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -6719,7 +6722,7 @@
 
     <script src="assets/config/runtime-config.js"></script>
     <script>
-        const PAGES = ['wallet', 'invest', 'exchange', 'onoff-ramp', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback'];
+        const PAGES = ['wallet', 'invest', 'exchange', 'onoff-ramp', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback', 'help-links'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         let curPage = 'wallet';
         let privacyMode = false; lede = false;
@@ -6821,20 +6824,11 @@
                     if (typeof window.renderFeedbackPage === 'function') window.renderFeedbackPage();
                     else if (window.StablesRoutes?.renderFeedback && typeof getContext === 'function') window.StablesRoutes.renderFeedback(getContext());
                     const root = document.getElementById('feedbackApp');
-                    if (root && (!root.innerHTML || !root.innerHTML.includes('id="feedbackTelegramMain"'))) {
-                        root.innerHTML = `
-                          <div style="padding:14px 14px;border-radius:14px;background:rgba(0,0,0,.22);border:1px solid rgba(103,232,249,.12)">
-                            <div style="font-size:14px;font-weight:900;color:var(--accent);margin-bottom:12px">Telegram</div>
-                            <p style="margin:0 0 16px;font-size:14px;line-height:1.6;font-weight:800;color:var(--muted)">
-                              There are two ways to reach us, both on Telegram. Use the button below to open the Stables community: share feedback there with everyone and join the discussion. To contact the core dev team in private, open Telegram and start a chat with <strong style="color:var(--t)">@stablescouncil</strong>.
-                            </p>
-                            <a href="https://t.me/stablescommunity" id="feedbackTelegramMain" target="_blank" rel="noopener"
-                              class="btn btn-w"
-                              style="display:block;width:100%;text-align:center;text-decoration:none;box-sizing:border-box;padding:16px 18px;font-size:15px;font-weight:900;border-radius:16px;border:1px solid rgba(103,232,249,.3);background:linear-gradient(135deg, rgba(103,232,249,0.35), rgba(167,139,250,0.35));color:rgba(255,255,255,.96);box-shadow:0 0 20px rgba(103,232,249,0.18)">
-                              Open Stables on Telegram: t.me/stablescommunity
-                            </a>
-                          </div>
-                        `;
+                    if (root && !root.querySelector('#feedbackStructDomain') && typeof window.renderFeedbackPage === 'function') {
+                        window.renderFeedbackPage();
+                    }
+                    if (root && !root.querySelector('#feedbackStructDomain')) {
+                        root.innerHTML = '<div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20"><div class="card app-section-card" style="padding:14px"><p class="sec-body" style="margin:0 0 12px">Feedback form could not load. Open Telegram: <a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer" style="color:var(--c)">t.me/stablescommunity</a></p></div></div>';
                     }
                 } catch (e) {
                     console.error('[navigate] feedback render error', e);

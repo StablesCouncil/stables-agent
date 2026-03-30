@@ -46,6 +46,19 @@ window.STABLES_CONFIG = {
   STABLES_CHARTER_URL:
     'https://github.com/StablesCouncil/StablesCouncil.github.io/blob/main/governance/stables_charter.md',
   /**
+   * Public feedback ledger on GitHub (folder of JSON files or README explaining the workflow).
+   * Shown on Feedback page as "See what others sent". Point at your org repo when the folder exists.
+   */
+  FEEDBACK_PUBLIC_DB_URL:
+    'https://github.com/StablesCouncil/StablesCouncil.github.io/tree/main/feedback',
+  /**
+   * POST target for structured feedback JSON (same shape as `feedback_submission.v1.schema.json`).
+   * Production: Stables web agent serves `POST /api/feedback` on agent.stablescouncil.org.
+   * Local dev on localhost/127.0.0.1: `feedback.js` uses `http://127.0.0.1:8788/api/feedback` unless you set
+   * FEEDBACK_SKIP_LOCAL_SUBMIT: true to hit this URL from a local static server instead.
+   */
+  FEEDBACK_SUBMIT_URL: 'https://agent.stablescouncil.org/api/feedback',
+  /**
    * MEXC ticker for MINIMA/USDT. Prefer the 24h endpoint: same last price as spot plus quote volume (USDT)
    * for Treasury liquidity readouts. In MiniDapp, `MDS.net.GET` is used (no CORS issue).
    */

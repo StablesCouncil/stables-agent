@@ -108,9 +108,11 @@
 | | |
 |--|--|
 | **Nav** | More |
-| **Page header** | Feedback · Reach the team on Telegram |
-| **Extra** | Hint in `#feedbackApp` |
-| **Sections** | Telegram → card (community + link) |
+| **Page header** | Feedback · Structured public feedback & Telegram (`app-page-header__sub`) |
+| **More drawer (Help → Feedback)** | `ddesc`: same subtitle as page header (Structured public feedback & Telegram) |
+| **Extra** | `#feedbackApp` filled by `assets/routes/feedback.js` (`renderFeedbackPage`) |
+| **Sections** | **Public feedback (GitHub)** → amber disclaimer; structured fields; optional Minima + contact; consent; **Send** → `POST` target from `getFeedbackSubmitUrl()` (localhost/`127.0.0.1` → `http://127.0.0.1:8788/api/feedback` unless `FEEDBACK_SKIP_LOCAL_SUBMIT`; else `FEEDBACK_SUBMIT_URL`, default `https://agent.stablescouncil.org/api/feedback`). Success `#feedbackSubmitResult`. **See what others sent** → `FEEDBACK_PUBLIC_DB_URL`. **Telegram** → `#feedbackTelegramMain`. |
+| **Schema** | `assets/data/feedback_submission.v1.schema.json` (v1 payload shape for public repo) |
 
 ---
 
@@ -158,7 +160,8 @@
 | | |
 |--|--|
 | **Nav** | Preferences |
-| **Page header** | Security · Vault key only: access to my bank |
+| **Page header** | Security · `app-page-header__sub`: Vault key: only access to your funds |
+| **More drawer (Preferences → Security row)** | `ddesc`: Vault key: the only access to your bank |
 | **Sections** | Vault key → `card--prose-centered` (seed / Security app CTA) |
 
 ---
@@ -178,9 +181,16 @@
 |--|--|
 | **Nav** | **Community** (More drawer) · ⚖️ **Legal & notices** |
 | **Page header** | Legal & notices · Terms, privacy, data, security · Council property |
-| **Sections** | Terms of Service (summary): Council IP, reproduction must credit **StablesCouncil** as original author; Privacy (summary); Data use (summary); Security (summary) + CTA → `settings-security`; **Official Council properties**: domains (**stablescouncil.org**, `stablescouncil.github.io`, `agent.stablescouncil.org`), GitHub orgs, emails (**StablesCouncil@protonmail.com**, **StablesCouncil@gmail.com**), social/telegram/discord list + link to `stablescouncil.github.io/links.html` |
+| **Sections** | Terms of Service (summary): Council IP, reproduction must credit **StablesCouncil** as original author; Price oracles (Winiwa + Wables demo); Privacy (summary); Data use (summary); Security (summary) + CTA → `settings-security`. Official Council properties moved to **Help → All links** (`help-links`). |
 
 ---
+
+### `page-help-links` — All links
+| | |
+|--|--|
+| **Nav** | **Help** (More drawer) · 🔗 **All links** |
+| **Page header** | All links · Official Council properties |
+| **Sections** | Official Council properties: domains (**stablescouncil.org**, `stablescouncil.github.io`, `agent.stablescouncil.org`), GitHub orgs, emails (**StablesCouncil@protonmail.com**, **StablesCouncil@gmail.com**), social/telegram/discord list + link to `stablescouncil.github.io/links.html` |
 
 ### `page-my-shop` — My shop
 | | |
@@ -380,3 +390,5 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-24 | Treasury: **Concentration & trading depth** (xWiniwa vs Stables, demo Winiwa chain slice vs `WINIWA_24H_QUOTE_USD`); `MEXC_TICKER_URL` default → 24h ticker; `renderTreasuryConcentrationReview` on liability render + Treasury `calcSlider`. |
 | 2026-03-24 | Invest **Coverage fund**: **Last 30 days perf** vs **Historical performance** sections; removed inner duplicate title and third under-graph line; **My available balances**; token/NAV under **Fund composition**. |
 | 2026-03-25 | New `page-onoff-ramp` under **Shops & Exchange** in More; lists 3 exchanges (MEXC, LBank, XT.COM) and explicit on-ramp/off-ramp flows between fiat and Stables. |
+| 2026-03-29 | More drawer **Preferences → Security** `ddesc`: Vault key: the only access to your bank (was Vault key only: access to your bank). |
+| 2026-03-29 | **Feedback**: structured public JSON form (first section) + Telegram; `FEEDBACK_PUBLIC_DB_URL` in `runtime-config.js`; schema `assets/data/feedback_submission.v1.schema.json`. |

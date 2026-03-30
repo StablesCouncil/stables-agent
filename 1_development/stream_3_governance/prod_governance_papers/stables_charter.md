@@ -17,6 +17,7 @@
   - [I.4 Open Platform Doctrine](stables_charter.md#i4-open-platform-doctrine)  
   - [I.5 Treasury Allocation and Market Participant Mandate](stables_charter.md#i5-treasury-allocation-and-market-participant-mandate)  
   - [I.5.4 Concentration and Flow Monitoring (App)](stables_charter.md#i54-concentration-and-flow-monitoring-app)  
+  - [I.5.5 Human Rights Retrocession (Budget and Distribution)](stables_charter.md#i55-human-rights-retrocession-budget-and-distribution)  
 - [Article II — Monetary Core (Invariant Foundation)](stables_charter.md#article-ii--monetary-core-invariant-foundation)  
   - [II.1 Minima-Only Base Collateral](stables_charter.md#ii1-minima-only-base-collateral)  
   - [II.2 Solvency Invariant](stables_charter.md#ii2-solvency-invariant)  
@@ -72,6 +73,8 @@ The transition from centralised to sovereign monetary coordination is gradual. T
 
 **Stables is a tool, not an end.** The protocol and its instruments are **means**: infrastructure for voluntary exchange and settlement. The **aim** is **wealth creation in the broad sense** — durable value, productive cooperation, and mutual gain through trade — not the perpetuation of any single application or token for its own sake. Stables contributes to that aim by making exchange **easier, more transparent, and more trustworthy**, so that economic activity can expand on consent rather than coercion. Success is measured by whether this infrastructure **stimulates and sustains real exchange**, not by abstract adoption metrics detached from human welfare.
 
+Stables does not require infinite money to serve everyone. Nature does not contain infinite water, yet the water cycle is effectively perpetual because **circulation** is sustained. In the same spirit, Stables treats the **circulation of money** as the enduring objective, not unlimited issuance. A healthy system rewards **movement and productive exchange** over static accumulation, because it is circulation that enables commerce, resilience, and shared prosperity.
+
 Each participant in the Stables system structurally represents their own bank through:
 
 - **Self-custody** — no third party holds user funds
@@ -122,6 +125,7 @@ The Council budget allocation shall be expressed as percentages or amounts acros
 - **Operations**: infrastructure costs required to keep Stables running (servers, monitoring, hosting, tooling, maintenance).
 - **Growth and Business Development**: merchant acquisition, partnership outreach, distribution campaigns, and adoption initiatives.
 - **Community Incentives**: ambassador support, attribution and reward programs, on-chain or off-chain retribution pushes as approved by governance.
+- **Human Rights Retrocession**: treasury purchases or distributions intended to support basic needs, delivered through transparent rules with Sybil-resistant eligibility controls.
 - **Security and Assurance**: audits, formal verification, incident response preparation, and security tooling.
 - **Market Participant Allocation**: capital dedicated to acting as a market participant in support of system health and market efficiency.
 
@@ -150,6 +154,31 @@ Treasury and structure-level analysis shall be supported in the Stables applicat
 
 These views are **monitoring and disclosure tools**. They do not replace protocol invariants; they make concentration and flow legible for treasury decisions, stress testing, and participant due diligence. Exact metrics, refresh cadence, and presentation shall be specified in implementation documentation and may evolve without changing the Charter’s monetary core.
 
+#### I.5.5 Human Rights Retrocession (Budget and Distribution)
+
+The Council shall allocate a portion of treasury resources to **Human Rights Retrocession**. This allocation operationalises the principle that access to money is a fundamental human right, and that every human should receive a level of monetary access sufficient to cover basic needs.
+
+The distribution mechanism shall be designed to:
+
+- be **transparent**: eligibility, caps, and delivery rules are observable and auditable;
+- be **fair**: distribution is based on verifiable participation, such as settled usage and spending;
+- be **Sybil-resistant**: prevent repeated creation of multiple wallets or accounts from multiplying eligibility beyond what is supported by genuine participation.
+
+**Anti-multi-wallet rule:** Retrocession entitlement shall be calculated in a way that is not based on the count of wallets or seed phrases created. Instead, it shall be aggregated under a participant-controlled, pseudonymous **Eligibility Commitment**, and caps shall be enforced per Eligibility Commitment per retrocession window (rather than per raw address).
+
+To support this without person-identity, the application shall require that submitted claims include:
+
+- **verifiable spend or usage receipts** corresponding to settlement events; and
+- **cryptographic authorisation** showing that the involved addresses are bound to the same Eligibility Commitment for the purpose of retrocession aggregation.
+
+Wallets that are not explicitly bound into the same Eligibility Commitment shall not multiply entitlement. Exact eligibility aggregation, proof formats, caps, bonding, rate limits, and delivery mechanics are implementation details.
+
+**Merchant interaction as economic validation (anchored through repeat settlement).** Because economic life is mediated by merchants, merchants that accept and settle payments can issue interaction validations (e.g. merchant-signed attestations tied to settlement events) that qualify receipts for retrocession. In practice, this validation is naturally stronger where economic relationships are established through **repeat interaction** at **anchored local places** (small and medium shops, recurring sellers, and community businesses) where meaningful social binding can persist over time even for pseudonymous participants.
+
+This design direction intentionally favours small and medium merchants and personal relations because it relies on continuity of interaction rather than cold one-off contact. Large, highly unpersonal retail environments where recognition cannot reasonably persist should not be expected to provide the same quality of interaction validation; retrocession entitlement therefore remains primarily driven by **qualified receipts** and enforced **caps**. As a result, simply creating additional Eligibility Commitments does not increase payout without additional qualifying economic activity.
+
+Exact technical mechanisms, eligibility proofs, anti-spam models, and delivery formats are part of implementation and governance documentation, and shall not override the immutable monetary core described in Article II.
+
 ### I.3 Dual Destination Framework
 
 The Stables protocol pursues two complementary destinations. Neither is optional. Technical sovereignty is the prerequisite; financial sovereignty is the purpose.
@@ -176,6 +205,7 @@ Full financial sovereignty is achieved through:
 - **Liability matching instruments** — tools to align obligations with holdings
 - **On-chain credit primitives** — credit scoring and history built from verifiable behaviour
 - **Lending infrastructure** — personal and commercial lending governed by smart contracts
+- **Circulation-first payment instruments** — the payment layer shall allow not only stable monetary units but also eligible resilience-layer claims (e.g. Coverage Fund shares such as USDsy) to be used for payment, with clear pricing and conversion rules in the application, so resilience participation does not become locked outside everyday exchange
 - **Treasury-driven equity reinforcement** — protocol-level capital management
 - **Comprehensive on-chain banking functions** — evolving over time toward a complete financial life
 
@@ -351,6 +381,8 @@ Liability distribution is continuously observable. Participants can see which St
 Within this structure, xMinima represents the residual risk-bearing layer. It retains value as long as Minima has value and the system remains solvent. Its role is not to mirror activity volume, but to absorb variability. Under stress, it is first-loss and recapitalisation-sensitive; in equilibrium, it represents the residual claim on the structure.
 
 Stables therefore operates as a transparent balance sheet in which a single collateral asset supports multiple economic realities. Stability is not imposed by discretionary intervention; it emerges from structure, visibility, and participant behavior.
+
+In this structure, resilience instruments must not be designed as “parked capital” that can only sit idle. The architecture should reward circulation over accumulation. Coverage participation and its claims (Coverage Fund shares) are therefore designed to remain compatible with payment and exchange flows, so that resilience capital can circulate through the economy rather than being structurally trapped outside commerce.
 
 ---
 
@@ -654,6 +686,8 @@ Formal definitions to include:
 
 Beyond protocol-internal and market-structure risks, Stables and its participants depend on **physical infrastructure**, **connectivity**, **continuity of the base layer**, and **the wider monetary and political environment**. The matrix below therefore includes **macro and existential** categories (local and global where relevant): blockchain continuity, power and internet failure, natural catastrophe, unrest, legal prohibition, and **regime transitions** in how humanity settles value (fiat erosion, CBDCs, commodity standards, or novel mediums such as energy- or power-linked exchange). Mitigations for these categories are partly structural (redundancy, transparency, optional offline or mesh directions) and partly **outside the protocol’s control**; the Charter records them so they are not ignored in deliberation or disclosure.
 
+**Cryptography is not assumed permanent.** No system of signatures, hashes, key agreement, or proofs is treated as **everlasting**. Assumptions are **time-bounded**: **quantum computing**, new cryptanalysis, or other technologies may eventually **break or weaken** today’s primitives. Stewardship therefore includes **monitoring the threat landscape**, **planning migration paths** (e.g. post-quantum algorithms, key rotation, protocol upgrades within governance), and **honest disclosure** that security is **provisional** — strong for an era, not guaranteed for all future eras.
+
 Risk categories to be addressed:
 
 | # | Risk Category | Scope |
@@ -681,6 +715,7 @@ Risk categories to be addressed:
 | 21 | **Competing Monetary Standard Risk** | Return to commodity standards (e.g. gold), or emergence of novel means of exchange (including energy- or power-linked units and other non-fiat reference systems) |
 | 22 | **Human Concentration Risk (Core Development)** | Dependence on a small set of core Minima developers and key maintainers; delivery bottlenecks, continuity risk, and elevated exposure if one or more key contributors become unavailable |
 | 23 | **AI Agent Integration Risk** | Misinformation, hallucination, social engineering, or automation errors by third-party or embedded agents; over-reliance on non-authoritative model output; API or workflow abuse — mitigated by disclosure, provenance to on-chain state, and invariant boundaries (Article IX) |
+| 24 | **Quantum Computing and Cryptanalytic Transition Risk** | Large-scale quantum or other advances that compromise classical public-key cryptography, signatures, or related assumptions; harvest-now-decrypt-later against historical commitments; need for post-quantum primitives, migration, and continued review — no cryptographic layer is treated as permanently secure |
 
 Each risk shall be paired with:
 

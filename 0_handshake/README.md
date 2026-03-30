@@ -25,7 +25,7 @@ Run this phrase to trigger calibration:
 
 Or paste this directly:
 
-> *"Read `0_handshake/handshake.md` and `0_handshake/session_map.md` and confirm that you are now working on this basis."*
+> *"Read `0_handshake/README.md`, `0_handshake/session_map.md`, and `0_handshake/global_knowledge_base.md`; read the full `2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt`; then `0_handshake/handshake.md` (and Step 0b if economics/protocol copy). Confirm calibration + StablesAgent KB loaded."*
 
 The model must acknowledge calibration before doing any work.
 
@@ -37,6 +37,8 @@ The model must acknowledge calibration before doing any work.
 |------|-------------|-----------------|
 | **`README.md`** | You + every model | This file. The entry point and orientation guide. |
 | **`session_map.md`** | Every model, Step 0 | Master navigator. Maps every file in the project by purpose. Includes the task→file matrix and deployment reference. Read this before anything else. |
+| **`global_knowledge_base.md`** | Every model, **Step 0** (with README + session_map) | **Handshake KB index:** how layers stack (Charter → locked mechanics → master reference → brain → MiniDapp → comms), tie-breakers, promotion, one-line “refresh” paste. Agents use it to know **which specs to load**; it does not replace those specs. |
+| **`prod_stablesagent-brain-base/llms.txt`** | Every model, **Step 0c** | **Full public KB rollup** (same corpus as StablesAgent after promotion). Read entire file each session; regenerate with `node build_llms_txt.js` in that folder when brain `.md` changes. |
 | **`handshake.md`** | Every model, Step 1 | The law. Governance rules, directory structure, identity terminology, communication rules, Git/server config, the calibration workflow. Nothing overrides this. |
 | **`stables_master_reference.md`** | Every model, Step 1 | The brain. Economic model, project state, locked terminology, all platform links, multi-platform content strategy. The living document that grows with the project. |
 | **`visual_identity_spec.md`** | Every model doing visual work | Exact colours, typography, background formula, glassmorphism rules, image generation prompt template. LOCKED. Never generate a visual without reading this first. |
@@ -53,13 +55,21 @@ The model must acknowledge calibration before doing any work.
 ## The calibration order (what models must do, in sequence)
 
 ```
-Step 0 — Read session_map.md
-         Understand the full file landscape and which files to load for the task at hand.
+Step 0 — Read README.md + session_map.md + global_knowledge_base.md
+         Understand the full file landscape, layer order, and which files to load for the task at hand.
+
+Step 0c — StablesAgent parity (every session)
+         Read the full file: 2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt
+         (same public KB rollup as the in-app agent / external “one URL” ingest). If brain .md files changed, run node build_llms_txt.js in that folder first. See handshake.md Step 0c.
+
+Step 0b — Protocol truth refresh (whenever economics / mint / xMinima / fees / protocol copy)
+         Read 0_handshake/protocol_mechanics_spec.md first, then stables_master_reference.md §14.
+         If anything conflicts, protocol_mechanics_spec.md wins. See handshake.md Step 0b.
 
 Step 1 — Read handshake.md + stables_master_reference.md
          Lock in the governance rules and project identity.
 
-Step 2 — Verify economic alignment (from stables_master_reference.md)
+Step 2 — Verify economic alignment (from handshake Step 2 + stables_master_reference §14)
          Acknowledge the settled model. Do not re-debate.
 
 Step 3 — Index brand masters (if visual work)
@@ -68,6 +78,8 @@ Step 3 — Index brand masters (if visual work)
 
 Step 4 — Confirm alignment
          State: "Calibration Active: Working on the basis of the Unified Handshake."
+         After Step 0c, add: "StablesAgent KB loaded (prod llms.txt)."
+         After Step 0b, add: "Protocol truth loaded: protocol_mechanics_spec + stables_master_reference §14."
          Then begin work.
 ```
 

@@ -19,13 +19,15 @@ Copy and paste the following block into the **Cursor Composer** or **Cursor Chat
 > All absolute paths in specs and configs now reference the new location. If you encounter any stale paths pointing to `.gemini\antigravity\scratch\`, they are outdated — the canonical root is `C:\Users\Charles\Documents\Stables`.
 
 **Your Required Actions**:
-1.  **Read the Constitution**: Analyze `0_handshake/handshake.md` and `0_handshake/restoration_protocol.md`. Every rule in these files is FINAL.
-2.  **Mirror-Stream Enforcement**: NO loose files at the root. All work must occur in `1_development/`, organized by `task_` or `prod_` folders.
-3.  **Atomic Restoration Logging**: 
+1.  **Handshake Step 0 (read in this order, before `handshake.md`)**: `0_handshake/README.md` → `0_handshake/session_map.md` → `0_handshake/global_knowledge_base.md` (KB index: layer order and which specs to load next).
+2.  **Step 0c — Same KB as StablesAgent in the app:** Read the **entire** `2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt` (rollup of all promoted brain markdown). Rebuild with `node build_llms_txt.js` in that folder if the `.md` sources changed.
+3.  **Read the Constitution**: Analyze `0_handshake/handshake.md` and `0_handshake/restoration_protocol.md`. Every rule in these files is FINAL.
+4.  **Mirror-Stream Enforcement**: NO loose files at the root. All work must occur in `1_development/`, organized by `task_` or `prod_` folders.
+5.  **Atomic Restoration Logging**: 
     - Every modification you make must be **Committed to Git**.
     - Every commit must be logged in `2_current/stream_3_governance/prod_project_ledger/ledger.md`.
     - Update the `2_current/stream_3_governance/prod_project_ledger/task.md` to track your progress and coordinate with Antigravity.
-4.  **Confirm Alignment**: State "Calibration Active: Working on the basis of the Unified Handshake" before starting any work.
+6.  **Confirm Alignment**: State "Calibration Active: Working on the basis of the Unified Handshake" and "StablesAgent KB loaded (prod llms.txt)" before starting any work.
 
 ---
 

@@ -7,9 +7,10 @@
 
 ## HOW TO USE THIS FILE
 
-1. Read this file first, every session, no exceptions.
-2. Based on the task type (see Section 3), load the required files in order.
+1. Complete **`handshake.md` [Step 0]** every session, in order: **`README.md`** → **`session_map.md`** (this file) → **`global_knowledge_base.md`**, then **[Step 0c]** — read the full **`2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt`** (StablesAgent / public KB parity). No exceptions.
+2. Based on the task type (see Section 3), load the required files in order (the KB index in **`global_knowledge_base.md`** summarizes layer priority).
 3. Never start work without confirming which files govern the task at hand.
+4. **Protocol economics** (mint, burn, xMinima, fees, CR, treasury, protocol copy): follow **`handshake.md` [Step 0b] Protocol Truth Refresh** — read `protocol_mechanics_spec.md` **before** relying on narrative elsewhere; it overrides conflicting prose.
 
 ---
 
@@ -20,6 +21,8 @@
 | File | Location | Purpose |
 |------|----------|---------|
 | `session_map.md` | `0_handshake/` | **This file.** Master navigator. |
+| `global_knowledge_base.md` | `0_handshake/` | **Global KB index:** layer order (Charter → mechanics → master ref → brain → app → comms), tie-breakers, promotion, refresh one-liner. |
+| `llms.txt` | `2_current/stream_3_governance/prod_stablesagent-brain-base/` | **Step 0c — full public KB** (rollup of all brain `*.md` here). Same holistic corpus as StablesAgent; rebuild via `build_llms_txt.js` after editing sources. |
 | `handshake.md` | `0_handshake/` | Governance rules, directory structure, identity rules, communication principles, Git/server config. The law. |
 | `stables_master_reference.md` | `0_handshake/` | Economic model, project state, locked terminology, all platform links, content strategy. The brain. |
 

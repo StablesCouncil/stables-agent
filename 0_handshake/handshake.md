@@ -86,10 +86,35 @@
 ## 2. THE CALIBRATION WORKFLOW (/handshake)
 To start any session or when context-drift is suspected, perform the following steps:
 
-### [Step 0] Read the Entry Point FIRST
-Before anything else, read these two files in order:
+### [Step 0] Read the Entry Point FIRST (handshake KB — mandatory for every agent)
+Before anything else, read these **three** files in order:
 - **[README.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/README.md)**: Explains the purpose of this folder, what each file does, and the calibration order. Start here.
 - **[session_map.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/session_map.md)**: The master navigator. It maps every file in the project, its purpose, and which files to load for which task. It also contains the server/deployment reference and the full pipeline rule. Without this, the session is not calibrated.
+- **[global_knowledge_base.md](file:///C:/Users/Charles/Documents/Stables/0_handshake/global_knowledge_base.md)**: The **handshake knowledge base index** — how layers stack (Charter → locked mechanics → master reference → brain → MiniDapp → comms), tie-breakers, promotion path, and which document wins on conflict. **Does not replace** the specs; use it to decide **which files to open next** for the task. Includes a one-line refresh command for operators.
+
+### [Step 0c] StablesAgent parity — full public knowledge base (mandatory every session)
+**Goal:** IDE agents carry the **same holistic picture** as **StablesAgent** in the app/Telegram: the promoted, user-facing knowledge corpus (what RAG retrieves from after ingest, and what external models get from a single file).
+
+**Read the entire file (do not skim):**  
+`2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt`
+
+That rollup is built from every knowledge `*.md` in that folder (see `build_llms_txt.js`). If you edited those `.md` files and `llms.txt` looks stale, run **`node build_llms_txt.js`** in that directory, then read the regenerated `llms.txt`.
+
+**Conflict rule:** Public brain prose can be simpler than internal specs. If anything in `llms.txt` disagrees with **`protocol_mechanics_spec.md`**, **`protocol_mechanics_spec.md` wins** once you run **[Step 0b]** — note the drift so the brain sources and `llms.txt` can be corrected on promotion.
+
+### [Step 0b] Protocol Truth Refresh (MANDATORY for economics — reusable every session)
+**Run this step whenever the task touches any of:** mint/burn, xMinima, stablecoins, Wables/Winiwa naming in protocol copy, coverage ratio, fees, Coverage Fund / cf tokens, treasury mechanics, correcting canonical docs, or **any public explanation of how Stables works**.
+
+**Read in this order (do not skip, do not reverse):**
+1. **`0_handshake/protocol_mechanics_spec.md`** — **Authoritative.** If any other document (including `stables_master_reference.md`) disagrees, **`protocol_mechanics_spec.md` wins.** Flag contradictions for Charles to fix in prose.
+2. **`0_handshake/stables_master_reference.md`** — At minimum **§14 CORE PROTOCOL MECHANICS (LOCKED)** end-to-end (tables, equation with **cf tokens**, fee line: xMinima gets **zero** txn fees).
+3. **Shipped UI names only if describing the MiniDapp:** **`0_handshake/minidapp_version.md`**, then the active `index.html` for the relevant action (e.g. Mint handlers).
+
+**Charles / operator shortcut (paste at session start or before protocol work):**  
+*`Protocol truth refresh per handshake Step 0b`*
+
+**Agent confirmation after Step 0b:**  
+*`Protocol truth loaded: protocol_mechanics_spec + stables_master_reference §14`* (add *`+ MiniDapp path`* if step 3 applied).
 
 ### [Step 1] Read the Master Specifications
 Consult the following files representing the immutable specs of Stables:
@@ -104,7 +129,8 @@ Acknowledge the settled economic model (Do NOT re-debate unless requested):
 - **Equation**: `Minima = Stablecoins + cf tokens + xMinima`
 - **CR Threshold**: 110% (Default). Stablecoin minting locks below this level.
 - **Fee Formula**: `min($1.00, amount × 0.01%)`.
-- **xMinima**: Leveraged equity, no fees, liquidity risk below threshold.
+- **Fee routing**: Transaction fees → Coverage Fund → **cf token holders**. **xMinima receives zero transaction-fee revenue** (equity / surplus mechanics are separate).
+- **xMinima**: Leveraged equity, liquidity risk when CR is stressed; **not** the recipient of user txn fees.
 
 ### [Step 3] Vested Assets Indexing
 - **MANDATORY**: INDEX the `2_current\stream_1_app\prod_brand_masters\` directory.
