@@ -120,7 +120,63 @@ async function startWebAgent() {
             return res.end();
         }
 
-        if (req.method === "GET" && req.url === "/health") {
+        function normalizePath(url) {
+            let p = (url && url.split("?")[0]) || "";
+            if (p.length > 1 && p.endsWith("/")) p = p.slice(0, -1);
+            return p;
+        }
+        const reqPath = normalizePath(req.url);
+
+        /** Public MiniDapp feedback ledger (JSON v1). Same contract as task_x_public_feedback_ledger server. */
+        if (req.method === "POST" && reqPath === "/api/feedback") {
+            const MAX_BODY = 120_000;
+            let body = "";
+            req.on("data", (chunk) => {
+                body += chunk.toString("utf-8");
+                if (body.length > MAX_BODY) req.socket.destroy();
+            });
+            req.on("end", () => {
+                (async () => {
+                    try {
+                        const parsed = JSON.parse(body || "{}");
+                        if (parsed.consent_public_ledger !== true) {
+                            res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
+                            return res.end(JSON.stringify({ ok: false, error: "consent_public_ledger must be true" }));
+                        }
+                        const dir =
+                            process.env.FEEDBACK_SUBMISSIONS_DIR ||
+                            path.join(__dirname, "feedback_submissions");
+                        await fs.promises.mkdir(dir, { recursive: true });
+                        const slug = new Date().toISOString().replace(/[:.]/g, "-").slice(0, 19);
+                        const rnd = Math.random().toString(36).slice(2, 8);
+                        const fname = `stables-feedback-${slug}-${rnd}.json`;
+                        const fp = path.join(dir, fname);
+                        const pretty = JSON.stringify(parsed, null, 2);
+                        await fs.promises.writeFile(fp, pretty, "utf-8");
+                        console.log(`📝 Feedback saved: ${fname}`);
+                        res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+                        return res.end(
+                            JSON.stringify({
+                                ok: true,
+                                id: fname,
+                                storage: "agent_disk",
+                                path: fname,
+                            })
+                        );
+                    } catch (e) {
+                        console.error("❌ /api/feedback:", e);
+                        const isParse = e instanceof SyntaxError;
+                        res.writeHead(isParse ? 400 : 500, { "Content-Type": "application/json; charset=utf-8" });
+                        return res.end(
+                            JSON.stringify({ ok: false, error: e.message || (isParse ? "Invalid JSON" : "Write failed") })
+                        );
+                    }
+                })();
+            });
+            return;
+        }
+
+        if (req.method === "GET" && reqPath === "/health") {
             res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
             return res.end(JSON.stringify({ status: "ok", ts: Date.now() }));
         }
@@ -138,7 +194,7 @@ async function startWebAgent() {
             }
         }
 
-        if (req.method === "GET" && (req.url === "/" || req.url.split("?")[0] === "/chat")) {
+        if (req.method === "GET" && (reqPath === "/" || reqPath === "/chat")) {
             const chatPath = path.join(__dirname, "web_chat.html");
             if (!fs.existsSync(chatPath)) {
                 res.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
@@ -149,7 +205,7 @@ async function startWebAgent() {
             return res.end(html);
         }
 
-        if (req.method === "POST" && req.url === "/api/chat") {
+        if (req.method === "POST" && reqPath === "/api/chat") {
             let body = "";
             req.on("data", (chunk) => {
                 body += chunk.toString("utf-8");
