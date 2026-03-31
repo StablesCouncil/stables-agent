@@ -723,8 +723,17 @@
             margin-top: 20px;
         }
 
+        /* Wallet home: tighter gap under the fixed app header (scroll padding + page padding + stacked margins) */
+        #page-wallet.page {
+            padding: 10px 16px 16px 16px;
+        }
+
         #page-wallet > .app-section--caption-bottom:first-of-type {
-            margin-top: 18px;
+            margin-top: 6px;
+        }
+
+        #page-wallet > .app-section--caption-bottom:first-of-type > .stitle-row:first-child {
+            margin: 8px 0 10px;
         }
 
         /* Section label + StablesAgent on one line (above the card) */
@@ -3695,6 +3704,102 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="ccy-sec-row" data-ccy="ILSw" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">ILSw</div>
+                                <div class="ccy-sec-name">Israeli shekel</div>
+                            </div>
+                            <div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccy-sec-row" data-ccy="IRRw" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">IRRw</div>
+                                <div class="ccy-sec-name">Iranian rial</div>
+                            </div>
+                            <div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccy-sec-row" data-ccy="BRLw" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">BRLw</div>
+                                <div class="ccy-sec-name">Brazilian real</div>
+                            </div>
+                            <div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccy-sec-row" data-ccy="IDRw" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">IDRw</div>
+                                <div class="ccy-sec-name">Indonesian rupiah</div>
+                            </div>
+                            <div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccy-sec-row" data-ccy="INRw" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">INRw</div>
+                                <div class="ccy-sec-name">Indian rupee</div>
+                            </div>
+                            <div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccy-sec-row" data-ccy="NGNw" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">NGNw</div>
+                                <div class="ccy-sec-name">Nigerian naira</div>
+                            </div>
+                            <div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccy-sec-row" data-ccy="PKRw" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">PKRw</div>
+                                <div class="ccy-sec-name">Pakistani rupee</div>
+                            </div>
+                            <div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
+                                    -
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ccy-sec-row" data-ccy="RUBw" data-ccy-default-hidden="1">
+                            <div>
+                                <div class="ccy-sec-tag">RUBw</div>
+                                <div class="ccy-sec-name">Russian ruble</div>
+                            </div>
+                            <div>
+                                <div class="ccy-sec-amt bal-amount">0.00</div>
+                                <div class="ccy-sec-usd bal-amount" style="color:var(--rd)">
+                                    -
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <button class="show-more-btn" id="showMoreCcy" onclick="toggleMoreCcy()">Show more currencies ▾</button>
                 </div>
@@ -4224,6 +4329,8 @@
                         <option>AUDw</option>
                         <option>CHFw</option>
                         <option>CNYw</option>
+                        <option>ILSw</option>
+                        <option>IRRw</option>
                         <option>Winiwa</option>
                         <option>xWiniwa</option>
                     </select>
@@ -4247,6 +4354,8 @@
                         <option>AUDw</option>
                         <option>CHFw</option>
                         <option>CNYw</option>
+                        <option>ILSw</option>
+                        <option>IRRw</option>
                         <option>Winiwa</option>
                         <option>xWiniwa</option>
                     </select>
@@ -5003,7 +5112,7 @@
                 </div>
                 <div class="card app-section-card" style="padding:16px 16px;margin-bottom:24px;border:1px solid rgba(103,232,249,.12)">
                     <p class="sec-body" style="margin:0 0 12px;line-height:1.5;font-size:var(--fz-caption);color:var(--m)">
-                        Domains, accounts, and repos below are <strong style="color:var(--t)">operated for the Council</strong>.
+                        Domains, accounts, and repos listed on the links page are <strong style="color:var(--t)">operated for the Council</strong>.
                         The live directory may also appear at
                         <a href="https://stablescouncil.github.io/links.html" target="_blank" rel="noopener noreferrer"
                             style="color:var(--c);text-decoration:underline">stablescouncil.github.io/links.html</a>.
@@ -5752,7 +5861,7 @@
                     <div class="app-page-header__sub">Package, theme, display, addresses, sync</div>
                 </div>
             </header>
-                <p class="hint" style="margin:-8px 0 16px;font-weight:800;color:var(--m);line-height:var(--lh-caption);border-left:none;padding:0 14px" id="settingsAppVersionHint">App version: -</p>
+                <p class="hint" style="margin:-8px 0 16px;font-weight:800;color:var(--m);line-height:var(--lh-caption);border-left:none;padding:0 14px;text-align:center" id="settingsAppVersionHint">App version: -</p>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
                 <div class="stitle">App updates</div>
@@ -5846,13 +5955,60 @@
                         <option value="AUDw">AUDw</option>
                         <option value="CHFw">CHFw</option>
                         <option value="CNYw">CNYw</option>
+                        <option value="ILSw">ILSw</option>
+                        <option value="IRRw">IRRw</option>
                         <option value="MINIMA">Winiwa</option>
                     </select>
+                </div>
+                <div class="set-row">
+                    <div>
+                        <div class="set-label">Currency badges style</div>
+                        <div class="set-sub">Use flags, legacy icons, none, or custom image</div>
+                    </div>
+                    <select class="fsel" id="currencyVisualModeSel" style="width:110px;padding:8px 10px" onchange="setCurrencyVisualMode(this.value)">
+                        <option value="flags">Flags</option>
+                        <option value="icons">Icons</option>
+                        <option value="none">None</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </div>
+                <div class="set-row">
+                    <div style="min-width:0;flex:1;padding-right:12px">
+                        <div class="set-label">Custom currency image</div>
+                        <div class="set-sub">Pick a currency and upload your own 16x16 style badge</div>
+                    </div>
+                    <select class="fsel" id="currencyCustomIconCode" style="width:92px;padding:8px 10px">
+                        <option value="USDw">USDw</option>
+                        <option value="EURw">EURw</option>
+                        <option value="GBPw">GBPw</option>
+                        <option value="JPYw">JPYw</option>
+                        <option value="CADw">CADw</option>
+                        <option value="AUDw">AUDw</option>
+                        <option value="CHFw">CHFw</option>
+                        <option value="CNYw">CNYw</option>
+                        <option value="ILSw">ILSw</option>
+                        <option value="IRRw">IRRw</option>
+                        <option value="BRLw">BRLw</option>
+                        <option value="IDRw">IDRw</option>
+                        <option value="INRw">INRw</option>
+                        <option value="NGNw">NGNw</option>
+                        <option value="PKRw">PKRw</option>
+                        <option value="RUBw">RUBw</option>
+                        <option value="MINIMA">Winiwa</option>
+                    </select>
+                </div>
+                <div class="set-row" style="padding-top:10px;border-top:none">
+                    <div class="set-sub">Upload PNG/JPG/WebP. Stored locally on this device.</div>
+                    <div style="display:flex;gap:8px;align-items:center">
+                        <input type="file" id="currencyCustomIconFile" accept="image/png,image/jpeg,image/webp" style="max-width:180px" onchange="setCustomCurrencyIconFromFile(this)">
+                        <button class="btn btn-g" type="button" style="width:auto;padding:8px 10px" onclick="clearCustomCurrencyIcon()">Clear</button>
+                    </div>
                 </div>
                 <div style="padding:0 0 14px">
                     <div class="set-label" style="margin-bottom:8px">Currencies to Display</div>
                     <div id="ccyDisplayPills" style="display:flex;flex-wrap:wrap;gap:8px">
                         <span class="ccy-pill" draggable="true" data-ccy="AUDw" onclick="toggleCcyPill(this)">AUDw</span>
+                        <span class="ccy-pill" draggable="true" data-ccy="BRLw" data-label="BRLw" data-flag="https://flagcdn.com/16x12/br.png" onclick="toggleCcyPill(this)"><img src="https://flagcdn.com/16x12/br.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">BRLw</span>
                         <span class="ccy-pill on" draggable="true" data-ccy="CADw" onclick="toggleCcyPill(this)">CADw
                             ✓</span>
                         <span class="ccy-pill" draggable="true" data-ccy="CHFw" onclick="toggleCcyPill(this)">CHFw</span>
@@ -5862,7 +6018,14 @@
                             ✓</span>
                         <span class="ccy-pill on" draggable="true" data-ccy="GBPw" onclick="toggleCcyPill(this)">GBPw
                             ✓</span>
+                        <span class="ccy-pill" draggable="true" data-ccy="IDRw" data-label="IDRw" data-flag="https://flagcdn.com/16x12/id.png" onclick="toggleCcyPill(this)"><img src="https://flagcdn.com/16x12/id.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">IDRw</span>
+                        <span class="ccy-pill" draggable="true" data-ccy="INRw" data-label="INRw" data-flag="https://flagcdn.com/16x12/in.png" onclick="toggleCcyPill(this)"><img src="https://flagcdn.com/16x12/in.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">INRw</span>
+                        <span class="ccy-pill" draggable="true" data-ccy="ILSw" data-label="ILSw" data-flag="https://flagcdn.com/16x12/il.png" onclick="toggleCcyPill(this)"><img src="https://flagcdn.com/16x12/il.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">ILSw</span>
+                        <span class="ccy-pill" draggable="true" data-ccy="IRRw" data-label="IRRw" data-flag="https://flagcdn.com/16x12/ir.png" onclick="toggleCcyPill(this)"><img src="https://flagcdn.com/16x12/ir.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">IRRw</span>
                         <span class="ccy-pill" draggable="true" data-ccy="JPYw" onclick="toggleCcyPill(this)">JPYw</span>
+                        <span class="ccy-pill" draggable="true" data-ccy="NGNw" data-label="NGNw" data-flag="https://flagcdn.com/16x12/ng.png" onclick="toggleCcyPill(this)"><img src="https://flagcdn.com/16x12/ng.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">NGNw</span>
+                        <span class="ccy-pill" draggable="true" data-ccy="PKRw" data-label="PKRw" data-flag="https://flagcdn.com/16x12/pk.png" onclick="toggleCcyPill(this)"><img src="https://flagcdn.com/16x12/pk.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">PKRw</span>
+                        <span class="ccy-pill" draggable="true" data-ccy="RUBw" data-label="RUBw" data-flag="https://flagcdn.com/16x12/ru.png" onclick="toggleCcyPill(this)"><img src="https://flagcdn.com/16x12/ru.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">RUBw</span>
                         <span class="ccy-pill on" draggable="true" data-ccy="USDw" onclick="toggleCcyPill(this)">USDw
                             ✓</span>
                         <span class="ccy-pill on" draggable="true" data-ccy="MINIMA" data-label="Winiwa" onclick="toggleCcyPill(this)">Winiwa
@@ -5965,6 +6128,40 @@
             </header>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div class="stitle-row">
+                    <div class="stitle">Security (summary)</div>
+                </div>
+                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--t)">Never share any type of personal information.</strong> Beware of scammers: the world is full of them, and particularly the blockchain world. Some Stables users will be scammed and suffer painful losses; we are already sorry for them. We will do our best to educate and prevent this, but users may still suffer losses because of mistakes.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        The good news is that if you don&rsquo;t make any mistakes, you will be just fine. The main one is the protection of your <strong style="color:var(--t)">Vault key</strong> (called a seed phrase in the broader crypto community): this is the most important element of your bank. You have to store it in a place and in a way that it can&rsquo;t be destroyed or stolen. The best approach is to replicate it in multiple safe places. Don&rsquo;t forget: ink on paper fades over the years, so it might not be the best long-term method on its own.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        The other main mistake is sharing personal information. Please never communicate any type of personal information. In the Stables framework, no personal information will ever be required, not even your name.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        The other big threat is computer viruses and malware. Run your Stables app on a safe device with minimal usage (fewer apps and risks).
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        In the blockchain world, there is no guaranteed way to catch scammers, and recovering stolen funds is practically impossible.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        If you publicly say that you need security help on any official channel, you will almost certainly be contacted across one or multiple communication channels (Telegram, Instagram, X, and others) by sophisticated scammers. We do not know all of their tricks, and they may be better than us at reaching Stables users. Please ignore all unsolicited messages and make sure you never, ever communicate personal information.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        We sincerely care for you, and your personal safety is important for the whole community. Every victim impairs trust in our structure. We care for each of us individually because we care for each of us collectively. With all our heart. The Stables Council
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        Your <strong style="color:var(--t)">Vault key</strong> controls access to your funds. Never share it.
+                        For Vault-key help, use the official security Telegram listed on the <a href="#" onclick="event.preventDefault();navigate('help-links');return false" style="color:var(--c);text-decoration:underline">links page</a> (and <strong style="color:var(--t)">Security</strong> in Preferences).
+                    </p>
+                    <button type="button" class="btn btn-w btn-g" style="width:100%"
+                        onclick="navigate('settings-security')">Open Security (Vault key)</button>
+                </div>
+            </div>
+            <div class="app-section app-section--caption-bottom">
+                <div class="stitle-row">
                     <div class="stitle">Terms of Service (summary)</div>
                     <button type="button" class="agent-mini-btn"
                         onclick="openAgentExplain('Legal: Council owns Stables IP; reproduction must credit StablesCouncil; preview not legal advice')"
@@ -5983,10 +6180,10 @@
                         If you reproduce or redistribute this app or a substantial part of it, you must accompany that
                         reproduction with a <strong style="color:var(--t)">clear reference to StablesCouncil</strong> and
                         <strong style="color:var(--t)">cite StablesCouncil as the original author</strong> (for example a
-                        visible credit and link to an official Council property below). This does not grant a licence to
+                        visible credit and link to an official Council property listed on the <a href="#" onclick="event.preventDefault();navigate('help-links');return false" style="color:var(--c);text-decoration:underline">links page</a>). This does not grant a licence to
                         remove branding, imply endorsement where none exists, or misrepresent origin.
                     </p>
-                    <p class="sec-body" style="margin:0;line-height:1.5;font-size:var(--fz-caption);color:var(--m)">
+                    <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
                         This MiniDapp is provided as a <strong style="color:var(--t)">preview</strong>. It is offered
                         &ldquo;as is&rdquo; without warranties. For binding terms, follow Council governance and published
                         policies on official channels as they are updated.
@@ -6032,19 +6229,29 @@
             <div class="app-section app-section--caption-bottom">
                 <div class="stitle-row">
                     <div class="stitle">Privacy Policy (summary)</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Legal: privacy summary; choices on your device; no sale of data from this static preview; use official Council and security contacts only')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
                 </div>
                 <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
                     <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
                         This preview stores some choices on <strong style="color:var(--t)">your device</strong> (for example
                         layout and preferences in browser storage). We do not sell personal data from this static preview.
                         Do not send secrets or Vault keys through unofficial channels; use only the official Council and
-                        security contacts listed below and on <strong style="color:var(--t)">Security</strong> in this app.
+                        security contacts listed on the <a href="#" onclick="event.preventDefault();navigate('help-links');return false" style="color:var(--c);text-decoration:underline">links page</a> and on <strong style="color:var(--t)">Security</strong> in this app.
                     </p>
                 </div>
             </div>
             <div class="app-section app-section--caption-bottom">
                 <div class="stitle-row">
                     <div class="stitle">Data use (summary)</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Legal: demo data use; simulated figures; not live ledger; future practices in governing docs and release notes on official channels')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
                 </div>
                 <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
                     <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
@@ -6053,19 +6260,6 @@
                         features, data practices will be described in the governing documents and release notes on official
                         properties.
                     </p>
-                </div>
-            </div>
-            <div class="app-section app-section--caption-bottom">
-                <div class="stitle-row">
-                    <div class="stitle">Security (summary)</div>
-                </div>
-                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
-                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
-                        Your <strong style="color:var(--t)">Vault key</strong> controls access to your funds. Never share it.
-                        For Vault-key help, use the official security Telegram listed below (and <strong style="color:var(--t)">Security</strong> in Preferences).
-                    </p>
-                    <button type="button" class="btn btn-w btn-g" style="width:100%"
-                        onclick="navigate('settings-security')">Open Security (Vault key)</button>
                 </div>
             </div>
         </div>
@@ -6322,7 +6516,7 @@
                     <div class="dic">&#x2696;&#xFE0F;</div>
                     <div class="dinfo">
                         <div class="dname">Legal &amp; notices</div>
-                        <div class="ddesc">Terms, privacy, data, Council properties</div>
+                        <div class="ddesc">Security tips · <strong>PLEASE READ HERE</strong> · Terms, privacy, data</div>
                     </div><span style="color:var(--m)">›</span>
                 </div>
             </div>
@@ -6701,14 +6895,25 @@
                     style="text-align:center;margin:0 0 12px;padding:0 6px;line-height:1.5;color:var(--am)">
                 </div>
                 <label class="flabel" style="margin-top:4px;margin-bottom:6px">Preferred currencies</label>
+                <div style="display:flex;justify-content:flex-end;margin:0 0 8px">
+                    <button type="button" class="ccy-pill" style="cursor:pointer" onclick="selectAllWelcomeCurrencies()">Select all</button>
+                </div>
                 <div id="welcomeCurrencies" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
                     <span class="ccy-pill" data-ccy="AUDw" onclick="toggleWelcomeCcy(this)">AUDw</span>
+                    <span class="ccy-pill" data-ccy="BRLw" data-label="BRLw" data-flag="https://flagcdn.com/16x12/br.png" onclick="toggleWelcomeCcy(this)"><img src="https://flagcdn.com/16x12/br.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">BRLw</span>
                     <span class="ccy-pill" data-ccy="CADw" onclick="toggleWelcomeCcy(this)">CADw</span>
                     <span class="ccy-pill" data-ccy="CHFw" onclick="toggleWelcomeCcy(this)">CHFw</span>
                     <span class="ccy-pill on" data-ccy="CNYw" onclick="toggleWelcomeCcy(this)">CNYw ✓</span>
                     <span class="ccy-pill on" data-ccy="EURw" onclick="toggleWelcomeCcy(this)">EURw ✓</span>
                     <span class="ccy-pill on" data-ccy="GBPw" onclick="toggleWelcomeCcy(this)">GBPw ✓</span>
+                    <span class="ccy-pill" data-ccy="IDRw" data-label="IDRw" data-flag="https://flagcdn.com/16x12/id.png" onclick="toggleWelcomeCcy(this)"><img src="https://flagcdn.com/16x12/id.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">IDRw</span>
+                    <span class="ccy-pill" data-ccy="INRw" data-label="INRw" data-flag="https://flagcdn.com/16x12/in.png" onclick="toggleWelcomeCcy(this)"><img src="https://flagcdn.com/16x12/in.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">INRw</span>
+                    <span class="ccy-pill" data-ccy="ILSw" data-label="ILSw" data-flag="https://flagcdn.com/16x12/il.png" onclick="toggleWelcomeCcy(this)"><img src="https://flagcdn.com/16x12/il.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">ILSw</span>
+                    <span class="ccy-pill" data-ccy="IRRw" data-label="IRRw" data-flag="https://flagcdn.com/16x12/ir.png" onclick="toggleWelcomeCcy(this)"><img src="https://flagcdn.com/16x12/ir.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">IRRw</span>
                     <span class="ccy-pill" data-ccy="JPYw" onclick="toggleWelcomeCcy(this)">JPYw</span>
+                    <span class="ccy-pill" data-ccy="NGNw" data-label="NGNw" data-flag="https://flagcdn.com/16x12/ng.png" onclick="toggleWelcomeCcy(this)"><img src="https://flagcdn.com/16x12/ng.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">NGNw</span>
+                    <span class="ccy-pill" data-ccy="PKRw" data-label="PKRw" data-flag="https://flagcdn.com/16x12/pk.png" onclick="toggleWelcomeCcy(this)"><img src="https://flagcdn.com/16x12/pk.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">PKRw</span>
+                    <span class="ccy-pill" data-ccy="RUBw" data-label="RUBw" data-flag="https://flagcdn.com/16x12/ru.png" onclick="toggleWelcomeCcy(this)"><img src="https://flagcdn.com/16x12/ru.png" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">RUBw</span>
                     <span class="ccy-pill on" data-ccy="USDw" onclick="toggleWelcomeCcy(this)">USDw ✓</span>
                     <span class="ccy-pill on" data-ccy="MINIMA" data-label="Winiwa" onclick="toggleWelcomeCcy(this)">Winiwa ✓</span>
                 </div>
@@ -8644,6 +8849,161 @@
 
         const CCY_ORDER_KEY = 'stables_ccy_order';
         const WALLET_CCY_ORDER_KEY = 'stables_wallet_ccy_order_secondary';
+        const CCY_VISUAL_MODE_KEY = 'stables_currency_visual_mode_v1';
+        const CCY_CUSTOM_ICONS_KEY = 'stables_currency_custom_icons_v1';
+        const CURRENCY_VISUAL_META = {
+            USDw: { icon: '💵', flag: 'us' },
+            EURw: { icon: '💶', flag: 'eu' },
+            GBPw: { icon: '💷', flag: 'gb' },
+            JPYw: { icon: '💴', flag: 'jp' },
+            CADw: { icon: '🍁', flag: 'ca' },
+            AUDw: { icon: '🦘', flag: 'au' },
+            CHFw: { icon: '🧀', flag: 'ch' },
+            CNYw: { icon: '🐼', flag: 'cn' },
+            ILSw: { icon: '₪', flag: 'il' },
+            IRRw: { icon: '﷼', flag: 'ir' },
+            BRLw: { icon: 'R$', flag: 'br' },
+            IDRw: { icon: 'Rp', flag: 'id' },
+            INRw: { icon: '₹', flag: 'in' },
+            NGNw: { icon: '₦', flag: 'ng' },
+            PKRw: { icon: '₨', flag: 'pk' },
+            RUBw: { icon: '₽', flag: 'ru' },
+            MINIMA: { icon: '🌐', flag: '' },
+            Winiwa: { icon: '🌐', flag: '' },
+            xWiniwa: { icon: 'xM', flag: '' }
+        };
+
+        function currencyDisplayLabel(code) {
+            return code === 'MINIMA' ? 'Winiwa' : code;
+        }
+
+        function getCurrencyVisualMode() {
+            try {
+                const v = String(localStorage.getItem(CCY_VISUAL_MODE_KEY) || 'flags').trim();
+                return (v === 'flags' || v === 'icons' || v === 'none' || v === 'custom') ? v : 'icons';
+            } catch (_) {
+                return 'flags';
+            }
+        }
+
+        function getCustomCurrencyIcons() {
+            try {
+                const raw = localStorage.getItem(CCY_CUSTOM_ICONS_KEY);
+                const obj = raw ? JSON.parse(raw) : {};
+                return (obj && typeof obj === 'object') ? obj : {};
+            } catch (_) {
+                return {};
+            }
+        }
+
+        function saveCustomCurrencyIcons(map) {
+            try { localStorage.setItem(CCY_CUSTOM_ICONS_KEY, JSON.stringify(map || {})); } catch (_) {}
+        }
+
+        function currencyPrefixHtml(code, mode) {
+            const meta = CURRENCY_VISUAL_META[code] || {};
+            if (mode === 'none') return '';
+            if (mode === 'custom') {
+                const custom = getCustomCurrencyIcons();
+                const url = String(custom[code] || '').trim();
+                if (url) {
+                    return `<img src="${url}" alt="" style="width:14px;height:14px;object-fit:cover;border-radius:3px;vertical-align:-2px;margin-right:6px">`;
+                }
+                // Fallback to icons if no custom image set for that currency.
+            }
+            if (mode === 'flags' && meta.flag) {
+                const url = `https://flagcdn.com/16x12/${meta.flag}.png`;
+                return `<img src="${url}" alt="" style="width:14px;height:10px;object-fit:cover;border-radius:2px;vertical-align:-1px;margin-right:6px">`;
+            }
+            const icon = meta.icon || code.replace(/w$/, '');
+            return `<span style="display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:14px;padding:0 3px;border-radius:4px;background:rgba(103,232,249,.12);border:1px solid rgba(103,232,249,.22);font-size:10px;line-height:1;font-weight:900;color:var(--t);vertical-align:-1px;margin-right:6px">${icon}</span>`;
+        }
+
+        function renderCurrencyPillVisual(el) {
+            if (!el || !el.dataset) return;
+            const code = String(el.dataset.ccy || '').trim();
+            if (!code) return;
+            const label = String(el.dataset.label || currencyDisplayLabel(code)).trim();
+            const on = el.classList.contains('on');
+            const prefix = currencyPrefixHtml(code, getCurrencyVisualMode());
+            el.innerHTML = `${prefix}${label}${on ? ' ✓' : ''}`;
+        }
+        window.renderCurrencyPillVisual = renderCurrencyPillVisual;
+
+        function applyCurrencyVisualMode() {
+            const mode = getCurrencyVisualMode();
+            const sel = document.getElementById('currencyVisualModeSel');
+            if (sel) sel.value = mode;
+
+            document.querySelectorAll('.ccy-pill[data-ccy]').forEach(renderCurrencyPillVisual);
+            document.querySelectorAll('#ccyList .ccy-sec-row .ccy-sec-tag').forEach((tagEl) => {
+                const row = tagEl.closest('.ccy-sec-row');
+                const code = String(row?.dataset?.ccy || '').trim();
+                if (!code) return;
+                const label = currencyDisplayLabel(code);
+                tagEl.innerHTML = `${currencyPrefixHtml(code, mode)}${label}`;
+            });
+            const priName = document.querySelector('.ccy-pri-name');
+            const baseCode = (typeof BASE_CCY !== 'undefined' && BASE_CCY) ? BASE_CCY : 'USDw';
+            if (priName) {
+                const label = currencyDisplayLabel(baseCode);
+                const baseNames = {
+                    MINIMA: 'Winiwa', USDw: 'US Dollar', EURw: 'Euro', GBPw: 'British Pound',
+                    JPYw: 'Japanese Yen', CADw: 'Canadian Dollar', AUDw: 'Australian Dollar',
+                    CHFw: 'Swiss Franc', CNYw: 'Renminbi Yuan', ILSw: 'Israeli shekel',
+                    IRRw: 'Iranian rial', BRLw: 'Brazilian real', IDRw: 'Indonesian rupiah',
+                    INRw: 'Indian rupee', NGNw: 'Nigerian naira', PKRw: 'Pakistani rupee', RUBw: 'Russian ruble'
+                };
+                priName.innerHTML = `${currencyPrefixHtml(baseCode, mode)}${label} · ${baseNames[baseCode] || baseCode}`;
+            }
+        }
+
+        function setCurrencyVisualMode(mode) {
+            const raw = String(mode || '').trim();
+            const next = (raw === 'flags' || raw === 'icons' || raw === 'none' || raw === 'custom') ? raw : 'icons';
+            try { localStorage.setItem(CCY_VISUAL_MODE_KEY, next); } catch (_) {}
+            applyCurrencyVisualMode();
+            if (typeof syncWalletCurrenciesFromSettings === 'function') syncWalletCurrenciesFromSettings();
+            if (typeof updateGlobalUI === 'function') updateGlobalUI();
+        }
+        window.setCurrencyVisualMode = setCurrencyVisualMode;
+
+        function setCustomCurrencyIconFromFile(input) {
+            const file = input?.files?.[0];
+            if (!file) return;
+            const code = String(document.getElementById('currencyCustomIconCode')?.value || '').trim();
+            if (!code) return;
+            if (!file.type || !file.type.startsWith('image/')) {
+                if (typeof showToast === 'function') showToast('Please select an image file');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = function () {
+                const dataUrl = String(reader.result || '').trim();
+                if (!dataUrl) return;
+                const map = getCustomCurrencyIcons();
+                map[code] = dataUrl;
+                saveCustomCurrencyIcons(map);
+                setCurrencyVisualMode('custom');
+                if (typeof showToast === 'function') showToast(`Custom image set for ${currencyDisplayLabel(code)}`);
+                if (input) input.value = '';
+            };
+            reader.readAsDataURL(file);
+        }
+        window.setCustomCurrencyIconFromFile = setCustomCurrencyIconFromFile;
+
+        function clearCustomCurrencyIcon() {
+            const code = String(document.getElementById('currencyCustomIconCode')?.value || '').trim();
+            if (!code) return;
+            const map = getCustomCurrencyIcons();
+            if (map[code]) {
+                delete map[code];
+                saveCustomCurrencyIcons(map);
+                applyCurrencyVisualMode();
+                if (typeof showToast === 'function') showToast(`Custom image cleared for ${currencyDisplayLabel(code)}`);
+            }
+        }
+        window.clearCustomCurrencyIcon = clearCustomCurrencyIcon;
 
         function getEnabledCurrenciesOrdered() {
             const pills = Array.from(document.querySelectorAll('#ccyDisplayPills .ccy-pill'));
@@ -9669,16 +10029,18 @@
 
         // Exchange
         const RATES = {
-            USDw: { EURw: .918, GBPw: .787, JPYw: 149.5, CADw: 1.36, AUDw: 1.53, CHFw: .89, CNYw: 7.24, USDw: 1, Winiwa: 118.2, xWiniwa: 10.49 },
-            EURw: { USDw: 1.089, GBPw: .857, JPYw: 163.0, CADw: 1.48, AUDw: 1.666, CHFw: .97, CNYw: 7.88, EURw: 1, Winiwa: 128.8, xWiniwa: 11.42 },
-            GBPw: { USDw: 1.271, EURw: 1.167, JPYw: 189.9, CADw: 1.73, AUDw: 1.944, CHFw: 1.13, CNYw: 9.20, GBPw: 1, Winiwa: 150.3, xWiniwa: 13.33 },
-            JPYw: { USDw: .0067, EURw: .0061, GBPw: .0053, CADw: .0091, AUDw: .01024, CHFw: .006, CNYw: .048, JPYw: 1, Winiwa: .792, xWiniwa: .070 },
-            CADw: { USDw: .735, EURw: .676, GBPw: .578, JPYw: 109.9, AUDw: 1.125, CHFw: .655, CNYw: 5.32, CADw: 1, Winiwa: 86.9, xWiniwa: 7.71 },
-            AUDw: { USDw: .654, EURw: .6, GBPw: .515, JPYw: 97.7, CADw: .889, CHFw: .583, CNYw: 4.73, AUDw: 1, Winiwa: 77.3, xWiniwa: 6.86 },
-            CHFw: { USDw: 1.123, EURw: 1.031, GBPw: .884, JPYw: 167.9, CADw: 1.528, AUDw: 1.715, CNYw: 8.13, CHFw: 1, Winiwa: 132.7, xWiniwa: 11.77 },
-            CNYw: { USDw: .138, EURw: .127, GBPw: .109, JPYw: 20.64, CADw: .188, AUDw: .211, CHFw: .123, CNYw: 1, Winiwa: 16.3, xWiniwa: 1.45 },
-            Winiwa: { USDw: .00846, EURw: .00777, GBPw: .00665, JPYw: 1.263, CADw: .01150, AUDw: .01294, CHFw: .00753, CNYw: .0614, Winiwa: 1, xWiniwa: 42.3 },
-            xWiniwa: { USDw: .00020, EURw: .000184, GBPw: .000157, JPYw: .02993, CADw: .000272, AUDw: .000306, CHFw: .000178, CNYw: .001453, Winiwa: .02365, xWiniwa: 1 }
+            USDw: { EURw: .918, GBPw: .787, JPYw: 149.5, CADw: 1.36, AUDw: 1.53, CHFw: .89, CNYw: 7.24, ILSw: 3.65, IRRw: 42000, USDw: 1, Winiwa: 118.2, xWiniwa: 10.49 },
+            EURw: { USDw: 1.089, GBPw: .857, JPYw: 163.0, CADw: 1.48, AUDw: 1.666, CHFw: .97, CNYw: 7.88, ILSw: 3.974, IRRw: 45738, EURw: 1, Winiwa: 128.8, xWiniwa: 11.42 },
+            GBPw: { USDw: 1.271, EURw: 1.167, JPYw: 189.9, CADw: 1.73, AUDw: 1.944, CHFw: 1.13, CNYw: 9.20, ILSw: 4.639, IRRw: 53382, GBPw: 1, Winiwa: 150.3, xWiniwa: 13.33 },
+            JPYw: { USDw: .0067, EURw: .0061, GBPw: .0053, CADw: .0091, AUDw: .01024, CHFw: .006, CNYw: .048, ILSw: .0245, IRRw: 281.4, JPYw: 1, Winiwa: .792, xWiniwa: .070 },
+            CADw: { USDw: .735, EURw: .676, GBPw: .578, JPYw: 109.9, AUDw: 1.125, CHFw: .655, CNYw: 5.32, ILSw: 2.682, IRRw: 30870, CADw: 1, Winiwa: 86.9, xWiniwa: 7.71 },
+            AUDw: { USDw: .654, EURw: .6, GBPw: .515, JPYw: 97.7, CADw: .889, CHFw: .583, CNYw: 4.73, ILSw: 2.387, IRRw: 27468, AUDw: 1, Winiwa: 77.3, xWiniwa: 6.86 },
+            CHFw: { USDw: 1.123, EURw: 1.031, GBPw: .884, JPYw: 167.9, CADw: 1.528, AUDw: 1.715, CNYw: 8.13, ILSw: 4.10, IRRw: 47166, CHFw: 1, Winiwa: 132.7, xWiniwa: 11.77 },
+            CNYw: { USDw: .138, EURw: .127, GBPw: .109, JPYw: 20.64, CADw: .188, AUDw: .211, CHFw: .123, ILSw: .504, IRRw: 5796, CNYw: 1, Winiwa: 16.3, xWiniwa: 1.45 },
+            ILSw: { USDw: .274, EURw: .251, GBPw: .216, JPYw: 40.9, CADw: .373, AUDw: .419, CHFw: .244, CNYw: 1.99, ILSw: 1, IRRw: 11508, Winiwa: 32.4, xWiniwa: 1.37 },
+            IRRw: { USDw: .00002381, EURw: .00002186, GBPw: .00001875, JPYw: .00355, CADw: .0000325, AUDw: .0000289, CHFw: .0000212, CNYw: .000173, ILSw: .0000869, IRRw: 1, Winiwa: .002815, xWiniwa: .000119 },
+            Winiwa: { USDw: .00846, EURw: .00777, GBPw: .00665, JPYw: 1.263, CADw: .01150, AUDw: .01294, CHFw: .00753, CNYw: .0614, ILSw: .0309, IRRw: 355.3, Winiwa: 1, xWiniwa: 42.3 },
+            xWiniwa: { USDw: .00020, EURw: .000184, GBPw: .000157, JPYw: .02993, CADw: .000272, AUDw: .000306, CHFw: .000178, CNYw: .001453, ILSw: .00073, IRRw: 8.4, Winiwa: .02365, xWiniwa: 1 }
         };
 
         function walletParseCcySel(id) {
@@ -10747,17 +11109,25 @@
 
             // Wallet currency block: keep quantities fixed, but recalc all equivalents in the current principal (BASE_CCY).
             const CCY_META = {
-                MINIMA: { emoji: '🔶', name: 'Winiwa' },
-                USDw: { emoji: '💵', name: 'US Dollar' },
-                EURw: { emoji: '💶', name: 'Euro' },
-                GBPw: { emoji: '💷', name: 'British Pound' },
-                JPYw: { emoji: '💴', name: 'Japanese Yen' },
-                CADw: { emoji: '🍁', name: 'Canadian Dollar' },
-                AUDw: { emoji: '🦘', name: 'Australian Dollar' },
-                CHFw: { emoji: '🧀', name: 'Swiss Franc' },
-                CNYw: { emoji: '🐼', name: 'Renminbi Yuan' }
+                MINIMA: { name: 'Winiwa' },
+                USDw: { name: 'US Dollar' },
+                EURw: { name: 'Euro' },
+                GBPw: { name: 'British Pound' },
+                JPYw: { name: 'Japanese Yen' },
+                CADw: { name: 'Canadian Dollar' },
+                AUDw: { name: 'Australian Dollar' },
+                CHFw: { name: 'Swiss Franc' },
+                CNYw: { name: 'Renminbi Yuan' },
+                ILSw: { name: 'Israeli shekel' },
+                IRRw: { name: 'Iranian rial' },
+                BRLw: { name: 'Brazilian real' },
+                IDRw: { name: 'Indonesian rupiah' },
+                INRw: { name: 'Indian rupee' },
+                NGNw: { name: 'Nigerian naira' },
+                PKRw: { name: 'Pakistani rupee' },
+                RUBw: { name: 'Russian ruble' }
             };
-            const meta = CCY_META[BASE_CCY] || { emoji: '💱', name: BASE_CCY };
+            const meta = CCY_META[BASE_CCY] || { name: BASE_CCY };
 
             const getRate = (from, to) => {
                 // Treat MINIMA (UI name: Winiwa) as Winiwa for pricing against the RATES table.
@@ -10779,7 +11149,11 @@
             // Primary card label
             const priName = document.querySelector('.ccy-pri-name');
             const priFull = document.querySelector('.ccy-pri-full');
-            if (priName) priName.textContent = `${meta.emoji} ${BASE_CCY} · ${meta.name}`;
+            if (priName) {
+                const prefix = currencyPrefixHtml(BASE_CCY, getCurrencyVisualMode());
+                const label = currencyDisplayLabel(BASE_CCY);
+                priName.innerHTML = `${prefix}${label} · ${meta.name}`;
+            }
             if (priFull) priFull.textContent = '';
 
             // Primary card amount (quantity in BASE_CCY)
@@ -11788,8 +12162,7 @@
         function toggleCcyPill(el) {
             el.classList.toggle('on');
             const on = el.classList.contains('on');
-            const tag = String(el.textContent || '').replace(/✓/g, '').trim();
-            el.textContent = on ? `${tag} ✓` : tag;
+            renderCurrencyPillVisual(el);
             if (on) el.style.cssText = 'padding:5px 12px;background:rgba(103,232,249,.15);border:1px solid rgba(103,232,249,.3);border-radius:999px;font-size:12px;font-weight:700;cursor:pointer';
             else el.style.cssText = 'padding:5px 12px;background:rgba(16,24,38,.6);border:1px solid rgba(103,232,249,.1);border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;color:var(--m)';
             syncWalletCurrenciesFromSettings();
@@ -12163,6 +12536,14 @@
         runBootStep('initCcyReorder', initCcyReorder);
         runBootStep('initWalletCcyReorder', initWalletCcyReorder);
         runBootStep('syncWalletCurrenciesFromSettings', syncWalletCurrenciesFromSettings);
+        runBootStep('resetCurrencyVisualModeOnLoad', function () {
+            // For now, every hard refresh starts with national flags.
+            try {
+                localStorage.setItem(CCY_VISUAL_MODE_KEY, 'flags');
+                localStorage.removeItem(CCY_CUSTOM_ICONS_KEY);
+            } catch (_) { /* ignore */ }
+        });
+        runBootStep('applyCurrencyVisualMode', applyCurrencyVisualMode);
         runBootStep('initCouncilMemberProfile', initCouncilMemberProfile);
         runBootStep('syncAppUpdatesSection', syncAppUpdatesSection);
         runBootStep('refreshWiniwaSpotFromMexc', refreshWiniwaSpotFromMexc);

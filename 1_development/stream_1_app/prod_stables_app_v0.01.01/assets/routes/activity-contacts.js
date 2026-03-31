@@ -228,7 +228,9 @@
     const code = String(ccy || '').trim();
     const map = {
       USDw: 1, EURw: 1.089, GBPw: 1.271, JPYw: 0.0067, CADw: 0.735,
-      AUDw: 0.654, CHFw: 1.123, CNYw: 0.138, MINIMA: 0.00846, Winiwa: 0.00846, xWiniwa: 0.09529
+      AUDw: 0.654, CHFw: 1.123, CNYw: 0.138, ILSw: 0.274, IRRw: 0.00002381,
+      BRLw: 0.20, IDRw: 0.000063, INRw: 0.012, NGNw: 0.00067, PKRw: 0.0036, RUBw: 0.011,
+      MINIMA: 0.00846, Winiwa: 0.00846, xWiniwa: 0.09529
     };
     return map[code] || 1;
   }
@@ -1488,11 +1490,17 @@
   window.toggleWelcomeCcy = function (el) {
     if (!el) return;
     el.classList.toggle('on');
-    const code = String(el.dataset?.ccy || '').trim();
-    const label = String(el.dataset?.label || code).trim();
-    const isOn = el.classList.contains('on');
-    el.textContent = isOn ? `${label} ✓` : label;
+    if (typeof window.renderCurrencyPillVisual === 'function') {
+      window.renderCurrencyPillVisual(el);
+    }
     window.updateWelcomePrimaryOptions();
+  };
+
+  window.selectAllWelcomeCurrencies = function () {
+    const pills = Array.from(document.querySelectorAll('#welcomeCurrencies .ccy-pill'));
+    pills.forEach((p) => {
+      if (!p.classList.contains('on')) window.toggleWelcomeCcy(p);
+    });
   };
 
   window.updateWelcomePrimaryOptions = function () {
@@ -1561,6 +1569,9 @@
     if (stepNerdTrack) stepNerdTrack.style.display = 'none';
     if (stepShowcaseMsg) stepShowcaseMsg.style.display = 'none';
     if (stepTourUseCase) stepTourUseCase.style.display = 'none';
+    try {
+      sessionStorage.removeItem('stables_guided_tour_from_menu_v1');
+    } catch (_) {}
   };
 
   function showWelcomeStep(step) {
@@ -1588,26 +1599,30 @@
     showWelcomeStep('tourChoice');
   };
 
-  window.applyWelcomeSetup = function () {
+  window.applyWelcomeSetup = function (opts) {
+    const skipCurrency = opts && opts.skipCurrency === true;
     const lang = document.getElementById('welcomeLang')?.value || 'en';
-    const selected = Array.from(document.querySelectorAll('#welcomeCurrencies .ccy-pill.on'))
-      .map(x => x.dataset?.ccy).filter(Boolean);
-    const primary = document.getElementById('welcomePrimary')?.value || (selected.includes('EURw') ? 'EURw' : (selected[0] || 'EURw'));
 
     localStorage.setItem('stables_welcome_done_v1', '1');
     localStorage.setItem('stables_lang_pref', lang);
 
-    // Apply selected currencies to the Settings pills.
-    const pills = Array.from(document.querySelectorAll('#ccyDisplayPills .ccy-pill'));
-    pills.forEach(p => {
-      const code = p.dataset?.ccy;
-      const shouldOn = selected.includes(code);
-      if (!code) return;
-      if (shouldOn && !p.classList.contains('on') && typeof window.toggleCcyPill === 'function') window.toggleCcyPill(p);
-      if (!shouldOn && p.classList.contains('on') && typeof window.toggleCcyPill === 'function') window.toggleCcyPill(p);
-    });
+    if (!skipCurrency) {
+      const selected = Array.from(document.querySelectorAll('#welcomeCurrencies .ccy-pill.on'))
+        .map(x => x.dataset?.ccy).filter(Boolean);
+      const primary = document.getElementById('welcomePrimary')?.value || (selected.includes('EURw') ? 'EURw' : (selected[0] || 'EURw'));
 
-    if (typeof window.setPrimary === 'function') window.setPrimary(primary, true);
+      // Apply selected currencies to the Settings pills.
+      const pills = Array.from(document.querySelectorAll('#ccyDisplayPills .ccy-pill'));
+      pills.forEach(p => {
+        const code = p.dataset?.ccy;
+        const shouldOn = selected.includes(code);
+        if (!code) return;
+        if (shouldOn && !p.classList.contains('on') && typeof window.toggleCcyPill === 'function') window.toggleCcyPill(p);
+        if (!shouldOn && p.classList.contains('on') && typeof window.toggleCcyPill === 'function') window.toggleCcyPill(p);
+      });
+
+      if (typeof window.setPrimary === 'function') window.setPrimary(primary, true);
+    }
 
     let showcaseRoute = null;
     try {
@@ -1625,7 +1640,7 @@
 
   };
 
-  /** After showcase web/node choice: remember route and open currency step. */
+  /** After showcase web/node choice: remember route and open currency step (unless guided tour was opened from More → Help). */
   window.goWelcomeFromShowcaseRoute = function (route) {
     const r = String(route || '').trim().toLowerCase() === 'node' ? 'node' : 'web';
     try {
@@ -1639,6 +1654,20 @@
         } catch (_) {}
       }
     }
+
+    let fromMenuTour = false;
+    try {
+      fromMenuTour = sessionStorage.getItem('stables_guided_tour_from_menu_v1') === '1';
+    } catch (_) {}
+    if (fromMenuTour) {
+      try {
+        sessionStorage.removeItem('stables_guided_tour_from_menu_v1');
+      } catch (_) {}
+      if (typeof window.updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
+      window.applyWelcomeSetup({ skipCurrency: true });
+      return;
+    }
+
     showWelcomeStep('currencies');
     if (typeof window.updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
     if (typeof window.updateWelcomePrimaryOptions === 'function') window.updateWelcomePrimaryOptions();
@@ -1834,6 +1863,9 @@
 
   /** More → Help → Guided tours: open welcome on the StablesAgent role picker (path choice). */
   window.openWelcomeGuidedToursFromMenu = function () {
+    try {
+      sessionStorage.setItem('stables_guided_tour_from_menu_v1', '1');
+    } catch (_) {}
     const modal = document.getElementById('welcomeSetupModal');
     if (!modal) return;
     modal.classList.add('open');
