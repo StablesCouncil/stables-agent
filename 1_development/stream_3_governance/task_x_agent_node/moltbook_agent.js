@@ -18,6 +18,8 @@ const OpenAI = require("openai");
 const API_BASE = "https://www.moltbook.com/api/v1";
 const DB_FILE = path.join(__dirname, "vector_db.json");
 const STATE_FILE = path.join(__dirname, "moltbook_state.json");
+const MAX_DAILY_LIKES = 4;
+const MAX_DAILY_FOLLOWS = 1;
 
 function sleep(ms) {
     return new Promise((r) => setTimeout(r, ms));
@@ -103,6 +105,62 @@ function normalizeTitleKey(title) {
     return normalizeForFingerprint(title).replace(/\s+/g, " ").slice(0, 120);
 }
 
+function utcDayKey(d = new Date()) {
+    return d.toISOString().slice(0, 10);
+}
+
+function postTopicSignal(post) {
+    const text = `${post?.title || ""} ${post?.content || ""}`.toLowerCase();
+    if (!text.trim()) return false;
+    return /\b(minima|stables|stablecoin|bank|banking|merchant|payment|liquidity|coverage|ratio|peg|mint|burn|custody|wallet)\b/.test(text);
+}
+
+function shouldLikePost(post) {
+    if (!postTopicSignal(post)) return false;
+    return Math.random() < 0.4;
+}
+
+function shouldFollowAuthor(post) {
+    if (!postTopicSignal(post)) return false;
+    return Math.random() < 0.25;
+}
+
+function isLikelyApiSuccess(res) {
+    if (!res || typeof res !== "object") return false;
+    if (typeof res.statusCode === "number" && res.statusCode >= 400) return false;
+    const msg = String(res.message || "");
+    if (/(not found|invalid|error|failed|suspended|unauthorized|forbidden|duplicate)/i.test(msg)) return false;
+    return true;
+}
+
+async function tryPostAction(endpointCandidates, body = null) {
+    for (const ep of endpointCandidates) {
+        try {
+            const res = body ? await moltbookPost(ep, body) : await moltbookPost(ep, {});
+            if (isLikelyApiSuccess(res)) return { ok: true, endpoint: ep, res };
+        } catch {
+            // Try next endpoint variant.
+        }
+    }
+    return { ok: false };
+}
+
+async function tryLikePost(postId) {
+    return tryPostAction([
+        `/posts/${postId}/like`,
+        `/posts/${postId}/likes`,
+        `/posts/${postId}/reactions`,
+    ], { type: "like" });
+}
+
+async function tryFollowAuthor(authorId) {
+    return tryPostAction([
+        `/users/${authorId}/follow`,
+        `/agents/${authorId}/follow`,
+        `/profiles/${authorId}/follow`,
+    ]);
+}
+
 function loadState() {
     if (!fs.existsSync(STATE_FILE)) return { lastPostAt: null, commentedPostIds: [], suspendedUntil: null };
     try {
@@ -114,6 +172,11 @@ function loadState() {
             commentFingerprints: [],
             recentPostAngleIds: [],
             recentPostTitles: [],
+            likedPostIds: [],
+            followedAuthorIds: [],
+            likesToday: 0,
+            followsToday: 0,
+            lastEngagementDay: utcDayKey(),
             ...raw,
         };
     } catch {
@@ -126,6 +189,8 @@ function saveState(state) {
     const keptFps = (state.commentFingerprints || []).slice(-200);
     const keptAngles = (state.recentPostAngleIds || []).slice(-24);
     const keptTitles = (state.recentPostTitles || []).slice(-20);
+    const keptLiked = (state.likedPostIds || []).slice(-300);
+    const keptFollowed = (state.followedAuthorIds || []).slice(-300);
     fs.writeFileSync(
         STATE_FILE,
         JSON.stringify({
@@ -134,6 +199,8 @@ function saveState(state) {
             commentFingerprints: keptFps,
             recentPostAngleIds: keptAngles,
             recentPostTitles: keptTitles,
+            likedPostIds: keptLiked,
+            followedAuthorIds: keptFollowed,
         }),
         "utf-8"
     );
@@ -356,6 +423,13 @@ async function solveVerification(llm, challengeText) {
 
 async function main() {
     checkEnv();
+    const runStats = {
+        posts: 0,
+        replyComments: 0,
+        feedComments: 0,
+        likes: 0,
+        follows: 0,
+    };
 
     const status = await moltbookGet("/agents/status");
     if (status.status !== "claimed") {
@@ -381,6 +455,13 @@ async function main() {
 
     const state = loadState();
     console.log("Loaded state:", JSON.stringify(state));
+    const day = utcDayKey();
+    if (state.lastEngagementDay !== day) {
+        state.lastEngagementDay = day;
+        state.likesToday = 0;
+        state.followsToday = 0;
+        saveState(state);
+    }
 
     const suspendedUntilMs = state.suspendedUntil ? new Date(state.suspendedUntil).getTime() : 0;
     if (suspendedUntilMs && Date.now() < suspendedUntilMs) {
@@ -424,6 +505,7 @@ async function main() {
                     state.recentPostAngleIds = [...(state.recentPostAngleIds || []), angleEntry.id].slice(-24);
                     state.recentPostTitles = [...prevTitles, tKey].slice(-20);
                     posted = true;
+                    runStats.posts++;
                     const v = postRes?.verification || postRes?.post?.verification;
                     if (v?.verification_code && v?.challenge_text) {
                         const answer = await solveVerification(llm, v.challenge_text);
@@ -500,6 +582,7 @@ async function main() {
         }
 
         state.commentFingerprints = [...(state.commentFingerprints || []), fp];
+        runStats.replyComments++;
         saveState(state);
 
         await moltbookPost(`/notifications/read-by-post/${item.post_id}`);
@@ -507,6 +590,8 @@ async function main() {
 
     // 3. Browse feed and comment on relevant posts from others
     const commented = new Set(state.commentedPostIds || []);
+    const liked = new Set(state.likedPostIds || []);
+    const followed = new Set(state.followedAuthorIds || []);
     try {
         const feedRes = await moltbookGet("/feed?sort=new&limit=15");
         const posts = feedRes.posts || feedRes.data || [];
@@ -514,8 +599,40 @@ async function main() {
         for (const post of posts) {
             if (commentsAdded >= 1) break;
             const postId = post.id || post.post_id;
+            const authorId = post.author?.id || post.author_id || post.agent_id || post.profile_id;
             const authorName = (post.author?.name || post.author_name || "").toLowerCase();
             if (!postId || authorName === "stablesagent" || commented.has(postId)) continue;
+
+            if (state.likesToday < MAX_DAILY_LIKES && !liked.has(postId) && shouldLikePost(post)) {
+                await sleep(7_000 + Math.floor(Math.random() * 12_000));
+                const likeRes = await tryLikePost(postId);
+                if (likeRes.ok) {
+                    liked.add(postId);
+                    state.likedPostIds = [...liked];
+                    state.likesToday = (state.likesToday || 0) + 1;
+                    runStats.likes++;
+                    console.log("Liked post", postId, "via", likeRes.endpoint);
+                    saveState(state);
+                }
+            }
+
+            if (
+                state.followsToday < MAX_DAILY_FOLLOWS &&
+                authorId &&
+                !followed.has(String(authorId)) &&
+                shouldFollowAuthor(post)
+            ) {
+                await sleep(9_000 + Math.floor(Math.random() * 12_000));
+                const followRes = await tryFollowAuthor(authorId);
+                if (followRes.ok) {
+                    followed.add(String(authorId));
+                    state.followedAuthorIds = [...followed];
+                    state.followsToday = (state.followsToday || 0) + 1;
+                    runStats.follows++;
+                    console.log("Followed author", authorId, "via", followRes.endpoint);
+                    saveState(state);
+                }
+            }
 
             const comment = await shouldCommentAndGenerate(post, vectorStore, llm);
             if (!comment) continue;
@@ -542,6 +659,7 @@ async function main() {
             state.commentedPostIds = [...commented];
             state.commentFingerprints = [...(state.commentFingerprints || []), fp];
             commentsAdded++;
+            runStats.feedComments++;
             console.log("Commented on", authorName, ":", comment.slice(0, 50) + "...");
             saveState(state);
             await new Promise((r) => setTimeout(r, 25000));
@@ -551,6 +669,9 @@ async function main() {
         console.log("Feed/comment error:", e.message);
     }
 
+    console.log(
+        `engagement: posts=${runStats.posts} likes=${runStats.likes}/${MAX_DAILY_LIKES} follows=${runStats.follows}/${MAX_DAILY_FOLLOWS} feed_comments=${runStats.feedComments} replies=${runStats.replyComments}`
+    );
     console.log("Moltbook heartbeat done.");
 }
 

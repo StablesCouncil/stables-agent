@@ -167,7 +167,8 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 - **X/Twitter Specifics (STRICT)**:
     - **Character Limit**: Maximum 280 characters per post.
     - **Hashtags**: You MUST include hashtags for X/Twitter posts. 
-    - **Mandatory Set**: Use `#Minima #Stables #BeYourOwnBank #stablecoin` as the core hashtags for discoverability on X and YouTube.
+    - **Mandatory Base Set**: Always include `#BYOB #Stablecoin #Minima`.
+    - **Space-Available Add-ons**: If there is room, add `#BeYourOwnBank`, then add other relevant tags (for example `#Stables`) while staying within 280 characters.
     - **No Hashtags in TG**: Never use hashtags in our Telegram community channel or other community spaces.
 - **Natural tone**: Write like a real person in a casual conversation. Short sentences, natural flow.
 

@@ -1798,6 +1798,24 @@
             display: flex
         }
 
+        /* Action modal must stay above welcome flow overlays */
+        #agentActionModal {
+            z-index: 645;
+        }
+
+        #agentActionModal.agent-action-notice .modal {
+            max-width: 420px;
+            border-radius: 18px;
+            padding: 20px 16px 20px;
+        }
+
+        #agentActionModal.agent-action-notice #agentActionContent p {
+            max-width: 32ch;
+            margin-left: auto !important;
+            margin-right: auto !important;
+            text-align: center;
+        }
+
         .mback.centered {
             align-items: center;
         }
@@ -5928,7 +5946,7 @@
                 </button>
             </div>
             <div class="card card--prose-centered app-section-card" id="settingsSeedPhraseSection" style="padding:22px 20px 20px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.07),rgba(11,15,20,.2))">
-                <p class="sec-body" style="margin-bottom:12px">Your <strong>Vault key</strong> is your access to your bank. <strong>Without it, you risk losing your money.</strong> Use the Minima Security app to view or manage it.</p>
+                <p class="sec-body" style="margin-bottom:12px">Your <strong>Vault key</strong> is your <strong>ONLY access to your bank</strong>. <strong>No one can recover it for you, including Stables or Minima.</strong> Use the Minima Security app to view or manage it.</p>
                 <p class="sec-body">Never share it with anyone.</p>
                 <div class="sec-key-icon" aria-hidden="true">🔑</div>
                 <button type="button" class="btn btn-w btn-lg" onclick="openModal('seedSecurityAppModal')">Open Minima Security app</button>
@@ -6668,11 +6686,9 @@
                 <div id="welcomeShowcaseCopy" class="welcome-modal-showcase-intro"
                     style="margin-bottom:18px;text-align:center;white-space:pre-line;padding:0 4px;box-sizing:border-box">
                 </div>
-                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-bottom:10px">
-                    <button class="btn btn-w" id="welcomeShowcaseHereBtn" style="flex:1;min-width:220px;font-weight:900"
-                        onclick="goWelcomeFromShowcaseRoute('web')">Keep exploring in this app</button>
-                    <button class="btn btn-w" id="welcomeShowcaseNodeBtn" style="flex:1;min-width:220px;font-weight:900"
-                        onclick="goWelcomeFromShowcaseRoute('node')">Access MiniDapp package for my node</button>
+                <div class="flex gap8" style="justify-content:center;margin-bottom:10px">
+                    <button class="btn btn-w" id="welcomeShowcaseHereBtn" style="width:100%;font-weight:900"
+                        onclick="goWelcomeFromShowcaseRoute('web')">I'll go explore for now</button>
                 </div>
             </div>
 
@@ -6680,6 +6696,9 @@
             <div id="welcomeStepCurrencies" style="display:none">
                 <div id="welcomeCurrencyIntro" class="welcome-modal-body-copy"
                     style="text-align:center;margin:0 0 18px;padding:0 4px;box-sizing:border-box;line-height:1.45;color:var(--t)">
+                </div>
+                <div id="welcomeCurrencyNote" class="xs"
+                    style="text-align:center;margin:0 0 12px;padding:0 6px;line-height:1.5;color:var(--am)">
                 </div>
                 <label class="flabel" style="margin-top:4px;margin-bottom:6px">Preferred currencies</label>
                 <div id="welcomeCurrencies" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
@@ -6719,7 +6738,7 @@
                 Is your <strong style="color:#fbbf24">Vault key</strong> backed up?
             </div>
             <div style="text-align:center;margin-bottom:14px;line-height:1.55;color:var(--t);font-weight:600">
-                <p style="margin:0 0 12px 0">Your <strong style="color:var(--t)">Vault key</strong> is your access to your bank. Without it, you can <strong style="color:var(--t)">lose your money</strong>. <strong style="color:var(--t)">No one can recover it for you</strong>, including Stables.</p>
+                <p style="margin:0 0 12px 0">Your <strong style="color:var(--t)">Vault key</strong> is your <strong style="color:var(--t)">ONLY access to your bank</strong>. <strong style="color:var(--t)">No one can recover it for you, including Stables or Minima.</strong></p>
                 <p style="margin:0;color:var(--m);font-weight:500">The Stables community can help with questions; <strong style="color:var(--t)">only you</strong> can keep your key safe.</p>
             </div>
             <div style="display:flex;flex-direction:column;gap:10px">
@@ -8525,6 +8544,42 @@
             if (typeof updateWelcomeLanguage === 'function') window.updateWelcomeLanguage();
             syncAppLangLabels();
             closeAppLangMenus();
+            const modal = document.getElementById('agentActionModal');
+            const title = document.getElementById('agentActionTitle');
+            const titleRight = document.getElementById('agentActionTitleRight');
+            const content = document.getElementById('agentActionContent');
+            if (!modal || !title || !content) return;
+            const byLang = {
+                en: { title: 'Language', body: 'Language support will be added in a later stage.', ok: 'OK' },
+                zh: { title: '语言', body: '语言功能将在后续阶段提供。', ok: '确定' },
+                fr: { title: 'Langue', body: 'La fonction de langue sera ajoutée à une étape ultérieure.', ok: 'OK' },
+                es: { title: 'Idioma', body: 'La funcion de idioma se agregara en una etapa posterior.', ok: 'OK' },
+                de: { title: 'Sprache', body: 'Die Sprachfunktion wird in einer spaeteren Phase hinzugefuegt.', ok: 'OK' },
+                ja: { title: '言語', body: '言語機能は今後の段階で追加されます。', ok: 'OK' },
+                ko: { title: '언어', body: '언어 기능은 이후 단계에서 추가됩니다.', ok: '확인' },
+                pt: { title: 'Idioma', body: 'A funcao de idioma sera adicionada numa etapa posterior.', ok: 'OK' },
+                ru: { title: 'Язык', body: 'Функция языка будет добавлена на более позднем этапе.', ok: 'ОК' }
+            };
+            const msg = byLang[code] || byLang.en;
+            title.textContent = msg.title;
+            if (titleRight) titleRight.innerHTML = '';
+            modal.classList.add('agent-action-notice');
+            content.innerHTML = `
+                <p class="sec-body" style="margin:0 0 12px;line-height:1.55">${msg.body}</p>
+                <button class="btn btn-w" style="width:100%" onclick="closeLanguageComingSoonModal(event)">${msg.ok}</button>
+            `;
+            modal.classList.add('open');
+        }
+
+        function closeLanguageComingSoonModal(ev) {
+            if (ev) {
+                ev.preventDefault();
+                ev.stopPropagation();
+            }
+            const topModal = document.getElementById('agentActionModal');
+            if (topModal) topModal.classList.remove('open', 'agent-action-notice');
+            const welcome = document.getElementById('welcomeSetupModal');
+            if (welcome) welcome.classList.add('open');
         }
 
         function syncAppLangLabels() {

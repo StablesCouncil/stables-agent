@@ -669,7 +669,7 @@
   window.closeAgentActionModal = function () {
     const modal = document.getElementById('agentActionModal');
     if (!modal) return;
-    modal.classList.remove('open');
+    modal.classList.remove('open', 'agent-action-notice');
   };
   window.toggleSuspiciousTx = function () { if (!selectedTxId) return; if (suspiciousTx.has(selectedTxId)) suspiciousTx.delete(selectedTxId); else suspiciousTx.add(selectedTxId); persistSuspicious(); window.openActivityDetail(selectedTxId); window.renderActivity(); window.renderWalletRecentActivity(); };
   window.hideTransactionFromHistory = function () {
@@ -1671,6 +1671,7 @@
     // This element may not exist after copy/layout updates.
     const elShowcaseFinalMsg = document.getElementById('welcomeShowcaseFinalMsg');
     const elWelcomeCurrencyIntro = document.getElementById('welcomeCurrencyIntro');
+    const elWelcomeCurrencyNote = document.getElementById('welcomeCurrencyNote');
 
     const elNerdTrackTitle = document.getElementById('welcomeNerdTrackTitle');
     const elNerdTrackBody = document.getElementById('welcomeNerdTrackBody');
@@ -1682,8 +1683,9 @@
         congrats: 'Congratulations on becoming your own bank.',
         /** Step 0 only: showcase preview + Telegram (HTML safe, static). */
         welcomeShowcaseIntroHtml:
-          '<p>The following is a first Showcase preview of the Stables dapp being built.</p>' +
-          '<p>The current objective is to share with the Stables community the direction the dev team is currently taking and get feedback from the community.</p>' +
+          '<p>This is a first Showcase preview of the Stables dapp currently in development (<strong style="color:var(--t)">version __APP_VERSION__</strong>).</p>' +
+          '<p>The objective is to share the current direction with the Stables community and collect feedback directly in the app via <strong style="color:var(--t)">More - Feedback</strong>.</p>' +
+          '<p>Updated versions are expected to ship almost daily. If you are viewing this Showcase in your Minima node, please update your local package from <a href="__MDS_REPO_URL__" target="_blank" rel="noopener noreferrer">GitHub</a>. If you are using the web app, no update is needed: the latest version is available directly.</p>' +
           '<p>The Stables community can be reached at <a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer">t.me/stablescommunity</a>.</p>',
         showcaseIntroUnderstandBtn: 'I understand',
         title: '',
@@ -1692,9 +1694,11 @@
           'Don’t worry: we are a community that supports each other. You will be able to find all the information you need in order to set your bank securely.'
         ],
         showcase:
-          'A guided demo tour will be added in a coming version.\n\nFor now you can keep exploring this preview in this app, or access the MiniDapp package for your node.',
+          'A guided demo tour will be added in a coming version.\n\nFor now, keep exploring this preview in the app. You can open the agent from the main bottom icon [AGENT_ICON] or from any small top button in each section as an ice breaker for that context. The agent has limited capacity and may say it is busy, so retry shortly. You can talk to the agent in your language of choice.',
         currencySetupIntro:
           'Let’s just set up your currency of choice now, so that your bank is already personalised.',
+        currencySetupNote:
+          'Chosen currencies are arbitrary for now. In production, currencies will be added as demand appears, and this structure lets us add the main paper currencies quite easily.',
         tourChoiceHint: 'Pick your path for the StablesAgent guided tour.',
         tourMerchantBtn: 'I\'m a merchant. I want to know how this will streamline my business process.',
         tourShopAmbassadorBtn:
@@ -1706,7 +1710,7 @@
         nerdTrackTechBtn: 'Tech + blockchain',
         nerdTrackFinanceBtn: 'Financial side: how Stables is structured and ensures the peg',
         exploreBtn: 'I\'m a viewer. I want to look around.',
-        showcaseHereBtn: 'Keep exploring in this app',
+        showcaseHereBtn: 'OK, I\'ll go explore for now',
         showcaseNodeBtn: 'Access MiniDapp package for my node',
         showcaseFinalMsg: 'See you back on your node.',
         useTitle: 'How will you mainly use the app?',
@@ -1718,7 +1722,15 @@
 
     const c = copy.en;
     if (elShowcaseIntroBody) {
-      const introHtml = c.welcomeShowcaseIntroHtml || '';
+      const cfg = (window && window.STABLES_CONFIG) || {};
+      const rawVersion = String(cfg.APP_BUILD_VERSION || 'unknown').trim();
+      const versionLabel = rawVersion && rawVersion !== 'unknown'
+        ? (rawVersion.startsWith('v') ? rawVersion : `v${rawVersion}`)
+        : 'unknown';
+      const repoUrl = String(cfg.MDS_ZIP_URL || 'https://github.com/StablesCouncil/stablescouncil.github.io/tree/main/dapp/latest-version').trim();
+      const introHtml = String(c.welcomeShowcaseIntroHtml || '')
+        .replace(/__APP_VERSION__/g, versionLabel)
+        .replace(/__MDS_REPO_URL__/g, repoUrl);
       if (introHtml) elShowcaseIntroBody.innerHTML = introHtml;
       else elShowcaseIntroBody.textContent = '';
     }
@@ -1727,6 +1739,9 @@
     }
     if (elWelcomeCurrencyIntro && c.currencySetupIntro) {
       elWelcomeCurrencyIntro.textContent = c.currencySetupIntro;
+    }
+    if (elWelcomeCurrencyNote && c.currencySetupNote) {
+      elWelcomeCurrencyNote.textContent = c.currencySetupNote;
     }
 
     if (!elTitle || !elCongrats || !elIntroBody) return;
@@ -1747,7 +1762,15 @@
       pe.textContent = p;
       elIntroBody.appendChild(pe);
     });
-    if (elShowcase) elShowcase.textContent = c.showcase;
+    if (elShowcase) {
+      const showcaseText = String(c.showcase || '');
+      const iconHtml = '<img src="agent.png" alt="StablesAgent" style="width:16px;height:16px;border-radius:4px;vertical-align:-3px;margin:0 3px">';
+      const showcaseHtml = showcaseText
+        .replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', '\'': '&#39;' }[ch]))
+        .replace(/\n/g, '<br>')
+        .replace(/\[AGENT_ICON\]/g, iconHtml);
+      elShowcase.innerHTML = showcaseHtml;
+    }
     if (elTourChoiceHead) elTourChoiceHead.textContent = c.tourChoiceHint || '';
     if (elExploreBtn) elExploreBtn.textContent = c.exploreBtn;
     if (elTourMerchantBtn) elTourMerchantBtn.textContent = c.tourMerchantBtn;
