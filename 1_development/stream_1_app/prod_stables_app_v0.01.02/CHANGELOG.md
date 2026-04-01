@@ -13,11 +13,16 @@ Active development line after freezing **0.01.01** (public Showcase baseline).
 ### Changed
 
 - Bumped `APP_BUILD_VERSION` / `dapp.conf` to `0.01.02`. `latestPublishedVersion` remains `0.01.01` until a new `.mds.zip` is published to GitHub.
+- **Mint xWiniwa** chart: **Leverage** trace is **EMA-smoothed** (less spiky) while the **last point** still matches live effective leverage.
 
 ### Added
 
 - **Invest → Maximize** tab: copy and outbound links to stake MINIMA via the official Minima **Maximize** MiniDapp (MiniDapps hub + docs).
-- **Mint xWiniwa**: chart **below** the Mint xWiniwa button: **three** traces — **Winiwa · USD** (spot), **xWiniwa · USD** (spot × illustrative leverage), **Leverage** (right axis, **1.02×–1.5×** model from rolling volatility, smoothed); ~365d CoinGecko series as Winiwa spot; not on-chain pricing. Taller plot, tighter side margins; **hover / touch** shows date + values; USD axis clamped so ticks stay non-negative.
+- **Mint xWiniwa**: chart **below** the Mint xWiniwa button: **three** traces — **Winiwa · USD** (spot), **xWiniwa · USD** (spot × leverage), **Leverage** (right axis from **CR% / (CR% − 100%)**, e.g. 130% → 130/30); historical leg interpolates **`CR_HIST_DATA`** with **today** = live `#protocolCRBig`; **Current leverage** row + `SIM_XWM` / mint math use same formula. ~365d CoinGecko Winiwa spot; hover/touch tooltip; tighter margins, taller plot.
+- **Welcome → currencies**: **Unselect all** next to **Select all**; **Save and continue** applies currencies then offers **optional personalisation** (intro + **Step 1–4 of 4**: bank name, profile picture, contacts onboarding, directory preview) with **I'll do that later** on each step; **Open Contacts** finishes setup and opens the Contacts page; **Finish** saves council profile (name + avatar when set) and closes welcome. Bank name step copy clarifies **private vs on transactions**, changeable anytime in **My profile**.
+- **Branding**: MiniDapp **headline** / page **title** / top bar tagline **By Stables on Minima** (replaces “Be your own bank” in those places). **Top bar** shows **My profile** picture and display name (or welcome bank name) when set; subtitle stays **By Stables on Minima**.
+- **Amount inputs**: **Available** balance for the relevant asset next to **Exchange** (send + receive balance hint), **Send** / **Receive** modals, **Create invoice**, **Coverage fund** deposit amount, **Burn Wables** (per selected stable); **MAX** fills the field from that balance (where it already existed for mint / LP, unchanged). Labels refresh with **global UI** and currency changes.
+- **Send / Receive modals**: currency **dropdown options** show **each enabled wallet currency with its balance** (`Code · amount`, tabular numbers, wider select). Refreshes whenever the wallet UI syncs.
 
 ---
 

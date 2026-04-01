@@ -43,8 +43,8 @@ If the user asks “what version is live on the web?” answer **0.01.01** until
 - Location: **Mint** tab → **Mint xWiniwa**, **below** the **Mint xWiniwa** button (not above the form).
 - **Three lines:**
   - **Winiwa · USD (cyan):** about the last **365 days** of spot in **USD**. Data source is **CoinGecko** `market_chart` for the **minima** id (shown in-app as **Winiwa** in this test phase; thinned points for drawing).
-  - **xWiniwa · USD (purple):** **illustrative** strip price **Winiwa_USD × leverage** at each time step (same leverage series as below). **Not** on-chain xWiniwa.
-  - **Leverage (green, right axis):** **illustrative** only. **Not** read from chain. The app maps **rolling volatility** of **Winiwa** log returns into the **1.02×–1.5×** band, then **smooths**. Use for **shape** / **risk intuition**, not exact live leverage.
+  - **xWiniwa · USD (purple):** demo strip **Winiwa_USD × leverage** at each time step (same leverage series as the green line). **Not** on-chain xWiniwa.
+  - **Leverage (green, right axis):** derived from **headline coverage ratio** as **CR% / (CR% − 100%)** (example: **130%** → **130 / 30 ≈ 4.33×**). The chart sweeps **interpolated** values from in-app **`CR_HIST_DATA`** along the time axis and pins the **last** point to the live Treasury **CR** (`#protocolCRBig`). **Not** on-chain. **Current leverage** on the Mint form and **xWiniwa** demo pricing use the **same** formula from the current CR headline.
 - **Hover or drag (touch):** vertical crosshair and a small panel with **calendar date** plus **Winiwa USD**, **xWiniwa USD**, and **leverage** at the nearest sample.
 - If the chart shows **Unavailable.**, the network or API rate limit blocked the fetch (retry later; **MDS.net.GET** on node when `MDS` is present).
 
