@@ -243,8 +243,64 @@
   }
 
   function feedbackNotify(msg, ok) {
-    if (typeof window.showToast === 'function') window.showToast(msg, ok ? { type: 'ok' } : undefined);
-    else alert(msg);
+    if (typeof window.showToast === 'function') {
+      var m = msg != null ? String(msg) : '';
+      if (ok) {
+        window.showToast(m, m.length > 72 ? { prose: true, durationMs: 5500 } : { durationMs: 3500 });
+      } else {
+        window.showToast(m, {
+          prose: true,
+          tone: 'amber',
+          durationMs: Math.min(14000, 5200 + Math.min(m.length * 35, 7000))
+        });
+      }
+    } else {
+      alert(msg);
+    }
+  }
+
+  /**
+   * POST JSON to feedback API. On Minima node use `MDS.net.POST` (no CORS). In browser use `fetch`.
+   */
+  function postFeedbackJson(url, payload) {
+    if (typeof MDS !== 'undefined' && MDS.net && typeof MDS.net.POST === 'function') {
+      return new Promise(function (resolve, reject) {
+        var body = JSON.stringify(payload);
+        MDS.net.POST(url, body, function (resp) {
+          if (!resp) {
+            reject(new Error('No response from node'));
+            return;
+          }
+          if (!resp.status) {
+            reject(new Error(resp.error || 'MDS network request failed'));
+            return;
+          }
+          var t = resp.response || '';
+          var data;
+          try {
+            data = JSON.parse(t);
+          } catch (e) {
+            data = { error: t || 'Invalid JSON', ok: false };
+          }
+          resolve({ res: { ok: true, status: 200 }, data: data, raw: t });
+        });
+      });
+    }
+    return fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (res) {
+      return res.text().then(function (t) {
+        var data;
+        try {
+          data = JSON.parse(t);
+        } catch (e) {
+          data = { error: t || res.statusText };
+        }
+        return { res: res, data: data };
+      });
+    });
   }
 
   function hideSubmitSuccess() {
@@ -278,27 +334,27 @@
     }
     hideSubmitSuccess();
 
-    fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(r.payload)
-    })
-      .then(function (res) {
-        return res.text().then(function (t) {
-          var data;
-          try {
-            data = JSON.parse(t);
-          } catch {
-            data = { error: t || res.statusText };
-          }
-          return { res: res, data: data };
-        });
-      })
+    postFeedbackJson(url, r.payload)
       .then(function (out) {
-        if (!out.res.ok || !out.data.ok) {
-          var rawErr = (out.data && out.data.error) || '';
-          var err = rawErr || 'Send failed (' + out.res.status + ')';
-          if (out.res.status === 404 && String(rawErr).trim() === 'Not found') {
+        var res = out.res;
+        var data = out.data || {};
+        var httpOk = true;
+        if (res && typeof res.ok === 'boolean' && typeof res.status === 'number') {
+          httpOk = res.ok;
+        }
+        if (!httpOk) {
+          var rawErr0 = (data && data.error) || '';
+          var err0 = rawErr0 || 'Send failed (' + (res && res.status) + ')';
+          if (res && res.status === 404 && String(rawErr0).trim() === 'Not found') {
+            err0 =
+              'Feedback API missing (404). Deploy web_agent with POST /api/feedback, or test at http://127.0.0.1 with feedback_submit_server on port 8788.';
+          }
+          throw new Error(err0);
+        }
+        if (!data.ok) {
+          var rawErr = (data && data.error) || '';
+          var err = rawErr || 'Send failed';
+          if (res && res.status === 404 && String(rawErr).trim() === 'Not found') {
             err =
               'Feedback API missing (404). Deploy web_agent with POST /api/feedback, or test at http://127.0.0.1 with feedback_submit_server on port 8788.';
           }
@@ -306,8 +362,8 @@
         }
         var msg =
           'Your feedback was added as ' +
-          (out.data.id || 'a new file') +
-          (out.data.html_url ? '. Open GitHub to view it.' : '. It is in the public folder.');
+          (data.id || 'a new file') +
+          (data.html_url ? '. Open GitHub to view it.' : '. It is in the public folder.');
         showSubmitSuccess(msg);
         el('feedbackStructTitle').value = '';
         el('feedbackStructBody').value = '';
@@ -316,7 +372,13 @@
         el('feedbackStructConsent').checked = false;
       })
       .catch(function (e) {
-        feedbackNotify(e.message || 'Send failed');
+        var msg = e && e.message ? String(e.message) : 'Send failed';
+        if (/failed to fetch|networkerror|load failed/i.test(msg)) {
+          msg =
+            msg +
+            ' If you are on a Minima node, ensure you are online; the app uses the node network for feedback.';
+        }
+        feedbackNotify(msg);
       })
       .finally(function () {
         if (btn) {

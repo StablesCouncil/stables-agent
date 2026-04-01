@@ -871,8 +871,9 @@
     const what = escCouncilHtml(wu.whatChanged || 'See council release notes for this version.').replace(/\n/g, '<br>');
     const detRaw = typeof wu.details === 'string' ? wu.details.trim() : '';
     const det = detRaw ? escCouncilHtml(detRaw).replace(/\n/g, '<br>') : '';
+    const zipName = `Stables_v${latest}.mds.zip`;
     const zipBtn = zipUrl
-      ? `<a class="btn btn-w" style="display:block;text-align:center;margin-top:14px;text-decoration:none;box-sizing:border-box;font-size:14px;font-weight:900;padding:14px 16px" href="${escAttr(zipUrl)}" target="_blank" rel="noopener">Download Stables.mds.zip</a>`
+      ? `<a class="btn btn-w" style="display:block;text-align:center;margin-top:14px;text-decoration:none;box-sizing:border-box;font-size:14px;font-weight:900;padding:14px 16px" href="${escAttr(zipUrl)}" target="_blank" rel="noopener">Download ${escCouncilHtml(zipName)}</a>`
       : '';
 
     return `<div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20"><div class="stitle-row"><div class="stitle">App version</div><button type="button" class="agent-mini-btn" onclick="openAgentExplain('Council communications: app update available and what changed')" title="StablesAgent"><img src="agent.png" alt="StablesAgent"></button></div><div class="card app-section-card" style="padding:14px;margin-bottom:8px;border:1px solid ${crit.border};background:${crit.bg}">
@@ -1715,6 +1716,7 @@
           '<p>This is a first Showcase preview of the Stables dapp currently in development (<strong style="color:var(--t)">version __APP_VERSION__</strong>).</p>' +
           '<p>The objective is to share the current direction with the Stables community and collect feedback directly in the app via <strong style="color:var(--t)">More - Feedback</strong>.</p>' +
           '<p>Updated versions are expected to ship almost daily. If you are viewing this Showcase in your Minima node, please update your local package from <a href="__MDS_REPO_URL__" target="_blank" rel="noopener noreferrer">GitHub</a>. If you are using the web app, no update is needed: the latest version is available directly.</p>' +
+          '<p><strong style="color:var(--t)">Running on a Minima node:</strong> In the MiniDapp list, set Stables to <strong style="color:var(--t)">write mode</strong> (not read mode). Write mode is required for StablesAgent, sending feedback, and other features that use the network.</p>' +
           '<p>The Stables community can be reached at <a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer">t.me/stablescommunity</a>.</p>',
         showcaseIntroUnderstandBtn: 'I understand',
         title: '',
@@ -1723,7 +1725,7 @@
           'Don’t worry: we are a community that supports each other. You will be able to find all the information you need in order to set your bank securely.'
         ],
         showcase:
-          'A guided demo tour will be added in a coming version.\n\nFor now, keep exploring this preview in the app. You can open the agent from the main bottom icon [AGENT_ICON] or from any small top button in each section as an ice breaker for that context. The agent has limited capacity and may say it is busy, so retry shortly. You can talk to the agent in your language of choice.',
+          'On your Minima node, keep this MiniDapp in write mode so StablesAgent and feedback work.\n\nA guided demo tour will be added in a coming version.\n\nFor now, keep exploring this preview in the app. You can open the agent from the main bottom icon [AGENT_ICON] or from any small top button in each section as an ice breaker for that context. The agent has limited capacity and may say it is busy, so retry shortly. You can talk to the agent in your language of choice.',
         currencySetupIntro:
           'Let’s just set up your currency of choice now, so that your bank is already personalised.',
         currencySetupNote:

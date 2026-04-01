@@ -14,9 +14,11 @@ At the start of **every session**, before any work, read these in order:
 
 Then follow the calibration steps in `0_handshake/handshake.md` (including **Step 0b** when the task touches protocol economics or how Stables works in copy).
 
-**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first so you edit the **active** `prod_stables_app_*` folder (currently **v0.01.01**).
+**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first so you edit the **active** `prod_stables_app_*` folder (currently **v0.01.02**). Log **every** user-visible change in **`CHANGELOG.md`** in that folder. For every pushed version, the shipped `README.md` must include a section titled **"What changed in this version"** sourced from `CHANGELOG.md`.
 
 **Protocol economics / mint / burn / xMinima / fees / treasury / protocol comms:** run **handshake Step 0b** before answering: read `0_handshake/protocol_mechanics_spec.md` then `stables_master_reference.md` §14. If any text conflicts, **`protocol_mechanics_spec.md` wins**; note the conflict for review.
+
+**X (Twitter) or any Stables social templates:** apply **`0_handshake/handshake.md` §4** (*Community Communication Rules*). **Mandatory hashtag base on every X post:** `#BYOB #Stablecoin #Minima`; add `#BeYourOwnBank` / `#Stables` if space (280 char limit). **No hashtags** in Telegram community posts. **No em dash (—)** in public copy.
 
 Confirm calibration by stating:
 > "Calibration Active: Working on the basis of the Unified Handshake."  

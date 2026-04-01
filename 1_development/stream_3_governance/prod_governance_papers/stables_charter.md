@@ -591,6 +591,55 @@ Authority becomes procedural and distributed. The founding team's role diminishe
 
 The governance architecture shall include structural protections against capture by large token holders, institutional actors, or the founding team itself. Governance weight shall incorporate time-weighted mechanisms that reward sustained participation over raw capital concentration. No single participant or coordinated group shall be able to override constitutional invariants through governance action.
 
+### VII.6 Council Formation and Founder-to-Council Transfer
+
+The Council shall be constituted as the long-term steward of Stables, and the initiating development team shall transfer operational rights and property to Council governance through a documented, phased handover process.
+
+#### VII.6.1 Transfer Scope
+
+The transfer scope includes, at minimum:
+
+- protocol repositories, build pipelines, and release rights;
+- domains, hosting accounts, communication channels, and agent operations;
+- treasury governance rights, signer powers, and budget execution authority;
+- protocol-related intellectual property, brand assets, and official documentation;
+- operational credentials and infrastructure control required for continuity.
+
+#### VII.6.2 Transfer Principles
+
+The handover must satisfy four principles:
+
+1. **Continuity** — service and protocol operations remain functional during transfer.
+2. **Transparency** — each transfer step is logged and auditable by the community.
+3. **Reversibility during migration windows** — before final lock, predefined fallback procedures exist if a transfer step fails.
+4. **Finality after ratification** — once ratified by governance, founder-exclusive control paths are removed.
+
+#### VII.6.3 Transfer Phases
+
+The founder-to-Council transfer shall occur in ordered phases:
+
+- **Phase A: Inventory and Disclosure**  
+  Full asset-and-rights inventory, including code, infrastructure, credentials classes, contracts, and legal entities where applicable.
+- **Phase B: Shared Control Window**  
+  Temporary dual control (e.g., multi-signature or dual-approval operations) while Council capacity is validated.
+- **Phase C: Council Primary Control**  
+  Council becomes primary operator for treasury, releases, and infrastructure administration.
+- **Phase D: Founder Rights Sunset**  
+  Founder emergency privileges and exclusive admin paths are formally revoked or time-locked under Council policy.
+
+#### VII.6.4 Documentation and Proof of Transfer
+
+Each phase must produce explicit records:
+
+- transfer checklist with completion status,
+- signed handover statements by outgoing and incoming stewards,
+- timestamped evidence of key rotation, permission updates, and admin path removal,
+- public publication of transfer milestones in Council channels and governance records.
+
+#### VII.6.5 Property and Stewardship Distinction
+
+Protocol assets and rights are stewarded for the collectivity. No founder, Council member, or contributor may treat transferred protocol property as personal property once assigned to Council governance. Stewardship rights are fiduciary in nature and bounded by this Charter and approved governance process.
+
 ---
 
 ## ARTICLE VIII — On-Chain Anchoring
@@ -701,6 +750,8 @@ Formal definitions to include:
 
 Beyond protocol-internal and market-structure risks, Stables and its participants depend on **physical infrastructure**, **connectivity**, **continuity of the base layer**, and **the wider monetary and political environment**. The matrix below therefore includes **macro and existential** categories (local and global where relevant): blockchain continuity, power and internet failure, natural catastrophe, unrest, legal prohibition, and **regime transitions** in how humanity settles value (fiat erosion, CBDCs, commodity standards, or novel mediums such as energy- or power-linked exchange). Mitigations for these categories are partly structural (redundancy, transparency, optional offline or mesh directions) and partly **outside the protocol’s control**; the Charter records them so they are not ignored in deliberation or disclosure.
 
+Connectivity monitoring shall explicitly include **internet shortage conditions** (degraded bandwidth, persistent intermittence, and local service scarcity). As part of resilience planning, Stables shall evaluate whether merchant-customer transaction flows can be supported through alternative local communication paths (including Bluetooth-class proximity links and other mesh-like relays) while preserving deterministic settlement guarantees at the base-layer boundary.
+
 **Cryptography is not assumed permanent.** No system of signatures, hashes, key agreement, or proofs is treated as **everlasting**. Assumptions are **time-bounded**: **quantum computing**, new cryptanalysis, or other technologies may eventually **break or weaken** today’s primitives. Stewardship therefore includes **monitoring the threat landscape**, **planning migration paths** (e.g. post-quantum algorithms, key rotation, protocol upgrades within governance), and **honest disclosure** that security is **provisional** — strong for an era, not guaranteed for all future eras.
 
 Risk categories to be addressed:
@@ -721,7 +772,7 @@ Risk categories to be addressed:
 | 12 | **Confidence Risk** | Total or prolonged loss of merchant and participant confidence, leading to system contraction |
 | 13 | **Base-Layer Continuity Risk** | Stoppage, prolonged disruption, contentious fork, or effective destruction of the Minima blockchain or its consensus |
 | 14 | **Power Supply Risk** | Loss or instability of electricity locally, regionally, or at global scale affecting nodes, devices, and users |
-| 15 | **Connectivity Risk** | Internet or backbone outage locally or globally; dependency on third-party networks and DNS |
+| 15 | **Connectivity Risk** | Internet or backbone outage locally or globally; dependency on third-party networks and DNS; internet shortage, degraded bandwidth, or intermittent service in local markets |
 | 16 | **Natural Disaster Risk** | All hazard types (geophysical, climatic, biological, etc.), localised or widespread, affecting infrastructure and human continuity |
 | 17 | **Political and Civil Unrest Risk** | Conflict, instability, sanctions, or disorder affecting access, settlement, or adoption |
 | 18 | **Jurisdictional Prohibition Risk** | Bans, blocking, delisting, or criminalisation of app or protocol use in one jurisdiction or across many |

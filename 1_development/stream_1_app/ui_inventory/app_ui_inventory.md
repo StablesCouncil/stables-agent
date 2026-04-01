@@ -1,6 +1,6 @@
 # Stables MiniDapp — UI inventory
 **Status**: MANDATORY reference when adding/removing screens or sections.  
-**Source**: `1_development/stream_1_app/prod_stables_app_v0.01.01/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Active folder**: `0_handshake/minidapp_version.md`.  
+**Source**: `1_development/stream_1_app/prod_stables_app_v0.01.02/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Active folder**: `0_handshake/minidapp_version.md`.  
 **Companion**: `web_component_spec.md` (patterns), `handshake.md` (single executable + this map).
 
 ## How to use
@@ -121,9 +121,10 @@
 |--|--|
 | **Nav** | Bottom tab |
 | **Page header** | Invest · My holdings, pools, and protocol tools |
-| **Sections** | Tab row → **Coverage Fund** / **Liquidity funds** panels (`pool-section-title`: Coverage fund / Liquidity funds). **Coverage fund** card: no duplicate title inside card; **Last 30 days perf** (30d metrics + `cfMonthChart` / `cfNavLineOverlay` + `cfDaySlider`; under-chart `cfFeesDay` / `cfYieldDay` only); **Historical performance** (`cfHistChart` / `cfHistNavOverlay`, `cfHistFoot`); **Fund composition** + token/NAV grid; **My available balances** + deposit/withdraw. LP panel: **current liquidity by bucket**, **Add liquidity**, CTA to Exchange. Top **My holdings** removed (simulator drawer). |
+| **Sections** | Tab row → **My investment** / **Coverage fund** / **Liquidity funds** / **Maximize** (`iTabMI` / `iTabCF` / `iTabLP` / `iTabMX`). **My investment**: portfolio summary + **My available balances**. **Maximize** (`panelMX`): stake MINIMA via official Minima MiniDapp; outbound links. **Coverage fund** (`pool-section-title`): **Last 30 days perf** (30d metrics + `cfMonthChart` / `cfNavLineOverlay` + `cfDaySlider`; under-chart `cfFeesDay` / `cfYieldDay` only); **Historical performance** (`cfHistChart` / `cfHistNavOverlay`, `cfHistFoot`); **Fund composition** + token/NAV grid; deposit/withdraw. **Liquidity funds** LP panel: **current liquidity by bucket**, **Add liquidity**, CTA to Exchange. Top **My holdings** removed (simulator drawer). |
 | **Panel CF** | `stitle-row` with `pool-section-title` + agent → `cp-card` |
 | **Panel LP** | `stitle-row` with `pool-section-title` + agent → `lp-card` |
+| **Panel MX** | `stitle-row` **Stake MINIMA** + agent → `cp-card` (Maximize / hub links) |
 
 ---
 
@@ -142,7 +143,7 @@
 | **Nav** | Bottom tab |
 | **Page header** | Mint · Mint and burn xWiniwa and Wables |
 | **Extra** | Tab row xWiniwa / Wables |
-| **Sections** | Mint & burn xWiniwa → `xwm-card`; Mint & burn Wables → `card` (panel toggle) |
+| **Sections** | **Mint xWiniwa** panel: Mint & burn xWiniwa → `xwm-card`; under **Mint xWiniwa** button, `xwmLeverageChart*` (Winiwa USD, xWiniwa USD, Leverage ×); Mint & burn Wables → `card` (panel toggle) |
 
 ---
 
@@ -290,6 +291,8 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | `contactShopBtn` | `page-contacts` | `openSelectedContactShop()` · Shop profile |
 | `iTabCF` | `page-invest` | `setInvestTab('cf')` · Coverage Fund |
 | `iTabLP` | `page-invest` | `setInvestTab('lp')` · Liquidity funds |
+| `iTabMX` | `page-invest` | `setInvestTab('mx')` · Maximize (stake MINIMA) |
+| `iTabMI` | `page-invest` | `setInvestTab('mi')` · My investment |
 | `privToggle` | `recvModal` | `togglePrivacy()` · 🔒 Auto |
 | `shapeBidAsk` | `page-invest` (LP) | `setLpShape('bidask')` |
 | `shapeCurve` | `page-invest` (LP) | `setLpShape('curve')` |
@@ -384,6 +387,8 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-22 | Top bar: **Only in node** when no MDS (no simulated block); `.sync-pill--placeholder`. Treasury stress: Winiwa price stack **above** `%` row, then slider. |
 | 2026-03-22 | Treasury stress: Winiwa **6 dp** (`fmtWiniwaUSD6`); USD tick row above track; **%** tick row (`.treasury-slider-pct-row`) below track; thumb `#treasurySliderThumbPrice` above axis / `#treasurySliderThumbPct` below; removed `#protocolSliderPct`; `calcSlider` falls back to `#protocolSlider`. |
 | 2026-03-30 | **Source path** → `prod_stables_app_v0.01.01/` (see `minidapp_version.md`). |
+| 2026-03-31 | **Source path** → `prod_stables_app_v0.01.02/`; v0.01.01 frozen to `3_archive/.../prod_stables_app_v0.01.01/`; `CHANGELOG.md` in active folder for release notes. |
+| 2026-04-01 | Invest: **Maximize** tab (`panelMX`, `iTabMX`); Mint xWiniwa: `xwmLeverageChart*` below Mint CTA (dual axis USD + leverage). |
 | 2026-03-23 | Currency defaults: `CNYw` is **on** by default in **Settings → Currencies to Display** and **Welcome → Preferred currencies**. |
 | 2026-03-23 | CNY presentation copy/icon: `Renminbi Yuan`; primary card emoji in `CCY_META` uses `🐼` for parity with themed currency icons (🍁, 🦘, 🧀, etc.). |
 | 2026-03-23 | Primary-currency default: `EURw` is now first/default (wallet initial shell + `BASE_CCY='EURw'`; welcome fallback prefers `EURw` when available). |

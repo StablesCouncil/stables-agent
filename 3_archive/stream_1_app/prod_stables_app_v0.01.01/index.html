@@ -2057,6 +2057,9 @@
             font-size: var(--fz-caption);
             line-height: 1.5;
             font-weight: 700;
+            word-wrap: break-word;
+            overflow-wrap: anywhere;
+            hyphens: auto;
         }
 
         /* Prose toasts that should read as a centered on-screen notice (not above bottom nav) */
@@ -5874,7 +5877,7 @@
                     Release notes and new prototype drops will show up here as we ship. For now, use the link below to download the latest Stables MiniDapp package for my Minima node (MDS zip on GitHub).
                 </div>
                 <a id="settingsMdsZipLink" class="btn btn-w" style="flex:1;min-width:220px;font-size:14px;font-weight:900;display:block;text-align:center;width:100%;text-decoration:none;box-sizing:border-box"
-                    href="#" target="_blank" rel="noopener">Download Stables.mds.zip</a>
+                    href="#" target="_blank" rel="noopener">Download Stables_v0.01.01.mds.zip</a>
                 <div class="xs mu" id="settingsMdsZipUrlLabel" style="margin-top:10px;word-break:break-all;line-height:1.45;opacity:.9"></div>
             </div>
             </div>
@@ -6987,7 +6990,7 @@
                 style="font-size:13px;font-weight:900;color:#34d399;margin-bottom:10px;text-align:center">Added to the
                 public ledger</div>
             <p class="xs mu" id="feedbackSuccessModalBody"
-                style="margin:0 0 18px;line-height:1.55;font-weight:800;color:var(--t);text-align:center"></p>
+                style="margin:0 0 18px;line-height:1.55;font-weight:800;color:var(--t);text-align:center;word-wrap:break-word;overflow-wrap:anywhere;max-width:100%"></p>
             <button type="button" class="btn btn-w btn-lg" style="width:100%"
                 onclick="closeModal('feedbackSuccessModal')">OK</button>
         </div>
@@ -7186,6 +7189,14 @@
     <script>
         const PAGES = ['wallet', 'invest', 'exchange', 'onoff-ramp', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback', 'help-links'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
+        const INVEST_TAB_STORAGE_KEY = 'stables_invest_tab_v1';
+        function getSavedInvestTab() {
+            try {
+                const v = localStorage.getItem(INVEST_TAB_STORAGE_KEY);
+                if (v === 'cf' || v === 'lp' || v === 'mi') return v;
+            } catch (_) { /* ignore */ }
+            return 'mi';
+        }
         let curPage = 'wallet';
         const MERCHANT_MODE_KEY = 'stables_user_role_merchant_v1';
         const MERCHANT_SELF_ID_KEY = 'stables_merchant_self_id_v1';
@@ -7441,7 +7452,9 @@
             const buildVersion = window.STABLES_CONFIG && window.STABLES_CONFIG.APP_BUILD_VERSION;
             const link = document.getElementById('settingsMdsZipLink');
             const label = document.getElementById('settingsMdsZipUrlLabel');
+            const zipLabel = buildVersion ? ('Download Stables_v' + String(buildVersion).trim() + '.mds.zip') : 'Download Stables package (.mds.zip)';
             if (link) {
+                link.textContent = zipLabel;
                 if (url) {
                     link.href = url;
                     link.onclick = null;
@@ -7539,6 +7552,9 @@
                 if (typeof renderTreasuryTransactionsList === 'function') renderTreasuryTransactionsList();
             }
             if (p === 'treasury' && typeof updateGlobalUI === 'function') updateGlobalUI();
+            if (p === 'invest' && typeof setInvestTab === 'function') {
+                setInvestTab(getSavedInvestTab());
+            }
             if (p === 'feedback') {
                 try {
                     if (typeof window.renderFeedbackPage === 'function') window.renderFeedbackPage();
@@ -7573,12 +7589,20 @@
         function getAgentContext() {
             return (curPage || 'wallet');
         }
-        function buildAgentUrl(ctx) {
+        /** On Minima node, iframe embed is often blocked; prefer system browser when MDS is present. */
+        function stablesAgentOpenExternalPreferred() {
+            const c = window.STABLES_CONFIG || {};
+            if (c.STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS === false) return false;
+            return typeof MDS !== 'undefined';
+        }
+        function buildAgentUrl(ctx, suggestText) {
             const base = 'https://agent.stablescouncil.org/chat';
             const params = new URLSearchParams();
             params.set('embed', '1');
             params.set('ctx', ctx);
             params.set('meta', JSON.stringify({ page: ctx, ts: Date.now() }));
+            const s = suggestText != null ? String(suggestText).trim() : '';
+            if (s) params.set('suggest', s.slice(0, 4000));
             return `${base}?${params.toString()}`;
         }
         function refreshAgentContextIfOpen() {
@@ -7595,6 +7619,15 @@
             }
         }
         function openAgent() {
+            if (stablesAgentOpenExternalPreferred()) {
+                const ctx = getAgentContext();
+                const url = buildAgentUrl(ctx);
+                const w = window.open(url, '_blank', 'noopener,noreferrer');
+                if (w) {
+                    if (typeof showToast === 'function') showToast('StablesAgent opened in your browser');
+                    return;
+                }
+            }
             const d = document.getElementById('agentDrawer');
             if (!d) return;
             d.classList.add('open', 'vis');
@@ -7647,6 +7680,15 @@
             }
 
             const finalText = name ? `${question}${detailsForPrompt ? `\n\n${detailsForPrompt}` : ''}` : '';
+            if (stablesAgentOpenExternalPreferred()) {
+                const ctxForUrl = promptCtx || getAgentContext();
+                const url = buildAgentUrl(ctxForUrl, finalText);
+                const w = window.open(url, '_blank', 'noopener,noreferrer');
+                if (w) {
+                    if (typeof showToast === 'function') showToast('StablesAgent opened in your browser');
+                    return;
+                }
+            }
             const frame = document.getElementById('agentFrame');
             if (!frame) return;
             const suggestKey = `${promptCtx}::${finalText}`;
@@ -7712,11 +7754,19 @@
 
         /** Open agent drawer and auto-send an exact first message (same postMessage contract as openAgentExplain). */
         function openAgentWithSuggestedPrompt(text, ctxPayload, ctxDisplayLabel) {
-            const frame = document.getElementById('agentFrame');
-            if (!frame) return;
             const promptCtx = String(ctxPayload || 'help').trim() || 'help';
             const finalText = String(text || '').trim();
             if (!finalText) return;
+            if (stablesAgentOpenExternalPreferred()) {
+                const url = buildAgentUrl(promptCtx, finalText);
+                const w = window.open(url, '_blank', 'noopener,noreferrer');
+                if (w) {
+                    if (typeof showToast === 'function') showToast('StablesAgent opened in your browser');
+                    return;
+                }
+            }
+            const frame = document.getElementById('agentFrame');
+            if (!frame) return;
             const suggestKey = `${promptCtx}::${finalText}`;
             const needsLoad = !frame.src || frame.src === 'about:blank';
             const payload = {
@@ -7885,21 +7935,25 @@
         }
 
         function setInvestTab(t) {
+            const tab = t === 'cf' ? 'cf' : (t === 'lp' ? 'lp' : 'mi');
+            try {
+                localStorage.setItem(INVEST_TAB_STORAGE_KEY, tab);
+            } catch (_) { /* ignore */ }
             ['iTabMI', 'iTabCF', 'iTabLP'].forEach(id => { const el = document.getElementById(id); if (el) el.classList.remove('active'); });
-            const tabId = t === 'cf' ? 'iTabCF' : (t === 'lp' ? 'iTabLP' : 'iTabMI');
+            const tabId = tab === 'cf' ? 'iTabCF' : (tab === 'lp' ? 'iTabLP' : 'iTabMI');
             const active = document.getElementById(tabId);
             if (active) active.classList.add('active');
             const panMi = document.getElementById('panelMI');
             const panCf = document.getElementById('panelCF');
             const panLp = document.getElementById('panelLP');
-            if (panMi) panMi.style.display = t === 'mi' ? '' : 'none';
-            if (panCf) panCf.style.display = t === 'cf' ? '' : 'none';
-            if (panLp) panLp.style.display = t === 'lp' ? '' : 'none';
-            if (t === 'lp') {
+            if (panMi) panMi.style.display = tab === 'mi' ? '' : 'none';
+            if (panCf) panCf.style.display = tab === 'cf' ? '' : 'none';
+            if (panLp) panLp.style.display = tab === 'lp' ? '' : 'none';
+            if (tab === 'lp') {
                 renderLpLiveBins();
                 renderHeatmap();
                 syncLpBaseUI();
-            } else if (t === 'cf') {
+            } else if (tab === 'cf') {
                 renderCoverageFundPanel();
             } else {
                 renderInvestSummaryTable();

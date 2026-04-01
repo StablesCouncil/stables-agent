@@ -55,6 +55,7 @@
 | `multi_platform_content_strategy.md` | `2_current/plan/` | Platform hierarchy, tone per channel, posting schedule. |
 | `platform_tone_guide.md` | `2_current/plan/` | Per-platform tone rules (Instagram vs X vs Telegram etc.). |
 | `links.md` | `0_handshake/` | All official Stables URLs in one place. Reference before writing any link. |
+| `handshake.md` §4 | `0_handshake/` | **X/Twitter:** mandatory hashtags (`#BYOB #Stablecoin #Minima` + add-ons per §4), no hashtags in Telegram, no em dash (—). Load before drafting X posts or social templates. |
 
 ### LAYER 4 — STABLESAGENT BRAIN (Load when working on the agent or its knowledge)
 

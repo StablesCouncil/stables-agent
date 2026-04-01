@@ -117,7 +117,7 @@ To protect your work against hardware failure (a "glass of water"):
 ### Messaging Rules (Set in Stone)
 *   **Target**: General public worldwide.
 *   **No Jargon**: Do NOT use crypto or DeFi-specific terms like "decentralized" in any external communication or copy for the general public. These terms do not resonate with our target audience.
-*   **Hashtags Exception**: Use the core set `#Minima #Stables #BeYourOwnBank #stablecoin` for community reach and discovery on social platforms. Other technical terms (e.g. #decentralized, #defi) are permitted but these four are the priority.
+*   **Hashtags (X/Twitter):** **Authoritative rule:** `handshake.md` §4 (*X/Twitter Specifics*). **Mandatory base set on every X post:** `#BYOB #Stablecoin #Minima`; then if space allows, `#BeYourOwnBank`, then tags such as `#Stables`. Do not substitute a different “core set” without updating `handshake.md` first. **Never** hashtags in Telegram community posts.
 *   **Strict Tagline**: Use ONLY **"Money that is truly yours. Secure, Pseudonymous and Unstoppable."**
 *   **MANDATORY ATTRIBUTION**: Official presentations and marketing materials MUST include "Built on MINIMA" badge or text with link to https://minima.global where applicable. Social media communications (Telegram, X) are exempt from this requirement as the technical link is implied.
 *   **Human Writing Style**: NEVER use AI writing markers in social media posts, comments, or public communication:

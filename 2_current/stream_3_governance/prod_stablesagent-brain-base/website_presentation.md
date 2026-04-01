@@ -21,6 +21,11 @@ Advanced tools for those who want to do more than just pay.
 ## The Core Concept
 Let's be our own banking system. The Network of Everybody's Own Bank.
 
+## Stables Showcase MiniDapp (preview)
+
+- The public site **https://stablescouncil.org/** uses a primary call-to-action **Test the showcase**, which opens **https://stablescouncil.org/dapp/** (Showcase web entry). A full-page **All Links** control may appear lower on the page; the hero area focuses on the single showcase CTA.
+- **Published** web and zip versions follow **`dapp/latest-version/`** on GitHub Pages (see **`minidapp_showcase_app.md`** for frozen vs active dev line). On a **Minima node**, install the versioned **`.mds.zip`** from that folder and set the MiniDapp to **write mode** (not read mode) for StablesAgent and structured feedback.
+
 ## StablesAgent and the Knowledge Base
 
 StablesAgent is the official AI assistant for the Stables community. It can be reached in the following ways:
@@ -31,9 +36,8 @@ StablesAgent is the official AI assistant for the Stables community. It can be r
 
 Anyone who prefers to use their own AI (ChatGPT, Grok, Claude, or any other tool) can access the full Stables knowledge base using this direct link:
 
-https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt
+https://raw.githubusercontent.com/StablesCouncil/stablesagent-brain-base/main/llms.txt
 
 To use it, paste that link into any AI and say: "Learn everything in this file." The AI will then be able to answer any question about Stables in detail and in any language.
 
-The knowledge base and all anonymous interaction logs are publicly available at:
-https://github.com/StablesCouncil/stables-agent
+The knowledge base source files and generated rollup live with the Council’s public brain-base repository; interaction logs may be published per that repo’s README.

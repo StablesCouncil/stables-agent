@@ -1,7 +1,7 @@
 // Runtime configuration for UI behavior and local persistence.
 window.STABLES_CONFIG = {
   /** Shipped build (keep in sync with dapp.conf "version" when you release). */
-  APP_BUILD_VERSION: '0.01.01',
+  APP_BUILD_VERSION: '0.01.02',
   /**
    * Council-side view of the newest MiniDapp. If latestPublishedVersion sorts above APP_BUILD_VERSION,
    * the Council communications page shows criticality + what changed + zip link.
@@ -14,7 +14,7 @@ window.STABLES_CONFIG = {
       whatChanged:
         'Example when an update ships: security fixes, mandatory protocol UI changes, or critical Minima MDS fixes.',
       details:
-        'Install the new Stables.mds.zip on my node from the link below, or use Settings and updates.'
+        'Install the new Stables_v0.01.01.mds.zip on my node from the link below, or use Settings and updates.'
     }
   },
   ACTIVITY_PAGE_SIZE: 25,
@@ -58,6 +58,11 @@ window.STABLES_CONFIG = {
    * FEEDBACK_SKIP_LOCAL_SUBMIT: true to hit this URL from a local static server instead.
    */
   FEEDBACK_SUBMIT_URL: 'https://agent.stablescouncil.org/api/feedback',
+  /**
+   * If `window.MDS` exists: feedback uses `MDS.net.POST` (no CORS); StablesAgent can open in the system browser
+   * (see STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS) instead of a blocked iframe.
+   */
+  STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS: true,
   /**
    * MEXC ticker for MINIMA/USDT. Prefer the 24h endpoint: same last price as spot plus quote volume (USDT)
    * for Treasury liquidity readouts. In MiniDapp, `MDS.net.GET` is used (no CORS issue).

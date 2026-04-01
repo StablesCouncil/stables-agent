@@ -27,6 +27,7 @@
 2. **Charter vs mechanics:** Charter sets **intent and governance**; mechanics spec sets **exact protocol behaviour**. Public copy can follow the Charter’s simplicity; internal and agent answers must still match mechanics.
 3. **Handshake Step 0b:** For anything touching mint, burn, xMinima, Stables, fees, CR, treasury, or protocol explanations, run **`handshake.md` [Step 0b]** before writing.
 4. **Promotion:** Draft in `1_development` → you review → you promote to `2_current` → brain ingest when the brain must quote it.
+5. **X (Twitter) copy (mandatory):** Before drafting or editing **any** X post, read **`handshake.md` §4** (*Community Communication Rules* → *X/Twitter Specifics (STRICT)*). **Hashtags are required on every X post.** **Mandatory base set:** `#BYOB #Stablecoin #Minima`. **If space remains** within 280 characters, add `#BeYourOwnBank`, then other relevant tags (e.g. `#Stables`). **Never** use hashtags in Telegram community posts. **Never** use an em dash (—) in public copy (same section). If `stables_master_reference.md` messaging bullets disagree on hashtag wording, **`handshake.md` §4 wins.**
 
 ---
 
@@ -42,6 +43,6 @@ Paste:
 
 - When the **Charter** changes meaningfully: update promoted copy under `2_current/.../prod_stables_charter/`, then brain files, run **`node build_llms_txt.js`** in `prod_stablesagent-brain-base/`, and **ingest** if the Telegram/web agent should quote it.
 - When **mechanics** change: edit `0_handshake/protocol_mechanics_spec.md` first, mirror to `2_current` when promoted, reconcile `stables_master_reference.md` §14, then brain + ingest.
-- When the **app** changes: bump `minidapp_version.md` if needed, update `app_ui_inventory.md`.
+- When the **app** changes: bump `minidapp_version.md` if needed, update `app_ui_inventory.md`, and add entries to the active MiniDapp **`CHANGELOG.md`** (`prod_stables_app_*/CHANGELOG.md`) for anything worth communicating on release.
 
-**Last updated:** 2026-03-29 (Step 0c: full `llms.txt` parity with StablesAgent).
+**Last updated:** 2026-03-31 (Rule 5: X hashtag mandate points to `handshake.md` §4.)
