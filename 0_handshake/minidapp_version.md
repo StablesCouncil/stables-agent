@@ -9,6 +9,7 @@
 | **Channel** | **showcase** (for this current line) |
 | **Executable shell (CSS + pages)** | `prod_stables_app_v00.00.02/index.html` (`<style>` block) |
 | **Change log (comms / releases)** | `prod_stables_app_v00.00.02/CHANGELOG.md` — update with every user-visible or release-worthy change; copy sections into posts when you ship. |
+| **Local shipped vs dev (mandatory for comms)** | `0_handshake/minidapp_version_log.md` — what counts as **v00.00.02** vs post-cut work (e.g. **The Stables Academy is not v00.00.02**). |
 | **UI inventory** | `1_development/stream_1_app/ui_inventory/app_ui_inventory.md` (source path must match active folder in that file’s header) |
 | **Frozen v0.01.01 (Showcase public baseline)** | `3_archive/stream_1_app/prod_stables_app_v0.01.01/` — see `FROZEN.md` inside. Published zip: `Stables_v0.01.01.mds.zip` on Pages `dapp/latest-version/`. |
 | **Frozen v0.2.11** | `3_archive/stream_1_app/prod_stables_app_v0.2.11/` |

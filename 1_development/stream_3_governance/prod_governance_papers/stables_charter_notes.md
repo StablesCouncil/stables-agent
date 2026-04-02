@@ -160,3 +160,21 @@ Reinforced the preference for **Deterministic Mechanics** over discretionary gov
 
 ### 4. Anchoring the "Living Brain"
 The `0_handshake/stables_master_reference.md` serves as the primary memory anchor to prevent AI session amnesia. Any high-level philosophical or architectural consensus must be moved there immediately to lock it into the AI's "Handshake" state.
+
+---
+
+## Session Notes: Stables Academy (Draft Policy)
+
+Working policy for integration into Charter + companion text:
+
+- The Stables Academy is a structured learning path for critical user topics (security, day-to-day management, blockchain literacy, merchant operations, Council, and general protocol understanding).
+- Each Academy topic has a questionnaire format with randomized questions from a larger bank.
+- For the live Security topic prototype:
+  - 10 questions are drawn randomly.
+  - Each question has 3 possible answers.
+  - Minimum threshold is 6/10 plus all mandatory security questions correct.
+  - Retake uses a cool-down period (implementation detail may change).
+  - Highest score is retained.
+- Completion produces a lightweight completion certificate.
+- Users can choose to share anonymized demographic + score telemetry to improve community communications and education planning.
+- Strategic governance direction: Academy completion across all required topics becomes a prerequisite before Ambassador onboarding is considered complete.

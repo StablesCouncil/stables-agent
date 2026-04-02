@@ -6,13 +6,28 @@
 
 ---
 
-## [00.00.02] — Unreleased
+## [Unreleased]
 
-Active development line after freezing **0.01.01** (public Showcase baseline).
+Post–**v00.00.02** work in the active dev folder. **Do not** describe these items as part of showcase **v00.00.02** in public posts until this section is merged into a new released label and zip.
 
 ### Changed
 
-- Bumped `APP_BUILD_VERSION` / `dapp.conf` to `00.00.02`. `latestPublishedVersion` remains `00.00.01` until a new `.mds.zip` is published to GitHub.
+- **Help, Stables Academy:** subtitle under the page title now reads **Questionnaires, score tracking, certificates** (plural).
+
+- **Social link previews (X / Discord / others):** added Open Graph and Twitter Card meta tags on the showcase shell with canonical URL `https://stablescouncil.org/dapp/` and preview image `agent.png`, plus `twitter:site` (`@StablesCouncil`), `og:image` width/height (640 to match `agent.png`), and alt text without em dash per Stables comms rules so pasted links can show title, description, and image after crawlers refresh.
+
+- **Help → The Stables Academy** (first Help item): Security questionnaire (10 random from bank, 3 options, mandatory gate + minimum 6/10), retake cool-down, best score kept, optional demographics after quiz, anonymized public-DB consent, certificate + share; other topics listed as coming soon.
+- **Stables Academy Security flow:** one question at a time; demographics and consent after the 10 knowledge questions; choice to show correctness **after each answer** or **only at the end**.
+
+---
+
+## [00.00.02] — 2026-04-02 (showcase published)
+
+Released showcase build **v00.00.02** (“v2”). See `0_handshake/minidapp_version_log.md` for scope vs later dev-only features (**Academy is not in this release**).
+
+### Changed
+
+- Bumped `APP_BUILD_VERSION` / `dapp.conf` to `00.00.02` for the published showcase line (aligned with published zip when shipped).
 - **Mint xWiniwa** chart now uses an **EMA-smoothed leverage trace** while preserving the same live endpoint value.
 - **Legal & notices / Privacy** were consolidated: legal section retitled to **Minima dependencies**, copy clarified around architecture/device responsibility/self-custody framing, privacy wording shifted to **local-storage/no telemetry from this static copy**, and security/legal blocks gained clearer StablesAgent/Charter guidance via `openStablesCharterUrl()`.
 - **On/Off Ramp** was rebuilt into a release-ready flow: mirrored **6-step on-ramp/off-ramp**, clearer venue/bridge ordering, section title **Where to buy Minima**, and a single **Paper ↔ Stables (And back)** visual with icon references and optional-step styling.

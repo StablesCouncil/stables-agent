@@ -109,3 +109,15 @@ The Stables Ambassador program is a professional, incentivized network designed 
 The system is mathematically balanced so that "self-onboarding" (bypassing an ambassador) is always more expensive than joining a mentored hub. This ensures the human layer (Ambassadors) is protected by the ledger's logic.
 
 **The StablesAgent's Role (Ambassador Support):** The Agent provides 24/7 technical and strategic support for Ambassadors, helping them manage their Hubs and merchant campaigns.
+
+## 9. Stables Academy (Education Layer, Draft)
+
+Stables Academy is a practical education layer for users and merchants who want to manage sovereign banking safely.
+
+- **Purpose:** improve real-world operational confidence topic by topic, starting with security.
+- **Quiz model (current prototype):** each attempt draws 10 questions from a larger question bank, each with 3 options.
+- **Pass logic:** no single "perfect score" requirement. Pass requires a minimum threshold (6/10) and mandatory critical questions correct.
+- **Progression logic:** retake cool-down, best score retained.
+- **Community learning feedback:** users can optionally authorize anonymized demographic + score contribution to a public learning database used to improve communication priorities.
+- **Recognition:** successful completion unlocks a lightweight certificate and social sharing.
+- **Ambassador path direction:** completing all Academy core topics is being positioned as an onboarding prerequisite for Ambassador status once the full topic set is live.
