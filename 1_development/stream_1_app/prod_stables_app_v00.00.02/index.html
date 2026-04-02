@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stables — By Stables on Minima</title>
+    <title>Stables - BYOB</title>
     <!-- Official Favicon -->
     <link rel="icon" type="image/png" href="stables_icon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3731,7 +3731,7 @@
             <img id="topbarBrandImg" src="stables_icon.png" alt="Stables" style="width:34px;height:34px;flex-shrink:0">
             <div style="display:flex;flex-direction:column;justify-content:center;min-width:0">
                 <span id="topbarBrandName" class="brand-name">Stables</span>
-                <span id="topbarBrandSub" class="brand-sub">By Stables on Minima</span>
+                <span id="topbarBrandSub" class="brand-sub">Be your own bank</span>
             </div>
             <div id="topbarBrandTooltip" class="brand-hover-tip" role="tooltip">
                 <span class="brand-hover-tip__text">My bank made possible by Stables on Minima</span>
@@ -3739,7 +3739,7 @@
         </div>
     <!-- Column 2: Test Pill (Center) -->
     <div id="topbarShowcasePill" class="test-pill" style="justify-self: center;cursor:default">
-        Showcase · v0.01.02
+        Showcase · v00.00.02
     </div>
     <!-- Column 3: Sync Pill (Right) -->
     <div class="sync-pill sync-pill--placeholder" title="Block height from your node (MDS)." style="justify-self: end;">
@@ -5413,6 +5413,118 @@
             <div id="feedbackApp"></div>
         </div>
 
+        <!-- HELP: STABLES ACADEMY (More → Help) -->
+        <div class="page" id="page-help-academy">
+            <header class="app-page-header">
+                <div class="dic" aria-hidden="true">&#x1F393;</div>
+                <div class="app-page-header__text">
+                    <div class="app-page-header__title">The Stables Academy</div>
+                    <div class="app-page-header__sub">Weekly quiz, score tracking, certificate</div>
+                </div>
+            </header>
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
+                <div class="stitle-row">
+                    <div class="stitle">Academy topics</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Stables Academy: weekly quiz model, anonymized learning analytics, and topic progression')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:14px 16px;margin-bottom:12px">
+                    <p class="sec-body" style="margin:0 0 8px;line-height:1.5">
+                        Complete topic questionnaires to build practical banking confidence. Retake is weekly, and your
+                        <strong style="color:var(--t)">highest score</strong> is kept.
+                    </p>
+                    <p class="xs mu" style="margin:0 0 12px;line-height:1.45">
+                        Prerequisite path for Ambassador status: all Academy topics completed (policy drafted, full enforcement comes with all topics live).
+                    </p>
+                    <div class="xs mu" style="margin:0 0 10px;line-height:1.45">
+                        What happens if:<br>
+                        You fail, we are the responsible. Is that we need to explain our banking system better.<br>
+                        If you succeed:<br>
+                        You are a damn genious, and are ready to manage your bank as any other banker out there!
+                    </div>
+                    <div class="buttons">
+                        <a class="btn btn-secondary" href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer">Open Academy Telegram topic</a>
+                    </div>
+                </div>
+                <div class="card app-section-card" style="padding:10px 12px;margin-bottom:12px">
+                    <button type="button" class="btn" style="width:100%;margin-bottom:8px;text-align:left"
+                        onclick="openAcademyTopic('security')"><span id="academyTopicBadge-security">☆</span> Security</button>
+                    <button type="button" class="btn" style="width:100%;margin-bottom:8px;text-align:left"
+                        onclick="openAcademyTopic('day')"><span id="academyTopicBadge-day">☆</span> Day-to-day management (coming soon)</button>
+                    <button type="button" class="btn" style="width:100%;margin-bottom:8px;text-align:left"
+                        onclick="openAcademyTopic('blockchain')"><span id="academyTopicBadge-blockchain">☆</span> Blockchain / crypto (coming soon)</button>
+                    <button type="button" class="btn" style="width:100%;margin-bottom:8px;text-align:left"
+                        onclick="openAcademyTopic('shop')"><span id="academyTopicBadge-shop">☆</span> My shop (coming soon)</button>
+                    <button type="button" class="btn" style="width:100%;margin-bottom:8px;text-align:left"
+                        onclick="openAcademyTopic('council')"><span id="academyTopicBadge-council">☆</span> The Council (coming soon)</button>
+                    <button type="button" class="btn" style="width:100%;text-align:left"
+                        onclick="openAcademyTopic('general')"><span id="academyTopicBadge-general">☆</span> Stables general (coming soon)</button>
+                </div>
+                <div class="card app-section-card" id="academySecurityPanel" style="padding:14px 16px;display:none">
+                    <div class="stitle-row stitle-row--in-card">
+                        <div class="stitle-inline">Security questionnaire</div>
+                    </div>
+                    <p class="xs mu" style="margin:0 0 10px;line-height:1.45">
+                        10 randomized questions, 3 options each. Minimum pass: <strong style="color:var(--t)">6/10</strong> and all mandatory questions correct.
+                    </p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+                        <select class="fsel" id="academyDemographicGender">
+                            <option value="prefer_not_to_say">Gender: Prefer not say</option>
+                            <option value="man">Man</option>
+                            <option value="woman">Woman</option>
+                            <option value="other">Other</option>
+                            <option value="bot">Bot</option>
+                        </select>
+                        <select class="fsel" id="academyDemographicAge">
+                            <option value="prefer_not_to_say">Age: Prefer not say</option>
+                            <option value="under_18">Under 18</option>
+                            <option value="18_24">18-24</option>
+                            <option value="25_34">25-34</option>
+                            <option value="35_44">35-44</option>
+                            <option value="45_54">45-54</option>
+                            <option value="55_64">55-64</option>
+                            <option value="65_plus">65+</option>
+                        </select>
+                    </div>
+                    <select class="fsel" id="academyDemographicContinent" style="margin-bottom:8px">
+                        <option value="prefer_not_to_say">Geographic location: Prefer not say</option>
+                        <option value="north_america">North America</option>
+                        <option value="central_america">Central America</option>
+                        <option value="south_america">South America</option>
+                        <option value="europe">Europe</option>
+                        <option value="middle_east">Middle East</option>
+                        <option value="africa">Africa</option>
+                        <option value="asia">Asia</option>
+                        <option value="oceania">Oceania</option>
+                    </select>
+                    <label style="display:flex;gap:8px;align-items:flex-start;margin:8px 0 12px">
+                        <input type="checkbox" id="academyPublicDbConsent" style="margin-top:2px">
+                        <span class="xs mu" style="line-height:1.45">I authorize adding this anonymized result to the public DB. This helps the team improve communication and content quality as the community grows.</span>
+                    </label>
+                    <div class="buttons" style="margin-bottom:10px">
+                        <button type="button" class="btn btn-primary" id="academyStartBtn" onclick="startAcademySecurityQuiz()">Start security quiz</button>
+                        <button type="button" class="btn btn-secondary" id="academySubmitBtn" onclick="submitAcademySecurityQuiz()" style="display:none">Submit answers</button>
+                    </div>
+                    <div class="xs mu" id="academyRetakeHint" style="margin:0 0 10px;line-height:1.45"></div>
+                    <div id="academySecurityQuestions"></div>
+                    <div id="academySecurityResult" class="xs mu" style="display:none;margin-top:10px;padding:10px;border:1px solid rgba(103,232,249,.2);border-radius:10px"></div>
+                    <div id="academyCertificateBox" style="display:none;margin-top:10px;padding:12px;border:1px solid rgba(103,232,249,.25);border-radius:12px;background:rgba(103,232,249,.06)">
+                        <div style="font-weight:900;color:var(--t);margin-bottom:4px">Stables Academy Certificate</div>
+                        <div class="xs mu" id="academyCertificateText" style="margin-bottom:8px"></div>
+                        <div class="buttons">
+                            <button type="button" class="btn btn-secondary" onclick="shareAcademyCertificate()">Share</button>
+                        </div>
+                    </div>
+                    <div class="xs mu" style="margin-top:10px;line-height:1.45">
+                        Planned next: topic-specific Telegram diploma thread and NFT credential path (design phase).
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- HELP: ALL LINKS (More → Help) -->
         <div class="page" id="page-help-links">
             <header class="app-page-header">
@@ -6164,6 +6276,13 @@
                     </div>
                 </div>
 
+                <label class="flabel">Top bar identity mode</label>
+                <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-bottom:8px">
+                    <button id="profileUseMySettingsBtn" class="btn btn-w btn-g" style="flex:1;min-width:220px" onclick="useCouncilProfileSettings()">Use my settings</button>
+                    <button id="profileUseDefaultSettingsBtn" class="btn" style="flex:1;min-width:220px" onclick="useDefaultProfileSettings()">Use default settings</button>
+                </div>
+                <p class="hint" id="profileModeHint" style="margin:0 14px 10px;text-align:center">Mode: Use my settings</p>
+
                 <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;margin-top:10px">
                     <button class="btn btn-w btn-g" style="flex:1;min-width:220px" onclick="saveCouncilMemberProfile()">Save profile</button>
                     <button class="btn" style="flex:1;min-width:220px" onclick="resetCouncilMemberProfile()">Reset</button>
@@ -6890,6 +7009,13 @@
             <div class="ddiv"></div>
             <div class="dsect">
                 <div class="dsect-t">Help</div>
+                <div class="ditem" onclick="navigate('help-academy');closeMoreNow()">
+                    <div class="dic">🎓</div>
+                    <div class="dinfo">
+                        <div class="dname">The Stables Academy</div>
+                        <div class="ddesc">Weekly questionnaires and certificate</div>
+                    </div><span style="color:var(--m)">›</span>
+                </div>
                 <div class="ditem" onclick="openWelcomeGuidedToursFromMenu();closeMoreNow()">
                     <div class="dic">🧭</div>
                     <div class="dinfo">
@@ -7303,16 +7429,14 @@
                 <button class="btn btn-w" style="width:100%" onclick="goWelcomeAfterCurrencySave()">Save and continue</button>
             </div>
 
-            <!-- Optional bank personalisation (after currencies) -->
+            <!-- Bank personalisation intro (after currencies) -->
             <div id="welcomeStepPersonalizeIntro" style="display:none">
-                <div class="xs" style="text-align:center;margin:0 0 8px;color:var(--c);font-weight:800">Optional</div>
                 <div class="mttl" style="text-align:center;margin-bottom:10px;line-height:1.35">Personalise your bank</div>
                 <div class="welcome-modal-body-copy" style="text-align:center;margin:0 0 18px;padding:0 4px;line-height:1.5;color:var(--t)">
                     Add a name, a picture, and get oriented with contacts. You can skip any time.
                 </div>
                 <div class="flex gap8" style="flex-direction:column;gap:10px">
                     <button type="button" class="btn btn-w btn-g" style="width:100%" onclick="goWelcomePersonalizeFromIntro()">Continue personalisation</button>
-                    <button type="button" class="btn" style="width:100%" onclick="finalizeWelcomeSetup()">I'll do that later</button>
                 </div>
             </div>
 
@@ -7624,7 +7748,7 @@
 
     <script src="assets/config/runtime-config.js"></script>
     <script>
-        const PAGES = ['wallet', 'invest', 'exchange', 'onoff-ramp', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback', 'help-links'];
+        const PAGES = ['wallet', 'invest', 'exchange', 'onoff-ramp', 'mint', 'spend', 'ambassador', 'my-shop', 'chat', 'council-comms', 'council', 'treasury', 'faucet', 'settings-profile', 'settings-updates', 'settings-security', 'settings-legal', 'invoice', 'activity', 'contacts', 'feedback', 'help-academy', 'help-links'];
         const TABS = ['invest', 'spend', 'wallet', 'mint'];
         const INVEST_TAB_STORAGE_KEY = 'stables_invest_tab_v1';
         function getSavedInvestTab() {
@@ -13380,13 +13504,61 @@
             }
         }
 
-        const TOPBAR_BRAND_SUB_DEFAULT = 'By Stables on Minima';
-        const TOPBAR_BRAND_SUB_PERSONAL = 'by Stables/Minima';
+        const APP_TAB_TITLE = 'Stables - BYOB';
+        const TOPBAR_BRAND_SUB_DEFAULT = 'Be your own bank';
+        const TOPBAR_BRAND_SUB_PERSONAL = 'By Stables/Minima';
+        const COUNCIL_PROFILE_MODE_KEY = 'stables_profile_mode_v1';
+
+        function getCouncilProfileMode() {
+            try {
+                const mode = String(localStorage.getItem(COUNCIL_PROFILE_MODE_KEY) || '').trim().toLowerCase();
+                return mode === 'default' ? 'default' : 'custom';
+            } catch (_) {
+                return 'custom';
+            }
+        }
+
+        function isUsingCustomProfileSettings() {
+            return getCouncilProfileMode() === 'custom';
+        }
+
+        function setCouncilProfileMode(mode) {
+            const next = String(mode || '').trim().toLowerCase() === 'default' ? 'default' : 'custom';
+            try {
+                localStorage.setItem(COUNCIL_PROFILE_MODE_KEY, next);
+            } catch (_) {}
+            refreshProfileModeUI();
+            refreshTopbarBrand();
+        }
+
+        function refreshProfileModeUI() {
+            const useMineBtn = document.getElementById('profileUseMySettingsBtn');
+            const useDefaultBtn = document.getElementById('profileUseDefaultSettingsBtn');
+            const hint = document.getElementById('profileModeHint');
+            const customMode = isUsingCustomProfileSettings();
+            if (useMineBtn) useMineBtn.className = customMode ? 'btn btn-w btn-g' : 'btn';
+            if (useDefaultBtn) useDefaultBtn.className = customMode ? 'btn' : 'btn btn-w btn-g';
+            if (hint) hint.textContent = customMode ? 'Mode: Use my settings' : 'Mode: Use default settings';
+        }
+
+        function useCouncilProfileSettings() {
+            setCouncilProfileMode('custom');
+            showToast('Using your saved profile settings');
+        }
+        window.useCouncilProfileSettings = useCouncilProfileSettings;
+
+        function useDefaultProfileSettings() {
+            setCouncilProfileMode('default');
+            showToast('Using default app settings');
+        }
+        window.useDefaultProfileSettings = useDefaultProfileSettings;
 
         function refreshTopbarBrand() {
+            document.title = APP_TAB_TITLE;
             const img = document.getElementById('topbarBrandImg');
             const nameEl = document.getElementById('topbarBrandName');
             const subEl = document.getElementById('topbarBrandSub');
+            const customMode = isUsingCustomProfileSettings();
 
             const liveName = String(document.getElementById('councilNameInput')?.value || '').trim();
             const prof = loadCouncilProfileFromStorage();
@@ -13406,9 +13578,8 @@
             } else if (bankName) {
                 displayTitle = bankName;
             }
-            if (subEl) {
-                subEl.textContent = displayTitle !== 'Stables' ? TOPBAR_BRAND_SUB_PERSONAL : TOPBAR_BRAND_SUB_DEFAULT;
-            }
+            if (!customMode) displayTitle = 'Stables';
+            if (subEl) subEl.textContent = (customMode && displayTitle !== 'Stables') ? TOPBAR_BRAND_SUB_PERSONAL : TOPBAR_BRAND_SUB_DEFAULT;
             if (nameEl) {
                 nameEl.textContent = displayTitle;
                 nameEl.style.overflow = 'hidden';
@@ -13420,7 +13591,7 @@
             const av = String(councilAvatarDataUrl || councilAvatarUrl || '').trim()
                 || String(prof?.avatarDataUrl || prof?.avatarUrl || '').trim();
             if (img) {
-                if (av) {
+                if (customMode && av) {
                     img.src = av;
                     img.alt = displayTitle;
                     img.style.objectFit = 'cover';
@@ -13481,6 +13652,7 @@
         function initCouncilMemberProfile() {
             const profile = loadCouncilProfileFromStorage();
             applyCouncilProfileToUI(profile);
+            refreshProfileModeUI();
         }
 
         function onCouncilAvatarFile(input) {

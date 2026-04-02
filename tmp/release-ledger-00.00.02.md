@@ -1,8 +1,8 @@
-# Release Ledger - 0.01.02
+# Release Ledger - 00.00.02
 
 Purpose: capture user-visible changes as they happen, then consolidate into `CHANGELOG.md`.
 
-Status: prefilled from current 0.01.02 work.
+Status: prefilled from current 00.00.02 work.
 
 ## Coverage map (quick tick)
 

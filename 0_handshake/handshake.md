@@ -18,7 +18,7 @@
     - `task_[description]`: For active/sandbox work.
     - `prod_[description]`: For stable, finalized deliverables.
 - **Single Master Rule**: The MiniDapp **active development** tree is always:
-    `1_development/stream_1_app/prod_stables_app_v0.01.02/` (entry: `index.html`).  
+    `1_development/stream_1_app/prod_stables_app_v00.00.02/` (entry: `index.html`).  
     **Version pointer for agents** (frozen zips, bumps, inventory paths): `0_handshake/minidapp_version.md`.
 - **MiniDapp Versioning Policy (MANDATORY)**:
     - Use three explicit release channels in communications and release notes: **prod**, **test**, **showcase**.

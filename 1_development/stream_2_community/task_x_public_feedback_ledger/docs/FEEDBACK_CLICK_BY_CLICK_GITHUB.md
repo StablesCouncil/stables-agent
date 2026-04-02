@@ -54,7 +54,7 @@ The app only auto-targets the local server when the page URL is **`localhost`** 
 2. Go to the active app folder:
 
    ```text
-   cd C:\Users\Charles\Documents\Stables\1_development\stream_1_app\prod_stables_app_v0.01.02
+   cd C:\Users\Charles\Documents\Stables\1_development\stream_1_app\prod_stables_app_v00.00.02
    ```
 
 3. If you do not have `serve` yet, once run:
