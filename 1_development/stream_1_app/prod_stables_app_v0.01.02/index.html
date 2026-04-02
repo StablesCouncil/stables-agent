@@ -118,7 +118,67 @@
             align-items: center;
             gap: 9px;
             cursor: pointer;
-            user-select: none
+            user-select: none;
+            position: relative
+        }
+
+        .brand-hover-tip {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            max-width: min(300px, 88vw);
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(16, 24, 38, 0.98);
+            border: 1px solid rgba(103, 232, 249, 0.35);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-4px);
+            transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+            z-index: 850;
+            pointer-events: none;
+        }
+
+        @media (hover: hover) {
+            .brand:hover .brand-hover-tip,
+            .brand:focus-visible .brand-hover-tip {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+        }
+
+        @media (hover: none) {
+            .brand:hover .brand-hover-tip,
+            .brand:focus-visible .brand-hover-tip {
+                opacity: 0;
+                visibility: hidden;
+                transform: translateY(-4px);
+            }
+
+            .brand.brand--tip-open .brand-hover-tip {
+                opacity: 1;
+                visibility: visible;
+                transform: translateY(0);
+            }
+
+            #topbarBrandSub {
+                text-decoration: underline dotted rgba(103, 232, 249, 0.4);
+                text-underline-offset: 3px;
+            }
+        }
+
+        .brand-hover-tip__text {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            line-height: 1.4;
+            background: linear-gradient(90deg, var(--c), var(--pu));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .brand img {
@@ -821,6 +881,177 @@
             display: flex;
             align-items: center;
             justify-content: space-between
+        }
+
+        /* On/Off Ramp — At a glance diagram (tap step to scroll to detail row) */
+        .ramp-diagram-step {
+            flex: 1;
+            min-width: 0;
+            max-width: 56px;
+            padding: 6px 2px 8px;
+            border-radius: 12px;
+            border: 1px solid rgba(103, 232, 249, 0.28);
+            background: rgba(11, 15, 20, 0.5);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--c);
+            box-shadow: 0 0 0 1px rgba(103, 232, 249, 0.06);
+        }
+
+        .ramp-diagram-step:active {
+            opacity: 0.88;
+        }
+
+        .ramp-diagram-step:focus-visible {
+            outline: 2px solid var(--c);
+            outline-offset: 2px;
+        }
+
+        .ramp-diagram-step .ramp-diagram-ic {
+            font-size: 17px;
+            line-height: 1;
+        }
+
+        .ramp-diagram-step--opt {
+            border-style: dashed;
+            border-color: rgba(167, 139, 250, 0.55);
+            color: var(--pu);
+        }
+
+        /* On/Off Ramp — circular diagram (single fiat / Stables; top = on-ramp, bottom = off-ramp) */
+        .ramp-circle-stage {
+            position: relative;
+            width: 100%;
+            max-width: 340px;
+            margin: 0 auto 8px;
+            aspect-ratio: 340 / 320;
+        }
+
+        .ramp-circle-stage > svg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .ramp-circle-hit {
+            position: absolute;
+            z-index: 3;
+            overflow: visible;
+            width: 13%;
+            max-width: 48px;
+            aspect-ratio: 1;
+            margin-left: -6.5%;
+            margin-top: -6.5%;
+            padding: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            background: rgba(11, 15, 20, 0.88);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 1px;
+            font-size: 9px;
+            font-weight: 800;
+            color: var(--c);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+        }
+
+        .ramp-circle-hit:active {
+            opacity: 0.9;
+        }
+
+        .ramp-circle-hit:focus-visible {
+            outline: 2px solid var(--c);
+            outline-offset: 2px;
+            z-index: 2;
+        }
+
+        #ramp-on-step-6:focus-visible,
+        #ramp-off-step-1:focus-visible {
+            outline: 2px solid var(--c);
+            outline-offset: 2px;
+        }
+
+        .ramp-circle-hit .ramp-diagram-ic {
+            font-size: 19px;
+            line-height: 1;
+            margin-top: 3px;
+        }
+
+        .ramp-circle-hit__ref {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            z-index: 1;
+            font-size: 8px;
+            font-weight: 900;
+            line-height: 1;
+            min-width: 14px;
+            padding: 2px 4px;
+            border-radius: 6px;
+            background: rgba(11, 15, 20, 0.92);
+            border: 1px solid rgba(103, 232, 249, 0.4);
+            color: var(--c);
+            pointer-events: none;
+        }
+
+        .ramp-circle-hit--off .ramp-circle-hit__ref {
+            border-color: rgba(167, 139, 250, 0.45);
+            color: var(--pu);
+        }
+
+        .ramp-circle-hit--opt {
+            border-style: dashed;
+            border-color: rgba(167, 139, 250, 0.6);
+            color: var(--pu);
+        }
+
+        .ramp-circle-hit--off {
+            border-color: rgba(167, 139, 250, 0.35);
+            color: var(--pu);
+        }
+
+        .ramp-circle-cap {
+            position: absolute;
+            z-index: 2;
+            width: 17.6%;
+            max-width: 60px;
+            aspect-ratio: 1;
+            margin-left: -8.8%;
+            margin-top: -8.8%;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(11, 15, 20, 0.75);
+            pointer-events: auto;
+            box-shadow: 0 0 14px rgba(103, 232, 249, 0.12);
+        }
+
+        .ramp-circle-cap--fiat {
+            border: 2px solid rgba(103, 232, 249, 0.45);
+            font-size: clamp(18px, 5vw, 26px);
+        }
+
+        .ramp-circle-cap--stables {
+            border: 2px solid rgba(167, 139, 250, 0.5);
+            line-height: 1.1;
+            padding: 4px 6px;
+            font-size: clamp(9px, 2.6vw, 11px);
+            font-weight: 800;
+            color: var(--t);
+            text-align: center;
         }
 
         .bal-hidden {
@@ -3494,16 +3725,21 @@
     <!-- TOP BAR -->
     <div class="topbar">
         <!-- Column 1: Brand (Left) -->
-        <div class="brand" onclick="navigate('wallet')" title="Home">
+        <div class="brand" onclick="handleTopbarBrandClick(event)" role="link" tabindex="0"
+            aria-label="Wallet home. On touch screens, tap the cyan tagline to show or hide the Stables on Minima message. My bank made possible by Stables on Minima."
+            onkeydown="onTopbarBrandKeydown(event)">
             <img id="topbarBrandImg" src="stables_icon.png" alt="Stables" style="width:34px;height:34px;flex-shrink:0">
             <div style="display:flex;flex-direction:column;justify-content:center;min-width:0">
                 <span id="topbarBrandName" class="brand-name">Stables</span>
                 <span id="topbarBrandSub" class="brand-sub">By Stables on Minima</span>
             </div>
+            <div id="topbarBrandTooltip" class="brand-hover-tip" role="tooltip">
+                <span class="brand-hover-tip__text">My bank made possible by Stables on Minima</span>
+            </div>
         </div>
     <!-- Column 2: Test Pill (Center) -->
-    <div class="test-pill" style="justify-self: center;cursor:default">
-        Showcase · v0.01.01
+    <div id="topbarShowcasePill" class="test-pill" style="justify-self: center;cursor:default">
+        Showcase · v0.01.02
     </div>
     <!-- Column 3: Sync Pill (Right) -->
     <div class="sync-pill sync-pill--placeholder" title="Block height from your node (MDS)." style="justify-self: end;">
@@ -4250,7 +4486,7 @@
                 </div>
                 <div class="card app-section-card">
                     <div class="cb">
-                        <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x26CF;&#xFE0F; Mint Wables</div>
+                        <div id="mintWablesMintBlock" style="font-size:16px;font-weight:900;margin-bottom:14px;scroll-margin-top:16px">&#x26CF;&#xFE0F; Mint Wables</div>
                         <div style="margin-bottom:14px">
                             <div class="fbet xs mu" style="margin-bottom:5px">
                                 <div>Amount to issue</div>
@@ -4303,7 +4539,7 @@
                         <button type="button" class="btn btn-w btn-lg" id="issueMintWablesBtn"
                             onclick="executeMintWables()">Mint USDw</button>
                         <!-- Burn Wables reclaim -->
-                        <div style="margin-top:32px">
+                        <div id="mintWablesBurnBlock" style="margin-top:32px;scroll-margin-top:16px">
                             <div style="font-size:16px;font-weight:900;margin-bottom:14px">&#x1F525; Burn Wables
                             </div>
                             <div style="padding:0;background:transparent;border:none;border-radius:0">
@@ -4458,10 +4694,74 @@
                 </div>
             </header>
 
+            <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20" id="onoffRampFlowsSection">
+                <div class="stitle-row">
+                    <div class="stitle">Paper ↔ Stables (And back)</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('On/Off Ramp: Paper ↔ Stables and back; top arc on-ramp 1–6; bottom arc off-ramp 1–6 from Stables toward fiat; optional bridge dashed; tap diagram or rows for detail')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:14px" id="onoffRampDiagramCard">
+                    <div class="ramp-circle-stage" id="onoffRampCircleStage" role="img" aria-label="Circular ramp: cyan on-ramp arcs paper to Stables; off-ramp steps along bottom without track lines; optional bridge dashed on step buttons">
+                        <svg viewBox="0 0 340 320" preserveAspectRatio="xMidYMid meet" style="overflow:visible" aria-hidden="true">
+                            <!-- On-ramp outer + inner arcs only (no curved lines behind off-ramp icons) -->
+                            <path d="M 48 160 A 122 122 0 0 0 292 160" fill="none" stroke="rgba(103,232,249,0.22)" stroke-width="5" stroke-linecap="round"/>
+                            <path d="M 292 168 L 286 155 L 298 155 Z" fill="rgba(103,232,249,0.55)" stroke="rgba(103,232,249,0.35)" stroke-width="1"/>
+                            <path d="M 62 160 A 108 108 0 0 0 278 160" fill="none" stroke="rgba(103,232,249,0.38)" stroke-width="2.5"/>
+                            <text x="170" y="22" text-anchor="middle" style="font-size:11px;font-weight:800;fill:#67e8f9;font-family:Inter,system-ui,sans-serif">On-ramp →</text>
+                            <text x="170" y="312" text-anchor="middle" style="font-size:11px;font-weight:800;fill:#a78bfa;font-family:Inter,system-ui,sans-serif">← Off-ramp</text>
+                        </svg>
+                        <div class="ramp-circle-cap ramp-circle-cap--fiat" style="left:11.76%;top:50%" title="Paper money (fiat)" aria-hidden="true">&#x1F4B5;</div>
+                        <div class="ramp-circle-cap ramp-circle-cap--stables" style="left:88.24%;top:50%" title="Stables balances" aria-hidden="true">Stables</div>
+                        <button type="button" class="ramp-circle-hit" style="left:21.4%;top:35.3%" onclick="scrollToRampStep('on',1)" title="Deposit fiat in one of the partner exchanges (see list below)" aria-label="On-ramp step 1: deposit fiat at a partner exchange. Jump to details."><span class="ramp-circle-hit__ref">1</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F3E6;</span></button>
+                        <button type="button" class="ramp-circle-hit" style="left:30.2%;top:23.6%" onclick="scrollToRampStep('on',2)" title="Buy USDT" aria-label="On-ramp step 2: buy USDT. Jump to details."><span class="ramp-circle-hit__ref">2</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F4B3;</span></button>
+                        <button type="button" class="ramp-circle-hit ramp-circle-hit--opt" style="left:42.9%;top:17.1%" onclick="scrollToRampStep('on',3)" title="Optional bridge (USDT to MxUSDT when needed)" aria-label="On-ramp step 3, optional: bridge USDT to MxUSDT. Jump to details."><span class="ramp-circle-hit__ref">3</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F309;</span></button>
+                        <button type="button" class="ramp-circle-hit" style="left:57.1%;top:17.1%" onclick="scrollToRampStep('on',4)" title="Buy MINIMA" aria-label="On-ramp step 4: buy MINIMA. Jump to details."><span class="ramp-circle-hit__ref">4</span><span class="ramp-diagram-ic" aria-hidden="true">&#x26A1;</span></button>
+                        <button type="button" class="ramp-circle-hit" style="left:69.8%;top:23.6%" onclick="scrollToRampStep('on',5)" title="Send MINIMA to your Stables wallet address" aria-label="On-ramp step 5: send MINIMA to your Stables wallet address. Jump to details."><span class="ramp-circle-hit__ref">5</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F4F1;</span></button>
+                        <button type="button" class="ramp-circle-hit" style="left:78.6%;top:35.3%" onclick="goMintWablesMint(event)" title="Mint Stables (open Mint Wables)" aria-label="On-ramp step 6: open Mint app, Mint Wables."><span class="ramp-circle-hit__ref">6</span><span class="ramp-diagram-ic" aria-hidden="true">&#x2728;</span></button>
+                        <button type="button" class="ramp-circle-hit ramp-circle-hit--off" style="left:78.6%;top:64.7%" onclick="goMintWablesBurn(event)" title="Burn to MINIMA (open Burn Wables)" aria-label="Off-ramp step 1: open Mint app, Burn Wables."><span class="ramp-circle-hit__ref">1</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F525;</span></button>
+                        <button type="button" class="ramp-circle-hit ramp-circle-hit--off" style="left:69.8%;top:76.4%" onclick="scrollToRampStep('off',2)" title="CEX / DEX (deposit or trade from wallet)" aria-label="Off-ramp step 2: CEX or DEX. Jump to details."><span class="ramp-circle-hit__ref">2</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F4E5;</span></button>
+                        <button type="button" class="ramp-circle-hit ramp-circle-hit--off" style="left:57.1%;top:82.9%" onclick="scrollToRampStep('off',3)" title="Sell MINIMA" aria-label="Off-ramp step 3: sell MINIMA. Jump to details."><span class="ramp-circle-hit__ref">3</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F4E4;</span></button>
+                        <button type="button" class="ramp-circle-hit ramp-circle-hit--off ramp-circle-hit--opt" style="left:42.9%;top:82.9%" onclick="scrollToRampStep('off',4)" title="Optional bridge (MxUSDT to USDT when needed)" aria-label="Off-ramp step 4, optional: bridge MxUSDT to USDT. Jump to details."><span class="ramp-circle-hit__ref">4</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F309;</span></button>
+                        <button type="button" class="ramp-circle-hit ramp-circle-hit--off" style="left:30.2%;top:76.4%" onclick="scrollToRampStep('off',5)" title="USDT to fiat" aria-label="Off-ramp step 5: USDT to fiat. Jump to details."><span class="ramp-circle-hit__ref">5</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F500;</span></button>
+                        <button type="button" class="ramp-circle-hit ramp-circle-hit--off" style="left:21.4%;top:64.7%" onclick="scrollToRampStep('off',6)" title="Withdraw fiat" aria-label="Off-ramp step 6: withdraw fiat. Jump to details."><span class="ramp-circle-hit__ref">6</span><span class="ramp-diagram-ic" aria-hidden="true">&#x1F3E7;</span></button>
+                    </div>
+
+                    <div class="xs mu" id="onoffRampOnSection" style="margin:16px 0 8px;font-weight:800;color:var(--c)">On-ramp (paper money → Stables)</div>
+                    <div class="xs mu" style="margin:0 0 10px;line-height:1.5;color:var(--m)">Goal: bank or card money into Stables you can use in-app.</div>
+                    <div style="display:grid;gap:8px">
+                        <div id="ramp-on-step-1" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px;align-items:flex-start;gap:12px"><span class="xs mu" style="flex:1;min-width:0"><span aria-hidden="true">&#x1F3E6;</span> <strong style="color:var(--t)">1</strong> Deposit fiat in one of the partner exchanges (see list below)</span><span style="font-weight:800;color:var(--t);flex-shrink:0;text-align:right;line-height:var(--lh-caption,1.45);white-space:nowrap">Partner CEX · bank/card</span></div>
+                        <div id="ramp-on-step-2" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px"><span class="xs mu"><span aria-hidden="true">&#x1F4B3;</span> <strong style="color:var(--t)">2</strong> Buy USDT</span><span style="font-weight:800;color:var(--t)">USDT</span></div>
+                        <div id="ramp-on-step-3" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px"><span class="xs mu"><span aria-hidden="true">&#x1F309;</span> <strong style="color:var(--t)">3</strong> Optional bridge</span><span style="font-weight:800;color:var(--t)">USDT → MxUSDT · <a href="https://mxusd.global/" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">mxusd.global</a></span></div>
+                        <div id="ramp-on-step-4" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px;align-items:center;gap:10px;flex-wrap:wrap"><span class="xs mu" style="flex:1;min-width:0"><span aria-hidden="true">&#x26A1;</span> <strong style="color:var(--t)">4</strong> Buy MINIMA</span><span style="display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0"><span style="font-weight:800;color:var(--t);font-size:13px">CEX or Minima DEX</span><button type="button" class="btn btn-w" onclick="navigate('faucet')"
+                                style="width:auto;padding:6px 12px;font-size:11px;line-height:1.25;min-height:0;height:auto;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.28);color:var(--am);font-weight:800;border-radius:12px;white-space:nowrap">Get Winiwa - No value</button></span></div>
+                        <div id="ramp-on-step-5" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px"><span class="xs mu"><span aria-hidden="true">&#x1F4F1;</span> <strong style="color:var(--t)">5</strong> Send MINIMA to your Stables wallet address</span><span style="font-weight:800;color:var(--t)">On-chain withdrawal</span></div>
+                        <div id="ramp-on-step-6" class="fbet" role="button" tabindex="0" title="Open Mint: Mint Wables" aria-label="Step 6 Mint Stables. Opens Mint, Mint Wables."
+                            onclick="goMintWablesMint(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goMintWablesMint(event);}"
+                            style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px;cursor:pointer"><span class="xs mu"><span aria-hidden="true">&#x2728;</span> <strong style="color:var(--t)">6</strong> Mint Stables</span><span style="font-weight:800;color:var(--c)">Mint · Wables</span></div>
+                    </div>
+
+                    <div class="xs mu" id="onoffRampOffSection" style="margin:18px 0 8px;font-weight:800;color:var(--pu)">Off-ramp (Stables → paper money)</div>
+                    <div class="xs mu" style="margin:0 0 10px;line-height:1.5;color:var(--m)">Goal: back to bank or card. Same six steps as on-ramp, reversed along the bottom arc (step 1 at Stables, step 6 at paper).</div>
+                    <div style="display:grid;gap:8px">
+                        <div id="ramp-off-step-1" class="fbet" role="button" tabindex="0" title="Open Mint: Burn Wables (reclaim Winiwa)" aria-label="Step 1 Burn to MINIMA. Opens Mint, Burn Wables."
+                            onclick="goMintWablesBurn(event)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();goMintWablesBurn(event);}"
+                            style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px;cursor:pointer"><span class="xs mu"><span aria-hidden="true">&#x1F525;</span> <strong style="color:var(--t)">1</strong> Burn to MINIMA</span><span style="font-weight:800;color:var(--pu)">Burn · Wables</span></div>
+                        <div id="ramp-off-step-2" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px"><span class="xs mu"><span aria-hidden="true">&#x1F4E5;</span> <strong style="color:var(--t)">2</strong> CEX / DEX</span><span style="font-weight:800;color:var(--t)">Deposit to CEX · or DEX from wallet</span></div>
+                        <div id="ramp-off-step-3" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px"><span class="xs mu"><span aria-hidden="true">&#x1F4E4;</span> <strong style="color:var(--t)">3</strong> Sell MINIMA</span><span style="font-weight:800;color:var(--t)">USDT on CEX · or MxUSDT on DEX</span></div>
+                        <div id="ramp-off-step-4" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px"><span class="xs mu"><span aria-hidden="true">&#x1F309;</span> <strong style="color:var(--t)">4</strong> Optional bridge</span><span style="font-weight:800;color:var(--t)">MxUSDT → USDT · <a href="https://mxusd.global/" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">mxusd.global</a> (skip if USDT on CEX)</span></div>
+                        <div id="ramp-off-step-5" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px"><span class="xs mu"><span aria-hidden="true">&#x1F500;</span> <strong style="color:var(--t)">5</strong> USDT → fiat</span><span style="font-weight:800;color:var(--t)">Bank balance</span></div>
+                        <div id="ramp-off-step-6" class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);scroll-margin-top:12px"><span class="xs mu"><span aria-hidden="true">&#x1F3E7;</span> <strong style="color:var(--t)">6</strong> Withdraw fiat</span><span style="font-weight:800;color:var(--t)">Bank/card</span></div>
+                    </div>
+                </div>
+            </div>
+
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
             <div class="stitle-row">
-                <div class="stitle">Where MINIMA trades</div>
-                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('On/Off Ramp: exchanges listing MINIMA and practical path between paper money and Stables')" title="StablesAgent">
+                <div class="stitle">Where to buy Minima</div>
+                <button type="button" class="agent-mini-btn" onclick="openAgentExplain('On/Off Ramp: where to buy Minima; CEX and Minima DEX; path between paper money and Stables')" title="StablesAgent">
                     <img src="agent.png" alt="StablesAgent">
                 </button>
             </div>
@@ -4496,52 +4796,6 @@
                         </div>
                         <div class="xs mu">Peer-to-peer non-custodial venue on Minima (MiniMask extension required).</div>
                     </div>
-                </div>
-            </div>
-            </div>
-
-            <div class="app-section app-section--caption-bottom">
-            <div class="stitle-row">
-                <div class="stitle">On-ramp (paper money → Stables)</div>
-                <button type="button" class="agent-mini-btn"
-                    onclick="openAgentExplain('On-ramp: bank or card money via exchange and MINIMA into Stables balances in-app')"
-                    title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
-            </div>
-            <div class="card app-section-card" style="padding:14px">
-                <div class="xs mu" style="margin-bottom:10px;line-height:1.5">Goal: move from bank/card money into Stables balances you can use in-app.</div>
-                <div style="display:grid;gap:8px">
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">1) Deposit paper money to exchange</span><span style="font-weight:800;color:var(--t)">Bank/card</span></div>
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">2) Buy USDT</span><span style="font-weight:800;color:var(--t)">USDT</span></div>
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">3) Optional bridge</span><span style="font-weight:800;color:var(--t)">USDT → MxUSDT via <a href="https://mxusd.global/" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">mxusd.global</a></span></div>
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">4) Buy MINIMA</span><span style="font-weight:800;color:var(--t)">Exchange OR Minima DEX</span></div>
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">5) Withdraw MINIMA to your Stables wallet</span><span style="font-weight:800;color:var(--t)">On-chain</span></div>
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">6) Mint / swap into Stables balances</span><span style="font-weight:800;color:var(--t)">USDw / EURw / ...</span></div>
-                </div>
-                <button type="button" class="btn btn-w btn-lg" onclick="navigate('faucet')"
-                    style="margin-top:12px;width:100%;background:rgba(251,191,36,.06);border:1px solid rgba(251,191,36,.22);color:var(--am);font-weight:900">
-                    Get Winiwa - No value
-                </button>
-            </div>
-            </div>
-
-            <div class="app-section app-section--caption-bottom">
-            <div class="stitle-row">
-                <div class="stitle">Off-ramp (Stables → paper money)</div>
-                <button type="button" class="agent-mini-btn"
-                    onclick="openAgentExplain('Off-ramp: Stables balances converted to MINIMA, sold for USDT, then paper money to bank or card')"
-                    title="StablesAgent">
-                    <img src="agent.png" alt="StablesAgent">
-                </button>
-            </div>
-            <div class="card app-section-card" style="padding:14px">
-                <div class="xs mu" style="margin-bottom:10px;line-height:1.5">Goal: exit from Stables to paper money in your bank/card ecosystem.</div>
-                <div style="display:grid;gap:8px">
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">1) Burn Stables balances to MINIMA</span><span style="font-weight:800;color:var(--t)">USDw → MINIMA</span></div>
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">2) Sell MINIMA for USDT</span><span style="font-weight:800;color:var(--t)">Exchange OR Minima DEX → MxUSDT</span></div>
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">3) Optional bridge</span><span style="font-weight:800;color:var(--t)">MxUSDT → USDT via <a href="https://mxusd.global/" target="_blank" rel="noopener noreferrer" style="color:var(--c);text-decoration:underline">mxusd.global</a></span></div>
-                    <div class="fbet" style="padding:8px 10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><span class="xs mu">4) Withdraw paper money to bank/card</span><span style="font-weight:800;color:var(--t)">Off-ramp complete</span></div>
                 </div>
             </div>
             </div>
@@ -5249,7 +5503,7 @@
                 </p>
                 <button type="button" id="councilCharterLink" class="btn btn-w"
                     style="display:block;width:100%;text-align:center;box-sizing:border-box"
-                    onclick="showStablesCharterComingNotice()">Read the Charter on GitHub</button>
+                    onclick="openStablesCharterUrl()">Read the Charter on GitHub</button>
             </div>
             </div>
 
@@ -6193,9 +6447,21 @@
                     <div class="app-page-header__sub">Terms, privacy, data, security · Council property</div>
                 </div>
             </header>
+            <div class="card app-section-card" style="padding:12px 16px;margin:0 0 14px 0;border:1px solid rgba(103,232,249,.1)">
+                <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                    Sections marked <strong style="color:var(--t)">(summary)</strong> are <strong style="color:var(--t)">short in-app reminders</strong> for this preview, not a full legal or policy pack. Binding governance, process, and how the Council publishes updates belong in the <strong style="color:var(--t)">Stables Charter</strong> and other documents on <strong style="color:var(--t)">official Council channels</strong>.
+                </p>
+                <button type="button" class="btn btn-w btn-g" style="width:100%"
+                    onclick="openStablesCharterUrl()">Read the Stables Charter (GitHub)</button>
+            </div>
             <div class="app-section app-section--caption-bottom app-section--caption-bottom--mt20">
                 <div class="stitle-row">
                     <div class="stitle">Security (summary)</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Legal: security summary; scammers; Vault key storage; malware; unsolicited help; official contacts only')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
                 </div>
                 <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
                     <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
@@ -6257,6 +6523,36 @@
                     </p>
                 </div>
             </div>
+            <div class="app-section app-section--caption-bottom" id="legalMinimaIndependenceSection">
+                <div class="stitle-row">
+                    <div class="stitle">Minima dependencies</div>
+                    <button type="button" class="agent-mini-btn"
+                        onclick="openAgentExplain('Legal: Minima as chain foundation; device sovereignty; no corporate affiliation; open rails; app as access layer; non-custodial framing')"
+                        title="StablesAgent">
+                        <img src="agent.png" alt="StablesAgent">
+                    </button>
+                </div>
+                <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--t)">Minima as the foundation.</strong> The Minima blockchain is the <strong style="color:var(--t)">basis that holds the whole Stables infrastructure</strong>. Together with the <strong style="color:var(--t)">physical device</strong> on which you run your bank, it is the <strong style="color:var(--t)">only physical layer you need</strong> to pursue <strong style="color:var(--t)">full banking sovereignty</strong>. The Stables software on your device is <strong style="color:var(--t)">visual and interaction access</strong> to your bank: it is how you see balances, sign actions, and move value. <strong style="color:var(--t)">At all times</strong>, the assets that back your position are anchored in the <strong style="color:var(--t)">security model of the Minima network</strong> and in the <strong style="color:var(--t)">tested Stables infrastructure</strong> built on top of it.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--t)">Confidence in the chain.</strong> We are <strong style="color:var(--t)">fully confident</strong> that Minima will function soundly across <strong style="color:var(--t)">all foreseeable scenarios</strong> that matter for this design, <strong style="color:var(--t)">because of its decentralised architecture</strong>. The <strong style="color:var(--t)">only technical impairment</strong> that sits with you directly is <strong style="color:var(--t)">your own personal device</strong> where you open the app: <strong style="color:var(--t)">that device is the crux</strong> (malware, loss, theft, or user error). <strong style="color:var(--t)">On-chain</strong>, your funds are <strong style="color:var(--t)">continuously protected</strong> by Minima&rsquo;s network security and by Stables&rsquo; protocol layer, not by a custodian&rsquo;s ledger entry.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--t)">No corporate affiliation.</strong> Stables has <strong style="color:var(--t)">no affiliation of any kind</strong> with any Minima-related <strong style="color:var(--t)">legal entity</strong> or with people acting in an official capacity for those organisations. Stables is a <strong style="color:var(--t)">separate initiative</strong>. References to Minima here mean the <strong style="color:var(--t)">public chain and tooling</strong> (for example a node or MiniDapp host) and <strong style="color:var(--t)">public data</strong> (for example price endpoints). They are <strong style="color:var(--t)">not</strong> a partnership, endorsement, or joint product with those companies.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--t)">How open networks work.</strong> Public blockchain software is, in large part, <strong style="color:var(--t)">open source</strong>. Minima-related entities, regulators, governments, and other third parties <strong style="color:var(--t)">do not and cannot, by architecture alone,</strong> dictate what independent teams build or what you choose to run on <strong style="color:var(--t)">your own device</strong>. They are not on your device controlling your execution. Control stays with whoever operates the node and the MiniDapp, subject to law and to device security.
+                    </p>
+                    <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--t)">Distribution is not the same as sovereignty.</strong> An IT company, app store, or other platform may try to limit <strong style="color:var(--t)">how you first reach</strong> Stables products (for example listings, websites, or policies). Once you have lawfully obtained the software and run it on a <strong style="color:var(--t)">sovereign device</strong> you control, where no intermediary has technical overreach over <strong style="color:var(--t)">your device and your execution</strong>, <strong style="color:var(--t)">that use does not depend on a central party staying &ldquo;open&rdquo; for you.</strong> That is why we say <strong style="color:var(--t)">unstoppable</strong> in this technical sense: the design does not require a single gatekeeper for your bank on your own machine.
+                    </p>
+                    <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
+                        <strong style="color:var(--t)">Seizure and blocking.</strong> When you self-custody and interact without a custodian holding your funds, there is <strong style="color:var(--t)">no single technical lever</strong> a third party can flip <strong style="color:var(--t)">to freeze your bank</strong> or <strong style="color:var(--t)">to block peer-to-peer interactions with other banks</strong> the way a centralised account provider can suspend access. This describes <strong style="color:var(--t)">what the architecture avoids</strong> compared to custodial finance. It does <strong style="color:var(--t)">not</strong> remove every real-world risk (devices can be lost, stolen, compromised, or subject to lawful process). It is not legal advice.
+                    </p>
+                </div>
+            </div>
             <div class="app-section app-section--caption-bottom" id="legalOraclesSection">
                 <div class="stitle-row">
                     <div class="stitle">Price oracles (Winiwa &amp; Wables)</div>
@@ -6297,7 +6593,7 @@
                 <div class="stitle-row">
                     <div class="stitle">Privacy Policy (summary)</div>
                     <button type="button" class="agent-mini-btn"
-                        onclick="openAgentExplain('Legal: privacy summary; choices on your device; no sale of data from this static preview; use official Council and security contacts only')"
+                        onclick="openAgentExplain('Legal: privacy summary; local device storage; Stables/Minima no visibility here; OS and third-party caveat; no sensitive data; official contacts only')"
                         title="StablesAgent">
                         <img src="agent.png" alt="StablesAgent">
                     </button>
@@ -6305,8 +6601,7 @@
                 <div class="card app-section-card" style="padding:16px 16px;margin-bottom:14px;border:1px solid rgba(103,232,249,.12)">
                     <p class="sec-body" style="margin:0;line-height:1.55;color:var(--m)">
                         This preview stores some choices on <strong style="color:var(--t)">your device</strong> (for example
-                        layout and preferences in browser storage). We do not sell personal data from this static preview.
-                        Do not send secrets or Vault keys through unofficial channels; use only the official Council and
+                        layout and preferences in browser storage). <strong style="color:var(--t)">Neither Stables nor Minima has any visibility into that local data</strong> for this static preview; <strong style="color:var(--t)">we do not receive it</strong> from this copy alone. On the other hand, <strong style="color:var(--t)">we cannot guarantee</strong> that other actors, such as the company that provides your device operating system or other software on your device, <strong style="color:var(--t)">do not have technical means to access device storage or settings</strong>. <strong style="color:var(--t)">Please do not enter sensitive information</strong> where it could be exposed. Do not send secrets or Vault keys through unofficial channels; use only the official Council and
                         security contacts listed on the <a href="#" onclick="event.preventDefault();navigate('help-links');return false" style="color:var(--c);text-decoration:underline">links page</a> and on <strong style="color:var(--t)">Security</strong> in this app.
                     </p>
                 </div>
@@ -6859,6 +7154,9 @@
                 </div>
                 <button type="button" class="btn btn-w btn-g" id="welcomeUnderstandBtn" style="width:100%"
                     onclick="goWelcomeFromShowcaseIntro()">I understand</button>
+                <p class="xs" style="text-align:center;margin:10px 0 0;color:var(--m);line-height:1.4">
+                    Click outside the box to skip the whole welcome process.
+                </p>
             </div>
             <!-- Step 1: Welcome (congratulations, language, intro) -->
             <div id="welcomeStepLang" class="welcome-step-lang" style="display:none">
@@ -7050,7 +7348,7 @@
                 <div class="xs" style="text-align:center;margin:0 0 6px;color:var(--m);font-weight:800">Step 3 of 4</div>
                 <div class="mttl" style="text-align:center;margin-bottom:10px;line-height:1.35">Onboard your contacts</div>
                 <p class="xs" style="text-align:center;margin:0 0 14px;color:var(--t);line-height:1.45">Add people and shops you pay often. Everything stays on this device until you choose to share.</p>
-                <p class="xs" style="text-align:center;margin:0 0 10px;color:var(--m);line-height:1.4">Open Contacts finishes this setup and takes you to your list.</p>
+                <p class="xs" style="text-align:center;margin:0 0 10px;color:var(--m);line-height:1.4">Open Contacts will be added in a later stage; you can continue setup now.</p>
                 <button type="button" class="btn" style="width:100%;margin-bottom:10px" onclick="openWelcomeContactsFromPersonalize()">Open Contacts</button>
                 <button type="button" class="btn btn-w" style="width:100%;margin-bottom:8px" onclick="goWelcomePersonalizeNext(3)">Next</button>
                 <button type="button" class="btn" style="width:100%" onclick="finalizeWelcomeSetup()">I'll do that later</button>
@@ -7061,8 +7359,7 @@
                 <div class="mttl" style="text-align:center;margin-bottom:10px;line-height:1.35">Who is already here</div>
                 <p class="xs" style="text-align:center;margin:0 0 12px;color:var(--t);line-height:1.45">Sample directory in this preview (your list grows as you add contacts).</p>
                 <div id="welcomeDirectoryList" style="max-height:200px;overflow-y:auto;margin-bottom:14px;padding-right:4px"></div>
-                <button type="button" class="btn btn-w btn-g" style="width:100%;margin-bottom:8px" onclick="finishWelcomePersonalization()">Finish</button>
-                <button type="button" class="btn" style="width:100%" onclick="finalizeWelcomeSetup()">I'll do that later</button>
+                <button type="button" class="btn btn-w btn-g" style="width:100%" onclick="finishWelcomePersonalization()">Finish</button>
             </div>
 
             <!-- Step 4: Use case -->
@@ -7610,10 +7907,25 @@
             if (label) label.textContent = buildVersion ? `App version: ${buildVersion}` : '';
             const hint = document.getElementById('settingsAppVersionHint');
             if (hint) hint.textContent = buildVersion ? `App version: ${buildVersion}` : '';
+            const showcasePill = document.getElementById('topbarShowcasePill');
+            if (showcasePill && buildVersion) {
+                showcasePill.textContent = 'Showcase · v' + String(buildVersion).trim();
+            }
         }
 
         function showStablesCharterComingNotice() {
             if (typeof openModal === 'function') openModal('stablesCharterComingModal');
+        }
+        /** Opens `STABLES_CHARTER_URL` from runtime-config when set; otherwise the “coming soon” modal. */
+        function openStablesCharterUrl() {
+            const raw = window.STABLES_CONFIG && window.STABLES_CONFIG.STABLES_CHARTER_URL;
+            const u = raw != null ? String(raw).trim() : '';
+            if (u && /^https?:\/\//i.test(u)) {
+                const w = window.open(u, '_blank', 'noopener,noreferrer');
+                if (w && typeof showToast === 'function') showToast('Opening Stables Charter in your browser');
+                return;
+            }
+            showStablesCharterComingNotice();
         }
 
         // Exchange page: mount the LP liquidity graph under the conversion inputs.
@@ -11637,6 +11949,45 @@
             }, 120);
         }
 
+        /** On/Off Ramp: jump to numbered step under On-ramp or Off-ramp (from At a glance diagram). */
+        function scrollToRampStep(direction, step) {
+            const d = String(direction || '').toLowerCase();
+            const n = parseInt(String(step), 10);
+            if ((d !== 'on' && d !== 'off') || !Number.isFinite(n) || n < 1 || n > 6) return;
+            if (typeof navigate === 'function') navigate('onoff-ramp');
+            const id = d === 'on' ? 'ramp-on-step-' + n : 'ramp-off-step-' + n;
+            setTimeout(function () {
+                const el = document.getElementById(id);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 120);
+        }
+
+        /** Mint tab Mint Wables: used from On/Off Ramp step 6 (and diagram). */
+        function goMintWablesMint(ev) {
+            if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+            if (typeof navigate === 'function') navigate('mint');
+            setTimeout(function () {
+                if (typeof setVTab === 'function') setVTab('issue');
+                setTimeout(function () {
+                    const el = document.getElementById('mintWablesMintBlock');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 80);
+            }, 120);
+        }
+
+        /** Mint tab Burn Wables (reclaim Winiwa): used from Off-ramp step 1 (and diagram). */
+        function goMintWablesBurn(ev) {
+            if (ev) { ev.preventDefault(); ev.stopPropagation(); }
+            if (typeof navigate === 'function') navigate('mint');
+            setTimeout(function () {
+                if (typeof setVTab === 'function') setVTab('issue');
+                setTimeout(function () {
+                    const el = document.getElementById('mintWablesBurnBlock');
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 80);
+            }, 120);
+        }
+
         function refreshWablesFxOracleUI() {
             const mintEl = document.getElementById('wablesMintFxOracleSource');
             if (mintEl) {
@@ -12979,13 +13330,63 @@
             }
         }
 
-        const TOPBAR_BRAND_SUB = 'By Stables on Minima';
+        function initTopbarBrandOutsideClose() {
+            if (window.__topbarBrandDismissBound) return;
+            window.__topbarBrandDismissBound = true;
+            document.addEventListener('click', function (e) {
+                const b = document.querySelector('.topbar .brand');
+                if (!b || !b.classList.contains('brand--tip-open')) return;
+                if (b.contains(e.target)) return;
+                b.classList.remove('brand--tip-open');
+            }, true);
+        }
+
+        function handleTopbarBrandClick(ev) {
+            const brandEl = ev.currentTarget;
+            const touchUi = window.matchMedia('(hover: none)').matches;
+            const tip = document.getElementById('topbarBrandTooltip');
+            initTopbarBrandOutsideClose();
+
+            if (touchUi && tip && ev.target && typeof ev.target.closest === 'function' && ev.target.closest('#topbarBrandTooltip')) {
+                ev.stopPropagation();
+                brandEl.classList.remove('brand--tip-open');
+                return;
+            }
+
+            if (touchUi) {
+                const sub = document.getElementById('topbarBrandSub');
+                if (sub && ev.target && typeof ev.target.closest === 'function' && ev.target.closest('#topbarBrandSub')) {
+                    ev.preventDefault();
+                    ev.stopPropagation();
+                    brandEl.classList.toggle('brand--tip-open');
+                    return;
+                }
+            }
+
+            if (touchUi) brandEl.classList.remove('brand--tip-open');
+            navigate('wallet');
+        }
+
+        function onTopbarBrandKeydown(ev) {
+            const brandEl = ev.currentTarget;
+            if (ev.key === 'Escape') {
+                brandEl.classList.remove('brand--tip-open');
+                return;
+            }
+            if (ev.key === 'Enter' || ev.key === ' ') {
+                ev.preventDefault();
+                brandEl.classList.remove('brand--tip-open');
+                navigate('wallet');
+            }
+        }
+
+        const TOPBAR_BRAND_SUB_DEFAULT = 'By Stables on Minima';
+        const TOPBAR_BRAND_SUB_PERSONAL = 'by Stables/Minima';
 
         function refreshTopbarBrand() {
             const img = document.getElementById('topbarBrandImg');
             const nameEl = document.getElementById('topbarBrandName');
             const subEl = document.getElementById('topbarBrandSub');
-            if (subEl) subEl.textContent = TOPBAR_BRAND_SUB;
 
             const liveName = String(document.getElementById('councilNameInput')?.value || '').trim();
             const prof = loadCouncilProfileFromStorage();
@@ -13004,6 +13405,9 @@
                 displayTitle = welcomeBankDraft;
             } else if (bankName) {
                 displayTitle = bankName;
+            }
+            if (subEl) {
+                subEl.textContent = displayTitle !== 'Stables' ? TOPBAR_BRAND_SUB_PERSONAL : TOPBAR_BRAND_SUB_DEFAULT;
             }
             if (nameEl) {
                 nameEl.textContent = displayTitle;

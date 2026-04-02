@@ -83,7 +83,7 @@
 
 | File | Location | Purpose |
 |------|----------|---------|
-| `index.html` | `1_development/stream_1_app/prod_stables_app_v0.2.x/` | Single-file MiniDapp source (active version folder; ship until SPA parity). |
+| `index.html` | `1_development/stream_1_app/prod_stables_app_v*/` | Single-file MiniDapp source (active version folder; check `0_handshake/minidapp_version.md` for exact path + declared label, currently `v00.00.02` showcase line). |
 | `stables_spa/` | `1_development/stream_1_app/stables_spa/` | **Vite + React + TypeScript** app shell — components, features, `npm run build` → `dist/`. See `stables_spa/ARCHITECTURE.md`. |
 
 ### LAYER 7 — PRESENTATION (Load when working on the public presentation)

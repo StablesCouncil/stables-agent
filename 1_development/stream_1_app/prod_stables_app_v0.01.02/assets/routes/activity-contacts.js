@@ -1723,13 +1723,37 @@
     }
   };
 
-  /** Finish setup and open Contacts (exits welcome; same as skipping the rest of personalisation). */
+  /** Welcome personalize step 3: show "later stage" notice, then continue to step 4. */
   window.openWelcomeContactsFromPersonalize = function () {
-    window.finalizeWelcomeSetup();
-    setTimeout(() => {
-      if (typeof window.navigate === 'function') window.navigate('contacts');
-      if (typeof window.renderContactsPage === 'function') window.renderContactsPage();
-    }, 400);
+    const modal = document.getElementById('agentActionModal');
+    const title = document.getElementById('agentActionTitle');
+    const titleRight = document.getElementById('agentActionTitleRight');
+    const content = document.getElementById('agentActionContent');
+    if (!modal || !title || !content) {
+      // Fallback: preserve onboarding continuity even if notice UI is unavailable.
+      if (typeof window.goWelcomePersonalizeNext === 'function') window.goWelcomePersonalizeNext(3);
+      return;
+    }
+    title.textContent = 'Contacts';
+    if (titleRight) titleRight.innerHTML = '';
+    modal.classList.add('agent-action-notice');
+    content.innerHTML = `
+      <p class="sec-body" style="margin:0 0 12px;line-height:1.55;color:#fbbf24">
+        Opening <strong style="color:#fbbf24">Contacts</strong> from this onboarding step will be added in a <strong style="color:#fbbf24">later stage</strong>.
+      </p>
+      <button class="btn btn-w" style="width:100%" onclick="closeWelcomeContactsComingSoonModal(event)">OK</button>
+    `;
+    modal.classList.add('open');
+  };
+
+  window.closeWelcomeContactsComingSoonModal = function (ev) {
+    if (ev) {
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+    const topModal = document.getElementById('agentActionModal');
+    if (topModal) topModal.classList.remove('open', 'agent-action-notice');
+    if (typeof window.goWelcomePersonalizeNext === 'function') window.goWelcomePersonalizeNext(3);
   };
 
   window.finishWelcomePersonalization = function () {

@@ -20,6 +20,12 @@
 - **Single Master Rule**: The MiniDapp **active development** tree is always:
     `1_development/stream_1_app/prod_stables_app_v0.01.02/` (entry: `index.html`).  
     **Version pointer for agents** (frozen zips, bumps, inventory paths): `0_handshake/minidapp_version.md`.
+- **MiniDapp Versioning Policy (MANDATORY)**:
+    - Use three explicit release channels in communications and release notes: **prod**, **test**, **showcase**.
+    - Canonical release label format is `vNN.NN.NN` (two digits per block), e.g. `v00.00.02`.
+    - Current declared label for this active line is **`v00.00.02`**.
+    - Folder names may temporarily keep legacy numbering while migration is in progress; the authoritative mapping (folder path ↔ release label ↔ channel) lives in `0_handshake/minidapp_version.md`.
+    - When uncertain, trust `minidapp_version.md` over inline examples elsewhere.
 - **MiniDapp Change Logging (MANDATORY)**: For the active MiniDapp folder, log **every user-visible change** in `CHANGELOG.md` at the time the change is made. Do not postpone logging to release day.
 - **Release README Rule (MANDATORY)**: Every pushed version package must include a `README.md` section titled **"What changed in this version"** that summarizes the exact changes shipped in that version, sourced from `CHANGELOG.md`.
 - **Packaging Rule**: Zip the *contents* of the active `prod_stables_app_...` folder directly to create the `.mds.zip`. **Exclude** a sibling `build/` folder if present (it only holds generated zips + notes). No file renaming inside the zip.
