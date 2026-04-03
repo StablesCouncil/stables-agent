@@ -18,7 +18,8 @@ const OpenAI = require("openai");
 const API_BASE = "https://www.moltbook.com/api/v1";
 const DB_FILE = path.join(__dirname, "vector_db.json");
 const STATE_FILE = path.join(__dirname, "moltbook_state.json");
-const MAX_DAILY_LIKES = 4;
+/** Daily cap for post upvotes (Moltbook has no separate "like" endpoint). */
+const MAX_DAILY_UPVOTES = 4;
 const MAX_DAILY_FOLLOWS = 1;
 
 function sleep(ms) {
@@ -127,10 +128,23 @@ function shouldFollowAuthor(post) {
 
 function isLikelyApiSuccess(res) {
     if (!res || typeof res !== "object") return false;
-    if (typeof res.statusCode === "number" && res.statusCode >= 400) return false;
-    const msg = String(res.message || "");
+    const code = typeof res.statusCode === "number" ? res.statusCode : null;
+    if (code != null && code >= 400) return false;
+    if (res.success === false) return false;
+    if (res.success === true) return true;
+    const msg = String(res.message || res.error || "");
     if (/(not found|invalid|error|failed|suspended|unauthorized|forbidden|duplicate)/i.test(msg)) return false;
-    return true;
+    if (res.post || res.comment || res.agent) return true;
+    if (code != null && code >= 200 && code < 300) return true;
+    return false;
+}
+
+/** Moltbook follow uses agent login name, e.g. "someagent" (not numeric id). */
+function normalizeAgentNameForFollow(raw) {
+    let s = String(raw || "").trim();
+    if (!s) return "";
+    s = s.replace(/^u\//i, "").trim();
+    return s;
 }
 
 async function tryPostAction(endpointCandidates, body = null) {
@@ -145,20 +159,15 @@ async function tryPostAction(endpointCandidates, body = null) {
     return { ok: false };
 }
 
-async function tryLikePost(postId) {
-    return tryPostAction([
-        `/posts/${postId}/like`,
-        `/posts/${postId}/likes`,
-        `/posts/${postId}/reactions`,
-    ], { type: "like" });
+async function tryUpvotePost(postId) {
+    return tryPostAction([`/posts/${postId}/upvote`, `/posts/${postId}/upvotes`]);
 }
 
-async function tryFollowAuthor(authorId) {
-    return tryPostAction([
-        `/users/${authorId}/follow`,
-        `/agents/${authorId}/follow`,
-        `/profiles/${authorId}/follow`,
-    ]);
+async function tryFollowAgent(agentName) {
+    const name = normalizeAgentNameForFollow(agentName);
+    if (!name) return { ok: false };
+    const enc = encodeURIComponent(name);
+    return tryPostAction([`/agents/${enc}/follow`]);
 }
 
 function loadState() {
@@ -233,7 +242,17 @@ async function moltbookFetch(endpoint, options = {}) {
                     ...options.headers,
                 },
             });
-            return await res.json();
+            let data = {};
+            try {
+                const text = await res.text();
+                if (text) data = JSON.parse(text);
+            } catch {
+                data = {};
+            }
+            if (data && typeof data === "object" && !Array.isArray(data)) {
+                data.statusCode = res.status;
+            }
+            return data;
         } catch (e) {
             if (attempt === 2) throw e;
             await sleep(1500);
@@ -427,7 +446,7 @@ async function main() {
         posts: 0,
         replyComments: 0,
         feedComments: 0,
-        likes: 0,
+        upvotes: 0,
         follows: 0,
     };
 
@@ -599,37 +618,39 @@ async function main() {
         for (const post of posts) {
             if (commentsAdded >= 1) break;
             const postId = post.id || post.post_id;
-            const authorId = post.author?.id || post.author_id || post.agent_id || post.profile_id;
-            const authorName = (post.author?.name || post.author_name || "").toLowerCase();
+            const authorAgentName = normalizeAgentNameForFollow(
+                post.author?.name || post.author_name || post.author?.username || post.username
+            );
+            const authorName = authorAgentName.toLowerCase();
             if (!postId || authorName === "stablesagent" || commented.has(postId)) continue;
 
-            if (state.likesToday < MAX_DAILY_LIKES && !liked.has(postId) && shouldLikePost(post)) {
+            if (state.likesToday < MAX_DAILY_UPVOTES && !liked.has(postId) && shouldLikePost(post)) {
                 await sleep(7_000 + Math.floor(Math.random() * 12_000));
-                const likeRes = await tryLikePost(postId);
-                if (likeRes.ok) {
+                const voteRes = await tryUpvotePost(postId);
+                if (voteRes.ok) {
                     liked.add(postId);
                     state.likedPostIds = [...liked];
                     state.likesToday = (state.likesToday || 0) + 1;
-                    runStats.likes++;
-                    console.log("Liked post", postId, "via", likeRes.endpoint);
+                    runStats.upvotes++;
+                    console.log("Upvoted post", postId, "via", voteRes.endpoint);
                     saveState(state);
                 }
             }
 
             if (
                 state.followsToday < MAX_DAILY_FOLLOWS &&
-                authorId &&
-                !followed.has(String(authorId)) &&
+                authorAgentName &&
+                !followed.has(authorAgentName) &&
                 shouldFollowAuthor(post)
             ) {
                 await sleep(9_000 + Math.floor(Math.random() * 12_000));
-                const followRes = await tryFollowAuthor(authorId);
+                const followRes = await tryFollowAgent(authorAgentName);
                 if (followRes.ok) {
-                    followed.add(String(authorId));
+                    followed.add(authorAgentName);
                     state.followedAuthorIds = [...followed];
                     state.followsToday = (state.followsToday || 0) + 1;
                     runStats.follows++;
-                    console.log("Followed author", authorId, "via", followRes.endpoint);
+                    console.log("Followed agent", authorAgentName, "via", followRes.endpoint);
                     saveState(state);
                 }
             }
@@ -670,7 +691,7 @@ async function main() {
     }
 
     console.log(
-        `engagement: posts=${runStats.posts} likes=${runStats.likes}/${MAX_DAILY_LIKES} follows=${runStats.follows}/${MAX_DAILY_FOLLOWS} feed_comments=${runStats.feedComments} replies=${runStats.replyComments}`
+        `engagement: posts=${runStats.posts} upvotes=${runStats.upvotes}/${MAX_DAILY_UPVOTES} follows=${runStats.follows}/${MAX_DAILY_FOLLOWS} feed_comments=${runStats.feedComments} replies=${runStats.replyComments}`
     );
     console.log("Moltbook heartbeat done.");
 }

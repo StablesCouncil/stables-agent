@@ -14,7 +14,7 @@ Post–**v00.00.02** work in the active dev folder. **Do not** describe these it
 
 - **Help, Stables Academy:** subtitle under the page title now reads **Questionnaires, score tracking, certificates** (plural).
 
-- **Social link previews (X / Discord / others):** added Open Graph and Twitter Card meta tags on the showcase shell with canonical URL `https://stablescouncil.org/dapp/` and preview image `agent.png`, plus `twitter:site` (`@StablesCouncil`), `og:image` width/height (640 to match `agent.png`), and alt text without em dash per Stables comms rules so pasted links can show title, description, and image after crawlers refresh.
+- **Social link previews (X / Discord / others):** Open Graph and Twitter Card meta on the showcase shell with canonical URL `https://stablescouncil.org/dapp/`, preview image `https://stablescouncil.org/brand/assets/twitter-header.png` (site brand header, not StablesAgent art), `twitter:site` (`@StablesCouncil`), `og:image` width/height 1500×500 to match that asset, and alt **Stables MiniDapp showcase** (no em dash).
 
 - **Help → The Stables Academy** (first Help item): Security questionnaire (10 random from bank, 3 options, mandatory gate + minimum 6/10), retake cool-down, best score kept, optional demographics after quiz, anonymized public-DB consent, certificate + share; other topics listed as coming soon.
 - **Stables Academy Security flow:** one question at a time; demographics and consent after the 10 knowledge questions; choice to show correctness **after each answer** or **only at the end**.
