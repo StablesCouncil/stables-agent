@@ -66,4 +66,5 @@
 | **061** | 2026-04-07 | `2_current/stream_3_governance/prod_minima_archive_admin/`, `0_handshake/` | [ADD] | Minima archive MySQL read-only access runbook (`mysql_readonly_access_procedure.md`); handshake + `session_map` + `README` references for admin task routing. | `pending` |
 | **062** | 2026-04-07 | `2_current/stream_3_governance/prod_minima_archive_admin/` | [ADD] | Community-facing redacted variant `mysql_readonly_access_procedure_community.md` for public GitHub sharing; internal runbook cross-link + handshake file map update. | `pending` |
 | **063** | 2026-04-07 | `prod_minima_archive_admin/`, `0_handshake/` | [ADD] | `minima_mysql_full_archive_procedure.md`: full MySQL parity (wipe/reload), continuous autobackup, `linuxuser`/`sudo` backup; `session_map`, `README`, `handshake` pointers. | `pending` |
-
+| **069** | 2026-04-11 | `task_treasury_research/`, `0_handshake/` | [ADD] | Treasury Diversification Audit (Eternity Filters applied); drafted research essay. | `968d947` |
+| **070** | 2026-04-11 | `N/A` | [SYNC] | Final Project Alignment: Purged 3.1 GB binaries from history and achieved 100% GitHub parity (154/156 commits). | `fe49939` |

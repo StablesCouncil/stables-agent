@@ -52,10 +52,10 @@ Write-Host "Syncing Stables to GitHub (repo: $ProjectRoot)..." -ForegroundColor 
 Write-Host "Using git: $GitExe" -ForegroundColor DarkGray
 
 function Invoke-Git {
-    param([string[]]$Args)
-    & $GitExe @Args
+    param([string[]]$GitArgs)
+    & $GitExe @GitArgs
     if ($LASTEXITCODE -ne 0) {
-        throw "git $($Args -join ' ') failed with exit code $LASTEXITCODE"
+        throw "git $($GitArgs -join ' ') failed with exit code $LASTEXITCODE"
     }
 }
 

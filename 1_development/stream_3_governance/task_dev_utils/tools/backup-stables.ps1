@@ -99,7 +99,7 @@ To list backups on server: ssh $VultrUser@$VultrHost "ls -la $BackupBaseOnServer
 $TempDir = Join-Path $env:TEMP "stables_backup_temp_$Timestamp"
 New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
 
-$RoboExcludeDirs = "node_modules", ".git", ".gemini", ".agent", "prod_credentials", "venv", "__pycache__"
+$RoboExcludeDirs = "node_modules", ".git", ".gemini", ".agent", "prod_credentials", "venv", "__pycache__", ".venv", "env"
 $RoboExcludeFiles = ".env", ".env.local", ".env.development.local", ".env.test.local", ".env.production.local"
 
 try {
@@ -109,7 +109,8 @@ try {
             Log "Copying $folder..."
             $Dest = Join-Path $TempDir $folder
             New-Item -ItemType Directory -Path (Split-Path $Dest) -Force | Out-Null
-            & robocopy $Src $Dest /E /XD $RoboExcludeDirs /XF $RoboExcludeFiles /NFL /NDL /NJH /NJS /NC /NS /NP 2>$null
+            # Using splatting or explicit argument array for robocopy to ensure XD/XF work at any depth
+            & robocopy $Src $Dest /E /XD $RoboExcludeDirs /XF $RoboExcludeFiles /NFL /NDL /NJH /NJS /NC /NS /NP /R:0 /W:0 2>$null
         }
     }
     Copy-Item $ManifestPath (Join-Path $TempDir "BACKUP_MANIFEST.txt")
