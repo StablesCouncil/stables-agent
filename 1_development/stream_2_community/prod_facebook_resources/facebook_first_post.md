@@ -5,7 +5,7 @@
 ### Post Text:
 
 ```
-💰 Be your own bank.
+💰 Be your bank.
 
 Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
@@ -34,7 +34,7 @@ Join the journey:
 ## Alternative Version (Shorter, More Facebook-Friendly):
 
 ```
-💰 Be your own bank.
+💰 Be your bank.
 
 Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
@@ -55,7 +55,7 @@ Built on MINIMA.
 ```
 What if money worked for YOU, not the other way around?
 
-💰 Be your own bank with Stables.
+💰 Be your bank with Stables.
 
 No banks to freeze your account.
 No hidden fees.
@@ -85,7 +85,7 @@ Telegram: t.me/stablescommunity
 4. **Add the link**: https://stablescouncil.github.io/
    - Facebook will automatically create a preview card with the site's image and description
 5. **Review the preview** - it should show:
-   - Title: "Stables | Be your own bank"
+   - Title: "Stables | Be your bank"
    - Description: "Money that is truly yours..."
    - Image: Your presentation hero image
 6. **Click "Publier"** (Publish)

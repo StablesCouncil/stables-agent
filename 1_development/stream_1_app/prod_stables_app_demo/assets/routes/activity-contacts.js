@@ -1,5 +1,7 @@
 (function () {
   const CFG = window.STABLES_CONFIG || {};
+  const DEMO_REAL = !!CFG.DEMO_REAL_ONCHAIN_WALLET;
+  const USER_ACTIVITY_STORAGE_KEY = CFG.USER_ACTIVITY_STORAGE_KEY || 'stables_demo_user_activity_v1';
   const ACTIVITY_PAGE_SIZE = CFG.ACTIVITY_PAGE_SIZE || 25;
   const CONTACT_NOTES_KEY = CFG.CONTACT_NOTES_KEY || 'stables_contact_notes_v1';
   const SUSPICIOUS_TX_KEY = CFG.SUSPICIOUS_TX_KEY || 'stables_suspicious_tx_ids_v1';
@@ -55,23 +57,54 @@
   const CCY_ROTATION = ['USDw', 'EURw', 'GBPw'];
   const BASE_DATE = new Date('2026-03-19T14:32:00');
   const DEMO_ACTIVITY = [];
-  for (let i = 0; i < 75; i++) {
-    const cp = DEMO_CONTACTS[i % DEMO_CONTACTS.length];
-    const dir = i % 3 === 0 ? 'in' : 'out';
-    const ccy = CCY_ROTATION[i % CCY_ROTATION.length];
-    const magnitude = ((i * 17) % 260) + (dir === 'in' ? 25 : 6.5);
-    const amt = Number((dir === 'in' ? magnitude : -magnitude).toFixed(2));
-    const dt = new Date(BASE_DATE.getTime() - (i * 7.25 * 60 * 60 * 1000));
-    const dateText = dt.toLocaleString('en-GB', { month: 'short', day: '2-digit' }) + ' · ' + dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-    DEMO_ACTIVITY.push({
-      id: `TX-${String(100001 + i)}`, dir, icon: ICON_BY_CATEGORY[cp.category] || (dir === 'in' ? '↙' : '↗'),
-      counterparty: cp.name, category: cp.category, title: `${dir === 'in' ? 'Received from' : 'Paid'} ${cp.name}`,
-      date: dateText, amt, ccy, address: cp.address, fee: Number((Math.max(0.02, Math.abs(amt) * 0.0001)).toFixed(2)),
-      explorerTxId: toDemoTradeId(`TX-${String(100001 + i)}`),
-      status: i % 19 === 0 ? 'Pending' : 'Confirmed', note: i % 5 === 0 ? 'Monthly recurring flow' : 'Demo payment',
-      directionLabel: dir === 'in' ? 'Incoming' : 'Outgoing'
-    });
+  if (!DEMO_REAL) {
+    for (let i = 0; i < 75; i++) {
+      const cp = DEMO_CONTACTS[i % DEMO_CONTACTS.length];
+      const dir = i % 3 === 0 ? 'in' : 'out';
+      const ccy = CCY_ROTATION[i % CCY_ROTATION.length];
+      const magnitude = ((i * 17) % 260) + (dir === 'in' ? 25 : 6.5);
+      const amt = Number((dir === 'in' ? magnitude : -magnitude).toFixed(2));
+      const dt = new Date(BASE_DATE.getTime() - (i * 7.25 * 60 * 60 * 1000));
+      const dateText = dt.toLocaleString('en-GB', { month: 'short', day: '2-digit' }) + ' · ' + dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+      DEMO_ACTIVITY.push({
+        id: `TX-${String(100001 + i)}`, dir, icon: ICON_BY_CATEGORY[cp.category] || (dir === 'in' ? '↙' : '↗'),
+        counterparty: cp.name, category: cp.category, title: `${dir === 'in' ? 'Received from' : 'Paid'} ${cp.name}`,
+        date: dateText, amt, ccy, address: cp.address, fee: Number((Math.max(0.02, Math.abs(amt) * 0.0001)).toFixed(2)),
+        explorerTxId: toDemoTradeId(`TX-${String(100001 + i)}`),
+        status: i % 19 === 0 ? 'Pending' : 'Confirmed', note: i % 5 === 0 ? 'Monthly recurring flow' : 'Demo payment',
+        directionLabel: dir === 'in' ? 'Incoming' : 'Outgoing'
+      });
+    }
   }
+
+  let USER_ACTIVITY = [];
+  function loadUserActivityFromStorage() {
+    USER_ACTIVITY = [];
+    if (!DEMO_REAL) return;
+    try {
+      const j = JSON.parse(localStorage.getItem(USER_ACTIVITY_STORAGE_KEY) || '[]');
+      if (Array.isArray(j)) USER_ACTIVITY = j;
+    } catch (_) {
+      USER_ACTIVITY = [];
+    }
+  }
+  function persistUserActivityToStorage() {
+    if (!DEMO_REAL) return;
+    try {
+      localStorage.setItem(USER_ACTIVITY_STORAGE_KEY, JSON.stringify(USER_ACTIVITY));
+    } catch (_) { /* ignore */ }
+  }
+  loadUserActivityFromStorage();
+
+  window.stablesAppendUserActivityRow = function (row) {
+    if (!DEMO_REAL || !row || !row.id) return;
+    USER_ACTIVITY.unshift(row);
+    if (USER_ACTIVITY.length > 200) USER_ACTIVITY.length = 200;
+    persistUserActivityToStorage();
+    if (typeof window.renderActivity === 'function') window.renderActivity();
+    if (typeof window.renderWalletRecentActivity === 'function') window.renderWalletRecentActivity();
+  };
+  window.stablesReloadUserActivityFromStorage = loadUserActivityFromStorage;
 
   const EXCHANGE_PAIR_ROWS = [
     ['USDw', 'EURw', 0.918],
@@ -86,25 +119,31 @@
     ['CHFw', 'EURw', 1.052]
   ];
   const DEMO_EXCHANGES = [];
-  for (let i = 0; i < 14; i++) {
-    const [fromCcy, toCcy, rate] = EXCHANGE_PAIR_ROWS[i % EXCHANGE_PAIR_ROWS.length];
-    const fromAmt = Number((42 + i * 23.17 + (i % 4) * 55).toFixed(2));
-    const toAmt = Number((fromAmt * rate).toFixed(2));
-    const dt = new Date(BASE_DATE.getTime() - (i * 33 * 60 * 60 * 1000));
-    const dateText = dt.toLocaleString('en-GB', { month: 'short', day: '2-digit' }) + ' · ' + dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
-    const rateDec = rate < 0.02 ? 6 : 4;
-    DEMO_EXCHANGES.push({
-      id: `EX-${String(90001 + i)}`,
-      fromCcy,
-      toCcy,
-      fromAmt,
-      toAmt,
-      rateLabel: `1 ${fromCcy} ≈ ${rate.toFixed(rateDec)} ${toCcy} (indicative)`,
-      date: dateText,
-      fee: 0,
-      status: i % 17 === 0 ? 'Pending' : 'Confirmed',
-      note: 'Instant conversion · demo preview'
-    });
+  if (!DEMO_REAL) {
+    for (let i = 0; i < 14; i++) {
+      const [fromCcy, toCcy, rate] = EXCHANGE_PAIR_ROWS[i % EXCHANGE_PAIR_ROWS.length];
+      const fromAmt = Number((42 + i * 23.17 + (i % 4) * 55).toFixed(2));
+      const toAmt = Number((fromAmt * rate).toFixed(2));
+      const dt = new Date(BASE_DATE.getTime() - (i * 33 * 60 * 60 * 1000));
+      const dateText = dt.toLocaleString('en-GB', { month: 'short', day: '2-digit' }) + ' · ' + dt.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false });
+      const rateDec = rate < 0.02 ? 6 : 4;
+      DEMO_EXCHANGES.push({
+        id: `EX-${String(90001 + i)}`,
+        fromCcy,
+        toCcy,
+        fromAmt,
+        toAmt,
+        rateLabel: `1 ${fromCcy} ≈ ${rate.toFixed(rateDec)} ${toCcy} (indicative)`,
+        date: dateText,
+        fee: 0,
+        status: i % 17 === 0 ? 'Pending' : 'Confirmed',
+        note: 'Instant conversion · demo preview'
+      });
+    }
+  }
+
+  function activitySource() {
+    return DEMO_REAL ? USER_ACTIVITY : DEMO_ACTIVITY;
   }
 
   let activityFilter = 'all';
@@ -149,7 +188,7 @@
   function persistTxNotes() { localStorage.setItem(TX_NOTES_KEY, JSON.stringify(txNotes)); }
   function persistFavorites() { localStorage.setItem(CONTACT_FAVORITES_KEY, JSON.stringify(Array.from(contactFavorites))); }
   function persistMerchantRatings() { localStorage.setItem(MERCHANT_RATINGS_KEY, JSON.stringify(merchantRatings)); }
-  function getTxById(id) { return DEMO_ACTIVITY.find(x => x.id === id); }
+  function getTxById(id) { return activitySource().find(x => x.id === id); }
   function getExchangeById(id) { return DEMO_EXCHANGES.find(x => x.id === id); }
   function getExplorerBaseUrl() {
     const raw = (window.STABLES_CONFIG && window.STABLES_CONFIG.MINIMA_EXPLORER_TX_BASE_URL) || '';
@@ -189,7 +228,7 @@
   function getFilteredActivity() {
     const q = (activitySearch || '').toLowerCase().trim();
     const hiddenOnly = activityFilter === 'hidden';
-    return DEMO_ACTIVITY.filter(x => {
+    return activitySource().filter(x => {
       if (deletedTx.has(x.id)) return false;
       if (hiddenOnly) {
         if (!hiddenTx.has(x.id)) return false;
@@ -205,11 +244,11 @@
     });
   }
   function latestContactTx(name, dir) {
-    return DEMO_ACTIVITY.find(x => !deletedTx.has(x.id) && x.counterparty === name && x.dir === dir) || null;
+    return activitySource().find(x => !deletedTx.has(x.id) && x.counterparty === name && x.dir === dir) || null;
   }
 
   function txsForShop(shopName) {
-    return DEMO_ACTIVITY.filter(x => x.counterparty === shopName);
+    return activitySource().filter(x => x.counterparty === shopName);
   }
 
   function escUi(s) {
@@ -246,7 +285,7 @@
   }
 
   function getEligibleShopTransactions(shopName) {
-    return DEMO_ACTIVITY
+    return activitySource()
       .filter(tx => tx.counterparty === shopName && tx.dir === 'out' && !deletedTx.has(tx.id))
       .slice()
       .sort((a, b) => String(b.date).localeCompare(String(a.date)));
@@ -554,7 +593,7 @@
   window.renderWalletRecentActivity = function () {
     const list = document.getElementById('walletRecentList');
     if (!list) return;
-    const items = DEMO_ACTIVITY.filter(x => !deletedTx.has(x.id) && !hiddenTx.has(x.id) && !hiddenShops.has(x.counterparty)).slice(0, 10);
+    const items = activitySource().filter(x => !deletedTx.has(x.id) && !hiddenTx.has(x.id) && !hiddenShops.has(x.counterparty)).slice(0, 10);
     list.innerHTML = '';
     items.forEach(x => {
       const row = document.createElement('div');
@@ -568,6 +607,9 @@
   };
 
   window.renderExchangeRecentList = function () {
+    if (DEMO_REAL && typeof window.__STABLES_PERSISTED_EXCHANGE_LIST_RENDERER === 'function') {
+      return window.__STABLES_PERSISTED_EXCHANGE_LIST_RENDERER();
+    }
     const list = document.getElementById('exchangeRecentList');
     if (!list) return;
     list.innerHTML = '';
@@ -632,9 +674,15 @@
     const txNote = getTxNote(tx);
     const statusColor = tx.status === 'Confirmed' ? 'var(--gr)' : 'var(--am)';
     const canRateMerchant = !!SHOP_PROFILES[tx.counterparty] && tx.dir === 'out';
+    const feeDisp = (Number(tx.fee) || 0).toFixed(2);
+    const txHash = String(tx.explorerTxId || '');
+    const hasRealExplorer = !!tx.minimaOnChain && /^0x[a-fA-F0-9]{64}$/.test(txHash);
+    const tradeIdBlock = hasRealExplorer
+      ? `<div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Transaction id</div><a href="${escUi(txExplorerUrl(tx))}" target="_blank" rel="noopener noreferrer" class="btn" style="width:auto;padding:0;border:none;background:none;font-size:12px;font-weight:900;margin-top:4px;word-break:break-all;color:var(--c);text-decoration:underline;display:inline-block">${escUi(txHash)}</a></div>`
+      : `<div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Trade ID</div><button class="btn" style="width:auto;padding:0;border:none;background:none;font-size:12px;font-weight:900;margin-top:4px;word-break:break-all;color:var(--c);text-decoration:underline" onclick="openTxExplorer()">${escUi(tx.explorerTxId || tx.id)}</button></div>`;
     const body = `<div style="margin-bottom:8px;display:flex;align-items:center;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:${statusColor};display:inline-block"></span><span class="xs mu">${tx.status}</span></div>
       <div style="padding:12px;border-radius:12px;background:rgba(16,24,38,.55);border:1px solid rgba(103,232,249,.16);margin-bottom:10px">
-        <div class="fbet"><div><button class="btn" style="width:auto;padding:0;border:none;background:none;font-size:16px;font-weight:900;color:var(--t)" onclick="openTxCounterpartyContact()">${tx.counterparty}</button><div class="xs mu">${tx.category} · ${tx.directionLabel}</div></div><div style="text-align:right"><div class="tx-amt ${tx.amt >= 0 ? 'pos' : 'neg'} bal-amount">${tx.amt >= 0 ? '+' : '−'}${Math.abs(tx.amt).toFixed(2)} ${tx.ccy}</div><div class="xs mu">Fee ${tx.fee.toFixed(2)} ${tx.ccy}</div></div></div>
+        <div class="fbet"><div><button class="btn" style="width:auto;padding:0;border:none;background:none;font-size:16px;font-weight:900;color:var(--t)" onclick="openTxCounterpartyContact()">${tx.counterparty}</button><div class="xs mu">${tx.category} · ${tx.directionLabel}</div></div><div style="text-align:right"><div class="tx-amt ${tx.amt >= 0 ? 'pos' : 'neg'} bal-amount">${tx.amt >= 0 ? '+' : '−'}${Math.abs(tx.amt).toFixed(2)} ${tx.ccy}</div><div class="xs mu">Fee ${feeDisp} ${tx.ccy}</div></div></div>
       </div>
       <div class="flex gap8" style="margin-bottom:10px;flex-wrap:wrap;justify-content:center">
         <button class="btn" onclick="repeatTransactionFromDetail()">Repeat</button>
@@ -643,7 +691,7 @@
       <details>
         <summary style="cursor:pointer;font-size:13px;font-weight:800;color:var(--m);margin-bottom:8px">Details</summary>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
-          <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Trade ID</div><button class="btn" style="width:auto;padding:0;border:none;background:none;font-size:12px;font-weight:900;margin-top:4px;word-break:break-all;color:var(--c);text-decoration:underline" onclick="openTxExplorer()">${tx.explorerTxId || tx.id}</button></div>
+          ${tradeIdBlock}
           <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1)"><div class="xs mu">Date</div><div style="font-size:12px;font-weight:800;margin-top:4px">${tx.date}</div></div>
           <div style="padding:10px;border-radius:10px;background:rgba(11,15,20,.35);border:1px solid rgba(103,232,249,.1);grid-column:1 / -1"><div class="xs mu">Counterparty Address</div><div style="font-size:12px;font-weight:800;margin-top:4px;word-break:break-all">${tx.address}</div></div>
         </div>
@@ -745,7 +793,7 @@
     });
     list.innerHTML = '';
     contacts.forEach(c => {
-      const txCount = DEMO_ACTIVITY.filter(x => !deletedTx.has(x.id) && x.counterparty === c.name).length;
+      const txCount = activitySource().filter(x => !deletedTx.has(x.id) && x.counterparty === c.name).length;
       const shopHidden = hiddenShops.has(c.name);
       const isFav = contactFavorites.has(c.name);
       const row = document.createElement('div');
@@ -767,7 +815,7 @@
       return;
     }
     const c = CONTACTS_BOOK.get(selectedContactName);
-    const txCount = DEMO_ACTIVITY.filter(x => !deletedTx.has(x.id) && x.counterparty === c.name).length;
+    const txCount = activitySource().filter(x => !deletedTx.has(x.id) && x.counterparty === c.name).length;
     const latestOut = latestContactTx(c.name, 'out');
     const latestIn = latestContactTx(c.name, 'in');
     document.getElementById('contactDetailName').textContent = c.name;
@@ -1527,7 +1575,9 @@
     options.forEach(code => {
       const opt = document.createElement('option');
       opt.value = code;
-      opt.textContent = code === 'MINIMA' ? 'Winiwa' : code;
+      opt.textContent = (typeof window.currencyDisplayLabel === 'function')
+        ? window.currencyDisplayLabel(code)
+        : code;
       sel.appendChild(opt);
     });
     const preferred = options.includes('EURw') ? 'EURw' : options[0];
@@ -1550,6 +1600,16 @@
     const modal = document.getElementById('welcomeSetupModal');
     if (modal) modal.classList.remove('open');
     syncWelcomeModalFabAccess();
+
+    const afterWelcomeMs = Math.max(
+      500,
+      Number((window.STABLES_CONFIG || {}).AUTO_OPEN_CONNECT_NODE_AFTER_WELCOME_MS) || 1800
+    );
+    setTimeout(() => {
+      if (typeof window.stablesTryAutoOpenNodeConnectModal === 'function') {
+        window.stablesTryAutoOpenNodeConnectModal();
+      }
+    }, afterWelcomeMs);
 
     setTimeout(() => {
       if (typeof window.checkBackupReminder === 'function') window.checkBackupReminder();
@@ -1608,6 +1668,12 @@
     if (stepShowcaseIntro) stepShowcaseIntro.style.display = step === 'showcaseIntro' ? '' : 'none';
     if (stepLang) stepLang.style.display = step === 'lang' ? '' : 'none';
     if (stepCurrencies) stepCurrencies.style.display = step === 'currencies' ? '' : 'none';
+    if (step === 'currencies') {
+      document.querySelectorAll('#welcomeCurrencies .ccy-pill[data-ccy]').forEach((pill) => {
+        if (typeof window.renderCurrencyPillVisual === 'function') window.renderCurrencyPillVisual(pill);
+      });
+      if (typeof window.updateWelcomePrimaryOptions === 'function') window.updateWelcomePrimaryOptions();
+    }
     if (stepTourChoice) stepTourChoice.style.display = step === 'tourChoice' ? '' : 'none';
     if (stepNerdTrack) stepNerdTrack.style.display = step === 'nerdTrack' ? '' : 'none';
     if (stepShowcaseMsg) stepShowcaseMsg.style.display = step === 'showcaseMsg' ? '' : 'none';
@@ -1853,22 +1919,23 @@
 
     const copy = {
       en: {
-        congrats: 'Congratulations on becoming your own bank.',
-        /** Step 0 only: showcase preview + Telegram (HTML safe, static). */
+        congrats: 'Congratulations on becoming your bank.',
+        /** Step 0 only: demo notice + Telegram (HTML safe, static). */
         welcomeShowcaseIntroHtml:
-          '<p>This is a first Showcase preview of the Stables dapp currently in development (<strong style="color:var(--t)">version __APP_VERSION__</strong>).</p>' +
-          '<p>The objective is to share the current direction with the Stables community and collect feedback directly in the app via <strong style="color:var(--t)">More - Feedback</strong>.</p>' +
-          '<p>Updated versions are expected to ship almost daily. If you are viewing this Showcase in your Minima node, please update your local package from <a href="__MDS_REPO_URL__" target="_blank" rel="noopener noreferrer">GitHub</a>. If you are using the web app, no update is needed: the latest version is available directly.</p>' +
+          '<p>This is the <strong style="color:var(--t)">Stables demo</strong> (<strong style="color:var(--t)">version __APP_VERSION__</strong>), the channel after the earlier showcase preview. The showcase showed direction and early UI; this demo adds deeper wiring: <strong style="color:var(--t)">Connect node</strong> for live chain height and on-chain MINIMA when your node answers, more wallet and flow experiments, and the same feedback loop.</p>' +
+          '<p><strong style="color:var(--t)">What you can try:</strong> explore the app, use <strong style="color:var(--t)">StablesAgent</strong> (it may be busy, retry shortly), send feedback under <strong style="color:var(--t)">More - Feedback</strong>, and when your node is live, try real MINIMA receive and send where the UI says so. Demo stablecoins and rates stay <strong style="color:var(--t)">illustrative</strong>, not production money or a final peg.</p>' +
+          '<p><strong style="color:var(--t)">What is not here yet:</strong> a finished product, full guided tours as shipped features, or guarantees on agent capacity. Some actions only work in <strong style="color:var(--t)">write mode</strong> on your MiniDapp.</p>' +
+          '<p>Updates still land often. If you use the MiniDapp on your Minima node, refresh the package from <a href="__MDS_REPO_URL__" target="_blank" rel="noopener noreferrer">GitHub</a> when a new build is published. On the public web app you usually get the latest without installing a zip.</p>' +
           '<p><strong style="color:var(--t)">Running on a Minima node:</strong> In the MiniDapp list, set Stables to <strong style="color:var(--t)">write mode</strong> (not read mode). Write mode is required for StablesAgent, sending feedback, and other features that use the network.</p>' +
           '<p>The Stables community can be reached at <a href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer">t.me/stablescommunity</a>.</p>',
         showcaseIntroUnderstandBtn: 'I understand',
         title: '',
         introParas: [
-          'Being your own bank brings great possibilities, and real responsibilities too.',
+          'Your bank opens up great possibilities, and real responsibilities too.',
           'Don’t worry: we are a community that supports each other. You will be able to find all the information you need in order to set your bank securely.'
         ],
         showcase:
-          'On your Minima node, keep this MiniDapp in write mode so StablesAgent and feedback work.\n\nA guided demo tour will be added in a coming version.\n\nFor now, keep exploring this preview in the app. You can open the agent from the main bottom icon [AGENT_ICON] or from any small top button in each section as an ice breaker for that context. The agent has limited capacity and may say it is busy, so retry shortly. You can talk to the agent in your language of choice.',
+          'On your Minima node, keep this MiniDapp in write mode so StablesAgent and feedback work.\n\nA fuller guided tour will arrive in a later build.\n\nFor now, explore this demo in the app. Open the agent from the main bottom icon [AGENT_ICON] or from the small top buttons in each section. The agent has limited capacity and may say it is busy, so retry shortly. You can talk to the agent in your language of choice.',
         currencySetupIntro:
           'Let’s just set up your currency of choice now, so that your bank is already personalised.',
         currencySetupNote:
@@ -1877,7 +1944,7 @@
         tourMerchantBtn: 'I\'m a merchant. I want to know how this will streamline my business process.',
         tourShopAmbassadorBtn:
           'I want to become a shop ambassador and explore what the earning opportunities are.',
-        tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my own bank.',
+        tourPersonBtn: 'I\'m a person. I want to understand what I\'ll be able to do with my bank.',
         tourNerdBtn: 'I\'m a nerd. I want to understand how this holds together.',
         nerdTrackTitle: 'Pick your nerd deep dive',
         nerdTrackBody: 'Choose what you want to inspect first in this demo.',

@@ -29,7 +29,7 @@ Leverage the existing multi-platform content strategy with aggressive organic gr
 ### Assets We Have
 1. **Premium Presentation** - Professional, multilingual, visually stunning
 2. **Clear Visual Identity** - Dark slate/neon cyan, glassmorphism, recognizable
-3. **Strong Messaging** - "Be your own bank" + 3 pillars (Secure, Pseudonymous, Unstoppable)
+3. **Strong Messaging** - "Be your bank" + 3 pillars (Secure, Pseudonymous, Unstoppable)
 4. **Content Strategy** - 6-month progressive disclosure plan
 5. **Platform Presence** - X, Instagram, Telegram active
 6. **Built on MINIMA** - Association with established blockchain
@@ -117,7 +117,7 @@ Leverage the existing multi-platform content strategy with aggressive organic gr
   - #Stables
   - #BuildInPublic
   - #BuiltOnMINIMA
-  - #BeYourOwnBank
+  - #BeYourBank
   
 - **Rotating Hashtags** (5-10 per post, relevant to content):
   - #SelfCustody #FinancialFreedom #CryptoWallet
@@ -539,7 +539,7 @@ Stables Council
    - Update monthly with new best performer
 
 5. **Profile Optimization**
-   - Bio: "Building the future of money on @Minima_Global | Be your own bank 🏦"
+   - Bio: "Building the future of money on @Minima_Global | Be your bank 🏦"
    - Header: Use master_twitter_header.png
    - Pinned tweet: Link to presentation with compelling hook
 

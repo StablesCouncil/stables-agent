@@ -2,7 +2,7 @@
 
 ## New Brand Messaging
 
-**Slogan**: Be your own bank  
+**Slogan**: Be your bank  
 **Tagline**: Money that is truly yours. Secure, Pseudonymous and Unstoppable.  
 **Attribution**: Made possible by Minima
 
@@ -15,7 +15,7 @@
 
 **New Bio:**
 ```
-Be your own bank. Money that is truly yours. Secure, Pseudonymous and Unstoppable.
+Be your bank. Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
 Made possible by Minima.
 ```
@@ -32,7 +32,7 @@ Made possible by Minima.
 
 **New Bio:**
 ```
-Be your own bank 🏛️
+Be your bank 🏛️
 
 Money that is truly yours.
 Secure, Pseudonymous and Unstoppable.
@@ -51,7 +51,7 @@ Made possible by Minima.
 
 **New Description:**
 ```
-Be your own bank.
+Be your bank.
 
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
@@ -72,7 +72,7 @@ Made possible by Minima.
 ```
 The official Stables community discussion group.
 
-Be your own bank. Talk about the money platform, ask questions, share ideas.
+Be your bank. Talk about the money platform, ask questions, share ideas.
 
 📢 Official announcements: @StablesCouncil
 
@@ -91,19 +91,19 @@ Made possible by Minima
 
 **Super Short Version** (for tight character limits):
 ```
-Be your own bank. Made possible by Minima.
+Be your bank. Made possible by Minima.
 ```
 
 **Medium Version** (most platforms):
 ```
-Be your own bank. Money that is truly yours. Secure, Pseudonymous and Unstoppable.
+Be your bank. Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
 Made possible by Minima.
 ```
 
 **Full Version** (for longer descriptions):
 ```
-Be your own bank.
+Be your bank.
 
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
@@ -126,5 +126,5 @@ Made possible by Minima.
 
 - Always include "Made possible by Minima" attribution
 - Maintain the three pillars: Secure, Pseudonymous, Unstoppable
-- "Be your own bank" replaces "Money Platform" as the slogan
+- "Be your bank" replaces "Money Platform" as the slogan
 - Keep messaging simple and accessible for general public

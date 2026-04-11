@@ -1,14 +1,26 @@
 // Runtime configuration for UI behavior and local persistence.
 window.STABLES_CONFIG = {
+  /**
+   * When true: keep full wallet currencies, settings, Winiwa mint, and exchange like the showcase, but use a separate
+   * persisted wallet key and zeroed protocol simulator. No seeded demo activity or demo exchange rows: Activity and
+   * Exchange show user actions only (native MINIMA sends from the node, in-app exchanges). Council/Treasury simulated
+   * economics stay hidden; Charter headers remain.
+   */
+  DEMO_REAL_ONCHAIN_WALLET: true,
+  /** localStorage JSON array for Activity when DEMO_REAL_ONCHAIN_WALLET (append via stablesAppendUserActivityRow). */
+  USER_ACTIVITY_STORAGE_KEY: 'stables_demo_user_activity_v1',
+  /** Council channel for this package: drives top bar pill (Showcase / Demo / Test / Prod). */
+  APP_STAGE: 'demo',
   /** Shipped build (keep in sync with dapp.conf "version" when you release). */
-  APP_BUILD_VERSION: '00.00.02',
+  APP_BUILD_VERSION: '00.00.00.01.00',
   /**
    * Council-side view of the newest MiniDapp. If latestPublishedVersion sorts above APP_BUILD_VERSION,
    * the Council communications page shows criticality + what changed + zip link.
    * To preview the update banner locally, temporarily set APP_BUILD_VERSION lower than latestPublishedVersion.
+   * Use the same segment count as APP_BUILD_VERSION so semver-like compare is meaningful.
    */
   APP_UPDATE_POLICY: {
-    latestPublishedVersion: '00.00.01',
+    latestPublishedVersion: '00.00.00.01.00',
     whenUpdateNeeded: {
       criticality: 'high',
       whatChanged:
@@ -37,6 +49,12 @@ window.STABLES_CONFIG = {
   VAULT_SOFT_REMINDER_LAST_KEY: 'stables_vault_soft_reminder_last_ts_v1',
   /** Days between soft reminders when user opted in. */
   VAULT_SOFT_REMINDER_INTERVAL_DAYS: 60,
+  /**
+   * Demo Winiwa faucet (Get 10,000): minimum milliseconds between successful claims. Default 1 hour.
+   * Storage key for last claim time: FAUCET_WINIWA_LAST_CLAIM_STORAGE_KEY.
+   */
+  FAUCET_WINIWA_COOLDOWN_MS: 3600000,
+  FAUCET_WINIWA_LAST_CLAIM_STORAGE_KEY: 'stables_faucet_winiwa_last_claim_ts_v1',
   /** Public demo: placeholder location for latest MiniDapp package (opens GitHub for now). */
   MDS_ZIP_URL: 'https://github.com/StablesCouncil/stablescouncil.github.io/tree/main/dapp/latest-version',
   /**
@@ -59,13 +77,24 @@ window.STABLES_CONFIG = {
    */
   FEEDBACK_SUBMIT_URL: 'https://agent.stablescouncil.org/api/feedback',
   /**
-   * If `window.MDS` exists: feedback uses `MDS.net.POST` (no CORS); StablesAgent can open in the system browser
-   * (see STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS) instead of a blocked iframe.
+   * If true and `window.MDS` exists: StablesAgent FAB / menu / explain buttons use `window.open` to the agent URL.
+   * Default false: use the in-app side drawer only (avoids an extra browser tab on top of the drawer).
+   * Set true only if the agent iframe is blocked on your Minima / WebView host.
    */
-  STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS: true,
+  STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS: false,
+  /**
+   * When true (default): on origins that need Connect node (not MiniDapp hub port 9003), open the Connect node modal
+   * after load if the welcome modal is not open, and once after the welcome flow closes, until the node reports live RPC.
+   */
+  AUTO_OPEN_CONNECT_NODE_ON_LAUNCH: true,
+  /** Milliseconds after window `load` before attempting auto-open when welcome is not open. */
+  AUTO_OPEN_CONNECT_NODE_DELAY_MS: 1200,
+  /** Milliseconds after welcome closes before attempting auto-open (staggered from Vault backup scheduling). */
+  AUTO_OPEN_CONNECT_NODE_AFTER_WELCOME_MS: 1800,
   /**
    * MEXC ticker for MINIMA/USDT. Prefer the 24h endpoint: same last price as spot plus quote volume (USDT)
-   * for Treasury liquidity readouts. In MiniDapp, `MDS.net.GET` is used (no CORS issue).
+   * for Treasury liquidity readouts. With MDS, `MDS.net.GET` hits this URL; in a normal browser the app uses
+   * CoinGecko simple price first (CORS), then this URL if the host allows it.
    */
   MEXC_TICKER_URL: 'https://api.mexc.com/api/v3/ticker/24hr?symbol=MINIMAUSDT',
   /**
@@ -150,7 +179,8 @@ window.STABLES_CONFIG = {
     'Soft-hidden transactions and hidden merchants (local demo)',
     'Activity search state and demo-only metadata',
     'stables_demo_wallet_v1 (browser demo vault balances)',
-    'stables_demo_exchange_hist_v1 (browser demo exchange history)'
+    'stables_demo_exchange_hist_v1 (browser demo exchange history)',
+    'stables_faucet_winiwa_last_claim_ts_v1 (demo Winiwa faucet cooldown)'
   ]
 };
 

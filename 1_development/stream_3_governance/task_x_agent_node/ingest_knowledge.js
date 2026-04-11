@@ -26,12 +26,29 @@ async function initXenova() {
     };
 }
 
-// Supports two layouts:
-// - Laptop: task_x_agent_node is 3 levels inside Stables root
+// Supports multiple layouts:
+// - Optional override: STABLES_BRAIN_DIR
+// - Full repo: promoted brain in 2_current (handshake source of truth)
 // - Server: task_x_agent_node sits next to task_stablesagent-brain-base
+// - Laptop sandbox: 1_development/.../task_stablesagent-brain-base
 const BRAIN_SIBLING = path.resolve(__dirname, "..", "task_stablesagent-brain-base");
+const BRAIN_PROD_IN_REPO = path.resolve(__dirname, "..", "..", "..", "2_current", "stream_3_governance", "prod_stablesagent-brain-base");
 const BRAIN_IN_REPO = path.resolve(__dirname, "..", "..", "..", "1_development", "stream_3_governance", "task_stablesagent-brain-base");
-const DOC_DIR = require("fs").existsSync(BRAIN_SIBLING) ? BRAIN_SIBLING : BRAIN_IN_REPO;
+
+function pickBrainDir() {
+    if (process.env.STABLES_BRAIN_DIR && fs.existsSync(process.env.STABLES_BRAIN_DIR)) {
+        return path.resolve(process.env.STABLES_BRAIN_DIR);
+    }
+    if (fs.existsSync(BRAIN_PROD_IN_REPO)) {
+        return BRAIN_PROD_IN_REPO;
+    }
+    if (fs.existsSync(BRAIN_SIBLING)) {
+        return BRAIN_SIBLING;
+    }
+    return BRAIN_IN_REPO;
+}
+
+const DOC_DIR = pickBrainDir();
 const DB_FILE = path.join(__dirname, "vector_db.json");
 
 function findMarkdownFiles(dir, fileList = []) {
@@ -96,11 +113,16 @@ async function runIngest() {
 
     console.log(`✅ Success! Stables Knowledge Base built and saved to JSON at: ${DB_FILE}`);
 
-    // Auto-generate the llms.txt file
+    // Auto-generate the llms.txt file when build script is present (promoted brain folder)
     try {
-        const { execSync } = require('child_process');
-        console.log("\n🔄 Automatically building llms.txt for external AIs...");
-        execSync(`node "${path.join(DOC_DIR, 'build_llms_txt.js')}"`, { stdio: 'inherit' });
+        const buildScript = path.join(DOC_DIR, "build_llms_txt.js");
+        if (fs.existsSync(buildScript)) {
+            const { execSync } = require("child_process");
+            console.log("\n🔄 Automatically building llms.txt for external AIs...");
+            execSync(`node "${buildScript}"`, { stdio: "inherit" });
+        } else {
+            console.log("\n⚠️ No build_llms_txt.js next to brain docs; skip llms.txt auto-build.");
+        }
     } catch (err) {
         console.error("❌ Failed to auto-generate llms.txt:", err.message);
     }

@@ -48,9 +48,9 @@ Each stage builds on the previous. Content progresses logically.
 ### **Core Messages:**
 
 **Message 1: "What is Stables?"**
-> "Your own bank. Money that is truly yours. Secure, Pseudonymous, and Unstoppable. Built on Minima."
+> "Your bank. Money that is truly yours. Secure, Pseudonymous, and Unstoppable. Built on Minima."
 
-**Message 2: "Be Your Own Bank"**
+**Message 2: "Be your bank"**
 > "Imagine controlling your money completely. No one can freeze it. No one can stop it. That's Stables."
 
 **Message 3: "A Better Way to Manage Money"**
@@ -66,7 +66,7 @@ Each stage builds on the previous. Content progresses logically.
 ```
 We're building Stables. 👋
 
-Your own bank. Money that is truly yours.
+Your bank. Money that is truly yours.
 
 • Secure (you control it)
 • Pseudonymous (your privacy)
@@ -91,7 +91,7 @@ What makes Stables different?
 ✓ No one can freeze your account
 ✓ Works on your phone
 
-Think of it as being your own bank.
+Think of it as being your bank.
 
 Learn more: [link to presentation]
 
@@ -102,7 +102,7 @@ Built on Minima.
 ```
 Slide 1: [Master wordmark on dark background]
 "Introducing Stables"
-"Be your own bank"
+"Be your bank"
 
 Slide 2: [Icon: Lock]
 "Secure"
@@ -138,7 +138,7 @@ Make financial freedom accessible to everyone, everywhere.
 
 💡 WHAT IS STABLES?
 
-Your own bank on your phone:
+Your bank on your phone:
 • Send money anywhere, instantly
 • Receive payments from anyone
 • Grow your wealth transparently
@@ -159,7 +159,7 @@ Your own bank on your phone:
 Presentation: [link]
 X: @StablesCouncil
 Instagram: @StablesCouncil
-Facebook: Stables - Be Your Own Bank
+Facebook: Stables - Be your bank
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 

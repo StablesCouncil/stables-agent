@@ -1,7 +1,7 @@
 # Stables Official Website Presentation
 *Source: stablescouncil.github.io*
 
-## Be your own bank
+## Be your bank
 Money that is truly yours. Secure, Pseudonymous and Unstoppable. Built on Minima.
 
 ## Pay instantly. Own completely.
@@ -19,7 +19,7 @@ A new way to participate in the stability of the ecosystem. Use the Multiplicato
 Advanced tools for those who want to do more than just pay.
 
 ## The Core Concept
-Let's be our own banking system. The Network of Everybody's Own Bank.
+Let's be our banking system. The Network of Everybody's Bank.
 
 ## Stables Showcase MiniDapp (preview)
 
@@ -34,10 +34,10 @@ StablesAgent is the official AI assistant for the Stables community. It can be r
 - In a private conversation with @StablesAgentBot directly.
 - On X at https://x.com/StablesCouncil
 
-Anyone who prefers to use their own AI (ChatGPT, Grok, Claude, or any other tool) can access the full Stables knowledge base using this direct link:
+Anyone who prefers to use their own AI (ChatGPT, Grok, Claude, or any other tool) can access the full Stables knowledge base using this direct link (same URL as the StablesAgent web chat footer):
 
-https://raw.githubusercontent.com/StablesCouncil/stablesagent-brain-base/main/llms.txt
+https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt
 
 To use it, paste that link into any AI and say: "Learn everything in this file." The AI will then be able to answer any question about Stables in detail and in any language.
 
-The knowledge base source files and generated rollup live with the Council’s public brain-base repository; interaction logs may be published per that repo’s README.
+The knowledge base source files and generated rollup are published under the **`brain/`** folder in the public **StablesCouncil/stables-agent** repository; interaction logs may be published per that repo’s README.

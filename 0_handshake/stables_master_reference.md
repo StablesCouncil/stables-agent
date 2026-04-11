@@ -63,7 +63,7 @@
 | `3_archive/` | Historical Reference | Read-only. Old versions renamed chronologically. |
 
 > [!IMPORTANT]
-> **Community Web Mirror Rule**: Any page or asset that is live on `stablescouncil.github.io` (including the main presentation and the "Our Own Banking System" overview) MUST have a 1:1 mirror inside `2_current/stream_2_community/` under a clearly named `prod_` folder (for example, `prod_presentation_v02`, `prod_capital_flows_infographic`). Drafts and work-in-progress versions stay in `1_development/stream_2_community/`. GitHub Pages and any other static hosting are always built from the copies in `2_current/stream_2_community/`, never directly from `1_development/`.
+> **Community Web Mirror Rule**: Any page or asset that is live on `stablescouncil.github.io` (including the main presentation and the "Our Banking System" overview) MUST have a 1:1 mirror inside `2_current/stream_2_community/` under a clearly named `prod_` folder (for example, `prod_presentation_v02`, `prod_capital_flows_infographic`). Drafts and work-in-progress versions stay in `1_development/stream_2_community/`. GitHub Pages and any other static hosting are always built from the copies in `2_current/stream_2_community/`, never directly from `1_development/`.
 
 ### 3. Archiving Rule (Chronological)
 When a `_current` asset is replaced:
@@ -117,7 +117,7 @@ To protect your work against hardware failure (a "glass of water"):
 ### Messaging Rules (Set in Stone)
 *   **Target**: General public worldwide.
 *   **No Jargon**: Do NOT use crypto or DeFi-specific terms like "decentralized" in any external communication or copy for the general public. These terms do not resonate with our target audience.
-*   **Hashtags (X/Twitter):** **Authoritative rule:** `handshake.md` §4 (*X/Twitter Specifics*). **Mandatory base set on every X post:** `#BYOB #Stablecoin #Minima`; then if space allows, `#BeYourOwnBank`, then tags such as `#Stables`. Do not substitute a different “core set” without updating `handshake.md` first. **Never** hashtags in Telegram community posts.
+*   **Hashtags (X/Twitter):** **Authoritative rule:** `handshake.md` §4 (*X/Twitter Specifics*). **Mandatory base set on every X post:** `#BYB #Stablecoin #Minima`; then if space allows, `#BeYourBank`, then tags such as `#Stables`. Do not substitute a different “core set” without updating `handshake.md` first. **Never** hashtags in Telegram community posts.
 *   **Strict Tagline**: Use ONLY **"Money that is truly yours. Secure, Pseudonymous and Unstoppable."**
 *   **MANDATORY ATTRIBUTION**: Official presentations and marketing materials MUST include "Built on MINIMA" badge or text with link to https://minima.global where applicable. Social media communications (Telegram, X) are exempt from this requirement as the technical link is implied.
 *   **Human Writing Style**: NEVER use AI writing markers in social media posts, comments, or public communication:
@@ -130,7 +130,7 @@ To protect your work against hardware failure (a "glass of water"):
     - **Hashtags**: MANDATORY on X (at the end). Never use in Telegram.
 
 ### Core Messaging
-*   **Slogan**: Be your own bank
+*   **Slogan**: Be your bank
 *   **Tagline**: Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 *   **The 3 Defining Pillars**:
     1.  **Secure**

@@ -38,26 +38,48 @@ function isQuotaError(err) {
     );
 }
 
+function getErrorHttpStatus(err) {
+    if (!err) return undefined;
+    if (typeof err.status === "number") return err.status;
+    if (typeof err.response?.status === "number") return err.response.status;
+    if (typeof err.error?.status === "number") return err.error.status;
+    const msg = String(err.message || err.error?.message || "");
+    if (/\b429\b|rate limit|too many requests/i.test(msg)) return 429;
+    return undefined;
+}
+
 function isBusyError(err) {
-    return err?.status === 429 || err?.code === 429;
+    return getErrorHttpStatus(err) === 429 || err?.code === 429;
+}
+
+/** Serialize LLM calls so parallel browser tabs do not all hit OpenRouter free tier at once. */
+let llmRequestTail = Promise.resolve();
+function withLlmQueue(fn) {
+    const run = () => fn();
+    const p = llmRequestTail.then(run, run);
+    llmRequestTail = p.catch(() => {});
+    return p;
 }
 
 async function chatCompletionWithRetry(payload) {
-    try {
-        const completion = await llm.chat.completions.create(payload);
-        const reply = extractReplyText(completion);
-        if (!reply) throw new Error("Empty completion content");
-        return reply;
-    } catch (err) {
-        if (isBusyError(err)) {
-            await sleep(1500);
+    const maxAttempts = 5;
+    let lastErr;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
             const completion = await llm.chat.completions.create(payload);
             const reply = extractReplyText(completion);
             if (!reply) throw new Error("Empty completion content");
             return reply;
+        } catch (err) {
+            lastErr = err;
+            if (!isBusyError(err) || attempt === maxAttempts) throw err;
+            const baseMs = 1200 * Math.pow(2, attempt - 1);
+            const delayMs = Math.min(16000, baseMs + Math.floor(Math.random() * 800));
+            console.warn(`OpenRouter busy (429), attempt ${attempt}/${maxAttempts}, waiting ${delayMs}ms`);
+            await sleep(delayMs);
         }
-        throw err;
     }
+    throw lastErr;
 }
 
 async function initXenova() {
@@ -231,14 +253,15 @@ async function startWebAgent() {
                     });
 
                     console.log("🤖 Calling OpenRouter...");
-                    const replyTextRaw = await chatCompletionWithRetry({
-                        model: "openrouter/free",
-                        temperature: 0.3,
-                        max_tokens: 400,
-                        messages: [
-                            {
-                                role: "system",
-                                content: `You are @StablesAgent, the official AI assistant for the Stables Council, a decentralized banking system built on Minima.
+                    const replyTextRaw = await withLlmQueue(() =>
+                        chatCompletionWithRetry({
+                            model: "openrouter/free",
+                            temperature: 0.3,
+                            max_tokens: 400,
+                            messages: [
+                                {
+                                    role: "system",
+                                    content: `You are @StablesAgent, the official AI assistant for the Stables Council, a decentralized banking system built on Minima.
 RULES:
 - Answer ONLY using the context provided. Do not invent information.
 - Answer in the EXACT SAME LANGUAGE as the user's question.
@@ -247,13 +270,14 @@ RULES:
 - Do NOT use the word "doctrine".
 - Do NOT use emojis, bullet points, or em-dashes.
 - Keep answers concise and conversational.`
-                            },
-                            {
-                                role: "user",
-                                content: `Question: "${cleanQuery}"\n\nContext:\n${context}`
-                            }
-                        ]
-                    });
+                                },
+                                {
+                                    role: "user",
+                                    content: `Question: "${cleanQuery}"\n\nContext:\n${context}`
+                                }
+                            ]
+                        })
+                    );
 
                     let replyText = replyTextRaw.replace(/"/g, "").trim();
 

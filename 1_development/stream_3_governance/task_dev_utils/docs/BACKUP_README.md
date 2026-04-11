@@ -107,13 +107,33 @@ cd C:\Users\Charles\Documents\Stables
 .\1_development\stream_3_governance\task_dev_utils\tools\backup-stables.ps1 -SkipVultr
 ```
 
+**Skip GitHub (zip + Vultr only):**
+```powershell
+.\1_development\stream_3_governance\task_dev_utils\tools\backup-stables.ps1 -SkipGithub
+```
+
 ---
 
 ## 7. Prerequisites
 
-- **OpenSSH:** `ssh` and `scp` in PATH (Windows 10+)
+- **Git for Windows** (so `git.exe` exists under `C:\Program Files\Git\...`). The sync script resolves this path for Task Scheduler.
+- **Git remote:** whatever `git config branch.main.remote` returns (this repo uses **`backup`**, URL `https://github.com/Charles0xhorizonxyz/stables.git`). There is no `origin` remote; use `git fetch backup` and `git log backup/main -1`.
+- **OpenSSH:** built-in `ssh.exe` / `scp.exe` under `C:\Windows\System32\OpenSSH\`
 - **SSH key auth** to `root@140.82.36.166` (or password when prompted)
 - **robocopy** (built-in on Windows)
+
+### 7a. GitHub step (daily with the scheduled task)
+
+After the local zip is written and Vultr upload is attempted, `backup-stables.ps1` calls **`sync-stables.ps1`**:
+
+- If there are **uncommitted changes:** `git add .`, `git commit -m "Automated Backup Sync: <timestamp>"`, `git push <remote> main` (remote = `branch.main.remote`, usually `backup`).
+- If the tree is **clean** but `main` is **ahead of `<remote>/main`:** `git fetch <remote>` then `git push <remote> main` (no empty commit).
+
+If `git push` fails (for example local `main` is behind the remote and needs a merge), the script logs a **WARNING** and exits non-zero from the Git step only; your zip files on disk and Vultr are already saved.
+
+One-click manual sync (without full backup) still uses:
+
+`push-to-github.bat` → `sync-stables.ps1 -Message "One-click manual sync"`.
 
 ### 7b. Scheduler user context
 

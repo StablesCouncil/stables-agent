@@ -3,7 +3,7 @@
 ## Primary Description (1000 character limit)
 
 ```
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 Stables is a money platform built for everyone, everywhere. Send, receive, and grow your money with complete ownership and control.
@@ -39,7 +39,7 @@ Our presentation: https://stablescouncil.github.io/
 ## Short Description (Alternative - 500 characters)
 
 ```
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 Stables is a money platform for everyone. Send, receive, and grow your money with complete ownership.
@@ -62,7 +62,7 @@ Our presentation: https://stablescouncil.github.io/
 
 ## Messaging Compliance Checklist
 
-✅ **Slogan**: "Be your own bank."
+✅ **Slogan**: "Be your bank."
 ✅ **Tagline**: "Money that is truly yours. Secure. Pseudonymous. Unstoppable."
 ✅ **Brand Name**: "Stables" (not "Stables Protocol")
 ✅ **Governance**: Not mentioned (would use "Council" if needed, never "DAO")

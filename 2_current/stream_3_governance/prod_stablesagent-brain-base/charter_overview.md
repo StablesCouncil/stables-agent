@@ -15,4 +15,4 @@ To remain effective and adaptable, the Constitution is intentionally separated i
 2. **The Companion:** This supporting document contains internal guidelines, locked decisions, and operational definitions. It assists the Council in interpreting the Charter without bloating the main text.
    - Master File: `constitutional_companion.md`
 
-By keeping the core Charter minimal and structurally sound, it remains readable to everyone, ensuring the "Be your own bank" philosophy is accessible to all.
+By keeping the core Charter minimal and structurally sound, it remains readable to everyone, ensuring the "Be your bank" philosophy is accessible to all.

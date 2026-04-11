@@ -1,6 +1,6 @@
 # Stables MiniDapp — UI inventory
 **Status**: MANDATORY reference when adding/removing screens or sections.  
-**Source**: `1_development/stream_1_app/prod_stables_app_v00.00.02/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Active folder**: `0_handshake/minidapp_version.md`.  
+**Source**: **Showcase** `prod_stables_app_v00.00.00.00.03/index.html` · **Demo** `prod_stables_app_demo/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Default for new UI:** demo tree unless the change is showcase-only. **Router:** `0_handshake/minidapp_version.md`.  
 **Companion**: `web_component_spec.md` (patterns), `handshake.md` (single executable + this map).
 
 ## How to use
@@ -375,7 +375,7 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-19 | More drawer: `.drawer-test-faucet-card` merges “Testing Phase Only” banner + Get Test Wiwina row into one tappable amber card. |
 | 2026-03-19 | Mint / Exchange / Invest alignment: removed **Reserve Status** block from **Mint Wables** (Treasury is single source); Exchange **Provide liquidity** button opens `invest` LP panel; LP naming unified to **Liquidity funds** with base selector `#lpBaseCcy` (Winiwa). |
 | 2026-03-19 | LP UX pass: `#lpBaseCcy` now includes all currencies; graph labelled as current bucket liquidity; add-liquidity form separated below; LP includes direct CTA to open the selected pair on Exchange. |
-| 2026-03-19 | Invest cleanup: removed top **My holdings** block; holdings view consolidated in simulator drawer titled **My own bank holdings**. |
+| 2026-03-19 | Invest cleanup: removed top **My holdings** block; holdings view consolidated in simulator drawer titled **My bank holdings**. |
 | 2026-03-19 | Invest tabs: **Liquidity Fund** (was Provide Liquidity); LP panel `pool-section-title` **Liquidity fund**; primary LP CTA **Deposit to Liquidity Fund**. |
 | 2026-03-19 | Full tables: every `<button id>`, every modal/overlay root `id`, global chrome, settings toggles. |
 | 2026-03-22 | Initial inventory + handshake link to single `<style>` source. |
@@ -387,7 +387,7 @@ Sorted by `id`. **Most** primary actions use `<button>` **without** `id` (Send/R
 | 2026-03-22 | Top bar: **Only in node** when no MDS (no simulated block); `.sync-pill--placeholder`. Treasury stress: Winiwa price stack **above** `%` row, then slider. |
 | 2026-03-22 | Treasury stress: Winiwa **6 dp** (`fmtWiniwaUSD6`); USD tick row above track; **%** tick row (`.treasury-slider-pct-row`) below track; thumb `#treasurySliderThumbPrice` above axis / `#treasurySliderThumbPct` below; removed `#protocolSliderPct`; `calcSlider` falls back to `#protocolSlider`. |
 | 2026-03-30 | **Source path** → `prod_stables_app_v0.01.01/` (see `minidapp_version.md`). |
-| 2026-03-31 | **Source path** → `prod_stables_app_v00.00.02/`; v0.01.01 frozen to `3_archive/.../prod_stables_app_v0.01.01/`; `CHANGELOG.md` in active folder for release notes. |
+| 2026-03-31 | **Source path** → `prod_stables_app_v00.00.00.00.03/` (was `prod_stables_app_v00.00.02/`); v0.01.01 frozen to `3_archive/.../prod_stables_app_v0.01.01/`; `CHANGELOG.md` in active folder for release notes. |
 | 2026-04-01 | Invest: **Maximize** tab (`panelMX`, `iTabMX`); Mint xWiniwa: `xwmLeverageChart*` below Mint CTA (dual axis USD + leverage). |
 | 2026-03-23 | Currency defaults: `CNYw` is **on** by default in **Settings → Currencies to Display** and **Welcome → Preferred currencies**. |
 | 2026-03-23 | CNY presentation copy/icon: `Renminbi Yuan`; primary card emoji in `CCY_META` uses `🐼` for parity with themed currency icons (🍁, 🦘, 🧀, etc.). |

@@ -1464,7 +1464,7 @@ While ROI is the **primary ranking metric**, each mission may have **secondary c
 #### **Core Messages (Repeat Across All Content)**
 
 **What is Stables?**
-> "Your own bank. Money that is truly yours. Secure, Pseudonymous, and Unstoppable."
+> "Your bank. Money that is truly yours. Secure, Pseudonymous, and Unstoppable."
 
 **What is the Quest?**
 > "A 6-month testing program where you help build the future of banking while competing for achievements, knowledge, and The Key - your personal banking device."
@@ -1484,7 +1484,7 @@ While ROI is the **primary ranking metric**, each mission may have **secondary c
 
 **DO SAY:**
 - "Banking solution"
-- "Your own bank"
+- "Your bank"
 - "Control your money"
 - "Send money like a text"
 - "No one can freeze your account"

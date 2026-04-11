@@ -14,6 +14,7 @@
   - [I.1 Core Objective](stables_charter.md#i1-core-objective)  
   - [I.2 Structural Identity](stables_charter.md#i2-structural-identity)  
   - [I.3 Dual Destination Framework](stables_charter.md#i3-dual-destination-framework)  
+    - [Illustrative future: energy-linked units and native measurement](stables_charter.md#illustrative-future-energy-linked-units-and-native-measurement)  
   - [I.4 Open Platform Doctrine](stables_charter.md#i4-open-platform-doctrine)  
   - [I.5 Treasury Allocation and Market Participant Mandate](stables_charter.md#i5-treasury-allocation-and-market-participant-mandate)  
   - [I.5.4 Concentration and Flow Monitoring (App)](stables_charter.md#i54-concentration-and-flow-monitoring-app)  
@@ -32,6 +33,7 @@
   - [III.3 Execution, Settlement, and Value Transfer Model](stables_charter.md#iii3-execution-settlement-and-value-transfer-model)  
 - [Article IV — Merchant Activation Doctrine (Growth Architecture)](stables_charter.md#article-iv--merchant-activation-doctrine-growth-architecture)  
   - [IV.6 Merchant-First Distribution and Credit Loop](stables_charter.md#iv6-merchant-first-distribution-and-credit-loop)  
+  - [IV.7 Merchant-Led Fiat Exchange and Participant Onboarding](stables_charter.md#iv7-merchant-led-fiat-exchange-and-participant-onboarding)  
 - [Article V — Oracle Framework](stables_charter.md#article-v--oracle-framework)  
 - [Article VI — Transparency Doctrine](stables_charter.md#article-vi--transparency-doctrine)  
 - [Article VII — Governance Evolution (Code-First Structural Limitation)](stables_charter.md#article-vii--governance-evolution-code-first-structural-limitation)  
@@ -45,6 +47,7 @@
 - [Annex A — Mathematical Annex](stables_charter.md#annex-a--mathematical-annex)  
 - [Annex B — Risk Review and Mitigation Framework](stables_charter.md#annex-b--risk-review-and-mitigation-framework)  
 - [Annex C — Governance Transition Roadmap](stables_charter.md#annex-c--governance-transition-roadmap)  
+  - [C.1 TradFi connectivity via third-party on/off ramps](stables_charter.md#c1-tradfi-connectivity-via-third-party-onoff-ramps-application-roadmap)  
 - [Annex D — Anchoring Protocol Specification](stables_charter.md#annex-d--anchoring-protocol-specification)
 
 ---
@@ -76,7 +79,7 @@ The transition from centralised to sovereign monetary coordination is gradual. T
 
 Stables does not require infinite money to serve everyone. Nature does not contain infinite water, yet the water cycle is effectively perpetual because **circulation** is sustained. In the same spirit, Stables treats the **circulation of money** as the enduring objective, not unlimited issuance. A healthy system rewards **movement and productive exchange** over static accumulation, because it is circulation that enables commerce, resilience, and shared prosperity.
 
-Each participant in the Stables system structurally represents their own bank through:
+Each participant in the Stables system structurally represents their bank through:
 
 - **Self-custody** — no third party holds user funds
 - **Deterministic execution** — monetary rules enforced by code, not discretion
@@ -99,7 +102,7 @@ The horizon is a Minima-native economy in which Minima functions as a day-to-day
 
 Stables exists as **instrumental infrastructure**: a **medium and machinery of exchange** that supports **wealth creation through expanded, voluntary trade**. The Council’s mission is therefore not to promote the system as a goal in itself, but to steward tools that make exchange and settlement work better for participants.
 
-The mission of the Stables Council is to enable individuals and merchants to be their own bank through:
+The mission of the Stables Council is to enable individuals and merchants to be their bank through:
 
 1. **Sovereign infrastructure** — self-custody, self-validation, self-settlement
 2. **Mathematical solvency** — balance sheet health enforced by code, not promise
@@ -237,7 +240,7 @@ Stables provides synthetic stable representations pegged to existing units of ac
 
 **Stage 2 — Minima-Native Economy.**
 
-As merchant adoption deepens and the Minima economy matures, *participants* price goods and services directly in Minima. Stablecoins become unnecessary for internal commerce. This stage achieves technical and financial sovereignty — every participant is their own bank, operating on infrastructure they validate themselves.
+As merchant adoption deepens and the Minima economy matures, *participants* price goods and services directly in Minima. Stablecoins become unnecessary for internal commerce. This stage achieves technical and financial sovereignty — every participant is their bank, operating on infrastructure they validate themselves.
 
 But this is not the final destination. The distribution of Minima remains concentrated by historical circumstance — early holders, team allocations, initial distribution mechanics. A monetary system built on an unevenly distributed supply, however sovereign its infrastructure, cannot fully embody the equality it aspires to.
 
@@ -266,6 +269,10 @@ This monetary system:
 **Beyond Stage 3.**
 
 We believe Stage 3 itself is transitional. If monetary history teaches anything, it is that each system gives way to the next. We cannot see what comes after, but we design with the awareness that further evolution is not only possible but expected. The Charter does not claim finality at any stage.
+
+##### Illustrative future: energy-linked units and native measurement
+
+Among possible futures, **energy** — including **measured storage**, **flow**, and **grid-level balances** — could emerge as a dominant **unit of account or settlement reference**, because it is physically conserved, metered, and in principle auditable at source. If monetary systems were to anchor to such a standard, **trust-minimized design would push settlement as close as possible to the physical layer**: the blockchain (or equivalent verifiable record) would need **direct, continuous connection to production, storage, and distribution**, so that state changes in money map to **attested physical state** rather than to **off-chain reports** relayed through intermediaries. Relying on **off-chain oracles** for energy (or any physical substrate that could instead be **natively attested**) reintroduces **measurement error, latency, censorship, and manipulation risk** at the boundary between the ledger and reality. This Charter does not prescribe an energy standard; it records the **design awareness** that **oracle dependence at the physical boundary is a structural vulnerability** whenever a more direct attestation path exists or becomes feasible.
 
 ##### The Non-Linear Path
 
@@ -501,6 +508,30 @@ In this model, merchants function as local distribution points for the Stables e
 
 The merchant-credit loop is designed as a circulation engine: credit extended to merchant activity is repaid through real economic turnover rather than speculative extraction. Conceptually, this behaves like a non-expiring value claim backed by future exchange capacity, while remaining governed by deterministic settlement and transparent accounting.
 
+### IV.7 Merchant-Led Fiat Exchange and Participant Onboarding
+
+The **primary onboarding path** for moving between **local paper currency** and **Stables** is **merchant-mediated exchange**: trusted merchants **buy and sell Stables against cash** at the point of commerce, subject to transparent pricing, applicable law, and implementation-level limits.
+
+This model is **constitutional preference**, not a denial of other rails. Licensed **third-party on-ramps and off-ramps** (Annex C.1) remain **valid supplementary channels** where they improve coverage or convenience. The ordering matters for design and communication: **merchants are the default human interface** for circular entry and exit; global ramps are **optional modular attachments**.
+
+**Benefits for merchants**
+
+- **Relationship and foot traffic** — onboarding happens where trade already occurs. Participants acquire Stables in the context of **real goods and services**, strengthening **repeat custom** and **local reputation** rather than routing users through detached financial apps alone.
+- **Operational continuity** — merchants already manage **cash, change, and payment choice**. A **Stables window** extends checkout rather than imposing an unrelated product line.
+- **Structural economics** — where Stables settlement replaces or complements legacy card stacks, **a larger share of revenue can remain with the business**; savings may be retained as margin or passed through as **loyalty or pricing** choices, at the merchant’s discretion.
+- **Local circulation** — when customers hold and spend Stables **within a merchant’s network and neighbourhood**, value **loops near the point of sale** instead of leaking through distant intermediaries, supporting **turnover** and **supplier flows** tied to real commerce.
+- **Distribution sovereignty** — each serious merchant acts as a **small distribution and education node** for the protocol: **cash in, Stables out**; **Stables in, cash out** when participants need paper for the wider economy. Protocol growth is not exclusively dependent on global fiat-crypto aggregators.
+- **Incentive alignment** — abusive onboarding or counterfeit flow damages **local trust and repeat trade**, creating **endogenous discipline** complementary to protocol-level rules.
+
+**Benefits for participants (“people”)**
+
+- **Onboarding where daily life happens** — first access to Stables can occur at **familiar shops and services**, with optional human explanation, reducing dependence on a separate **global fintech gate** for the first step.
+- **Two-way choice** — participants who still need **physical cash** for parts of the economy retain a **local exit and re-entry** path: Stables remain useful when paper is still required for taxis, institutions, or informal exchange.
+- **Self-custody after handoff** — once Stables are received in the **participant’s own wallet**, the same **deterministic settlement and solvency rules** apply as for any other user. The merchant facilitates **entry and exit**; long-term custody of customer balances by the merchant is **not** the constitutional default unless explicitly designed, disclosed, and regulated where required.
+- **Trust without global person-identity products** — local exchange supports **identity through repeated economic interaction** and **community recognition**, aligned with the protocol’s **pseudonymous** design direction, while **large or suspicious flows** remain subject to **lawful controls** at implementation and jurisdiction level.
+- **Inclusion** — participants who are **under-served by banks** or **excluded from global ramp apps** may still **enter through merchants they already use**, provided pricing and limits remain **fair and transparent**.
+- **Anchoring in real commerce** — onboarding tied to **goods and services** reinforces the system’s **merchant-based physical arbitrage** pillar and reduces purely speculative entry as the only narrative.
+
 ---
 
 ## ARTICLE V — Oracle Framework
@@ -711,7 +742,7 @@ It operates as a bridge between present liability structures and Minima-native e
 
 Its monetary core remains immutable. Its evolution occurs through modular expansion. Its sovereignty is preserved through deterministic code.
 
-Every participant is their own bank. Every balance sheet is visible. Every rule is verifiable. Every exit is unconditional.
+Every participant is their bank. Every balance sheet is visible. Every rule is verifiable. Every exit is unconditional.
 
 The protocol does not ask for trust. It earns confidence through mathematical proof.
 
@@ -803,6 +834,18 @@ Elements to be specified:
 - Timelock policy for governance actions
 - Council seat composition and rotation rules
 - Time-weighted governance token mechanics
+
+#### C.1 TradFi connectivity via third-party on/off ramps (application roadmap)
+
+The protocol’s **monetary core** does not replace **licensed bank money or regulated payment services**. **Merchant-led cash ↔ Stables exchange** (Article IV.7) is the **preferred primary** path for local onboarding and exit. For **optional supplementary convenience**, reference implementations and ecosystem applications may also integrate **third-party fiat on-ramps and off-ramps** so users can move value between **traditional bank accounts and card or local-payment rails** and **self-custodied or protocol-native assets**, subject to the provider’s **jurisdiction, KYC, and licensing**.
+
+Design intent:
+
+- **Modularity** — support for **more than one** ramp provider where practical, so coverage, pricing, and outage risk are not single-sourced.
+- **Clear boundaries** — disclose that the **ramp is a separate regulated counterparty**; Stables governance does not control bank rails or provider policy.
+- **Failure isolation** — ramp unavailability must not be confused with **protocol solvency or redemption mechanics** on-chain.
+
+Specific providers, contracts, and regions shall be chosen in **implementation and commercial** documentation, not fixed in this Charter.
 
 ---
 

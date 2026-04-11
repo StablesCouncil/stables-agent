@@ -66,7 +66,7 @@
 | **LinkedIn** | 🟢 LOW | 300+ connections | Professional network, B2B |
 
 **Facebook Launch (IMMEDIATE):**
-- **Facebook Page:** "Stables - Be Your Own Bank"
+- **Facebook Page:** "Stables - Be your bank"
   - Professional presence
   - Educational content
   - Quest announcements
@@ -477,7 +477,7 @@
 - ✅ Better organic reach for text content
 - ✅ Non-crypto audience (our target)
 
-**Facebook Page: "Stables - Be Your Own Bank"**
+**Facebook Page: "Stables - Be your bank"**
 
 **Setup:**
 - Profile picture: Master symbol

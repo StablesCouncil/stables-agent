@@ -4,11 +4,11 @@
 
 This document gives a clear, high-level description of the Stables banking system exactly as it is presented publicly. It is meant to be consumed by external AIs and conversational agents when users ask how the system works.
 
-## 1. Let's be our own banking system
+## 1. Let's be our banking system
 
-Stables is about the **Network of Everybody's Own Bank**.
+Stables is about the **Network of Everybody's Bank**.
 
-- **Be your own bank.**
+- **Be your bank.**
 - **Built on MINIMA.**
 
 Every user holds their own keys and participates directly in the network without intermediaries.

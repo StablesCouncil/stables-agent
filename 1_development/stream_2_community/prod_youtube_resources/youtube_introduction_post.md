@@ -5,7 +5,7 @@
 ```
 Welcome to Stables. 👋
 
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 We're building a money platform for everyone, everywhere.
@@ -44,7 +44,7 @@ We're glad you're here.
 ```
 Welcome to Stables. 👋
 
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 We're building a money platform for everyone. Send, receive, and grow your money with complete ownership.
@@ -74,7 +74,7 @@ Let's build this together.
 
 ## Messaging Compliance
 
-✅ **Slogan**: "Be your own bank."
+✅ **Slogan**: "Be your bank."
 ✅ **Tagline**: "Money that is truly yours. Secure. Pseudonymous. Unstoppable."
 ✅ **Brand Name**: "Stables" (not "Stables Protocol")
 ✅ **Platform**: MiniDapp only (no website mentioned)

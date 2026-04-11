@@ -61,7 +61,7 @@ April 1: showcase access.
 A clear read on the proposition. Then we go forward together.
 
 https://stablescouncil.org
-#Stables #Minima #BeYourOwnBank #stablecoin
+#Stables #Minima #BeYourBank #stablecoin
 ```
 
 ---
@@ -78,7 +78,7 @@ Mint · Invest · Merchants (swipe the carousel).
 April 1: showcase. Clear proposition, build together.
 
 https://stablescouncil.org
-#Stables #Minima #BeYourOwnBank #stablecoin
+#Stables #Minima #BeYourBank #stablecoin
 ```
 
 *[Attach your three screenshots: Mint, then Invest, then Merchants]*

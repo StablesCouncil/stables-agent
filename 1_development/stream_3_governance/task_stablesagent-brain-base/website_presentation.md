@@ -1,7 +1,7 @@
 # Stables Official Website Presentation
 *Source: stablescouncil.github.io*
 
-## Be your own bank
+## Be your bank
 Money that is truly yours. Secure, Pseudonymous and Unstoppable. Built on Minima.
 
 ## Pay instantly. Own completely.
@@ -19,7 +19,7 @@ A new way to participate in the stability of the ecosystem. Use the Multiplicato
 Advanced tools for those who want to do more than just pay.
 
 ## The Core Concept
-Let's be our own banking system. The Network of Everybody's Own Bank.
+Let's be our banking system. The Network of Everybody's Bank.
 
 ## StablesAgent and the Knowledge Base
 

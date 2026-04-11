@@ -1,5 +1,5 @@
 # Instagram Post #2 - Posting Guide
-## "You Are Your Own Bank"
+## "You Are Your Bank"
 
 **Date**: January 11, 2026  
 **Status**: Ready to Post 🚀
@@ -10,7 +10,7 @@
 
 Located in: `1_development/instagram_assets/20250111/`
 
-1. **slide_1_title.png** - "You Are Your Own Bank"
+1. **slide_1_title.png** - "You Are Your Bank"
 2. **slide_2_equality.png** - "Everyone Is Equal"
 3. **slide_3_presence.png** - "Maintained by You"
 4. **slide_4_embrace.png** - "Embrace Something New"
@@ -33,7 +33,7 @@ Located in: `1_development/instagram_assets/20250111/`
 ## 📝 Instagram Caption (Copy & Paste)
 
 ```
-You are your own bank. 💫
+You are your bank. 💫
 
 Not metaphorically. Actually.
 
@@ -46,7 +46,7 @@ Be prepared to embrace something new.
 
 Different. Stronger. Yours.
 
-Individually and collectively, we are our own banking system.
+Individually and collectively, we are our banking system.
 
 Built on MINIMA
 

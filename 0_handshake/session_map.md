@@ -32,7 +32,7 @@
 |------|----------|---------|
 | `visual_identity_spec.md` | `0_handshake/` | Exact colours, typography, background formulas, image generation prompts. LOCKED. |
 | `web_component_spec.md` | `0_handshake/` | Every reusable HTML/CSS component. Buttons, badges, layouts, page shell template. **The UI building law. Read before writing a single line of CSS.** |
-| `minidapp_version.md` | `0_handshake/` | **Which `prod_stables_app_*` folder is active**, frozen zip locations, bump rules. Read before editing MiniDapp paths or releases. |
+| `minidapp_version.md` | `0_handshake/` | **Which `prod_stables_app_*` folder is active**, frozen zip locations, **canonical label `vPM.Pn.TT.DD.SS`**, prod major/minor rules. Read before editing MiniDapp paths or releases. **Agent rule:** `.cursor/rules/stables-handshake.mdc` § Development versioning. |
 | `minidapp_version_log.md` | `0_handshake/` | **Shipped vs dev scope** per published label (e.g. what counts as v00.00.02 vs post-cut features). Use before comms. |
 | `app_ui_inventory.md` | `0_handshake/` | **MiniDapp UI map**: every `page-*` screen, sections, patterns; plus **every `<button id>`** and **modal/overlay** root `id` in the active `prod_stables_app_*/index.html` (see `minidapp_version.md`). Update when routes or chrome change. |
 | `stables.css` | `1_development/stream_3_governance/task_x_agent_node/` | The executable CSS. Tokens extracted from live site 2026-03-11. Never duplicate locally. Never derive tokens from archived presentation files. |
@@ -56,7 +56,7 @@
 | `multi_platform_content_strategy.md` | `2_current/plan/` | Platform hierarchy, tone per channel, posting schedule. |
 | `platform_tone_guide.md` | `2_current/plan/` | Per-platform tone rules (Instagram vs X vs Telegram etc.). |
 | `links.md` | `0_handshake/` | All official Stables URLs in one place. Reference before writing any link. |
-| `handshake.md` §4 | `0_handshake/` | **X/Twitter:** mandatory hashtags (`#BYOB #Stablecoin #Minima` + add-ons per §4), no hashtags in Telegram, no em dash (—). Load before drafting X posts or social templates. |
+| `handshake.md` §4 | `0_handshake/` | **X/Twitter:** mandatory hashtags (`#BYB #Stablecoin #Minima` + add-ons per §4), no hashtags in Telegram, no em dash (—). Load before drafting X posts or social templates. |
 
 ### LAYER 4 — STABLESAGENT BRAIN (Load when working on the agent or its knowledge)
 
@@ -84,7 +84,7 @@
 
 | File | Location | Purpose |
 |------|----------|---------|
-| `index.html` | `1_development/stream_1_app/prod_stables_app_v*/` | Single-file MiniDapp source (active version folder; check `0_handshake/minidapp_version.md` for exact path + declared label, currently `v00.00.02` showcase line). |
+| `index.html` | `1_development/stream_1_app/prod_stables_app_v00.00.00.00.03/` and `…/prod_stables_app_demo/` | Single-file MiniDapp sources: **showcase** + **demo** trees (`0_handshake/minidapp_version.md`). |
 | `stables_spa/` | `1_development/stream_1_app/stables_spa/` | **Vite + React + TypeScript** app shell — components, features, `npm run build` → `dist/`. See `stables_spa/ARCHITECTURE.md`. |
 
 ### LAYER 7 — PRESENTATION (Load when working on the public presentation)
@@ -100,6 +100,9 @@
 |------|----------|---------|
 | `vault.md` | `2_current/stream_3_governance/prod_credentials/` | All project accounts, tokens, server access. |
 | `ledger.md` | `2_current/stream_3_governance/prod_project_ledger/` | Every change must be logged here with a Point ID after commit. |
+| `mysql_readonly_access_procedure.md` | `2_current/stream_3_governance/prod_minima_archive_admin/` | **Minima archive MySQL (read-only analysts, internal):** admin steps, Workbench SSH tunnel, per-user grants, revoke. |
+| `mysql_readonly_access_procedure_community.md` | `2_current/stream_3_governance/prod_minima_archive_admin/` | **Same topic, GitHub-safe copy:** generic placeholders, no internal paths; share publicly after testing. |
+| `minima_mysql_full_archive_procedure.md` | `2_current/stream_3_governance/prod_minima_archive_admin/` | **Full MySQL parity + continuous updates:** wipe/reload when low blocks missing, `linuxuser`/`sudo` backup, autobackup + `mysqlcoins`, journal checks, `txpow` notes. |
 
 ---
 
@@ -133,6 +136,7 @@
 | Commit and log a change | 0 + 8 |
 | Deploy to Vultr server | 0 + 5 + 8 |
 | Configure or run backup to Vultr | 0 + 8, then `task_dev_utils/docs/BACKUP_README.md` |
+| Grant read-only MySQL access to Minima archive DB | 0 + 8 + `2_current/stream_3_governance/prod_minima_archive_admin/mysql_readonly_access_procedure.md` |
 
 ---
 

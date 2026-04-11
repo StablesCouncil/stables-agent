@@ -14,11 +14,34 @@ At the start of **every session**, before any work, read these in order:
 
 Then follow the calibration steps in `0_handshake/handshake.md` (including **Step 0b** when the task touches protocol economics or how Stables works in copy).
 
-**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first so you edit the **active** `prod_stables_app_*` folder (currently **v00.00.02**). Log **every** user-visible change in **`CHANGELOG.md`** in that folder. For every pushed version, the shipped `README.md` must include a section titled **"What changed in this version"** sourced from `CHANGELOG.md`.
+**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first. **Two trees:** showcase **`prod_stables_app_v00.00.00.00.03`**, demo **`prod_stables_app_demo`**. **Default new work → demo** unless the task is showcase-only. Log **every** user-visible change in **`CHANGELOG.md`** in the folder you edit. For every pushed version, the shipped `README.md` must include **"What changed in this version"** from `CHANGELOG.md`. **Version labels** follow § Development versioning below.
+
+---
+
+## Development versioning (mandatory)
+
+**Canonical full label (five segments, two digits each):** **`vPM.Pn.TT.DD.SS`**
+
+| Segments | Meaning |
+|----------|---------|
+| **PM** | **Prod major** (`00` until first prod-channel ship) |
+| **Pn** | **Prod minor** — optional slight / patch bumps on the **same** prod major (`01.01` → `01.02`). When **PM** increments, **Pn MUST reset to `00`** (`01.xx` → `02.00`, not `02.xx`, unless Council documents an exception). |
+| **TT** | Test track |
+| **DD** | Demo track |
+| **SS** | Showcase track |
+
+**Rules**
+
+1. **Bump the segment** for the **stage you are shipping** (see `minidapp_version.md` for on-chain scope per stage). Leave other segments unchanged unless Council orders a promotion reset (log in `CHANGELOG` + `minidapp_version_log.md`).
+2. **Showcase** line: advance **SS** while **`PM.Pn.TT.DD`** stay **`00`** (e.g. **`v00.00.00.00.03`**). **Demo** line: advance **DD** for demo ships (e.g. first demo **`v00.00.00.01.00`**).
+3. **Legacy forms** remain valid **only while prod is unused:** four-segment **`v00.00.00.03`** ≡ five-segment **`v00.00.00.00.03`**; short **`v00.00.03`** = same. Once **PM** or **Pn** is non-zero, use the **five-segment** spelling in new docs, zips, and `dapp.conf` / release notes.
+4. **Authoritative detail and examples:** `0_handshake/minidapp_version.md`. **Governance mirror:** `0_handshake/handshake.md` (MiniDapp Versioning Policy).
+
+**Current pointers** (edit in **`minidapp_version.md`** when bumping): **Showcase** — `prod_stables_app_v00.00.00.00.03`, **v00.00.03** / **v00.00.00.00.03**, **`APP_STAGE` showcase**. **Demo** — `prod_stables_app_demo`, **v00.00.00.01.00**, **`APP_STAGE` demo**.
 
 **Protocol economics / mint / burn / xMinima / fees / treasury / protocol comms:** run **handshake Step 0b** before answering: read `0_handshake/protocol_mechanics_spec.md` then `stables_master_reference.md` §14. If any text conflicts, **`protocol_mechanics_spec.md` wins**; note the conflict for review.
 
-**X (Twitter) or any Stables social templates:** apply **`0_handshake/handshake.md` §4** (*Community Communication Rules*). **Mandatory hashtag base on every X post:** `#BYOB #Stablecoin #Minima`; add `#BeYourOwnBank` / `#Stables` if space (280 char limit). **No hashtags** in Telegram community posts. **No em dash (—)** in public copy.
+**X (Twitter) or any Stables social templates:** apply **`0_handshake/handshake.md` §4** (*Community Communication Rules*). **Mandatory hashtag base on every X post:** `#BYB #Stablecoin #Minima`; add `#BeYourBank` / `#Stables` if space (280 char limit). **No hashtags** in Telegram community posts. **No em dash (—)** in public copy.
 
 Confirm calibration by stating:
 > "Calibration Active: Working on the basis of the Unified Handshake."  

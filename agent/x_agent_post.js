@@ -74,7 +74,7 @@ async function main() {
         "self-custody",
         "Minima",
         "stablecoin",
-        "Be your own bank",
+        "Be your bank",
     ];
     const seed = seedQueries[Math.floor(Math.random() * seedQueries.length)];
     const results = await vectorStore.similaritySearch(seed, 4);

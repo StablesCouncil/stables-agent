@@ -129,7 +129,7 @@ Phase 3: Dedicated hardware device
 We're building the foundation first.
 The ultimate vision comes next.
 
-9/ This is what "Be your own bank" really means:
+9/ This is what "Be your bank" really means:
 
 Not just holding your keys.
 Not just verifying transactions.
@@ -270,7 +270,7 @@ True financial sovereignty. Not just a promise. A physical reality.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 
-🎯 "BE YOUR OWN BANK" - LITERALLY
+🎯 "BE YOUR BANK" - LITERALLY
 
 This isn't marketing.
 This is the actual goal.

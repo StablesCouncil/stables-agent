@@ -3,7 +3,7 @@
 This file is the single source of truth for all official Stables Council accounts, communities, and resources.
 
 ## Community Hubs
-*   **Website (primary):** [stablescouncil.org](https://stablescouncil.org/) — *Be your own bank* (public site)
+*   **Website (primary):** [stablescouncil.org](https://stablescouncil.org/) — *Be your bank* (public site)
 *   **GitHub Pages:** [stablescouncil.github.io](https://stablescouncil.github.io) — presentation & static resources
 *   **Discord:** [Stables Discord Server](https://discord.gg/cFq4hHAc)
 *   **Telegram (Community):** [t.me/stablescommunity](https://t.me/stablescommunity)

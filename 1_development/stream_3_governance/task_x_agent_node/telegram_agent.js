@@ -50,26 +50,39 @@ function isQuotaError(err) {
     );
 }
 
+function getErrorHttpStatus(err) {
+    if (!err) return undefined;
+    if (typeof err.status === "number") return err.status;
+    if (typeof err.response?.status === "number") return err.response.status;
+    if (typeof err.error?.status === "number") return err.error.status;
+    const msg = String(err.message || err.error?.message || "");
+    if (/\b429\b|rate limit|too many requests/i.test(msg)) return 429;
+    return undefined;
+}
+
 function isBusyError(err) {
-    return err?.status === 429 || err?.code === 429;
+    return getErrorHttpStatus(err) === 429 || err?.code === 429;
 }
 
 async function chatCompletionWithRetry(payload) {
-    try {
-        const completion = await llm.chat.completions.create(payload);
-        const reply = extractReplyText(completion);
-        if (!reply) throw new Error("Empty completion content");
-        return reply;
-    } catch (err) {
-        if (isBusyError(err)) {
-            await sleep(1500);
+    const maxAttempts = 5;
+    let lastErr;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        try {
             const completion = await llm.chat.completions.create(payload);
             const reply = extractReplyText(completion);
             if (!reply) throw new Error("Empty completion content");
             return reply;
+        } catch (err) {
+            lastErr = err;
+            if (!isBusyError(err) || attempt === maxAttempts) throw err;
+            const baseMs = 1200 * Math.pow(2, attempt - 1);
+            const delayMs = Math.min(16000, baseMs + Math.floor(Math.random() * 800));
+            console.warn(`OpenRouter busy (429), attempt ${attempt}/${maxAttempts}, waiting ${delayMs}ms`);
+            await sleep(delayMs);
         }
-        throw err;
     }
+    throw lastErr;
 }
 
 // 1. Initialize Embeddings & Vector DB

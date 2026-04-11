@@ -17,18 +17,20 @@
 - **Atomic Folder Rule**: 
     - `task_[description]`: For active/sandbox work.
     - `prod_[description]`: For stable, finalized deliverables.
-- **Single Master Rule**: The MiniDapp **active development** tree is always:
-    `1_development/stream_1_app/prod_stables_app_v00.00.02/` (entry: `index.html`).  
-    **Version pointer for agents** (frozen zips, bumps, inventory paths): `0_handshake/minidapp_version.md`.
+- **Active MiniDapp trees (two folders):** **Showcase** — `1_development/stream_1_app/prod_stables_app_v00.00.00.00.03/` (entry: `index.html`). **Demo (default for new product work)** — `1_development/stream_1_app/prod_stables_app_demo/`. **Version pointer, routing, zips:** `0_handshake/minidapp_version.md`.
 - **MiniDapp Versioning Policy (MANDATORY)**:
-    - Use three explicit release channels in communications and release notes: **prod**, **test**, **showcase**.
-    - Canonical release label format is `vNN.NN.NN` (two digits per block), e.g. `v00.00.02`.
-    - Current declared label for this active line is **`v00.00.02`**.
-    - Folder names may temporarily keep legacy numbering while migration is in progress; the authoritative mapping (folder path ↔ release label ↔ channel) lives in `0_handshake/minidapp_version.md`.
+    - Use four **stages** in communications and release notes: **showcase**, **demo**, **test**, **prod** (see `0_handshake/minidapp_version.md` for on-chain scope per stage).
+    - **Canonical full release label:** `vPM.Pn.TT.DD.SS` (five groups, **two digits each**): **Prod major . Prod minor . Test . Demo . Showcase**, read left to right. Example showcase-only line: **`v00.00.00.00.03`**. Legacy four-segment **`v00.00.00.03`** is equivalent to **`v00.00.00.00.03`** (prod pair implicit **`00.00`**).
+    - **Prod pair rule:** **`Pn`** (minor) is for **optional** slight / patch increments on the same prod major (**`01.01` → `01.02`**). When **`PM`** (prod major) increments, **`Pn` MUST reset to `00`** (**`01.xx` → `02.00`**, not `02.xx` unless Council explicitly documents an exception).
+    - **Legacy short label** `vNN.NN.NN` remains valid as shorthand for showcase-only lines during transition (e.g. **`v00.00.03`** = **`v00.00.00.00.03`**).
+    - Every shipped package should declare **stage** explicitly (zip name, `dapp.conf`, `runtime-config.js`, or release notes); the version records which track incremented.
+    - **Showcase** line: **`v00.00.03`** / **`v00.00.00.00.03`**. **Demo** line: **`v00.00.00.01.00`** (folder **`prod_stables_app_demo`**). See `minidapp_version.md` for bumps and porting rules.
+    - Folder names may temporarily keep legacy numbering while migration is in progress; the authoritative mapping (folder path ↔ release label ↔ stage) lives in `0_handshake/minidapp_version.md`.
     - When uncertain, trust `minidapp_version.md` over inline examples elsewhere.
-- **MiniDapp Change Logging (MANDATORY)**: For the active MiniDapp folder, log **every user-visible change** in `CHANGELOG.md` at the time the change is made. Do not postpone logging to release day.
+    - **Cursor (always-on):** `.cursor/rules/stables-handshake.mdc` § **Development versioning** restates this policy for agents.
+- **MiniDapp Change Logging (MANDATORY)**: For **each** active MiniDapp folder you touch (showcase and/or demo), log **every user-visible change** in that folder’s `CHANGELOG.md` at the time the change is made. Do not postpone logging to release day.
 - **Release README Rule (MANDATORY)**: Every pushed version package must include a `README.md` section titled **"What changed in this version"** that summarizes the exact changes shipped in that version, sourced from `CHANGELOG.md`.
-- **Packaging Rule**: Zip the *contents* of the active `prod_stables_app_...` folder directly to create the `.mds.zip`. **Exclude** a sibling `build/` folder if present (it only holds generated zips + notes). No file renaming inside the zip.
+- **Packaging Rule**: Zip the *contents* of the **chosen** `prod_stables_app_...` folder (showcase or demo) directly to create the `.mds.zip`. **Exclude** that folder’s `build/` directory (generated zips + notes). No file renaming inside the zip.
 - **Brand Sovereignty**: All visual assets must derive from the official branding masters. NO AI-generated logos or "ad-hoc" modifications to symbols.
 - **Visual Identity Enforcement (MANDATORY)**: When generating ANY visual element (images, infographics, social posts, diagrams, presentations), you MUST:
     1. Read `0_handshake/visual_identity_spec.md` FIRST if not already loaded this session.
@@ -41,7 +43,7 @@
     - Name: **Stables** (NOT "Stables Protocol")
     - Governance: **Council** (NOT "DAO")
     - Platform: **MiniDapp only** (NO website)
-    - Slogan: **Be your own bank**
+    - Slogan: **Be your bank**
     - Tagline: **Money that is truly yours. Secure, Pseudonymous and Unstoppable.**
 - **Aesthetic**: Minimalist, high contrast (black, white, grays), institutional, secure, and modern financial technology.
 - **Agent Identity**: The AI agent is StablesAgent. It operates as an evolving, dedicated assistant built to spread awareness, organically grow the community, and provide frictionless access to project knowledge. It is the Council's "first hire."
@@ -90,6 +92,8 @@
     - Apps: `stables-telegram-agent` (Telegram bot), `stables-web-agent` (web chat at agent.stablescouncil.org)
     - To deploy updated brain: `scp` the changed `.md` files and `vector_db.json` to the server, then `pm2 restart stables-telegram-agent`
     - To restart web agent (e.g. after `web_agent.js` update): `pm2 restart stables-web-agent`
+- **Minima archive / MySQL read-only access (Council admin):** Canonical runbook for per-person `SELECT`-only users, MySQL Workbench over SSH, analyst password change, and revoke: `2_current/stream_3_governance/prod_minima_archive_admin/mysql_readonly_access_procedure.md`. Also listed in `0_handshake/README.md` (file map) and `session_map.md` (Layer 8 + task matrix).
+- **Minima archive / MySQL full parity + continuous export:** Wipe/reload when low blocks are missing, `sudo mysqldump` as `linuxuser`, both autobackups, log checks: `2_current/stream_3_governance/prod_minima_archive_admin/minima_mysql_full_archive_procedure.md`.
 
 ## 2. THE CALIBRATION WORKFLOW (/handshake)
 To start any session or when context-drift is suspected, perform the following steps:
@@ -160,7 +164,7 @@ Acknowledge the specific design tokens:
 
 ## 3. ACTIVE OBJECTIVES
 - **Restoration**: Maintaining high-fidelity economic diagrams and roadmaps.
-- **Calibration**: Strictly adhering to the "Be Your Own Bank" branding.
+- **Calibration**: Strictly adhering to the "Be your bank" branding.
 - **Cleanliness**: 100% adherence to Mirror-Stream hierarchy and Zero Loose Files.
 
 ## 4. COMMUNITY COMMUNICATION RULES
@@ -175,8 +179,8 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 - **X/Twitter Specifics (STRICT)**:
     - **Character Limit**: Maximum 280 characters per post.
     - **Hashtags**: You MUST include hashtags for X/Twitter posts. 
-    - **Mandatory Base Set**: Always include `#BYOB #Stablecoin #Minima`.
-    - **Space-Available Add-ons**: If there is room, add `#BeYourOwnBank`, then add other relevant tags (for example `#Stables`) while staying within 280 characters.
+    - **Mandatory Base Set**: Always include `#BYB #Stablecoin #Minima`.
+    - **Space-Available Add-ons**: If there is room, add `#BeYourBank`, then add other relevant tags (for example `#Stables`) while staying within 280 characters.
     - **No Hashtags in TG**: Never use hashtags in our Telegram community channel or other community spaces.
 - **Natural tone**: Write like a real person in a casual conversation. Short sentences, natural flow.
 

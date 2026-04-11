@@ -33,7 +33,7 @@ Stables does not claim to be the final form of human money. It is a necessary br
 - **Stage −1 (Sound Money/State Capture):** Standardisation of gold/silver coins. Trust shifted from community to state. Coercion entered via legal tender and mandated taxation.
 - **Stage 0 (Fiat/Centralised Control):** The current world. Money is issued by decree and managed by central banks. Individuals are assigned a currency by jurisdiction. Participation is mandatory; exclusion is common.
 - **Stage 1 (Stables - Sovereign Opt-In):** The current phase. Stables provides synthetic pegged assets (USDs, EURs, CADs, IRTs) so participants can opt-in to a sovereign network today while maintaining familiar pricing. Minima is listed alongside these as the native destination.
-- **Stage 2 (Minima-Native Economy):** As adoption deepens, participants begin pricing goods and services directly in Minima. The reliance on fiat-pegged bridges fades. Everyone becomes their own bank on infrastructure they validate themselves.
+- **Stage 2 (Minima-Native Economy):** As adoption deepens, participants begin pricing goods and services directly in Minima. The reliance on fiat-pegged bridges fades. Everyone becomes their bank on infrastructure they validate themselves.
 - **Stage 3 (The Circular Horizon):** A future state where monetary power is a fundamental human right. It recognises the right of every human to live with dignity and operates in service of the planet.
 
 **The StablesAgent's Role:** The Agent exists to facilitate Stage 1, guiding users and merchants across the bridge from Stage 0 to Stage 2. 
@@ -54,7 +54,7 @@ Stables is not inventing novel, untested mechanics. It is taking battle-tested e
 
 ## 7. The Stables Banking System: How the Mechanic Works
 
-This section gives the Agent a clean, step‑by‑step description of how the Stables banking system works in practice, mirroring the public "Our Own Banking System" presentation.
+This section gives the Agent a clean, step‑by‑step description of how the Stables banking system works in practice, mirroring the public "Our Banking System" presentation.
 
 ### 7.1 The Three Main Actors
 - **People:** Buyers, savers and senders who hold and use Stables day‑to‑day.

@@ -5,7 +5,7 @@
 Replace your current bio with this enhanced version that includes the community group link:
 
 ```
-Be your own bank. Built on @Minima_Global .
+Be your bank. Built on @Minima_Global .
 Money that is truly yours.
 
 💬 Join Community: [Add group link here]
@@ -57,7 +57,7 @@ Before updating your bio, you need to get the shareable invite link for your Sta
 If your group link is `t.me/StablesCommunity`, your final bio would look like:
 
 ```
-Be your own bank. Built on @Minima_Global .
+Be your bank. Built on @Minima_Global .
 Money that is truly yours.
 
 💬 Join Community: t.me/StablesCommunity
@@ -69,7 +69,7 @@ Money that is truly yours.
 
 ### Option 1: Direct Link (Recommended)
 ```
-Be your own bank. Built on @Minima_Global .
+Be your bank. Built on @Minima_Global .
 Money that is truly yours.
 
 💬 t.me/StablesCommunity
@@ -77,7 +77,7 @@ Money that is truly yours.
 
 ### Option 2: With Both Channel & Group
 ```
-Be your own bank. Built on @Minima_Global .
+Be your bank. Built on @Minima_Global .
 Money that is truly yours.
 
 📢 Channel: @StablesCouncil
@@ -86,7 +86,7 @@ Money that is truly yours.
 
 ### Option 3: Minimal (if character limit)
 ```
-Be your own bank. Built on @Minima_Global .
+Be your bank. Built on @Minima_Global .
 Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
 💬 Community: t.me/StablesCommunity

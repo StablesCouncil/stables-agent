@@ -37,10 +37,10 @@ Community-created currencies, local economies
 #### **E1.1: "What is Stables?"**
 **Platforms:** X, Facebook, Instagram, Telegram  
 **Format:** Thread (X), Post (FB), Carousel (IG), Announcement (TG)  
-**Key Message:** Introduction to Stables - your own bank
+**Key Message:** Introduction to Stables - your bank
 
-**X Title:** "Introducing Stables: Your Own Bank 🏦"  
-**Facebook Title:** "Welcome to Stables - Be Your Own Bank"  
+**X Title:** "Introducing Stables: Your Bank 🏦"  
+**Facebook Title:** "Welcome to Stables - Be your bank"  
 **Instagram:** Carousel: "What is Stables?" (5 slides)  
 **Telegram:** "👋 WELCOME TO STABLES"
 

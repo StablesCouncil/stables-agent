@@ -6,6 +6,7 @@ Use this checklist before shipping any new MiniDapp version (`prod_stables_app_v
 
 - [ ] Confirm active version folder from `0_handshake/minidapp_version.md`.
 - [ ] Confirm release target (`APP_BUILD_VERSION`, `dapp.conf`, zip naming).
+- [ ] **Version label:** canonical **`vPM.Pn.TT.DD.SS`** (see `minidapp_version.md` + `.cursor/rules/stables-handshake.mdc` § Development versioning). Prod **minor** optional for small prod bumps; **prod major** bump **requires** **Pn → `00`**. Legacy four-segment / short forms only when **PM.Pn** are both **`00`**.
 - [ ] Confirm which branch/commit is intended for release notes.
 
 ## 2) Surface-by-surface coverage (no misses)

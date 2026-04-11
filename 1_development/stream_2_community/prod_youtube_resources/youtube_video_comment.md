@@ -6,7 +6,7 @@
 ```
 Great to see Stables getting attention! 🎉
 
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 We're building a money platform on MINIMA that puts you in complete control. Self-custody, instant global payments, multi-currency support (USDs, EURs, CADs, CNYs, IRTs).
@@ -32,7 +32,7 @@ We're building a money platform on MINIMA that enables:
 ✓ Multi-currency support (USDs, EURs, CADs, CNYs, IRTs)
 ✓ Pseudonymous and secure transactions
 
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 We're building in the open with full transparency. No token sales, no investment pitches - just a focus on creating value for users worldwide.
@@ -57,7 +57,7 @@ Key points you highlighted:
 
 Stables: Money platform on MINIMA. Self-custody, instant payments, multi-currency (USDs, EURs, CADs, CNYs, IRTs).
 
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 🎯 https://stablescouncil.github.io/
@@ -80,7 +80,7 @@ What makes us different:
 • Pseudonymous and secure
 • No banks, no delays, no gatekeepers
 
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 Building in the open. Join us:
@@ -93,7 +93,7 @@ Building in the open. Join us:
 
 ## Messaging Compliance
 
-✅ **Slogan**: "Be your own bank."
+✅ **Slogan**: "Be your bank."
 ✅ **Tagline**: "Money that is truly yours. Secure. Pseudonymous. Unstoppable."
 ✅ **Brand Name**: "Stables" (not "Stables Protocol")
 ✅ **Platform**: MiniDapp only

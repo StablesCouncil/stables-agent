@@ -120,7 +120,7 @@
 ---
 
 ### Option 3: Action-Oriented
-**"Be Your Own Bank - The Playlist"**
+**"Be your bank - The Playlist"**
 - Uses the slogan directly
 - Strong brand connection
 - Clear identity
@@ -207,7 +207,7 @@
 ```
 Music that shares our values: freedom, sovereignty, and building a better future.
 
-Be your own bank.
+Be your bank.
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 Built on MINIMA.

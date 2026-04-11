@@ -16,7 +16,7 @@
 | **2. Locked mechanics** | Mint/burn, CR, Coverage Fund, cf, xMinima, fees (settled math and rules) | **`0_handshake/protocol_mechanics_spec.md` — wins any conflict.** Promoted mirror: `2_current/stream_3_governance/prod_protocol_specs/protocol_mechanics_spec.md`. |
 | **3. Master reference** | Terminology, links, economics summary, §14 locked mechanics recap | `0_handshake/stables_master_reference.md` (keep aligned with layer 2). |
 | **4. Agent brain** | Searchable knowledge for Telegram / web / external agents | **Source of truth after promotion:** `2_current/stream_3_governance/prod_stablesagent-brain-base/`. Sandbox drafts: `1_development/stream_3_governance/task_stablesagent-brain-base/`. Rebuild vectors: `ingest_knowledge.js` in `task_x_agent_node` (see brain `README.md`). |
-| **5. Shipped product** | What users actually see | Active MiniDapp: `minidapp_version.md` → `prod_stables_app_v*/index.html`. Inventory: `app_ui_inventory.md`. |
+| **5. Shipped product** | What users actually see | Active MiniDapps: **showcase** `prod_stables_app_v00.00.00.00.03/`, **demo** `prod_stables_app_demo/` (`minidapp_version.md`). **Dev version rule:** `vPM.Pn.TT.DD.SS` (Cursor: `stables-handshake.mdc` § Development versioning). Inventory: `app_ui_inventory.md`. |
 | **6. Comms & links** | URLs, tone, campaigns | `0_handshake/links.md`, `2_current/plan/` tone and strategy docs. |
 
 ---
@@ -27,7 +27,7 @@
 2. **Charter vs mechanics:** Charter sets **intent and governance**; mechanics spec sets **exact protocol behaviour**. Public copy can follow the Charter’s simplicity; internal and agent answers must still match mechanics.
 3. **Handshake Step 0b:** For anything touching mint, burn, xMinima, Stables, fees, CR, treasury, or protocol explanations, run **`handshake.md` [Step 0b]** before writing.
 4. **Promotion:** Draft in `1_development` → you review → you promote to `2_current` → brain ingest when the brain must quote it.
-5. **X (Twitter) copy (mandatory):** Before drafting or editing **any** X post, read **`handshake.md` §4** (*Community Communication Rules* → *X/Twitter Specifics (STRICT)*). **Hashtags are required on every X post.** **Mandatory base set:** `#BYOB #Stablecoin #Minima`. **If space remains** within 280 characters, add `#BeYourOwnBank`, then other relevant tags (e.g. `#Stables`). **Never** use hashtags in Telegram community posts. **Never** use an em dash (—) in public copy (same section). If `stables_master_reference.md` messaging bullets disagree on hashtag wording, **`handshake.md` §4 wins.**
+5. **X (Twitter) copy (mandatory):** Before drafting or editing **any** X post, read **`handshake.md` §4** (*Community Communication Rules* → *X/Twitter Specifics (STRICT)*). **Hashtags are required on every X post.** **Mandatory base set:** `#BYB #Stablecoin #Minima`. **If space remains** within 280 characters, add `#BeYourBank`, then other relevant tags (e.g. `#Stables`). **Never** use hashtags in Telegram community posts. **Never** use an em dash (—) in public copy (same section). If `stables_master_reference.md` messaging bullets disagree on hashtag wording, **`handshake.md` §4 wins.**
 
 ---
 

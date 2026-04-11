@@ -19,7 +19,7 @@ We're excited to announce that the official Stables YouTube channel is now up an
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**Be your own bank.**
+**Be your bank.**
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -54,7 +54,7 @@ This channel will feature:
 • User stories
 • Technical deep dives
 
-**Be your own bank.**
+**Be your bank.**
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 🎯 Presentation: https://stablescouncil.github.io/
@@ -82,7 +82,7 @@ As we continue building Stables in the open, YouTube will be another platform wh
 👥 Community stories and use cases
 🔧 Technical content for developers
 
-**Be your own bank.**
+**Be your bank.**
 Money that is truly yours. Secure. Pseudonymous. Unstoppable.
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -106,7 +106,7 @@ Built on MINIMA 🔷
 
 ## Messaging Compliance
 
-✅ **Slogan**: "Be your own bank."
+✅ **Slogan**: "Be your bank."
 ✅ **Tagline**: "Money that is truly yours. Secure. Pseudonymous. Unstoppable."
 ✅ **Brand Name**: "Stables" (not "Stables Protocol")
 ✅ **Platform**: MiniDapp only

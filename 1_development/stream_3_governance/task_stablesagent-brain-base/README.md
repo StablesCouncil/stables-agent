@@ -30,6 +30,6 @@ You can interact with the official Stables assistant directly in the Stables com
 If you prefer to use your own LLM, we have formatted the entire knowledge base into a single, internet-standard file.
 You can simply paste the following prompt into ChatGPT or Claude, providing the direct URL to our `llms.txt` file:
 
-> *"Please read the official knowledge base at https://raw.githubusercontent.com/stablescouncil/stablesagent-brain-base/main/llms.txt and answer the following question about Stables: [Your Question]"*
+> *"Please read the official knowledge base at https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt and answer the following question about Stables: [Your Question]"*
 
 *(Note: The `llms.txt` file is auto-generated whenever the brain base is updated, ensuring ChatGPT always has the latest facts).*

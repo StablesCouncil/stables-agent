@@ -28,7 +28,7 @@ It operates as a **sovereign banking infrastructure protocol**: a structured bri
 
 This bridge is not permanent by design. It exists because the transition from centralised to sovereign monetary coordination is gradual. The distribution of Minima must widen. Merchant adoption must deepen. Economic habits must shift. Until that transition completes, Stables provides the coordination layer that makes Minima economically usable *today* — through synthetic stable representations, merchant settlement, and deterministic solvency.
 
-Each participant in the Stables system structurally represents their own bank through:
+Each participant in the Stables system structurally represents their bank through:
 
 - **Self-custody** — no third party holds user funds
 - **Deterministic execution** — monetary rules enforced by code, not discretion
@@ -47,7 +47,7 @@ The horizon is a Minima-native economy in which Minima functions as a day-to-day
 
 ### I.1 Core Objective
 
-The mission of the Stables Council is to enable individuals and merchants to be their own bank through:
+The mission of the Stables Council is to enable individuals and merchants to be their bank through:
 
 1. **Sovereign infrastructure** — self-custody, self-validation, self-settlement
 2. **Mathematical solvency** — balance sheet health enforced by code, not promise
@@ -116,7 +116,7 @@ Stables provides synthetic stable representations pegged to existing units of ac
 
 **Stage 2 — Minima-Native Economy.**
 
-As merchant adoption deepens and the Minima economy matures, *participants* price goods and services directly in Minima. Stablecoins become unnecessary for internal commerce. This stage achieves technical and financial sovereignty — every participant is their own bank, operating on infrastructure they validate themselves.
+As merchant adoption deepens and the Minima economy matures, *participants* price goods and services directly in Minima. Stablecoins become unnecessary for internal commerce. This stage achieves technical and financial sovereignty — every participant is their bank, operating on infrastructure they validate themselves.
 
 But this is not the final destination. The distribution of Minima remains concentrated by historical circumstance — early holders, team allocations, initial distribution mechanics. A monetary system built on an unevenly distributed supply, however sovereign its infrastructure, cannot fully embody the equality it aspires to.
 
@@ -419,7 +419,7 @@ It operates as a bridge between present liability structures and Minima-native e
 
 Its monetary core remains immutable. Its evolution occurs through modular expansion. Its sovereignty is preserved through deterministic code.
 
-Every participant is their own bank. Every balance sheet is visible. Every rule is verifiable. Every exit is unconditional.
+Every participant is their bank. Every balance sheet is visible. Every rule is verifiable. Every exit is unconditional.
 
 The protocol does not ask for trust. It earns confidence through mathematical proof.
 

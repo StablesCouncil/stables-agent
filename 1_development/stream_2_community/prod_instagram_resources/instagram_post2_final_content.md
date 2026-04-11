@@ -1,5 +1,5 @@
 # Instagram Post #2 - FINAL CONTENT FOR APPROVAL
-## "You Are Your Own Bank"
+## "You Are Your Bank"
 **Date**: January 11, 2026  
 **Status**: Ready for Visual Production
 
@@ -14,10 +14,10 @@ All slides follow the locked visual identity from the handshake protocol. See vi
 
 ## SLIDE 1: Title
 ```
-You Are Your Own Bank.
+You Are Your Bank.
 
 Individually and collectively,
-we are our own banking system.
+we are our banking system.
 ```
 
 ---
@@ -80,7 +80,7 @@ Built on MINIMA
 **Note**: This is the text that will appear with your Instagram post when you publish it.
 
 ```
-You are your own bank. 💫
+You are your bank. 💫
 
 Not metaphorically. Actually.
 
@@ -93,7 +93,7 @@ Be prepared to embrace something new.
 
 Different. Stronger. Yours.
 
-Individually and collectively, we are our own banking system.
+Individually and collectively, we are our banking system.
 
 Built on MINIMA
 

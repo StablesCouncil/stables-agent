@@ -185,6 +185,50 @@ The gaps that need a decision before work can begin:
 
 ---
 
+## Fiat ↔ Stables via USDT bridge (ramp strategy sketch)
+
+**Status:** Working note — 2026-04-06. **Not** a vendor commitment. Confirm every item with current bridge and ramp documentation.
+
+### What “permissionless” can and cannot mean here
+
+- **Fiat on/off is never permissionless** in the strong crypto sense: any regulated ramp that touches bank money will apply **KYC/AML**, **geo-blocks**, and **issuer rules**. That is unavoidable at the paper-money edge.
+- What *is* aligned with Stables/Minima values is: **crypto lands in a user-controlled wallet** (or contract the user explicitly approves), **minimal custodial time**, **clear counterparty disclosure**, and **modular providers** so no single company sits on the full path.
+
+### Target canonical path (streamlined)
+
+**On-ramp (cash → Stables):** bank/card/local rail → **USDT** on a ramp-supported network → **Minima USDT bridge** (e.g. optional step already referenced in product copy: **MxUSDT ↔ USDT** via `https://mxusd.global/`) → acquire **MINIMA** on Minima (DEX / venues as today) → **mint Stables** in the app.
+
+**Off-ramp (Stables → cash):** burn Stables → **MINIMA** → **USDT** on Minima side where the bridge supports it → move USDT to a network the ramp accepts → ramp **off** to bank.
+
+The UX win is **one familiar intermediate asset (USDT)** and **documented steps**, not pretending the bank leg is decentralised.
+
+### First-tier ramp partners to evaluate (USDT + wallet payout + SDK)
+
+These are the usual **first calls** for a dapp that wants **USDT out** to a pasted address and a **developer integration**:
+
+| Priority | Provider | Why shortlist |
+| :--- | :--- | :--- |
+| 1 | **Ramp** | Strong positioning on **direct-to-wallet** flow; broad EU/global footprint; common in self-custody wallets. |
+| 1 | **Transak** | Mature **SDK**, wide **asset** and **payment method** coverage; common in DeFi apps. |
+| 1 | **MoonPay** | Very high **distribution** and card/bank rails; good when you need **volume and recognition** (trade-off: cost/compliance friction varies by region). |
+| 2 | **Coinbase Onramp / Pay** | Strong where **US** trust and compliance matter; check USDT networks and widget terms. |
+| 2 | **Banxa** | Useful when you need **explicit licensing narrative** and multi-country coverage. |
+| 2 | **Mercuryo** | Another frequent **card→crypto** option; compare spreads and supported chains for USDT. |
+| 3 | **Onramper** (or similar) | **Aggregation**: one integration, many backends — good for **coverage** and **fallback** if a single provider blocks a country. |
+
+**Aggregator caveat:** partner programs (e.g. Onramper) apply their **own KYB and restricted-industry lists** before any underlying ramp sees you. **Stablecoin, banking-style, or DeFi infrastructure** labels sometimes fail that first gate even when **direct** ramp relationships could still be possible. If an aggregator blocks you, treat it as **non-fatal**: pursue **direct** contracts with Tier 1 ramps (Ramp, Transak, MoonPay, etc.) and keep the **USDT → bridge → Minima** path unchanged.
+
+**Stripe** (and similar commerce stacks) can matter later for **merchant checkout**, but the **first path** above is usually **USDT-centric B2C ramps** plus your own **in-app copy** for the Minima bridge and DEX.
+
+### Engineering checklist before you pick one
+
+1. **USDT contract + network** the ramp supports must match what the **Minima USDT bridge** expects on the “outside” leg (do not assume Ethereum if the bridge is tied to another chain).
+2. **Wallet-only settlement**: ramp pays **USDT to the user’s address** (or in-app embedded wallet flow), not an opaque exchange balance.
+3. **Off-ramp**: confirm **USDT sell** to bank/card for your target countries (often **harder** than on-ramp).
+4. **Minima does not need to be listed on the ramp** if the path is **fiat → USDT → bridge → MINIMA → Stables**; listing **MINIMA** on ramps is a **separate** win, not required for this route.
+
+---
+
 ## THE NORTH STAR SEQUENCE
 
 ```

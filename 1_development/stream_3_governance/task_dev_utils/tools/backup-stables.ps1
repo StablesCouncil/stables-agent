@@ -4,8 +4,9 @@
 
 .DESCRIPTION
     Creates a timestamped zip of all project folders (0_handshake, 1_development, 2_current, 3_archive),
-    excluding sensitive data (prod_credentials, .env). SCPs to Vultr, writes a manifest.
-    Run via Task Scheduler or manually. See BACKUP_README.md for Task Scheduler configuration.
+    excluding sensitive data (prod_credentials, .env). Copies zip locally, SCPs to Vultr, then runs
+    sync-stables.ps1 to push to GitHub (uses branch.main.remote, e.g. backup). Run via Task Scheduler or manually.
+    See BACKUP_README.md for Task Scheduler configuration.
 
 .EXAMPLE
     .\backup-stables.ps1
@@ -17,7 +18,8 @@ param(
     [string]$VultrUser = "root",
     [string]$BackupBaseOnServer = "/root/stables-backups",
     [string]$LocalBackupPath = "C:\Users\Charles\Documents\Backup\Stables",
-    [switch]$SkipVultr = $false
+    [switch]$SkipVultr = $false,
+    [switch]$SkipGithub = $false
 )
 
 $ErrorActionPreference = "Stop"
@@ -39,25 +41,6 @@ if (-not (Test-Path (Join-Path $ProjectRoot "0_handshake"))) {
 $Timestamp = Get-Date -Format "yyyy-MM-dd_HHmm"
 $ZipName = "Stables_backup_$Timestamp.zip"
 
-# 1. Automated GitHub Sync
-Log "Starting GitHub Sync..."
-try {
-    Set-Location $ProjectRoot
-    $Changes = git status --porcelain
-    if ($Changes) {
-        Log "Changes detected. Committing and pushing..."
-        git add .
-        git commit -m "Automated Backup Sync: $Timestamp"
-        git push origin main
-        Log "GitHub sync complete."
-    } else {
-        Log "No changes to push to GitHub."
-    }
-} catch {
-    Log "WARNING: GitHub sync failed. Proceeding with zip backup. Error: $_"
-}
-
-# 2. Local/Vultr Backup Pipeline
 $LocalZipPath = Join-Path $env:TEMP $ZipName
 
 # Folders to backup (handshake Source of Truth + development + archive)
@@ -104,6 +87,10 @@ $BackupBaseOnServer/$ZipName
 LOCAL COPY (C:)
 ---------------
 $LocalBackupPath/$ZipName
+
+GITHUB
+------
+After this zip is created, the backup task runs sync-stables.ps1 (commit if dirty, else push if ahead of remote/main).
 
 To list backups on server: ssh $VultrUser@$VultrHost "ls -la $BackupBaseOnServer"
 "@ | Out-File -FilePath $ManifestPath -Encoding utf8
@@ -165,6 +152,29 @@ if (-not $SkipVultr) {
     }
 } else {
     Log "Skipped Vultr upload (-SkipVultr). Local backup at: $LocalCopyPath"
+}
+
+# GitHub sync (after zip + upload so backups succeed even if Git fails)
+if (-not $SkipGithub) {
+    $SyncScript = Join-Path $ScriptDir "sync-stables.ps1"
+    $Pwsh = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
+    if (-not (Test-Path $SyncScript)) {
+        Log "WARNING: sync-stables.ps1 not found at $SyncScript - skipping GitHub."
+    } elseif (-not (Test-Path $Pwsh)) {
+        Log "WARNING: powershell.exe not found at $Pwsh - skipping GitHub."
+    } else {
+        Log "Syncing to GitHub (branch.main.remote)..."
+        & $Pwsh -NoProfile -ExecutionPolicy Bypass -File $SyncScript `
+            -Message "Automated Backup Sync: $Timestamp" `
+            -AlsoPushWhenClean
+        if ($LASTEXITCODE -ne 0) {
+            Log "WARNING: GitHub sync exited with code $LASTEXITCODE. Local and Vultr backups are still valid."
+        } else {
+            Log "GitHub sync finished successfully."
+        }
+    }
+} else {
+    Log "Skipped GitHub sync (-SkipGithub)."
 }
 
 # Cleanup local zip

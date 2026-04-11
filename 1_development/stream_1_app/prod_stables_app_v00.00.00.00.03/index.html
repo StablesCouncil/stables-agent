@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stables - BYOB</title>
+    <title>Stables - BYB</title>
     <link rel="canonical" href="https://stablescouncil.org/dapp/">
     <!-- Link preview: Open Graph + X (Twitter) Card (absolute URLs required for crawlers) -->
-    <meta name="description" content="Stables MiniDapp showcase on Minima. Preview wallet, mint, merchants, and StablesAgent. Be your own bank.">
+    <meta name="description" content="Stables MiniDapp showcase on Minima. Preview wallet, mint, merchants, and StablesAgent. Be your bank.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Stables">
     <meta property="og:url" content="https://stablescouncil.org/dapp/">
@@ -20,7 +20,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@StablesCouncil">
     <meta name="twitter:title" content="Stables MiniDapp Showcase">
-    <meta name="twitter:description" content="Interactive preview of the Stables banking MiniDapp on Minima. Be your own bank.">
+    <meta name="twitter:description" content="Interactive preview of the Stables banking MiniDapp on Minima. Be your bank.">
     <meta name="twitter:image" content="https://stablescouncil.org/brand/assets/twitter-header.png">
     <meta name="twitter:image:alt" content="Stables MiniDapp showcase">
     <!-- Official Favicon -->
@@ -307,17 +307,7 @@
             margin-left: 4px
         }
 
-        .stables-mds-origin-hint {
-            display: none;
-            padding: 8px 14px;
-            font-size: 12px;
-            line-height: 1.45;
-            font-weight: 600;
-            color: var(--am);
-            background: rgba(251, 191, 36, .1);
-            border-bottom: 1px solid rgba(251, 191, 36, .22);
-            text-align: center
-        }
+        /* MDS origin notice: .mback#stablesMdsOriginPopup (z-index below welcome so first-run flow stays on top) */
 
         /* Treasury stress slider: anchor USD row above track, % row below track */
         .treasury-slider-price-row {
@@ -2441,7 +2431,7 @@
 
         /*
          * Welcome modal default reading style (same as intro lines, e.g.
-         * "Being your own bank brings great possibilities…").
+         * "Your bank opens up great possibilities…").
          */
         .welcome-modal-body-copy {
             font-size: var(--fz-body);
@@ -4024,7 +4014,7 @@
             <img id="topbarBrandImg" src="stables_icon.png" alt="Stables" style="width:34px;height:34px;flex-shrink:0">
             <div style="display:flex;flex-direction:column;justify-content:center;min-width:0">
                 <span id="topbarBrandName" class="brand-name">Stables</span>
-                <span id="topbarBrandSub" class="brand-sub">Be your own bank</span>
+                <span id="topbarBrandSub" class="brand-sub">Be your bank</span>
             </div>
             <div id="topbarBrandTooltip" class="brand-hover-tip" role="tooltip">
                 <span class="brand-hover-tip__text">My bank made possible by Stables on Minima</span>
@@ -4032,7 +4022,7 @@
         </div>
     <!-- Column 2: Test Pill (Center) -->
     <div id="topbarShowcasePill" class="test-pill" style="justify-self: center;cursor:default">
-        Showcase · v00.00.02
+        Showcase · v00.00.00.00.03
     </div>
     <!-- Column 3: single pill — status dot + block height (or connect / MDS state); tap opens Connect -->
     <div class="topbar-node-cluster">
@@ -4044,7 +4034,20 @@
     </div>
     </div>
 
-    <div id="stablesMdsOriginHint" class="stables-mds-origin-hint" role="status" aria-live="polite" hidden></div>
+    <!-- Dismissible notice when MDS cannot auto-connect (file://, missing mds.js, etc.); z-index 298 stays under welcome (300) -->
+    <div class="mback centered" id="stablesMdsOriginPopup" style="z-index:298" aria-modal="true" role="dialog"
+        aria-labelledby="stablesMdsOriginPopupTitle"
+        onclick="if(event.target===this)stablesCloseMdsOriginPopupDismiss()">
+        <div class="modal welcome" onclick="event.stopPropagation()"
+            style="max-width:420px;border:1px solid rgba(251,191,36,.45);box-shadow:0 0 0 1px rgba(251,191,36,.12),0 8px 28px rgba(0,0,0,.35);background:linear-gradient(180deg,rgba(251,191,36,.1),rgba(11,15,20,.94));padding:20px 18px 22px">
+            <div class="mttl" id="stablesMdsOriginPopupTitle" style="margin-bottom:10px">Connect your Minima node</div>
+            <div id="stablesMdsOriginPopupBody" class="xs mu" style="margin-bottom:16px;line-height:1.55;color:var(--m)"></div>
+            <button type="button" class="btn btn-w btn-g" style="width:100%;margin-bottom:8px"
+                onclick="stablesMdsOriginPopupOpenConnect()">Open Connect node</button>
+            <button type="button" class="btn btn-w" style="width:100%"
+                onclick="stablesCloseMdsOriginPopupDismiss()">Close</button>
+        </div>
+    </div>
 
     <!-- FLOATING ACTION BUTTONS (Constrained to mobile width) -->
     <div class="fab-container">
@@ -7702,6 +7705,9 @@
             <input class="finput" id="stablesMdsHostInput" type="text" value="127.0.0.1" autocomplete="off" placeholder="10.10.0.2" style="margin-bottom:10px">
             <label class="flabel">MDS port</label>
             <input class="finput" id="stablesMdsPortInput" type="number" value="9003" min="1" max="65535" inputmode="numeric" style="margin-bottom:10px">
+            <label class="flabel">Hub session <code style="font-size:11px">uid</code> (if you see MDS issue 500)</label>
+            <div class="xs mu" style="margin:-2px 0 8px;line-height:1.45;color:var(--m)">Open Stables <strong style="color:var(--t)">once</strong> from the MiniDapp hub and copy the <code style="font-size:11px">uid=</code> value from the address bar (long <code style="font-size:11px">0x…</code> after <code style="font-size:11px">?</code>). Paste it here or paste the full hub URL. Required when the node has <code style="font-size:11px">publicmds: false</code>.</div>
+            <input class="finput" id="stablesMdsSessionUidInput" type="text" value="" autocomplete="off" placeholder="0x… from hub ?uid=" style="margin-bottom:10px">
             <div id="stablesNodeConnectStatus" class="xs mu" style="min-height:18px;margin-bottom:10px;color:var(--am)"></div>
             <button type="button" class="btn btn-w btn-g" style="width:100%;margin-bottom:8px" onclick="stablesTryConnectMdsFromShowcase()">Connect with mds.js</button>
             <button type="button" class="btn btn-w" style="width:100%" onclick="closeStablesNodeConnectModal()">Close</button>
@@ -7780,7 +7786,7 @@
                 </div>
                 <div id="welcomeCongrats" class="type-hero"
                     style="text-align:center;margin-bottom:12px;color:var(--t)">
-                    Congratulations on becoming your own bank.
+                    Congratulations on becoming your bank.
                 </div>
                 <div class="mttl" id="welcomeTitle"
                     style="text-align:center;margin-bottom:14px;font-weight:800;line-height:1.3;color:var(--t)">Welcome to Stables</div>
@@ -7805,7 +7811,7 @@
                 </div>
                 <div class="flex gap8" style="flex-wrap:wrap;justify-content:center;flex-direction:column;gap:12px;margin-top:4px">
                     <button class="btn btn-w btn-g" id="welcomeTourPersonBtn" style="width:100%;min-width:220px;line-height:1.4"
-                        onclick="setWelcomeTourChoice('person')">I'm a person. I want to understand what I'll be able to do with my own bank.</button>
+                        onclick="setWelcomeTourChoice('person')">I'm a person. I want to understand what I'll be able to do with my bank.</button>
                     <button class="btn btn-w btn-g" id="welcomeTourShopAmbassadorBtn" style="width:100%;min-width:220px;line-height:1.4"
                         onclick="setWelcomeTourChoice('shop_ambassador')">I want to become a merchant ambassador and explore what the earning opportunities are.</button>
                     <button class="btn btn-w btn-g" id="welcomeTourMerchantBtn" style="width:100%;min-width:220px;line-height:1.4"
@@ -7891,6 +7897,7 @@
                 </div>
                 <div class="flex gap8" style="flex-direction:column;gap:10px">
                     <button type="button" class="btn btn-w btn-g" style="width:100%" onclick="goWelcomePersonalizeFromIntro()">Continue personalisation</button>
+                    <button type="button" class="btn" style="width:100%" onclick="finalizeWelcomeSetup()">I'll do that later</button>
                 </div>
             </div>
 
@@ -8032,7 +8039,7 @@
     <div class="dback" id="simDrawer" onclick="closeSim(event)">
         <div class="drawer" style="padding:0; overflow:hidden; display:flex; flex-direction:column; max-height:85dvh;">
             <div class="dhead" style="padding:16px 16px 0; flex-shrink:0;"><span
-                    style="font-size:16px;font-weight:800">My own bank holdings</span>
+                    style="font-size:16px;font-weight:800">My bank holdings</span>
                 <button class="dclose" onclick="openAgentExplain('Portfolio Simulator')" title="StablesAgent" style="display:flex;align-items:center;justify-content:center">
                     <img src="agent.png" alt="StablesAgent" style="width:18px;height:18px;border-radius:6px;object-fit:cover">
                 </button>
@@ -8768,7 +8775,14 @@
             if (hint) hint.textContent = buildVersion ? `App version: ${buildVersion}` : '';
             const showcasePill = document.getElementById('topbarShowcasePill');
             if (showcasePill && buildVersion) {
-                showcasePill.textContent = 'Showcase · v' + String(buildVersion).trim();
+                const stageRaw = window.STABLES_CONFIG && window.STABLES_CONFIG.APP_STAGE;
+                const s = stageRaw != null ? String(stageRaw).trim().toLowerCase() : '';
+                let stageLabel = 'Showcase';
+                if (s === 'demo') stageLabel = 'Demo';
+                else if (s === 'test') stageLabel = 'Test';
+                else if (s === 'prod') stageLabel = 'Prod';
+                else if (s === 'showcase') stageLabel = 'Showcase';
+                showcasePill.textContent = stageLabel + ' · v' + String(buildVersion).trim();
             }
         }
 
@@ -8911,10 +8925,10 @@
         function getAgentContext() {
             return (curPage || 'wallet');
         }
-        /** On Minima node, iframe embed is often blocked; prefer system browser when MDS is present. */
+        /** Opt-in only: set STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS true in runtime-config if iframe embed is blocked on the host. Default stays in-app drawer (no new tab). */
         function stablesAgentOpenExternalPreferred() {
             const c = window.STABLES_CONFIG || {};
-            if (c.STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS === false) return false;
+            if (c.STABLES_AGENT_OPEN_EXTERNAL_WHEN_MDS !== true) return false;
             return typeof MDS !== 'undefined';
         }
         function buildAgentUrl(ctx, suggestText) {
@@ -9192,6 +9206,9 @@
         // assets/routes/activity-contacts.js
 
         function investSummaryRateToBase(fromCode, baseCcy) {
+            if (typeof stablesWalletConversionRate === 'function') {
+                return stablesWalletConversionRate(fromCode, baseCcy);
+            }
             const f = (fromCode === 'MINIMA' || fromCode === 'WINIMA') ? 'Winiwa' : String(fromCode || '');
             const t = (baseCcy === 'MINIMA' || baseCcy === 'WINIMA') ? 'Winiwa' : String(baseCcy || '');
             if (f === t) return 1;
@@ -9393,13 +9410,14 @@
                     0.00508
                 );
                 const comp = {
-                    USDw: clamp(0.50 + Math.sin(i * 0.20) * 0.04, 0.40, 0.62),
-                    EURw: clamp(0.22 + Math.cos(i * 0.18) * 0.03, 0.12, 0.30),
-                    GBPw: clamp(0.11 + Math.sin(i * 0.27) * 0.02, 0.06, 0.18),
-                    CNYw: clamp(0.07 + Math.cos(i * 0.22) * 0.02, 0.04, 0.12),
+                    USDw: clamp(0.47 + Math.sin(i * 0.20) * 0.04, 0.38, 0.58),
+                    EURw: clamp(0.20 + Math.cos(i * 0.18) * 0.03, 0.11, 0.28),
+                    GBPw: clamp(0.10 + Math.sin(i * 0.27) * 0.02, 0.05, 0.16),
+                    CNYw: clamp(0.065 + Math.cos(i * 0.22) * 0.02, 0.035, 0.11),
+                    VNDw: clamp(0.028 + Math.sin(i * 0.31) * 0.01, 0.015, 0.048),
                     xWiniwa: 0
                 };
-                const total = comp.USDw + comp.EURw + comp.GBPw + comp.CNYw + comp.xWiniwa;
+                const total = comp.USDw + comp.EURw + comp.GBPw + comp.CNYw + comp.VNDw + comp.xWiniwa;
                 Object.keys(comp).forEach((k) => comp[k] = comp[k] / total);
                 rows.push({ day: i + 1, txCount, avgFeeUsd, feesUsd, navUsd, dailyYieldPct, comp });
             }
@@ -9515,6 +9533,8 @@
             const r = RATES.USDw[p];
             if (typeof r === 'number' && r > 0) return amt * r;
             if (p === 'MINIMA' || p === 'WINIMA') {
+                const live = Number(typeof SIM_Winiwa_PRICE !== 'undefined' ? SIM_Winiwa_PRICE : NaN);
+                if (Number.isFinite(live) && live > 0) return amt / live;
                 const wPerUsd = RATES.Winiwa && RATES.Winiwa.USDw;
                 if (typeof wPerUsd === 'number' && wPerUsd > 0) return amt / wPerUsd;
             }
@@ -9524,7 +9544,7 @@
         function fmtCfPrimaryAmount(amount, ccy) {
             const code = String(ccy || 'USDw');
             const n = Number(amount) || 0;
-            const dec = (code === 'JPYw' || code === 'CNYw') ? 0 : 2;
+            const dec = (code === 'JPYw' || code === 'CNYw' || code === 'VNDw') ? 0 : 2;
             const num = n.toLocaleString('en-US', { minimumFractionDigits: dec, maximumFractionDigits: dec });
             return `${num} ${code}`;
         }
@@ -9680,13 +9700,14 @@
                 EURw: 'rgba(59,130,246,.86)',
                 GBPw: 'rgba(245,158,11,.86)',
                 CNYw: 'rgba(239,68,68,.86)',
+                VNDw: 'rgba(234,179,8,.88)',
                 xWiniwa: 'rgba(167,139,250,.88)'
             };
             const bars = document.getElementById('cfCompBars');
             const legend = document.getElementById('cfCompLegend');
             if (bars) {
                 bars.innerHTML = '';
-                ['USDw', 'EURw', 'GBPw', 'CNYw', 'xWiniwa'].forEach((k) => {
+                ['USDw', 'EURw', 'GBPw', 'CNYw', 'VNDw', 'xWiniwa'].forEach((k) => {
                     const seg = document.createElement('div');
                     seg.style.width = `${Math.max(2, row.comp[k] * 100)}%`;
                     seg.style.background = colors[k];
@@ -9696,7 +9717,7 @@
                 });
             }
             if (legend) {
-                legend.innerHTML = ['USDw', 'EURw', 'GBPw', 'CNYw', 'xWiniwa']
+                legend.innerHTML = ['USDw', 'EURw', 'GBPw', 'CNYw', 'VNDw', 'xWiniwa']
                     .map((k) => `<span><span style="display:inline-block;width:8px;height:8px;border-radius:99px;background:${colors[k]};margin-right:6px"></span>${k} ${(row.comp[k] * 100).toFixed(1)}%</span>`)
                     .join('');
             }
@@ -9968,6 +9989,9 @@
             const quote = String(document.getElementById('lpQuoteCcy')?.value || 'xWiniwa');
             const pairMid = (() => {
                 if (quote === 'xWiniwa') {
+                    const sp = Number(typeof SIM_Winiwa_PRICE !== 'undefined' ? SIM_Winiwa_PRICE : NaN);
+                    const xwm = Number(typeof SIM_XWM_PRICE !== 'undefined' ? SIM_XWM_PRICE : NaN);
+                    if (Number.isFinite(sp) && sp > 0 && Number.isFinite(xwm) && xwm > 0) return sp / xwm;
                     return ((RATES.Winiwa && RATES.Winiwa.xWiniwa) ? Number(RATES.Winiwa.xWiniwa) : 0.0888) || 0.0888;
                 }
                 return ((RATES[quote] && RATES[quote].Winiwa) ? Number(RATES[quote].Winiwa) : 1) || 1;
@@ -10029,7 +10053,7 @@
         function populateLpBaseCurrencies() {
             const sel = document.getElementById('lpQuoteCcy');
             if (!sel) return;
-            const all = ['xWiniwa', 'USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw'];
+            const all = ['xWiniwa', 'USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw', 'VNDw'];
             if (sel.tagName === 'INPUT' && sel.type === 'hidden') {
                 const prev = String(sel.value || 'xWiniwa');
                 const getCodes = (window.__VAULT_DD_GET_CODES && window.__VAULT_DD_GET_CODES.lpQuoteCcy) || function () { return all.slice(); };
@@ -11345,10 +11369,14 @@
         }
 
         window.addEventListener('click', e => {
-            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'stablesCharterComingModal', 'vaultHelpChoiceModal', 'shopStickerModal', 'stablesNodeConnectModal', 'recvQrBigBackdrop'].forEach(id => {
+            ['sendModal', 'recvModal', 'qrModal', 'seedSecurityAppModal', 'stablesCharterComingModal', 'vaultHelpChoiceModal', 'shopStickerModal', 'stablesNodeConnectModal', 'stablesMdsOriginPopup', 'recvQrBigBackdrop'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el && e.target === el) {
-                    el.classList.remove('open');
+                    if (id === 'stablesMdsOriginPopup') {
+                        stablesCloseMdsOriginPopupDismiss();
+                    } else {
+                        el.classList.remove('open');
+                    }
                     if (id === 'recvModal') {
                         const big = document.getElementById('recvQrBigBackdrop');
                         if (big) big.classList.remove('open');
@@ -11679,24 +11707,92 @@
         let _xwmLeverageChartDone = false;
         let _xwmLeverageChartPromise = null;
 
-        function fetchJsonForApp(url) {
-            if (typeof MDS !== 'undefined' && MDS.net && typeof MDS.net.GET === 'function') {
-                return new Promise((resolve, reject) => {
-                    MDS.net.GET(url, function (response) {
-                        try {
-                            if (response && response.status) {
-                                resolve(JSON.parse(response.response));
-                            } else {
-                                reject(new Error((response && response.error) || 'MDS GET failed'));
-                            }
-                        } catch (e) { reject(e); }
-                    });
-                });
+        /** True if payload looks like CoinGecko `market_chart` (used by Mint xWiniwa chart). */
+        function stablesIsCoinGeckoMarketChartPayload(o) {
+            return !!(o && typeof o === 'object' && Array.isArray(o.prices) && o.prices.length > 0);
+        }
+
+        /**
+         * MDS.net.GET may return the JSON body at the top level, or { status, response } with response a string or object.
+         * The old path required truthy `status` and JSON.parse(string) only; that rejected valid shapes and could hang if the node never called back.
+         */
+        function stablesParseCoinGeckoMarketChartFromMdsNetResponse(response) {
+            if (!response || typeof response !== 'object') return null;
+            if (stablesIsCoinGeckoMarketChartPayload(response)) return response;
+            var httpOk = (typeof response.status === 'number' && response.status >= 200 && response.status < 300);
+            var cmdOk = typeof stablesMdsCmdOk === 'function' && stablesMdsCmdOk(response);
+            if (httpOk || cmdOk) {
+                const body = typeof stablesCoerceMdsPayload === 'function' ? stablesCoerceMdsPayload(response.response) : null;
+                if (stablesIsCoinGeckoMarketChartPayload(body)) return body;
             }
-            return fetch(url).then((r) => {
-                if (!r.ok) throw new Error('HTTP ' + r.status);
-                return r.json();
-            });
+            return null;
+        }
+
+        /** ~1y of daily points for chart when CoinGecko / MDS are unreachable (showcase demo). */
+        function xwmBuildSyntheticMarketPrices() {
+            const n = 140;
+            const spot = Number(typeof SIM_Winiwa_PRICE !== 'undefined' ? SIM_Winiwa_PRICE : 0) || 0.00846;
+            const now = Date.now();
+            const day = 86400000;
+            const prices = [];
+            for (let i = 0; i < n; i++) {
+                const t = now - (n - 1 - i) * day;
+                const wave = 1 + 0.045 * Math.sin(i * 0.15) + 0.02 * Math.sin(i * 0.07);
+                prices.push([t, Math.max(1e-8, spot * wave)]);
+            }
+            return prices;
+        }
+
+        function fetchJsonForApp(url) {
+            const validateChart = function (data) {
+                if (!stablesIsCoinGeckoMarketChartPayload(data)) throw new Error('No prices');
+                return data;
+            };
+            const fetchChartViaBrowser = function () {
+                const ac = typeof AbortController !== 'undefined' ? new AbortController() : null;
+                const timeoutMs = 12000;
+                return new Promise(function (resolve, reject) {
+                    var toId = setTimeout(function () {
+                        try { if (ac) ac.abort(); } catch (_) { /* ignore */ }
+                        reject(new Error('fetch timeout'));
+                    }, timeoutMs);
+                    fetch(url, { method: 'GET', cache: 'no-store', signal: ac ? ac.signal : undefined })
+                        .then(function (r) {
+                            clearTimeout(toId);
+                            if (!r.ok) throw new Error('HTTP ' + r.status);
+                            return r.json();
+                        })
+                        .then(validateChart)
+                        .then(resolve)
+                        .catch(function (e) {
+                            clearTimeout(toId);
+                            reject(e);
+                        });
+                });
+            };
+            const fetchChartViaMds = function () {
+                return new Promise(function (resolve, reject) {
+                    if (typeof MDS === 'undefined' || !MDS.net || typeof MDS.net.GET !== 'function') {
+                        reject(new Error('no MDS'));
+                        return;
+                    }
+                    var tid = setTimeout(function () { reject(new Error('mds timeout')); }, 10000);
+                    try {
+                        MDS.net.GET(url, function (response) {
+                            clearTimeout(tid);
+                            try {
+                                var parsed = stablesParseCoinGeckoMarketChartFromMdsNetResponse(response);
+                                if (parsed) resolve(parsed);
+                                else reject(new Error('mds shape'));
+                            } catch (e) { reject(e); }
+                        });
+                    } catch (e) {
+                        clearTimeout(tid);
+                        reject(e);
+                    }
+                });
+            };
+            return fetchChartViaBrowser().catch(function () { return fetchChartViaMds(); });
         }
 
         function xwmThinPriceRows(raw, maxN) {
@@ -11977,9 +12073,16 @@
                     _xwmLeverageChartDone = true;
                 })
                 .catch(() => {
-                    detachXwmChartPointer();
-                    status.textContent = 'Unavailable.';
-                    status.style.display = 'flex';
+                    try {
+                        const syn = xwmBuildSyntheticMarketPrices();
+                        window.__xwmChartLastPrices = syn;
+                        renderXwmLeverageChartFromPrices(syn);
+                        _xwmLeverageChartDone = true;
+                    } catch (_) {
+                        detachXwmChartPointer();
+                        status.textContent = 'Unavailable.';
+                        status.style.display = 'flex';
+                    }
                 })
                 .finally(() => { _xwmLeverageChartPromise = null; });
             return _xwmLeverageChartPromise;
@@ -12108,6 +12211,19 @@
             if (s === true || s === 1) return true;
             if (typeof s === 'string' && s.toLowerCase() === 'true') return true;
             return false;
+        }
+
+        /** MEXC ticker/24h JSON from MDS.net.GET: sometimes raw object, sometimes { status, response } string. */
+        function stablesParseMexcTickerFromMdsNetResponse(response) {
+            if (!response || typeof response !== 'object') return null;
+            const looksLikeMexcTicker = function (o) {
+                if (!o || typeof o !== 'object') return false;
+                return o.lastPrice != null || o.price != null;
+            };
+            if (looksLikeMexcTicker(response)) return response;
+            if (!stablesMdsCmdOk(response)) return null;
+            const body = stablesCoerceMdsPayload(response.response);
+            return looksLikeMexcTicker(body) ? body : null;
         }
 
         function stablesDeepFindBlockInObject(obj, depth) {
@@ -12435,6 +12551,13 @@
                 } else if (p && pi && !h) {
                     pi.value = p;
                 }
+                const uidIn = document.getElementById('stablesMdsSessionUidInput');
+                if (uidIn) {
+                    try {
+                        const u = localStorage.getItem(STABLES_MDS_SESSION_UID_KEY);
+                        uidIn.value = u ? String(u) : '';
+                    } catch (_) { uidIn.value = ''; }
+                }
             } catch (_) { /* ignore */ }
             el.classList.add('open');
         }
@@ -12501,6 +12624,38 @@
             return { host: h || '127.0.0.1', port: p };
         }
 
+        const STABLES_MDS_SESSION_UID_KEY = 'stables_mds_session_uid';
+
+        function stablesApplySavedMdsSessionUidForInit() {
+            try {
+                const v = localStorage.getItem(STABLES_MDS_SESSION_UID_KEY);
+                const t = v ? String(v).trim() : '';
+                if (t && /^0x[0-9a-fA-F]{16,}$/.test(t)) {
+                    window.__STABLES_MDS_SESSION_UID = t;
+                } else {
+                    delete window.__STABLES_MDS_SESSION_UID;
+                }
+            } catch (_) {
+                delete window.__STABLES_MDS_SESSION_UID;
+            }
+        }
+
+        function stablesReadAndStoreMdsSessionUidFromConnectForm() {
+            const el = document.getElementById('stablesMdsSessionUidInput');
+            let raw = el && el.value != null ? String(el.value).trim() : '';
+            const m = raw.match(/[?&]uid=(0x[0-9a-fA-F]+)/i);
+            if (m) raw = m[1];
+            try {
+                if (raw && /^0x[0-9a-fA-F]{16,}$/i.test(raw)) {
+                    localStorage.setItem(STABLES_MDS_SESSION_UID_KEY, raw);
+                    window.__STABLES_MDS_SESSION_UID = raw;
+                } else {
+                    localStorage.removeItem(STABLES_MDS_SESSION_UID_KEY);
+                    delete window.__STABLES_MDS_SESSION_UID;
+                }
+            } catch (_) { /* ignore */ }
+        }
+
         function stablesTryConnectMdsFromShowcase() {
             const st = document.getElementById('stablesNodeConnectStatus');
             const hi = document.getElementById('stablesMdsHostInput');
@@ -12546,6 +12701,7 @@
                     return;
                 }
                 if (st) st.textContent = 'Connecting…';
+                stablesReadAndStoreMdsSessionUidFromConnectForm();
                 stablesAttachMdsLiveOnce();
                 return;
             }
@@ -12568,36 +12724,51 @@
                         st.textContent = 'No data from your node yet. Check host is only the IP (e.g. 10.10.0.2), port 9003, and certificate trust. Opening the Stables MiniDapp from the hub is the most reliable.';
                     }
                 }, 8000);
+                stablesReadAndStoreMdsSessionUidFromConnectForm();
                 stablesAttachMdsLiveOnce();
             }).catch(function () {
                 if (st) st.textContent = 'Failed to load mds.js. Ensure assets/lib/mds.js is present.';
             });
         }
 
+        function stablesCloseMdsOriginPopupDismiss() {
+            try {
+                sessionStorage.setItem('stables_mds_origin_popup_dismissed', '1');
+            } catch (_) { /* ignore */ }
+            const pop = document.getElementById('stablesMdsOriginPopup');
+            if (pop) pop.classList.remove('open');
+        }
+
+        function stablesMdsOriginPopupOpenConnect() {
+            stablesCloseMdsOriginPopupDismiss();
+            openStablesNodeConnectModal();
+        }
+
         function stablesShowMdsOriginHintIfNeeded() {
-            const el = document.getElementById('stablesMdsOriginHint');
-            if (!el) return;
+            const pop = document.getElementById('stablesMdsOriginPopup');
+            const body = document.getElementById('stablesMdsOriginPopupBody');
+            if (!pop || !body) return;
             if (window.__STABLES_LIVE_NODE && window.__STABLES_LIVE_NODE.rpcOk) return;
             if (stablesIsMinidappHostedOrigin() && typeof MDS !== 'undefined') return;
+            try {
+                if (sessionStorage.getItem('stables_mds_origin_popup_dismissed') === '1') return;
+            } catch (_) { /* ignore */ }
             const proto = String(location.protocol || '');
             let msg = '';
             if (proto === 'file:') {
-                msg = 'Opened as a local file: use Connect node with your node IP and port 9003 (mds.js is loaded but needs DEBUG host). Or install this package and open from the MiniDapp hub.';
+                msg = 'You opened this page as a local file (file://). Minima does not inject MDS there. Use Connect node with your node IP and port 9003 (mds.js is on the page but needs a DEBUG host), or install this package and open Stables from the MiniDapp hub.';
             } else if (typeof MDS === 'undefined') {
-                msg = 'mds.js failed to load. Ensure assets/lib/mds.js is inside your MiniDapp zip and reinstall.';
+                msg = 'mds.js failed to load. Ensure assets/lib/mds.js is inside your MiniDapp zip and reinstall, or open from the MiniDapp hub.';
             } else {
                 msg = 'This origin cannot auto-connect MDS. Open Stables from your Minima MiniDapp hub, or use Connect node with the correct host and port.';
             }
-            el.textContent = msg;
-            el.removeAttribute('hidden');
-            el.style.display = 'block';
+            body.textContent = msg;
+            pop.classList.add('open');
         }
 
         function stablesHideMdsOriginHint() {
-            const el = document.getElementById('stablesMdsOriginHint');
-            if (!el) return;
-            el.style.display = 'none';
-            el.setAttribute('hidden', '');
+            const pop = document.getElementById('stablesMdsOriginPopup');
+            if (pop) pop.classList.remove('open');
         }
 
         // Top bar block height + MINIMA (Winiwa) row: MDS in MiniDapp host, or after Connect + mds.js debug host
@@ -12729,6 +12900,10 @@
         }
 
         function exchangeDemoRate(from, to) {
+            if (typeof stablesWalletConversionRate === 'function') {
+                const r = stablesWalletConversionRate(from, to);
+                return (typeof r === 'number' && Number.isFinite(r) && r > 0) ? r : 0;
+            }
             const f = (from === 'MINIMA' || from === 'WINIMA') ? 'Winiwa' : String(from || '');
             const t = (to === 'MINIMA' || to === 'WINIMA') ? 'Winiwa' : String(to || '');
             if (f === t) return 1;
@@ -13336,9 +13511,16 @@
             return 0;
         }
 
-        /** Available line for vault actions: floor to 2dp so we never round up above true balance. */
-        function fmtAvailVaultQty(n) {
+        /** Available line for vault actions: floor so we never round up above true balance. Optional ccy uses zero-decimal fiat rules (e.g. VNDw). */
+        function fmtAvailVaultQty(n, ccy) {
             const x = Number(n) || 0;
+            const c = String(ccy || '');
+            let dec = 2;
+            if (c && typeof decimalsForCcyForUI === 'function') dec = decimalsForCcyForUI(c);
+            if (dec === 0) {
+                const t = Math.floor(x + 1e-10);
+                return t.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            }
             const t = Math.floor(x * 100 + 1e-10) / 100;
             return t.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
         }
@@ -13349,7 +13531,10 @@
                     const row = document.querySelector('#ccyList .ccy-sec-row[data-ccy="' + c + '"]');
                     if (!row) return;
                     const amtEl = row.querySelector('.ccy-sec-amt');
-                    if (amtEl) amtEl.textContent = fmtVaultAmt(WALLET_STABLE_AMTS[c] || 0, 2, 2);
+                    if (amtEl) {
+                        const dec = (typeof decimalsForCcyForUI === 'function') ? decimalsForCcyForUI(c) : 2;
+                        amtEl.textContent = fmtVaultAmt(WALLET_STABLE_AMTS[c] || 0, dec, dec);
+                    }
                 });
                 const wTest = document.querySelector('#ccyList .ccy-sec-row[data-ccy="WINIMA"]');
                 if (wTest) {
@@ -13399,7 +13584,7 @@
             if (c === 'Winiwa' || c === 'WINIMA') return 'Available: ' + fmtAvailVaultQty(b) + ' Winiwa (test)';
             if (c === 'MINIMA') return 'Available: ' + fmtAvailVaultQty(b) + ' Minima';
             if (c === 'xWiniwa') return 'Available: ' + fmtAvailVaultQty(b) + ' xWiniwa';
-            return 'Available: ' + fmtAvailVaultQty(b) + ' ' + c;
+            return 'Available: ' + fmtAvailVaultQty(b, c) + ' ' + c;
         }
 
         function formatBalanceAmountForVaultCcy(ccy) {
@@ -13409,7 +13594,7 @@
             if (c === 'Winiwa' || c === 'WINIMA') return fmtAvailVaultQty(b) + ' Winiwa (test)';
             if (c === 'MINIMA') return fmtAvailVaultQty(b) + ' Minima';
             if (c === 'xWiniwa') return fmtAvailVaultQty(b) + ' xWiniwa';
-            return fmtAvailVaultQty(b) + ' ' + c;
+            return fmtAvailVaultQty(b, c) + ' ' + c;
         }
 
         function updateExchangeAvailDisplay() {
@@ -13427,7 +13612,7 @@
             try { if (typeof refreshExchangeCcyDropdownBalances === 'function') refreshExchangeCcyDropdownBalances(); } catch (_) { /* ignore */ }
         }
 
-        const EXCHANGE_CCY_LIST = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw', 'ILSw', 'IRRw', 'Winiwa', 'MINIMA', 'xWiniwa'];
+        const EXCHANGE_CCY_LIST = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw', 'VNDw', 'ILSw', 'IRRw', 'Winiwa', 'MINIMA', 'xWiniwa'];
 
         function formatExDropdownBalanceQty(ccy) {
             const c = String(ccy || '');
@@ -13441,7 +13626,7 @@
                 const t = Math.floor(b * 1e6 + 1e-10) / 1e6;
                 return t.toLocaleString('en-US', { maximumFractionDigits: 6, minimumFractionDigits: 0 });
             }
-            return fmtAvailVaultQty(b);
+            return fmtAvailVaultQty(b, c);
         }
 
         function vaultCcyDdCloseAll() {
@@ -13660,10 +13845,10 @@
         }
 
         function initVaultCurrencyDropdownsExceptExchange() {
-            const ISSUE_CCY_LIST_LOCAL = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw'];
-            const RECLAIM_CCY_LIST_LOCAL = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw'];
-            const INVOICE_CCY_LIST_LOCAL = ['USDw', 'EURw', 'GBPw', 'AUDw', 'CHFw', 'CNYw'];
-            const LP_QUOTE_CCY_LIST_LOCAL = ['xWiniwa', 'USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw'];
+            const ISSUE_CCY_LIST_LOCAL = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw', 'VNDw'];
+            const RECLAIM_CCY_LIST_LOCAL = ['USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'VNDw'];
+            const INVOICE_CCY_LIST_LOCAL = ['USDw', 'EURw', 'GBPw', 'AUDw', 'CHFw', 'CNYw', 'VNDw'];
+            const LP_QUOTE_CCY_LIST_LOCAL = ['xWiniwa', 'USDw', 'EURw', 'GBPw', 'JPYw', 'CADw', 'AUDw', 'CHFw', 'CNYw', 'VNDw'];
 
             window.__VAULT_DD_GET_CODES.issueCcy = function () { return ISSUE_CCY_LIST_LOCAL.slice(); };
             window.__VAULT_DD_GET_CODES.reclaimCcy = function () { return RECLAIM_CCY_LIST_LOCAL.slice(); };
@@ -14310,6 +14495,59 @@
 
         let SIM_XWM_PRICE = SIM_Winiwa_PRICE / (getEffectiveXwmLeverage() * 10);
 
+        /**
+         * Wallet / exchange / invest conversion rates involving Winiwa, MINIMA, xWiniwa.
+         * Uses live SIM_Winiwa_PRICE and SIM_XWM_PRICE so UI matches spot even if RATES.Winiwa.* still held seed values.
+         */
+        function stablesWalletConversionRate(from, to) {
+            const f = (from === 'MINIMA' || from === 'WINIMA') ? 'Winiwa' : String(from || '');
+            const t = (to === 'MINIMA' || to === 'WINIMA') ? 'Winiwa' : String(to || '');
+            if (f === t) return 1;
+            const spot = Number(typeof SIM_Winiwa_PRICE !== 'undefined' ? SIM_Winiwa_PRICE : NaN);
+            const spotOk = Number.isFinite(spot) && spot > 0;
+            const xw = Number(typeof SIM_XWM_PRICE !== 'undefined' ? SIM_XWM_PRICE : NaN);
+            const xwOk = Number.isFinite(xw) && xw > 0;
+            const usdPer = function (ccy) {
+                if (!ccy || ccy === 'USDw') return 1;
+                const row = RATES[ccy];
+                return (row && typeof row.USDw === 'number' && row.USDw > 0) ? row.USDw : 0;
+            };
+            if (f === 'Winiwa') {
+                if (!spotOk) return (RATES.Winiwa && typeof RATES.Winiwa[t] === 'number') ? RATES.Winiwa[t] : 1;
+                if (t === 'USDw') return spot;
+                if (t === 'xWiniwa') return xwOk ? (spot / xw) : ((RATES.Winiwa && RATES.Winiwa.xWiniwa) || 1);
+                const u = usdPer(t);
+                if (u > 0) return spot / u;
+                return (RATES.Winiwa && typeof RATES.Winiwa[t] === 'number') ? RATES.Winiwa[t] : 1;
+            }
+            if (t === 'Winiwa') {
+                if (!spotOk) return (RATES[f] && typeof RATES[f].Winiwa === 'number') ? RATES[f].Winiwa : 1;
+                if (f === 'USDw') return 1 / spot;
+                if (f === 'xWiniwa') return xwOk ? (xw / spot) : ((RATES.xWiniwa && RATES.xWiniwa.Winiwa) || 1);
+                const u = usdPer(f);
+                if (u > 0) return u / spot;
+                return (RATES[f] && typeof RATES[f].Winiwa === 'number') ? RATES[f].Winiwa : 1;
+            }
+            if (f === 'xWiniwa') {
+                if (!xwOk) return (RATES.xWiniwa && typeof RATES.xWiniwa[t] === 'number') ? RATES.xWiniwa[t] : 1;
+                if (t === 'USDw') return xw;
+                if (t === 'Winiwa') return spotOk ? (xw / spot) : ((RATES.xWiniwa && RATES.xWiniwa.Winiwa) || 1);
+                const u = usdPer(t);
+                if (u > 0) return xw / u;
+                return (RATES.xWiniwa && typeof RATES.xWiniwa[t] === 'number') ? RATES.xWiniwa[t] : 1;
+            }
+            if (t === 'xWiniwa') {
+                if (!xwOk) return (RATES[f] && typeof RATES[f].xWiniwa === 'number') ? RATES[f].xWiniwa : 1;
+                if (f === 'USDw') return 1 / xw;
+                if (f === 'Winiwa') return spotOk ? (spot / xw) : ((RATES.Winiwa && RATES.Winiwa.xWiniwa) || 1);
+                const u = usdPer(f);
+                if (u > 0) return u / xw;
+                return (RATES[f] && typeof RATES[f].xWiniwa === 'number') ? RATES[f].xWiniwa : 1;
+            }
+            const r = (RATES[f] && typeof RATES[f][t] === 'number') ? RATES[f][t] : NaN;
+            return Number.isFinite(r) ? r : 1;
+        }
+
         // Price display currency preference for xWiniwa price lines.
         // "auto" means: use Wallet primary currency (BASE_CCY).
         const PRICE_DISPLAY_CCY_PREF_KEY = 'stables_price_display_ccy_pref_v1';
@@ -14439,7 +14677,8 @@
         /**
          * Live Winiwa / MINIMA USD spot for Treasury + sim labels (`#minimaPriceNow`, rates).
          * When `MEXC_TICKER_URL` points at the 24h ticker, also fills `WINIWA_24H_QUOTE_USD` / `WINIWA_24H_CHANGE_PCT`.
-         * Order: MEXC via MDS.net (MiniDapp, no CORS issue) → browser fetch MEXC → CoinGecko (browser-CORS-safe).
+         * Order: MEXC via MDS.net (MiniDapp) with tolerant response parsing; in the browser, CoinGecko first (CORS),
+         * then MEXC fetch if the exchange allows it from your origin.
          */
         function refreshWiniwaSpotFromMexc() {
             const cfg = window.STABLES_CONFIG || {};
@@ -14488,7 +14727,23 @@
                 return true;
             }
 
-            function tryCoinGecko() {
+            function spotApisUnavailable() {
+                setSrc('Demo rate (spot APIs unavailable)');
+                if (typeof renderTreasuryConcentrationReview === 'function') renderTreasuryConcentrationReview();
+            }
+
+            function tryMexcBrowserThenFail() {
+                fetch(mexcUrl, { method: 'GET', cache: 'no-store' })
+                    .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
+                    .then(j => {
+                        if (afterMexcMarket(j, 'Live · MEXC')) return;
+                        spotApisUnavailable();
+                    })
+                    .catch(() => { spotApisUnavailable(); });
+            }
+
+            /** Browser (no MDS): CoinGecko allows cross-origin fetch; MEXC often does not. */
+            function tryCoinGeckoThenMexcBrowser() {
                 window.WINIWA_24H_QUOTE_USD = null;
                 window.WINIWA_24H_CHANGE_PCT = null;
                 fetch(cgUrl, { method: 'GET', cache: 'no-store' })
@@ -14497,35 +14752,23 @@
                         const row = j && j.minima;
                         const p = row && (typeof row.usd === 'number' ? row.usd : parseFloat(row.usd));
                         if (applySpot(p, 'Live · CoinGecko')) return;
-                        setSrc('Demo rate (spot APIs unavailable)');
-                        if (typeof renderTreasuryConcentrationReview === 'function') renderTreasuryConcentrationReview();
+                        tryMexcBrowserThenFail();
                     })
-                    .catch(() => {
-                        setSrc('Demo rate (spot APIs unavailable)');
-                        if (typeof renderTreasuryConcentrationReview === 'function') renderTreasuryConcentrationReview();
-                    });
+                    .catch(() => { tryMexcBrowserThenFail(); });
             }
 
             if (typeof MDS !== 'undefined' && MDS.net && typeof MDS.net.GET === 'function') {
                 MDS.net.GET(mexcUrl, function (response) {
                     try {
-                        if (response && response.status && response.response) {
-                            const j = JSON.parse(response.response);
-                            if (afterMexcMarket(j, 'Live · MEXC (MDS)')) return;
-                        }
+                        const j = stablesParseMexcTickerFromMdsNetResponse(response);
+                        if (j && afterMexcMarket(j, 'Live · MEXC (MDS)')) return;
                     } catch (_) { /* fall through */ }
-                    tryCoinGecko();
+                    tryCoinGeckoThenMexcBrowser();
                 });
                 return;
             }
 
-            fetch(mexcUrl, { method: 'GET', cache: 'no-store' })
-                .then(r => (r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))))
-                .then(j => {
-                    if (afterMexcMarket(j, 'Live · MEXC')) return;
-                    tryCoinGecko();
-                })
-                .catch(() => { tryCoinGecko(); });
+            tryCoinGeckoThenMexcBrowser();
         }
 
         function treasuryFmtUsdCompact(n) {
@@ -14670,6 +14913,7 @@
                 AUDw: { name: 'Australian Dollar' },
                 CHFw: { name: 'Swiss Franc' },
                 CNYw: { name: 'Renminbi Yuan' },
+                VNDw: { name: 'Vietnamese đồng' },
                 ILSw: { name: 'Israeli shekel' },
                 IRRw: { name: 'Iranian rial' },
                 BRLw: { name: 'Brazilian real' },
@@ -14682,6 +14926,9 @@
             const meta = CCY_META[BASE_CCY] || { name: BASE_CCY };
 
             const getRate = (from, to) => {
+                if (typeof stablesWalletConversionRate === 'function') {
+                    return stablesWalletConversionRate(from, to);
+                }
                 const f = (from === 'MINIMA' || from === 'WINIMA') ? 'Winiwa' : from;
                 const t = (to === 'MINIMA' || to === 'WINIMA') ? 'Winiwa' : to;
                 if (f === t) return 1;
@@ -14689,6 +14936,8 @@
             };
 
             const fmt2 = (n) => Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            const priDec = (typeof decimalsForCcyForUI === 'function') ? decimalsForCcyForUI(BASE_CCY) : 2;
+            const fmtPriAmt = (n) => Number(n).toLocaleString('en-US', { minimumFractionDigits: priDec, maximumFractionDigits: priDec });
 
             // Primary card styling based on currency
             const priCard = document.querySelector('.ccy-primary');
@@ -14710,7 +14959,7 @@
             const priBal = document.querySelector('.ccy-pri-bal');
             const baseRow = document.querySelector('#ccyList .ccy-sec-row[data-ccy="' + BASE_CCY + '"]');
             const baseAmt = baseRow ? parseFloat((baseRow.querySelector('.ccy-sec-amt')?.textContent || '').replace(/,/g, '')) : 0;
-            if (priBal) priBal.textContent = `${fmt2(baseAmt)} ${BASE_CCY}`;
+            if (priBal) priBal.textContent = `${fmtPriAmt(baseAmt)} ${BASE_CCY}`;
 
             // Update all side-row equivalents in BASE_CCY
             const rows = Array.from(document.querySelectorAll('#ccyList .ccy-sec-row'));
@@ -15827,8 +16076,8 @@
             }
         }
 
-        const APP_TAB_TITLE = 'Stables - BYOB';
-        const TOPBAR_BRAND_SUB_DEFAULT = 'Be your own bank';
+        const APP_TAB_TITLE = 'Stables - BYB';
+        const TOPBAR_BRAND_SUB_DEFAULT = 'Be your bank';
         const TOPBAR_BRAND_SUB_PERSONAL = 'By Stables/Minima';
         const COUNCIL_PROFILE_MODE_KEY = 'stables_profile_mode_v1';
 

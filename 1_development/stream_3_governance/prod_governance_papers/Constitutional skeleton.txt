@@ -27,7 +27,7 @@ Minima token is the native currency of that nation.
 
 Stables is the monetary coordination layer built within that sovereign territory.
 
-Each participant account structurally represents its own bank through:
+Each participant account structurally represents its bank through:
 
 • self-custody
 • deterministic execution
@@ -44,7 +44,7 @@ ARTICLE I
 Mission and Dual Destination
 I.1 Core Objective
 
-Enable individuals and merchants to be their own bank through:
+Enable individuals and merchants to be their bank through:
 
 • sovereign infrastructure
 • mathematical solvency
@@ -1001,7 +1001,7 @@ This transforms the document into ledger reality.
 Final Conceptual Alignment (Frozen Model)
 I. Core Objective
 
-Enable individuals and merchants to be their own bank through:
+Enable individuals and merchants to be their bank through:
 
 • Sovereign infrastructure
 • Mathematical solvency

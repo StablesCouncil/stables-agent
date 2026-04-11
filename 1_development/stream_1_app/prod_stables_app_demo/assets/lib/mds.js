@@ -70,14 +70,32 @@ var MDS = {
 		if(MDS.minidappuid == null){
 			MDS.minidappuid = MDS.DEBUG_MINIDAPPID;
 		}
+		// Connect-node from another origin: node may return 500 for megapoll/cmd with 0x00 when publicmds is off.
+		if(MDS.DEBUG_HOST != null && typeof window.__STABLES_MDS_SESSION_UID === 'string'){
+			var suv = window.__STABLES_MDS_SESSION_UID.trim();
+			if(suv){
+				var um = suv.match(/[?&]uid=(0x[0-9a-fA-F]+)/);
+				if(um){ suv = um[1]; }
+				if(/^0x[0-9a-fA-F]{16,}$/.test(suv)){
+					MDS.minidappuid = suv;
+				}
+			}
+		}
 		
 		//Is one specified..
 		if(MDS.minidappuid == "0x00"){
 			MDS.log("No MiniDAPP UID specified.. using test value");
 		}
 		
-		//Are we HTTP or HTTPS
-		if(window.location.protocol.startsWith("https")){
+		//Are we HTTP or HTTPS (Connect-node / file:// must still hit Minima MDS on HTTPS :9003)
+		var useHttps = window.location.protocol.startsWith("https");
+		if(MDS.DEBUG_HOST != null){
+			var dbgPort = Math.floor(Number(port));
+			if(dbgPort === 9003){
+				useHttps = true;
+			}
+		}
+		if(useHttps){
 			if(port == 0){
 				MDS.filehost = "https://"+host+"/";
 				MDS.mainhost = "https://"+host+"/mdscommand_/";
