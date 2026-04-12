@@ -37,7 +37,16 @@ Use the **right surface for the class of message**. Do not post vault keys, seed
 | **Security / vault key support only** | Telegram (Security) | [t.me/StablesSecuritySupport](https://t.me/StablesSecuritySupport) |
 | **Private Council-facing mail** | Email | StablesCouncil@protonmail.com |
 
-**Discord channel names** for each watch domain (e.g. legal, tech) shall be **announced on Council Official** when the Council creates or renames them; this table stays the **URL-level** index.
+**Discord — category `STRATEGIC WATCH`** (same server: [discord.gg/cFq4hHAc](https://discord.gg/cFq4hHAc)):
+
+- `#technology-watch`
+- `#legal-watch`
+- `#geopolitics-watch`
+- `#environment-watch`
+- `#market-watch`
+- `#watch-coordination` (roster, handoffs, pointers to Council Official)
+
+If any of these are **renamed**, update this list and post once on **Telegram Council Official**.
 
 **Volunteer roster / task acknowledgment:** the Council shall publish a single **canonical link** (pinned Council post, GitHub, or other board) and announce it on **Council Official** when live. Until then, volunteers coordinate in **Discord** and confirm scope in writing there.
 

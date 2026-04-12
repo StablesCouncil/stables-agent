@@ -57,6 +57,214 @@
             opacity: 0;
         }
 
+        /* Language Switcher & Share Button Container (Canonical) */
+        .lang-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .share-switcher {
+            position: relative;
+        }
+
+        .globe-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            color: #67e8f9;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+            width: 44px;
+            height: 44px;
+        }
+
+        .globe-btn:hover {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(103, 232, 249, 0.8);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.4);
+        }
+
+        .lang-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            border-radius: 16px;
+            padding: 8px;
+            margin-top: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 140px;
+            max-height: 60vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(103, 232, 249, 0.15);
+        }
+
+        .lang-menu.active {
+            display: flex;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        .lang-menu button {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 10px 16px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            flex-shrink: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .lang-menu button:hover {
+            background: rgba(103, 232, 249, 0.15);
+            color: #67e8f9;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .share-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            color: #67e8f9;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(103, 232, 249, 0.2);
+            width: 44px;
+            height: 44px;
+        }
+
+        .share-btn:hover {
+            background: rgba(15, 23, 42, 0.8);
+            border-color: rgba(103, 232, 249, 0.8);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.4);
+        }
+
+        .share-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            border-radius: 16px;
+            padding: 8px;
+            margin-top: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            min-width: 160px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(103, 232, 249, 0.15);
+        }
+
+        .share-menu.active {
+            display: flex;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        .share-menu button {
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            padding: 10px 16px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .share-menu button:hover {
+            background: rgba(103, 232, 249, 0.15);
+            color: #67e8f9;
+        }
+
+        .share-menu button svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* StablesAgent (Canonical) */
+        .agent-fab { position: fixed; bottom: 32px; right: 32px; z-index: 9000; display: flex; align-items: center; gap: 12px; cursor: pointer; border: none; background: none; padding: 0; }
+        .agent-fab-tip { background: rgba(10,14,20,0.92); border: 1px solid rgba(103,232,249,0.3); color: #e6edf3; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; padding: 8px 14px; border-radius: 10px; white-space: nowrap; opacity: 0; transform: translateX(8px); transition: all 0.25s ease; pointer-events: none; box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+        .agent-fab:hover .agent-fab-tip { opacity: 1; transform: translateX(0); }
+        .agent-fab-btn { width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, rgba(103, 232, 249, 0.25), rgba(167, 139, 250, 0.25)); border: 1px solid rgba(103, 232, 249, 0.45); box-shadow: 0 0 24px rgba(103, 232, 249, 0.2); display: flex; align-items: center; justify-content: center; transition: transform 0.25s ease, box-shadow 0.25s ease; flex-shrink: 0; position: relative; }
+        .agent-fab:hover .agent-fab-btn { transform: scale(1.1); box-shadow: 0 0 40px rgba(103, 232, 249, 0.4); }
+        .agent-fab-btn img { width: 32px; height: 32px; object-fit: contain; }
+        .agent-fab-dot { position: absolute; top: 3px; right: 3px; width: 11px; height: 11px; border-radius: 50%; background: #6b7280; border: 2px solid #0b0f14; transition: background 0.4s ease; }
+        .agent-fab-pulse { position: absolute; width: 58px; height: 58px; border-radius: 50%; border: 1px solid rgba(103, 232, 249, 0.5); animation: agent-radar 2.4s ease-out infinite; pointer-events: none; }
+        .agent-fab-pulse:nth-child(1) { animation-delay: 0.8s; }
+        .agent-fab-pulse:nth-child(2) { animation-delay: 1.6s; }
+        @keyframes agent-radar { 0% { transform: scale(1); opacity: 0.6; } 100% { transform: scale(2.2); opacity: 0; } }
+        .agent-backdrop { display: none; position: fixed; inset: 0; z-index: 9050; background: transparent; }
+        .agent-backdrop.open { display: block; }
+        .agent-popup { position: fixed; bottom: 104px; right: 32px; z-index: 9100; width: 390px; height: min(680px, calc(100vh - 130px)); background: #101826; border: 1px solid rgba(103,232,249,0.3); border-radius: 20px; box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 40px rgba(103,232,249,0.12); display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(20px) scale(0.97); transition: opacity 0.25s ease, transform 0.25s ease; pointer-events: none; }
+        .agent-popup.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: all; }
+        .agent-popup-header { display: flex; align-items: center; gap: 11px; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); flex-shrink: 0; }
+        .agent-popup-logo { width: 34px; height: 34px; border-radius: 8px; background: rgba(103,232,249,0.08); border: 1px solid rgba(103,232,249,0.3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .agent-popup-logo img { width: 22px; height: 22px; object-fit: contain; }
+        .agent-popup-title { flex: 1; }
+        .agent-popup-title-main { font-size: 13px; font-weight: 700; color: #e6edf3; font-family: 'Inter', sans-serif; letter-spacing: 0.03em; }
+        .agent-popup-title-sub { font-size: 11px; color: #9fb0c0; font-family: 'Inter', sans-serif; margin-top: 1px; }
+        .agent-popup-status { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #9fb0c0; font-family: 'Inter', sans-serif; cursor: pointer; padding: 5px 10px; border-radius: 999px; transition: background 0.2s; }
+        .agent-popup-status:hover { background: rgba(255,255,255,0.07); }
+        .agent-popup-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.2); }
+        .agent-popup-disclaimer { padding: 7px 16px; background: rgba(251, 191, 36, 0.08); border-bottom: 1px solid rgba(251, 191, 36, 0.25); font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; color: #fbbf24; text-align: center; flex-shrink: 0; }
+        .agent-popup-body { flex: 1; position: relative; overflow: hidden; }
+        .agent-popup-body iframe { width: 100%; height: 100%; border: none; background: #101826; }
+        .agent-popup-fallback { display: none; position: absolute; inset: 0; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 32px; text-align: center; background: #101826; }
+        .agent-popup-fallback.visible { display: flex; }
+        .agent-popup-fallback p { font-family: 'Inter', sans-serif; font-size: 14px; color: #9fb0c0; line-height: 1.6; }
+        .agent-popup-fallback a { display: inline-flex; align-items: center; gap: 8px; padding: 11px 22px; border-radius: 12px; background: linear-gradient(135deg, rgba(103,232,249,0.25), rgba(167,139,250,0.25)); border: 1px solid rgba(103,232,249,0.4); color: #e6edf3; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; text-decoration: none; transition: all 0.2s; }
+        .agent-popup-fallback a:hover { box-shadow: 0 0 20px rgba(103,232,249,0.3); }
+        @media (max-width: 640px) { .agent-fab { bottom: 20px; right: 20px; } .agent-fab-tip { display: none; } .agent-popup { bottom: 0; right: 0; left: 0; width: 100%; height: 75vh; border-radius: 20px 20px 0 0; border-bottom: none; } }
+
         .brand {
             display: flex;
             align-items: center;
@@ -75,6 +283,29 @@
             font-size: 1.25rem;
             font-weight: 900;
             letter-spacing: -0.02em;
+        }
+
+        .header-btn-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-header {
+            background: rgba(103, 232, 249, 0.1);
+            border: 1px solid rgba(103, 232, 249, 0.3);
+            color: var(--accent-cyan);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn-header:hover {
+            background: rgba(103, 232, 249, 0.2);
+            border-color: var(--accent-cyan);
         }
 
         /* CONTENT */
@@ -333,14 +564,75 @@
 
 <body>
 
-    <header class="stables-header">
-        <a href="index.html" class="brand">
-            <img src="brand/assets/logo-mark.png" alt="Stables" class="logo-mark">
-            <span class="brand-name">STABLES</span>
-            <span style="font-size: 0.65rem; font-weight: 800; color: var(--accent-cyan); background: rgba(103, 232, 249, 0.1); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em; margin-left: 8px; border: 1px solid rgba(103, 232, 249, 0.3);">BUILT ON MINIMA</span>
-        </a>
-        <div class="header-right">
-            <a href="https://stablescouncil.org/dapp/" class="footer-link" style="color: var(--accent-cyan)">Test the showcase</a>
+    <!-- Canonical Header UI -->
+    <div class="lang-switcher">
+        <button class="globe-btn" onclick="toggleLangMenu()" aria-label="Select Language">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
+                </path>
+            </svg>
+        </button>
+        <div id="langMenu" class="lang-menu">
+            <button onclick="updateLanguage('en')">English</button>
+            <button onclick="updateLanguage('zh')">中文</button>
+            <button onclick="updateLanguage('fr')">Français</button>
+        </div>
+        
+        <div class="share-switcher">
+            <button class="share-btn" onclick="toggleShareMenu()" aria-label="Share">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="18" cy="5" r="3"></circle>
+                    <circle cx="6" cy="12" r="3"></circle>
+                    <circle cx="18" cy="19" r="3"></circle>
+                    <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                    <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+            </button>
+            <div id="shareMenu" class="share-menu">
+                <button onclick="shareToTwitter()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                    </svg>
+                    X (Twitter)
+                </button>
+                <button onclick="copyLink()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                    </svg>
+                    Copy Link
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation Bar -->
+    <header class="stables-header" id="stablesHeader">
+        <div class="header-container">
+            <a href="https://stablescouncil.github.io/" class="brand-link">
+                <div class="brand">
+                    <img src="https://stablescouncil.github.io/brand/assets/logo-symbol.png" alt="Stables" class="logo-img">
+                    <div class="brand-text">
+                        <span class="brand-name">STABLES</span>
+                        <span class="brand-slogan">Be Your Bank</span>
+                    </div>
+                </div>
+            </a>
+
+            <div class="header-actions">
+                <a href="https://stablescouncil.github.io/links.html" class="nav-btn menu-btn" title="Community Portal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                </a>
+            </div>
         </div>
     </header>
 
@@ -348,7 +640,7 @@
         <div class="hero-label">Official Papers</div>
         <h1>A Structural Playing Field.</h1>
         <p class="philosophy-text">
-            Stables is an autonomous money system where individual self-interest drives system stability. The balanced state is a natural outcome—a structural equilibrium where every participant finds their optimal choice aligned with our collective resilience.
+            Stables is an autonomous money system where individual self-interest drives system stability. The balanced state is a natural outcome: a structural equilibrium where every participant finds their optimal choice aligned with our collective resilience.
         </p>
 
         <h2 class="section-title">The Interaction Matrix</h2>
@@ -425,7 +717,7 @@
                 </div>
                 <div class="proof-item">
                     <h4>The Investor Bedrock</h4>
-                    <p>Investors provide the capital depth necessary to handle large-scale economic fluctuations. By capitalizing the vault through USDscf, they ensure the protocol maintains a robust collateral ratio for all participants.</p>
+                    <p>Investors provide the capital depth necessary to handle large-scale economic fluctuations. By capitalizing the vault through committed STables to the coverage fund, they ensure the protocol maintains a robust collateral ratio for all participants.</p>
                 </div>
                 <div class="proof-item">
                     <h4>The Arbitrageur Regulator</h4>
@@ -437,28 +729,28 @@
 
         <footer class="nav-footer">
             <div class="footer-grid">
-                <a href="playing_field.html" class="footer-card">
+                <a href="https://stablescouncil.github.io/playing_field.html" class="footer-card">
                     <span class="card-title">Playing Field</span>
                     <span class="card-meta">System structural balance</span>
-                </a>
-                <a href="ambassadorsprogramdesc.html" class="footer-card">
-                    <span class="card-title">Ambassador Program</span>
-                    <span class="card-meta">The 16 Big Mac® Economy (V0.0.01)</span>
-                </a>
-                <a href="bankingsystem/" class="footer-card">
-                    <span class="card-title">Our Own Banking System</span>
-                    <span class="card-meta">An infographic presentation</span>
                 </a>
                 <a href="https://stablescouncil.org/circulareconomy/" class="footer-card">
                     <span class="card-title">Stables circular economy</span>
                     <span class="card-meta">Structural map: funds, treasuries, and flows</span>
                 </a>
+                <a href="https://stablescouncil.org/bankingsystem/" class="footer-card">
+                    <span class="card-title">Our Own Banking System</span>
+                    <span class="card-meta">An infographic presentation</span>
+                </a>
+                <a href="https://stablescouncil.github.io/ambassadorsprogramdesc.html" class="footer-card">
+                    <span class="card-title">Ambassador Program</span>
+                    <span class="card-meta">The 16 Big Mac® Economy (V0.0.01)</span>
+                </a>
             </div>
 
             <div class="footer-bottom-row">
                 <div class="footer-meta-links">
-                    <a href="index.html" class="footer-link">Home Page</a>
-                    <a href="links.html" class="footer-link">All Links</a>
+                    <a href="https://stablescouncil.github.io/index.html" class="footer-link">Home Page</a>
+                    <a href="https://stablescouncil.github.io/links.html" class="footer-link">Website map</a>
                     <a href="https://stablescouncil.org/dapp/" class="footer-link">Test Showcase</a>
                 </div>
 
@@ -480,29 +772,131 @@
         </footer>
     </div>
 
+    <!-- Agent Backdrop -->
+    <div class="agent-backdrop" id="agentBackdrop" onclick="closeAgent()"></div>
+    
+    <!-- Agent Popup -->
+    <div class="agent-popup" id="agentPopup">
+        <div class="agent-popup-header">
+            <div class="agent-popup-logo"><img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" /></div>
+            <div class="agent-popup-title">
+                <div class="agent-popup-title-main">StablesAgent</div>
+                <div class="agent-popup-title-sub">Ask anything about Stables</div>
+            </div>
+            <div class="agent-popup-status" onclick="closeAgent()" title="Close"><span class="agent-popup-status-dot"></span><span>Online</span></div>
+        </div>
+        <div class="agent-popup-disclaimer">DO NOT SHARE PRIVATE OR SENSITIVE INFORMATION</div>
+        <div class="agent-popup-body">
+            <iframe id="agentFrame" title="StablesAgent Chat"></iframe>
+            <div class="agent-popup-fallback" id="agentFallback">
+                <img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" style="width:48px;height:48px;opacity:0.7;" />
+                <p>The chat will load here directly once the secure connection is active.<br>For now, open it in a new tab:</p>
+                <a href="https://agent.stablescouncil.org/chat" target="_blank" rel="noopener noreferrer">Open StablesAgent ↗</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent FAB -->
+    <button class="agent-fab" id="agentFab" onclick="toggleAgent()" aria-label="Chat with StablesAgent">
+        <span class="agent-fab-tip">Chat with StablesAgent</span>
+        <div class="agent-fab-btn">
+            <span class="agent-fab-pulse"></span>
+            <span class="agent-fab-pulse"></span>
+            <span class="agent-fab-pulse"></span>
+            <img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" />
+            <span class="agent-fab-dot"></span>
+        </div>
+    </button>
+
     <script>
-        // STICKY HEADER LOGIC (Sync with dApp)
-        let lastScroll = 0;
-        const body = document.body;
-
+        // Header Reveal Logic
+        let lastScrollY = window.scrollY;
         window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll <= 0) {
-                body.classList.remove('header-hidden');
-                return;
+            if (window.scrollY > lastScrollY && window.scrollY > 100) {
+                document.body.classList.add('header-hidden');
+            } else {
+                document.body.classList.remove('header-hidden');
             }
-
-            if (currentScroll > lastScroll && !body.classList.contains('header-hidden')) {
-                // Scroll Down
-                if (currentScroll > 72) body.classList.add('header-hidden');
-            } else if (currentScroll < lastScroll && body.classList.contains('header-hidden')) {
-                // Scroll Up
-                body.classList.remove('header-hidden');
-            }
-            lastScroll = currentScroll;
+            lastScrollY = window.scrollY;
         });
+
+        // Unified Language & Share Logic
+        function toggleLangMenu() {
+            document.getElementById('langMenu').classList.toggle('active');
+            document.getElementById('shareMenu').classList.remove('active');
+        }
+
+        function toggleShareMenu() {
+            document.getElementById('shareMenu').classList.toggle('active');
+            document.getElementById('langMenu').classList.remove('active');
+        }
+
+        function updateLanguage(lang) {
+            localStorage.setItem('stables_lang', lang);
+            alert('Language selected: ' + lang);
+            document.getElementById('langMenu').classList.remove('active');
+        }
+
+        function shareToTwitter() {
+            window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(window.location.href) + '&text=' + encodeURIComponent('Check out Stables - Be your own bank'), '_blank');
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                alert('Link copied to clipboard!');
+            });
+        }
+
+        // Close menus on outside click
+        document.addEventListener('click', (e) => {
+            const switcher = document.querySelector('.lang-switcher');
+            if (switcher && !switcher.contains(e.target)) {
+                document.getElementById('langMenu').classList.remove('active');
+                document.getElementById('shareMenu').classList.remove('active');
+            }
+        });
+
+        // StablesAgent Logic
+        const AGENT_URL = 'https://agent.stablescouncil.org/chat?embed=1';
+        const HEALTH_URL = 'https://agent.stablescouncil.org/health';
+        let agentOpen = false;
+
+        function setStatus(online) {
+            const dot = document.querySelector('.agent-popup-status-dot');
+            if (dot) dot.style.background = online ? '#22c55e' : '#6b7280';
+            const fabDot = document.querySelector('.agent-fab-dot');
+            if (fabDot) fabDot.style.background = online ? '#22c55e' : '#6b7280';
+        }
+
+        async function pingAgent() {
+            try {
+                const r = await fetch(HEALTH_URL, { method: 'GET', signal: AbortSignal.timeout(4000) });
+                setStatus(r.ok);
+            } catch {
+                setStatus(false);
+            }
+        }
+        pingAgent();
+        setInterval(pingAgent, 30000);
+
+        function toggleAgent() { agentOpen ? closeAgent() : openAgent(); }
+        function openAgent() {
+            const popup = document.getElementById('agentPopup'), backdrop = document.getElementById('agentBackdrop'), frame = document.getElementById('agentFrame'), fb = document.getElementById('agentFallback');
+            const lang = localStorage.getItem('stables_lang') || 'en';
+            if (frame.src !== (AGENT_URL + '&lang=' + lang)) {
+                frame.src = AGENT_URL + '&lang=' + lang;
+                const t = setTimeout(() => fb.classList.add('visible'), 3000);
+                frame.onload = () => clearTimeout(t);
+            }
+            popup.classList.add('open'); backdrop.classList.add('open');
+            agentOpen = true;
+        }
+        function closeAgent() {
+            document.getElementById('agentPopup').classList.remove('open');
+            document.getElementById('agentBackdrop').classList.remove('open');
+            agentOpen = false;
+        }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && agentOpen) closeAgent(); });
     </script>
 </body>
 </html>
-
