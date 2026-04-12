@@ -117,7 +117,7 @@ cd C:\Users\Charles\Documents\Stables
 ## 7. Prerequisites
 
 - **Git for Windows** (so `git.exe` exists under `C:\Program Files\Git\...`). The sync script resolves this path for Task Scheduler.
-- **Git remote:** whatever `git config branch.main.remote` returns (this repo uses **`backup`**, URL `https://github.com/Charles0xhorizonxyz/stables.git`). There is no `origin` remote; use `git fetch backup` and `git log backup/main -1`.
+- **Git remote:** whatever `git config branch.main.remote` returns (this repo uses **`backup`**). The URL is **whatever you set locally** (often `git@github.com:Charles0xhorizonxyz/stables.git` for SSH or `https://github.com/Charles0xhorizonxyz/stables.git` for HTTPS). There is no `origin` remote; use `git fetch backup` and `git log backup/main -1`.
 - **OpenSSH:** built-in `ssh.exe` / `scp.exe` under `C:\Windows\System32\OpenSSH\`
 - **SSH key auth** to `root@140.82.36.166` (or password when prompted)
 - **robocopy** (built-in on Windows)
@@ -134,6 +134,28 @@ If `git push` fails (for example local `main` is behind the remote and needs a m
 One-click manual sync (without full backup) still uses:
 
 `push-to-github.bat` → `sync-stables.ps1 -Message "One-click manual sync"`.
+
+### 7c. GitHub: `Permission denied (publickey)`
+
+If `git push backup main` fails with **`git@github.com: Permission denied (publickey)`**, your **`backup`** remote is using **SSH** and GitHub is not accepting any key from that shell (interactive PowerShell or Task Scheduler).
+
+**Option A — HTTPS (simplest for scheduled sync):** point `backup` at HTTPS so Git Credential Manager can use a stored PAT:
+
+```powershell
+cd C:\Users\Charles\Documents\Stables
+git remote set-url backup https://github.com/Charles0xhorizonxyz/stables.git
+git push backup main
+```
+
+Create a [fine-grained or classic PAT](https://github.com/settings/tokens) with **Contents: Read and write** on that repo if prompted.
+
+**Option B — SSH:** keep `git@github.com:...`, add the matching **public** key to GitHub (Settings → SSH keys), ensure **`ssh-agent`** has the private key loaded in the same context that runs the backup (`ssh-add`, and for Task Scheduler prefer “Run only when user is logged on” so your agent can see keys). Test with:
+
+```powershell
+ssh -T git@github.com
+```
+
+You should see a success message naming your GitHub user before relying on automated push.
 
 ### 7b. Scheduler user context
 
