@@ -128,6 +128,132 @@
             padding-top: var(--header-h);
         }
 
+        /* NEW COMPREHENSIVE FOOTER STYLES */
+        .nav-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 6rem 5% 4rem;
+            background: linear-gradient(to bottom, transparent, rgba(11, 15, 20, 0.5));
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+        }
+
+        .footer-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            text-align: left;
+            display: block;
+        }
+
+        .footer-card:hover {
+            background: rgba(103, 232, 249, 0.05);
+            border-color: rgba(103, 232, 249, 0.3);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .card-title {
+            display: block;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-meta {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .footer-bottom-row {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-meta-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-cyan);
+        }
+
+        .footer-social-group {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon-link {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            color: var(--text-primary);
+            transition: all 0.2s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .social-icon-link:hover {
+            background: var(--accent-cyan);
+            color: var(--bg);
+            transform: scale(1.1);
+        }
+
+        .social-icon-link svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .footer-note {
+            width: 100%;
+            text-align: center;
+            margin-top: 3rem;
+            opacity: 0.5;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 768px) {
+            .footer-bottom-row {
+                flex-direction: column;
+                text-align: center;
+            }
+            .footer-meta-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
         .container {
             width: 100%;
             max-width: 1400px;
@@ -1178,14 +1304,48 @@
             </div>
         </section>
 
-        <footer class="nav-footer" style="border-top: 1px solid rgba(255,255,255,0.05); padding: 4rem 0; text-align: center;">
-            <div class="footer-links" style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
-                <a href="index.html" class="footer-link" style="text-decoration: none; color: var(--text-secondary); font-weight: 700;">Home Page</a>
-                <a href="playing_field.html" class="footer-link" style="text-decoration: none; color: var(--text-secondary); font-weight: 700;">Playing Field</a>
-                <a href="https://stablescouncil.org/dapp/" class="footer-link" style="text-decoration: none; color: var(--text-secondary); font-weight: 700;">Test Showcase</a>
-                <a href="links.html" class="footer-link" style="text-decoration: none; color: var(--text-secondary); font-weight: 700;">All Links</a>
+        <footer class="nav-footer">
+            <div class="footer-grid">
+                <a href="playing_field.html" class="footer-card">
+                    <span class="card-title">Playing Field</span>
+                    <span class="card-meta">System structural balance</span>
+                </a>
+                <a href="ambassadorsprogramdesc.html" class="footer-card">
+                    <span class="card-title">Ambassador Program</span>
+                    <span class="card-meta">The 16 Big Mac® Economy (V0.0.01)</span>
+                </a>
+                <a href="bankingsystem/" class="footer-card">
+                    <span class="card-title">Our Own Banking System</span>
+                    <span class="card-meta">An infographic presentation</span>
+                </a>
+                <a href="https://stablescouncil.org/circulareconomy/" class="footer-card">
+                    <span class="card-title">Stables circular economy</span>
+                    <span class="card-meta">Structural map: funds, treasuries, and flows</span>
+                </a>
             </div>
-            <div class="footer-note" data-key="footer" style="opacity: 0.5; font-size: 0.8rem;">Stables - Informational Overview v3.0 | Built on Minima</div>
+
+            <div class="footer-bottom-row">
+                <div class="footer-meta-links">
+                    <a href="index.html" class="footer-link">Home Page</a>
+                    <a href="links.html" class="footer-link">All Links</a>
+                    <a href="https://stablescouncil.org/dapp/" class="footer-link">Test Showcase</a>
+                </div>
+
+                <div class="footer-social-group">
+                    <a href="https://x.com/StablesCouncil" class="social-icon-link" title="Follow on X" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                    </a>
+                    <a href="https://t.me/stablescommunity" class="social-icon-link" title="Join Telegram" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-note">Stables Structural Overview v3.0 | <span style="color: var(--accent-cyan); font-weight: 700;">Built on Minima</span></div>
         </footer>
     </div>
 
