@@ -45,25 +45,25 @@ The Coverage Fund is the protocol's shock absorber — a pool of stablecoins dep
 ### Fund Tokens (one per stablecoin)
 | Deposited | Receive |
 | :--- | :--- |
-| USDs | cfUSDs |
-| EURs | cfEURs |
-| CADs | cfCADs |
-| IRTs | cfIRTs |
+| USDs | USDscf |
+| EURs | EURscf |
+| CADs | CADscf |
+| IRTs | IRTscf |
 | etc. | etc. |
 
 ### Token Value — Calculated On the Fly
 The value of a cf token is **not fixed**. It is calculated in real time from the current pool composition:
 
 ```
-cfUSDs value = Total pool value (in USDs equivalent) / Total cfUSDs supply
+USDscf value = Total pool value (in USDs equivalent) / Total USDscf supply
 
 Where "Total pool value" =
   (stablecoins in pool × 1.0) + (xMinima in pool × current xMinima price)
 ```
 
-On entry (first deposit): cfUSDs = 1.0 USDs
-Over time: cfUSDs > 1.0 as transaction fees accumulate
-After a CR trigger: cfUSDs < 1.0 equivalent in pure stables (but holds some xMinima)
+On entry (first deposit): USDscf = 1.0 USDs
+Over time: USDscf > 1.0 as transaction fees accumulate
+After a CR trigger: USDscf < 1.0 equivalent in pure stables (but holds some xMinima)
 
 ### Revenue Flow — All Fees Go Here
 
@@ -74,7 +74,7 @@ User/Merchant Transaction
          ↓
   Coverage Fund Pool
          ↓
-  cfToken holders (proportional)
+  USDscf holders (proportional)
 ```
 
 **xMinima holders receive zero transaction fees. Their upside is purely from Minima price appreciation (leveraged).**

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What is Stables? | The Structural Playing Field</title>
+    
+    <!-- Design Tokens (Synced with index.html) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: #101826;
+            --text-primary: #e6edf3;
+            --text-secondary: #9fb0c0;
+            --accent-cyan: #67e8f9;
+            --accent-purple: #a78bfa;
+            --accent-amber: #fbbf24;
+            --glow: rgba(103, 232, 249, 0.15);
+            --header-h: 72px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: radial-gradient(circle at top, rgba(103, 232, 249, 0.1), transparent 60%) var(--bg);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* STICKY HEADER (Sync with dApp behavior) */
+        .stables-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-h);
+            background: rgba(11, 15, 20, 0.7);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        body.header-hidden .stables-header {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        /* CONTENT */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: calc(var(--header-h) + 4rem) 2rem 6rem;
+        }
+
+        .hero-label {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(103, 232, 249, 0.1);
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -0.03em;
+        }
+
+        .philosophy-text {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 4rem 0 1.5rem;
+            color: var(--accent-cyan);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* THE MATRIX TABLE */
+        .matrix-container {
+            width: 100%;
+            overflow-x: auto;
+            background: var(--panel);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            margin: 2rem 0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 700px;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 1.25rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            vertical-align: top;
+            font-size: 0.95rem;
+        }
+
+        .actor-cell {
+            font-weight: 800;
+            color: var(--accent-purple);
+        }
+
+        .contribution-cell {
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+
+        /* PROOF BOX */
+        .proof-box {
+            background: linear-gradient(135deg, rgba(103, 232, 249, 0.05) 0%, transparent 100%);
+            border: 1px solid rgba(103, 232, 249, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 4rem 0;
+        }
+
+        .proof-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .proof-item h4 {
+            color: var(--accent-amber);
+            margin-bottom: 0.5rem;
+            font-weight: 800;
+        }
+
+        .proof-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* FOOTER */
+        .nav-footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-link:hover { color: var(--accent-cyan); }
+    </style>
+</head>
+
+<body>
+
+    <header class="stables-header">
+        <a href="index.html" class="brand">
+            <img src="brand/assets/logo-mark.png" alt="Stables" class="logo-mark">
+            <span class="brand-name">STABLES</span>
+            <span style="font-size: 0.65rem; font-weight: 800; color: var(--accent-cyan); background: rgba(103, 232, 249, 0.1); padding: 2px 8px; border-radius: 4px; letter-spacing: 0.05em; margin-left: 8px; border: 1px solid rgba(103, 232, 249, 0.3);">BUILT ON MINIMA</span>
+        </a>
+        <div class="header-right">
+            <a href="https://stablescouncil.org/dapp/" class="footer-link" style="color: var(--accent-cyan)">Test the showcase</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero-label">Official Papers</div>
+        <h1>A Structural Playing Field.</h1>
+        <p class="philosophy-text">
+            Stables is a deterministic platform where individual self-interest drives system stability. The peg is an emergent state—a structural equilibrium where every participant finds their optimal choice aligned with our collective resilience.
+        </p>
+
+        <h2 class="section-title">The Interaction Matrix</h2>
+        <div class="matrix-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Actor</th>
+                        <th>Objective</th>
+                        <th>Provision (Structure)</th>
+                        <th>Contribution (System)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="actor-cell">Ambassadors</td>
+                        <td>Growth & Sovereignty</td>
+                        <td>The 16 Big Mac® Economy.</td>
+                        <td class="contribution-cell">Immune System: Every participant is a guardian of the truth.</td>
+                    </tr>
+                    <tr>
+                        <td class="actor-cell">Speculators</td>
+                        <td>Leveraged Profit</td>
+                        <td>Equity via xMinima (Screwed payoff risk).</td>
+                        <td class="contribution-cell">First Shock Absorber: Filtering volatility to protect the peg.</td>
+                    </tr>
+                    <tr>
+                        <td class="actor-cell">Investors</td>
+                        <td>Yield & Safety</td>
+                        <td>Revenue via USDscf.</td>
+                        <td class="contribution-cell">Second Shock Absorber: Providing the capital buffer.</td>
+                    </tr>
+                    <tr>
+                        <td class="actor-cell">Merchants</td>
+                        <td>Sovereignty</td>
+                        <td>Core Values (Secure, Pseudonymous, Unstoppable) + Ultra-low fee.</td>
+                        <td class="contribution-cell">The Foundation: Aligning with the unstoppable future of value.</td>
+                    </tr>
+                    <tr>
+                        <td class="actor-cell">Shoppers</td>
+                        <td>Privacy & Power</td>
+                        <td>100% Self-custody.</td>
+                        <td class="contribution-cell">Utility: Every spend reinforces the sovereign network.</td>
+                    </tr>
+                    <tr>
+                        <td class="actor-cell">Arbitrageurs</td>
+                        <td>Risk-free Efficiency</td>
+                        <td>Oracle Redemptions.</td>
+                        <td class="contribution-cell">Precision: Automating parity across all horizons.</td>
+                    </tr>
+                    <tr>
+                        <td class="actor-cell">FX Traders</td>
+                        <td>Global Mobility</td>
+                        <td>Native Pair Trading.</td>
+                        <td class="contribution-cell">Regional Flow: Connecting hyper-local economies.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="proof-box">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">The Structural Proof of the Peg</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                Stability is not a promise; it is an enforced equilibrium. The Stables peg is maintained by the immutable interaction of two primary forces:
+            </p>
+            <div class="proof-grid">
+                <div class="proof-item">
+                    <h4>The Merchant Bedrock</h4>
+                    <p>Merchants are the anchor. By opting for Stables, they commit to 1:1 acceptance for goods. By acting as local <b>Exchange Bureaus</b> (Fiat-to-Stables), they provide the physical liquidity that digital oracles cannot replace.</p>
+                </div>
+                <div class="proof-item">
+                    <h4>The Speculator Filter</h4>
+                    <p>xMinima holders enjoy leveraged upside when health is high, but bear a <b>Skewed Payoff</b> when health is low. Their capital is structurally forced to absorb volatility, filtering the shock before it hits the Senior liabilities.</p>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; font-weight: 700; color: var(--accent-cyan);">The result: Maintaining the peg is always the most profitable path for all participants.</p>
+        </div>
+
+        <div style="text-align: center; margin: 6rem 0 4rem;">
+            <h2 style="font-size: clamp(1.5rem, 3vw, 2.5rem); margin-bottom: 1.5rem; background: linear-gradient(135deg, #ffffff 0%, #67e8f9 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: 900;">Dig even deeper.</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Explore the Stables circular economy to visualize the deterministic flows of funds, treasuries, and incentives.
+            </p>
+            <div class="footer-links" style="justify-content: center;">
+                <a href="https://stablescouncil.org/circulareconomy/" class="btn btn-secondary" style="border: 1px solid rgba(103, 232, 249, 0.5); background: rgba(103, 232, 249, 0.05); color: var(--accent-cyan); text-decoration: none; padding: 12px 24px; border-radius: 12px; font-weight: 700;">Visualize the Circular Economy</a>
+            </div>
+        </div>
+
+        <footer class="nav-footer">
+            <div class="footer-links">
+                <a href="index.html" class="footer-link">Home Page</a>
+                <a href="https://stablescouncil.org/dapp/" class="footer-link">Test Showcase</a>
+                <a href="links.html" class="footer-link">All Links</a>
+                <a href="https://x.com/StablesCouncil" class="footer-link">Follow on X</a>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); opacity: 0.5; margin-top: 1rem;">
+                Stables Structural Overview v3.0 | <span style="color: var(--accent-cyan); font-weight: 700;">Built on Minima</span>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // STICKY HEADER LOGIC (Sync with dApp)
+        let lastScroll = 0;
+        const body = document.body;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                body.classList.remove('header-hidden');
+                return;
+            }
+
+            if (currentScroll > lastScroll && !body.classList.contains('header-hidden')) {
+                // Scroll Down
+                if (currentScroll > 72) body.classList.add('header-hidden');
+            } else if (currentScroll < lastScroll && body.classList.contains('header-hidden')) {
+                // Scroll Up
+                body.classList.remove('header-hidden');
+            }
+            lastScroll = currentScroll;
+        });
+    </script>
+</body>
+</html>

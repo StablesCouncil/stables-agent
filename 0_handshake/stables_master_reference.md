@@ -264,10 +264,10 @@ When any branding asset is required, you must perform an **On-Demand Extraction*
 
 **Fundamental equation**: `Minima = Stablecoins + cf tokens + xMinima`
 
-### The Ultimate Hedge (The Merchant-Maintained Peg)
+### The Multi-Actor Hedge (The Merchant-Speculator Equilibrium)
 > [!URGENT]
-> **CRITICAL DOCTRINE**: Stables is **NOT** an algorithmic stablecoin. It does **NOT** rely on algorithmic over-collateralization to maintain the peg. The ultimate hedge of the peg is the active network of **merchants**.
-> When merchants universally accept and settle Stables at a $1 equivalent value for real-world goods and services, the stability is intrinsically maintained by real-world utility and economic flow, not by synthetic math or "defensive algorithmic layers." NEVER use terms like "algorithmic over-collateralization" to describe Stables.
+> **DETERMINISTIC PRINCIPLE**: Stables is a structural credit-system. The peg is maintained through the specific interaction of its participants.
+> Stability is anchored by the **merchants** who settle at $1 equivalent value for real-world goods. This provides the physical liquidity floor, while the **Speculator** layer absorbs collateral volatility. This dual-anchor system ensures the peg is an outcome of real-world utility and structural risk-bearing.
 
 ### Coverage Ratio (CR) & Threshold Rules
 
@@ -319,16 +319,36 @@ All mint/burn operations settle at blockchain confirmation speed.
 | :--- | :--- | :--- |
 | **Assets** | Collateral held by the protocol | **Minima** |
 | **Senior liabilities** | Value the protocol owes users as redeemable coins | **Stablecoins** (USDs, EURs, CADs…) |
-| **Convertible / junior liabilities** | Coverage Fund; fee accrual; first-loss / conversion risk | **cf tokens** |
+| **Convertible / junior liabilities** | Coverage Fund; fee accrual; first-loss shock absorption | **USDscf** |
 | **Equity** | Leveraged ownership in surplus (not txn-fee yield) | **xMinima** |
 
 **The fundamental equation (full, locked):**
-> **Minima (Assets) = Stablecoins + cf tokens + xMinima**
+> **Minima (Assets) = Stablecoins + USDscf + xMinima**
+
+### The Participant Matrix (The Playing Field)
+
+Stables is a deterministic structure where the peg is maintained by the interaction of self-interested participants seeking sovereignty.
+
+| Actor | Objective | Stables Deliverable (Structure) | System Contribution |
+| :--- | :--- | :--- | :--- |
+| **Ambassadors** | Network growth & Reputation | 16 Big Mac® Economy, Directory status. | **Immune System**: Physical verification & scaling. |
+| **Speculators** | Leveraged Minima Profit | Equity exposure via xMinima. | **First Shock Absorber**: Absorbing volatility via skewed payoffs. |
+| **Investors** | Stable Yield & Safety | Fee revenue via **USDscf**. | **Second Shock Absorber**: Providing the first-loss capital buffer. |
+| **Merchants** | Sovereignty | Core Values (Secure, Pseudonymous, Unstoppable) + Ultra-low fee. | **The Foundation**: Aligning with the unstoppable future of value. |
+| **Shoppers** | Privacy & Purchasing power | 100% Self-custody, Direct P2P spend. | **Utility**: Driving internal economic volume. |
+| **Arbitrageurs** | Risk-free Efficiency | Unlimited redemption via native Oracle. | **Efficiency**: Automating peg restoration. |
+| **FX Traders** | Profit from currency volatility | Native, multi-currency on-chain pairs. | **Global Flow**: Ensuring cross-currency liquidity. |
+
+### The Structural Proof of the Peg
+
+Stability is not a promise; it is an **Outcome of Equilibrium** enforced by two primary forces:
+1. **The Merchant Anchor**: Participating merchants commit to 1:1 acceptance for goods. By acting as local **Exchange Bureaus** (Fiat-to-Stables), they provide the physical liquidity that digital oracles cannot replace.
+2. **The Speculator Filter**: xMinima holders bear the **Skewed Payoff** risk. When health is low, their capital is structurally forced to absorb volatility (via binary price/liquidity locks), shielding the seniors.
 
 ### What This Means in Practice
-- **Minting stablecoins** = Creating **senior** liability, backed by Minima collateral (oracle-priced in the shipped demo).
-- **Transaction fees** (locked formula) → **Coverage Fund** → **cf token holders**. **xMinima does not receive transaction fees.**
-- **xMinima** = Leveraged **equity**; upside/downside from surplus and locked mechanics (e.g. formula pricing), **not** from routing user txn fees to xMinima.
+- **Minting stablecoins** = Creating **senior** liability, backed by Minima collateral (oracle-priced).
+- **Transaction fees** (locked formula) → **Coverage Fund** → **cf token holders**.
+- **xMinima** = Leveraged **equity**; value defined by structural mechanics and surplus.
 - **Coverage Ratio** = Health of the balance sheet (assets vs liabilities).
 - **Surplus** (when present) = reflected in **equity** valuation; do not conflate with “fee revenue to xMinima”.
 - **Merchant / Council treasury** = Governance and operations; **do not** fold into “all fees to xMinima”.
@@ -357,8 +377,9 @@ Stables does not claim to be the final form of human money. It is a necessary br
 - **Stage 3 (The Circular Horizon):** A future state where monetary power is a fundamental human right. The system is circular, equitable, and planet-centric, transcending traditional accumulation-based models.
 
 ### Deterministic Mechanics
-- **Floating Redemption:** Stables does NOT defend its peg with discretionary treasuries. The Backing Ratio (`Assets / Liabilities`) determines redemption value. If BR < 1, redemption floats.
-- **Continuous Logic:** The protocol contains no "emergency switches." It reacts deterministically to market state. Solvency is enforced by math, not promises.
+- **Floating Redemption:** The Backing Ratio (`Assets / Liabilities`) determines redemption value. If BR < 1, redemption flows accordingly.
+- **Continuous Logic:** The protocol reacts deterministically to market state. Solvency is defined and enforced by mathematical equilibrium.
+- **Structural Integrity:** Stables is an autonomous cryptographic platform. Solvency is inherent to the protocol state, eliminating discretionary risk.
 - **xMinima Governance**: Voting power is anchored in xMinima as pro-rata equity. Governance operates within the immutable boundaries of the monetary core.
 
 ---

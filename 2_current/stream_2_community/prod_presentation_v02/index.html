@@ -56,7 +56,61 @@
             /* Fluid Spacing */
             --container-pad: clamp(1rem, 5vw, 2.5rem);
             --section-gap: clamp(2rem, 10vw, 6.25rem);
+            --header-h: 72px;
         }
+
+        /* STICKY HEADER (Sync with dApp behavior) */
+        .stables-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-h);
+            background: rgba(11, 15, 20, 0.4);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        body.header-hidden .stables-header {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .header-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .header-link:hover { color: var(--accent-cyan); }
 
         * {
             box-sizing: border-box;
@@ -71,6 +125,7 @@
             overflow-x: hidden;
             line-height: 1.6;
             font-weight: 400;
+            padding-top: var(--header-h);
         }
 
         .container {
@@ -874,7 +929,16 @@
     </style>
 </head>
 
-<body>
+<body class="header-hidden">
+    <header class="stables-header">
+        <a href="index.html" class="brand">
+            <img src="brand/assets/logo-mark.png" alt="Stables" class="logo-mark">
+            <span class="brand-name">STABLES</span>
+        </a>
+        <div class="header-right">
+            <a href="https://stablescouncil.github.io/links.html" class="header-link" style="text-decoration: none; color: var(--accent-cyan); font-weight: 700;">Links</a>
+        </div>
+    </header>
 
     <div class="lang-switcher">
         <button class="globe-btn" onclick="toggleLangMenu()" aria-label="Select Language">
@@ -1086,6 +1150,7 @@
             </div>
         </section>
 
+
         <!-- Slide 5: Final CTA -->
         <section id="cta">
             <div class="content-block">
@@ -1097,12 +1162,56 @@
                     <a href="https://stablescouncil.github.io/links.html" class="btn btn-secondary"
                         data-key="btn-links">All Links</a>
                 </div>
-                <div class="footer-note" data-key="footer">Stables - Informational Overview v1.0</div>
             </div>
         </section>
+
+        <!-- Step 1 in Cascade: Official Papers -->
+        <section id="playing-field" style="background: linear-gradient(to bottom, transparent, rgba(103, 232, 249, 0.05)); border-top: 1px solid rgba(255,255,255,0.05); padding: 8rem 0;">
+            <div class="content-block" style="text-align: center;">
+                <h2 style="font-size: clamp(2rem, 4vw, 3.75rem); background: linear-gradient(135deg, #ffffff 0%, #67e8f9 50%, #fbbf24 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">A Structural Playing Field.</h2>
+                <p style="font-size: clamp(1rem, 1.5vw, 1.25rem); color: var(--text-secondary); max-width: 800px; margin: 1.5rem auto 2.5rem; line-height: 1.6;">
+                    Stables is an open cryptographic platform. Discover the deterministic mechanics that keep our system unstoppable and the peg resilient.
+                </p>
+                <div class="btn-group" style="justify-content: center;">
+                    <a href="playing_field.html" class="btn btn-secondary">Dive into the Official Papers</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="nav-footer" style="border-top: 1px solid rgba(255,255,255,0.05); padding: 4rem 0; text-align: center;">
+            <div class="footer-links" style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem;">
+                <a href="index.html" class="footer-link" style="text-decoration: none; color: var(--text-secondary); font-weight: 700;">Home Page</a>
+                <a href="playing_field.html" class="footer-link" style="text-decoration: none; color: var(--text-secondary); font-weight: 700;">Playing Field</a>
+                <a href="https://stablescouncil.org/dapp/" class="footer-link" style="text-decoration: none; color: var(--text-secondary); font-weight: 700;">Test Showcase</a>
+                <a href="links.html" class="footer-link" style="text-decoration: none; color: var(--text-secondary); font-weight: 700;">All Links</a>
+            </div>
+            <div class="footer-note" data-key="footer" style="opacity: 0.5; font-size: 0.8rem;">Stables - Informational Overview v3.0 | Built on Minima</div>
+        </footer>
     </div>
 
     <script>
+        // STICKY HEADER LOGIC (Sync with dApp)
+        let lastScroll = 0;
+        const body = document.body;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                body.classList.remove('header-hidden');
+                return;
+            }
+
+            if (currentScroll > lastScroll && !body.classList.contains('header-hidden')) {
+                // Scroll Down
+                if (currentScroll > 72) body.classList.add('header-hidden');
+            } else if (currentScroll < lastScroll && body.classList.contains('header-hidden')) {
+                // Scroll Up
+                body.classList.remove('header-hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
         const translations = {
             eu: {
                 "hero-title": "Izan zure bankua",
