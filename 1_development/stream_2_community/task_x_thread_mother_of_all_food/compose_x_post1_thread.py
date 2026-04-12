@@ -27,7 +27,7 @@ REPO = ROOT.parents[2]
 BRAND = (
     REPO
     / "1_development"
-    / "stream_2_community"
+    / "stream_1_app"
     / "prod_stablescouncil_github_io"
     / "brand"
     / "assets"
