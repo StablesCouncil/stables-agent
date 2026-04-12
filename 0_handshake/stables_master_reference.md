@@ -336,8 +336,8 @@ Stables is a deterministic structure where the peg is maintained by the interact
 
 | Actor | Objective | Stables Deliverable (Structure) | System Contribution |
 | :--- | :--- | :--- | :--- |
-| **Ambassadors** | Network growth & Reputation | 16 Big Mac® Economy, Directory status. | **Immune System**: Physical verification & scaling. |
-| **Speculators** | Leveraged Minima Profit | Equity exposure via xMinima. | **First Shock Absorber**: Absorbing volatility via skewed payoffs. |
+| **Ambassadors** | Growth & Sovereignty | The 16 Big Mac® Economy. | **Merchant Support**: Onboarding and technical assistance for the foundation. |
+| **Speculators** | High-leverage Profit | Equity exposure via xMinima. | **Strategic Buffer**: Capturing market upside with high expected returns. |
 | **Investors** | Stable Yield & Safety | Fee revenue via **USDscf**. | **Second Shock Absorber**: Providing the first-loss capital buffer. |
 | **Merchants** | Sovereignty | Core Values (Secure, Pseudonymous, Unstoppable) + Ultra-low fee. | **The Foundation**: Aligning with the unstoppable future of value. |
 | **Shoppers** | Privacy & Purchasing power | 100% Self-custody, Direct P2P spend. | **Utility**: Driving internal economic volume. |
