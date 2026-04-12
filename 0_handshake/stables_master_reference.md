@@ -116,9 +116,14 @@ To protect your work against hardware failure (a "glass of water"):
 
 ### Messaging Rules (Set in Stone)
 *   **Target**: General public worldwide.
-*   **No Jargon**: Do NOT use crypto or DeFi-specific terms like "decentralized" in any external communication or copy for the general public. These terms do not resonate with our target audience.
-*   **Hashtags (X/Twitter):** **Authoritative rule:** `handshake.md` §4 (*X/Twitter Specifics*). **Mandatory base set on every X post:** `#BYB #Stablecoin #Minima`; then if space allows, `#BeYourBank`, then tags such as `#Stables`. Do not substitute a different “core set” without updating `handshake.md` first. **Never** hashtags in Telegram community posts.
-*   **Strict Tagline**: Use ONLY **"Money that is truly yours. Secure, Pseudonymous and Unstoppable."**
+*   **No Technical Jargon**: Strictly ban technical terms like "blockchain," "crypto," "cryptographic," "decentralized," "on-chain," or "smart contracts" in all public-facing copy (presentations, landing pages, general Telegram posts). 
+*   **Narrative**: Present Stables as "just another banking app"—a professional, professional finance tool that happens to be sovereign. Use familiar financial terms:
+    - Replace "On-chain" with "Instant" or "Direct."
+    - Replace "Cryptographic platform" with "Money platform" or "System."
+    - Replace "Mint/Burn" with "Issue/Redeem" or "Exchange."
+    - Replace "Deterministic" with "Autonomous" or "Rule-based."
+*   **Hashtags (X/Twitter):** Authoritative rule: handshake.md §4. Mandatory base set: #BYB #Minima.
+*   **Strict Tagline**: Use ONLY "Money that is truly yours. Secure, Pseudonymous and Unstoppable."
 *   **MANDATORY ATTRIBUTION**: Official presentations and marketing materials MUST include "Built on MINIMA" badge or text with link to https://minima.global where applicable. Social media communications (Telegram, X) are exempt from this requirement as the technical link is implied.
 *   **Human Writing Style**: NEVER use AI writing markers in social media posts, comments, or public communication:
     - NO emojis (🚀✨💪📚💬 etc.)
@@ -336,7 +341,7 @@ Stables is a deterministic structure where the peg is maintained by the interact
 | **Investors** | Stable Yield & Safety | Fee revenue via **USDscf**. | **Second Shock Absorber**: Providing the first-loss capital buffer. |
 | **Merchants** | Sovereignty | Core Values (Secure, Pseudonymous, Unstoppable) + Ultra-low fee. | **The Foundation**: Aligning with the unstoppable future of value. |
 | **Shoppers** | Privacy & Purchasing power | 100% Self-custody, Direct P2P spend. | **Utility**: Driving internal economic volume. |
-| **Arbitrageurs** | Risk-free Efficiency | Unlimited redemption via native Oracle. | **Efficiency**: Automating peg restoration. |
+| **Balancers** | Risk-free Efficiency | Direct settlements. | **Precision**: Automating parity across all horizons. |
 | **FX Traders** | Profit from currency volatility | Native, multi-currency on-chain pairs. | **Global Flow**: Ensuring cross-currency liquidity. |
 
 ### The Structural Proof of the Peg
