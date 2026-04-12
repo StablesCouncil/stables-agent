@@ -136,7 +136,11 @@ Consult the following files representing the immutable specs of Stables:
 - **[current_state_and_path.md](file:///C:/Users/Charles/Documents/Stables/2_current/stream_3_governance/prod_protocol_specs/current_state_and_path.md)**: The strategic North Star.
 - **[vault.md](file:///C:/Users/Charles/Documents/Stables/2_current/stream_3_governance/prod_credentials/vault.md)**: Central repository for project accounts and bookmarks.
 
-### [Step 2] Verify Economic Alignment
+### [Step 2] Verify
+5.  **Daily Operational TODOS**:
+    Open or create the persistent task file for the current session in `0_handshake/todos/YYYY-MM-DD-task.md`. This file is the primary "source of truth" for parallel stream progress and must be open throughout the session.
+
+6.  **Confirm Alignment**:
 Acknowledge the settled economic model (Do NOT re-debate unless requested):
 - **Equation**: `Minima = Stablecoins + cf tokens + xMinima`
 - **CR Threshold**: 110% (Default). Stablecoin minting locks below this level.

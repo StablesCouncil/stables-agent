@@ -294,7 +294,7 @@ When any branding asset is required, you must perform an **On-Demand Extraction*
 
 ### Transaction Fee Formula (LOCKED)
 ```
-Fee = min($1.00,  amount × 0.01%)
+Fee = min($1.00,  amount �- 0.01%)
 No minimum. No floor.
 ```
 $0.01 at $100 — $1.00 hard cap at $10,000+
@@ -403,3 +403,4 @@ Stables does not claim to be the final form of human money. It is a necessary br
 - **Core Technology:** Node.js, `@xenova/transformers` (local, free, open-source embeddings), and the `Ollama` framework running `Llama-3.2`.
 - **Knowledge Base (`llms.txt`):** Built from markdown files (e.g. `comprehensive_knowledge_base.md`, `core_definitions.md`). The AI's responses must be generated directly from this factual base to prevent hallucination.
 - **Execution Script:** `node ingest_knowledge.js` must be run manually by the user to update the Vector Database whenever the markdown manuals are changed.
+

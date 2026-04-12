@@ -80,8 +80,15 @@ if ($Status) {
     } else {
         Invoke-Git @("commit", "-m", $Message)
     }
-    Invoke-Git @("push", $Remote, $MainBranch)
-    Write-Host "Successfully pushed to GitHub ($Remote/$MainBranch)." -ForegroundColor Green
+    try {
+        Invoke-Git @("push", $Remote, $MainBranch)
+        Write-Host "Successfully pushed to GitHub ($Remote/$MainBranch)." -ForegroundColor Green
+    } catch {
+        Write-Host "ERROR: Git push failed ($($_.Exception.Message))" -ForegroundColor Red
+        Write-Host "DIAGNOSTIC: This usually means branch protection is active, or your local credentials (PAT/SSH) are missing/expired." -ForegroundColor Yellow
+        Write-Host "TIP: Verify your remote URL with 'git remote -v'. If using HTTPS, ensure your Personal Access Token is valid." -ForegroundColor Cyan
+        exit 1
+    }
     exit 0
 }
 
