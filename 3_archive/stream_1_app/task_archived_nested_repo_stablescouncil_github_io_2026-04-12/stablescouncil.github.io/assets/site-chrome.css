@@ -1,0 +1,182 @@
+/*
+ * site-chrome.css — Shared global header/footer for Stables static pages.
+ * Depends on stables.css (design tokens, Inter, buttons) loaded first.
+ */
+
+:root {
+  --site-header-h: 56px;
+}
+
+/* --- Global shell -------------------------------------------------------- */
+
+.site-chrome-body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  color: var(--text-primary);
+}
+
+.site-chrome-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--site-header-h);
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 clamp(12px, 4vw, 28px);
+  background: rgba(11, 15, 20, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(103, 232, 249, 0.22);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.site-chrome-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-chrome-header__mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.site-chrome-header__titles {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.site-chrome-header__name {
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.site-chrome-header__slogan {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 2px;
+}
+
+.site-chrome-header__pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--accent-cyan);
+  border: 1px solid rgba(103, 232, 249, 0.45);
+  background: rgba(15, 23, 42, 0.55);
+  flex-shrink: 0;
+}
+
+.site-chrome-header__pill:hover {
+  border-color: rgba(103, 232, 249, 0.75);
+  color: var(--text-primary);
+}
+
+.site-chrome-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* Links template: keep main column vertically centred like the legacy page */
+.site-chrome-main--links {
+  padding-top: var(--site-header-h);
+  align-items: center;
+  justify-content: center;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 2rem;
+  position: relative;
+}
+
+/* Share control sits below fixed header */
+.site-chrome-body .share-btn {
+  top: calc(var(--site-header-h) + 12px);
+}
+
+.site-chrome-body .share-menu {
+  top: calc(var(--site-header-h) + 56px);
+}
+
+/* --- Footer grid (four destinations) ------------------------------------ */
+
+.site-chrome-footer {
+  margin-top: auto;
+  padding: 2.75rem clamp(16px, 5vw, 40px) 2.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(to bottom, transparent, rgba(16, 24, 38, 0.55));
+}
+
+.site-chrome-footerGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  max-width: 960px;
+  margin: 0 auto 1.5rem;
+}
+
+.site-chrome-footerCard {
+  display: block;
+  padding: 1.25rem 1.35rem;
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(103, 232, 249, 0.22);
+  transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.site-chrome-footerCard:hover {
+  border-color: rgba(103, 232, 249, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(103, 232, 249, 0.12);
+}
+
+.site-chrome-footerCard__title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.35rem;
+}
+
+.site-chrome-footerCard__desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.site-chrome-footerMeta {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+@media (max-width: 700px) {
+  .site-chrome-header__pill {
+    display: none;
+  }
+}

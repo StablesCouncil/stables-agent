@@ -28,7 +28,7 @@ BRAND = (
     REPO
     / "1_development"
     / "stream_1_app"
-    / "prod_stablescouncil_github_io"
+    / "task_stablescouncil_github_io"
     / "brand"
     / "assets"
 )

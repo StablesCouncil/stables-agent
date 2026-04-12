@@ -93,6 +93,7 @@
 |------|----------|---------|
 | `index.html` | `2_current/stream_2_community/` *(canonical)* | Live presentation source for stablescouncil.github.io. |
 | `index.html` | `3_archive/stream_2_community/prod_old_presentations/Presentation V1.0/public_stage/` | Archive of V1.0 for reference. |
+| **`task_stablescouncil_github_io/`** (tree) | `1_development/stream_1_app/task_stablescouncil_github_io/` | **GitHub Pages static site sandbox** (`links.html`, `dapp/`, `circulareconomy/`, etc.). **Not** a `prod_*` folder (handshake naming exception). Nested **`git`** checkout for pushes: **`3_archive/stream_1_app/task_archived_nested_repo_stablescouncil_github_io_2026-04-12/stablescouncil.github.io/`** (see that folder’s `README.md`). |
 
 ### LAYER 8 — CREDENTIALS & LEDGER (Load when committing or deploying)
 

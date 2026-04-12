@@ -14,29 +14,29 @@ Paths are relative to the Stables repo root: `C:\Users\Charles\Documents\Stables
 |---|------|-------------------------------------|
 | 1 | **Home Page** | `2_current/stream_2_community/prod_presentation_v02/index.html` |
 | 2 | **Playing Field** | `2_current/stream_2_community/prod_presentation_v02/playing_field.html` |
-| 3 | **Website map** | `1_development/stream_1_app/prod_stablescouncil_github_io/links.html` |
-| 4 | **Circular Economy** | `1_development/stream_1_app/prod_stablescouncil_github_io/circulareconomy/index.html` |
-| 5 | **Banking System** | `1_development/stream_1_app/prod_stablescouncil_github_io/bankingsystem/index.html` |
-| 6 | **Ambassador Program** | `1_development/stream_1_app/prod_stablescouncil_github_io/ambassadorsprogramdesc.html` |
+| 3 | **Website map** | `1_development/stream_1_app/task_stablescouncil_github_io/links.html` |
+| 4 | **Circular Economy** | `1_development/stream_1_app/task_stablescouncil_github_io/circulareconomy/index.html` |
+| 5 | **Banking System** | `1_development/stream_1_app/task_stablescouncil_github_io/bankingsystem/index.html` |
+| 6 | **Ambassador Program** | `1_development/stream_1_app/task_stablescouncil_github_io/ambassadorsprogramdesc.html` |
 
-### Two folders on purpose (no third)
+### Edit path, archive push clone (no root duplicate)
 
 | Role | Path | Why it exists |
 |------|------|----------------|
-| **Edit here** | `1_development/stream_1_app/prod_stablescouncil_github_io/` | Sandbox inside the private Stables repo: handshake-aligned place to change HTML/CSS before ship. |
-| **Push from here** | `stablescouncil.github.io/` at repo root | This directory is its **own git repository** (`.git` inside it) for **`StablesCouncil/stablescouncil.github.io`**. GitHub only updates the live site when you **commit and push from this clone**. It is not a second “draft” tree by design; it is the **remote working copy**. |
+| **Edit here** | `1_development/stream_1_app/task_stablescouncil_github_io/` | Sandbox inside the private Stables repo (handshake: **`task_*`**, not **`prod_*`**, so it is not confused with MiniDapp **`prod_stables_app_*`** trees). |
+| **Push from here (archived nested repo)** | `3_archive/stream_1_app/task_archived_nested_repo_stablescouncil_github_io_2026-04-12/stablescouncil.github.io/` | Full **`StablesCouncil/stablescouncil.github.io`** clone; Git metadata is stored as **`_embedded_git/`** (not **`.git`**) so the parent repo can version the whole tree. Use **`git --git-dir=.../_embedded_git --work-tree=.../stablescouncil.github.io`** (see archive **`README.md`**), then merge in changes from the sandbox and push. |
 
-**Do not** recreate **`1_development/stream_2_community/prod_stablescouncil_github_io/`**. That path was a duplicate and was removed to avoid confusion. If you see old notes pointing at `stream_2_community`, treat them as obsolete.
+**Do not** recreate **`1_development/stream_2_community/prod_stablescouncil_github_io/`** (old duplicate path, removed earlier).
 
-**Workflow:** edit and review under **`stream_1_app/prod_stablescouncil_github_io/`**; when you ship, copy changed files into **`stablescouncil.github.io/`** and push from there (or use another clone of the same public repo if you prefer, but keep **one** push target).
+**Ship workflow:** edit under **`task_stablescouncil_github_io/`**; when ready to publish, copy or robocopy changed files into the **archived** checkout’s working tree (same relative paths), commit, and push from that repo. Alternatively clone **`StablesCouncil/stablescouncil.github.io`** elsewhere and sync the same way. **Never** re-add a second full tree at the **Stables** repo root unless Council explicitly chooses submodule layout again.
 
-**Handshake rule (`0_handshake/README.md` pipeline, `handshake.md` §1):** new work starts under **`1_development/`**; the root Pages folder exists for **git remote + push**, not as a parallel sandbox.
+**Handshake (`0_handshake/README.md`, `handshake.md` §1):** new HTML/CSS work stays under **`1_development/`**; retiring the root nested repo was an **archive move**, not a delete.
 
 **Canonical Pages sandbox in this workspace:**  
-`1_development/stream_1_app/prod_stablescouncil_github_io/`  
+`1_development/stream_1_app/task_stablescouncil_github_io/`  
 (full mirror: `links.html`, `index.html`, `circulareconomy/`, `bankingsystem/`, `dapp/`, etc.)
 
-**Synced (2026-04-12):** The full Pages tree was populated under **`stream_1_app/prod_stablescouncil_github_io/`** from the root **`stablescouncil.github.io/`** checkout (excluding `.git`). Step-1 chrome lives there: `links.html`, `stables.css`, `assets/site-chrome.css`. **2026-04-12:** Removed duplicate **`stream_2_community/prod_stablescouncil_github_io/`** so only the sandbox + push clone remain.
+**Synced (2026-04-12):** Pages tree merged into **`task_stablescouncil_github_io/`**; step-1 chrome: `links.html`, `stables.css`, `assets/site-chrome.css`. **2026-04-12:** Root **`stablescouncil.github.io/`** nested checkout **archived** under **`3_archive/...`**; monorepo **`git rm --cached stablescouncil.github.io`** applied so the parent index no longer tracks a root gitlink.
 
 ---
 
@@ -52,7 +52,7 @@ Paths are relative to the Stables repo root: `C:\Users\Charles\Documents\Stables
 
 ## Template page (first build)
 
-**Chosen template:** **`links.html`** in **`1_development/stream_1_app/prod_stablescouncil_github_io/`** (**Website map**, node 3). Live URL still maps from the Pages repo (`stablescouncil.github.io`).
+**Chosen template:** **`links.html`** in **`1_development/stream_1_app/task_stablescouncil_github_io/`** (**Website map**, node 3). Live URL still maps from the Pages repo (`stablescouncil.github.io`).
 
 **Why this page first:** It is mostly a structured list inside a single main column; wrapping it in a new global header and footer is mechanically simpler than starting on the long presentation or heavy diagram pages. After the shell looks right here, the same HTML/CSS pattern is copied to the other five files with **content blocks left untouched**.
 
@@ -62,7 +62,7 @@ Paths are relative to the Stables repo root: `C:\Users\Charles\Documents\Stables
 
 To avoid six divergent copies of the same rules, add **one** linked stylesheet under the Pages tree:
 
-`stablescouncil.github.io/assets/site-chrome.css`
+`1_development/stream_1_app/task_stablescouncil_github_io/assets/site-chrome.css`
 
 Each of the six HTML files will **link** `stables.css` (per spec) **and** `site-chrome.css`. Page-specific `<style>` blocks stay for **local layout only** (diagrams, scroll sections) until a later cleanup pass you approve.
 
@@ -75,13 +75,13 @@ Each of the six HTML files will **link** `stables.css` (per spec) **and** `site-
 1. Finish chrome on **`links.html`** (template).  
 2. **`circulareconomy/index.html`** and **`bankingsystem/index.html`** (wrap existing body; remove duplicate global chrome CSS from those files as it migrates to `site-chrome.css`).  
 3. **`prod_presentation_v02/index.html`** and **`playing_field.html`** (inject shell around existing full-page structure; trim only duplicated global rules).  
-4. **`ambassadorsprogramdesc.html`** (working copy in `1_development/.../`, then mirror to `stablescouncil.github.io/`).
+4. **`ambassadorsprogramdesc.html`** (working copy under **`task_stablescouncil_github_io/`**; on ship, mirror into the **archived** Pages checkout or your push clone and push).
 
 **Confirmed:** This rollout order is approved.
 
 ### Step 1 status (template)
 
-Implemented in **`1_development/stream_1_app/prod_stablescouncil_github_io/`** (copy to the root **`stablescouncil.github.io/`** checkout when you push Pages):
+Implemented in **`1_development/stream_1_app/task_stablescouncil_github_io/`** (copy into the **archived** **`stablescouncil.github.io`** checkout or another clone before you push Pages):
 
 - **`stables.css`** (from `task_x_agent_node`) and **`assets/site-chrome.css`** (global header/footer + share offsets).
 - **`links.html`**: links both CSS files; `<main>` wrap; new `<header>` / `<footer>`; body classes `site-chrome-body links-page-body`.
@@ -99,4 +99,4 @@ Step 2 subpages use **`../stables.css`** and **`../assets/site-chrome.css`** rel
 
 ---
 
-*Last update: Clarified two-folder Pages model; removed obsolete `stream_2_community/prod_stablescouncil_github_io/` duplicate (2026-04-12).*
+*Last update: Handshake no-delete archive rule; Pages sandbox renamed to **`task_stablescouncil_github_io/`**; root nested repo archived and removed from parent index (2026-04-12).*
