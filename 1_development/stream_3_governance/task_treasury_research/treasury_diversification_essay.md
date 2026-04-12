@@ -184,6 +184,12 @@ The bridges connecting FHE chains to the outside world today are mostly federate
 
 **Result on FHE chains: fail Test 2 and Test 3 as of today.**
 
+**Zero-Knowledge (ZK) evaluation**
+
+Following the audit of DAGs and FHE, I have also reviewed the role of ZK-proofs. While many ZK-Rollups exist today, they fail the Three Hard Tests because they rely on "Sequencers" and "Provers" - centralized infrastructure that can be ordered to stop processing specific users.
+
+The only mechanism that passes our criteria is **Client-Side ZK**, where the mathematical proof of a transaction is generated locally on your own sovereign hardware. Stables will integrate this ZK logic to run directly on your own hardware. By leveraging the local node provided by Minima, we can ensure the mathematical proof of your transaction is calculated locally on your device. This ensures that no middleman or gatekeeper can ever block your capacity to trade, as the power to generate and validate the transaction proof remains entirely within your sovereign node.
+
 **Agent-centric networks**
 
 Holochain takes the most radical approach: no global ledger. Each user maintains their own chain. Validation is local between participants. This makes it extremely difficult to stop. But a stablecoin requires a single, globally agreed-upon state of who owns how much. Holochain's architecture does not support this. Architecturally incompatible.

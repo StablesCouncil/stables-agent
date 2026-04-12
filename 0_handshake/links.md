@@ -25,6 +25,22 @@ This file is the single source of truth for all official Stables Council account
 *   **StablesCouncil@protonmail.com**
 *   **StablesCouncil@gmail.com**
 
+## Governance and horizon-scanning routing (Charter Article VII.7–VII.8)
+
+Use the **right surface for the class of message**. Do not post vault keys, seeds, or incident details in general community chat.
+
+| Class | Canonical surface | URL |
+| :--- | :--- | :--- |
+| **Official Council positions and ratified summaries** | Telegram (Council Official) | [t.me/StablesCouncilOfficial](https://t.me/StablesCouncilOfficial) |
+| **General community discussion and drafts** | Telegram (Community) | [t.me/stablescommunity](https://t.me/stablescommunity) |
+| **Working groups, long threads, strategic horizon scanning** (tech, legal, geopolitics, environment, market) | Discord | [discord.gg/cFq4hHAc](https://discord.gg/cFq4hHAc) |
+| **Security / vault key support only** | Telegram (Security) | [t.me/StablesSecuritySupport](https://t.me/StablesSecuritySupport) |
+| **Private Council-facing mail** | Email | StablesCouncil@protonmail.com |
+
+**Discord channel names** for each watch domain (e.g. legal, tech) shall be **announced on Council Official** when the Council creates or renames them; this table stays the **URL-level** index.
+
+**Volunteer roster / task acknowledgment:** the Council shall publish a single **canonical link** (pinned Council post, GitHub, or other board) and announce it on **Council Official** when live. Until then, volunteers coordinate in **Discord** and confirm scope in writing there.
+
 ## Development
 *   **GitHub Organization:** [github.com/StablesCouncil](https://github.com/StablesCouncil)
 

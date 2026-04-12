@@ -19,6 +19,7 @@
   - [I.5 Treasury Allocation and Market Participant Mandate](stables_charter.md#i5-treasury-allocation-and-market-participant-mandate)  
   - [I.5.4 Concentration and Flow Monitoring (App)](stables_charter.md#i54-concentration-and-flow-monitoring-app)  
   - [I.5.5 Human Rights Retrocession (Budget and Distribution)](stables_charter.md#i55-human-rights-retrocession-budget-and-distribution)  
+  - [I.5.6 Minima base-layer activity monitoring (archive infrastructure)](stables_charter.md#i56-minima-base-layer-activity-monitoring-archive-infrastructure)  
 - [Article II — Monetary Core (Invariant Foundation)](stables_charter.md#article-ii--monetary-core-invariant-foundation)  
   - [II.1 Minima-Only Base Collateral](stables_charter.md#ii1-minima-only-base-collateral)  
   - [II.2 Solvency Invariant](stables_charter.md#ii2-solvency-invariant)  
@@ -37,6 +38,8 @@
 - [Article V — Oracle Framework](stables_charter.md#article-v--oracle-framework)  
 - [Article VI — Transparency Doctrine](stables_charter.md#article-vi--transparency-doctrine)  
 - [Article VII — Governance Evolution (Code-First Structural Limitation)](stables_charter.md#article-vii--governance-evolution-code-first-structural-limitation)  
+  - [VII.7 Strategic horizon scanning and external intelligence](stables_charter.md#vii7-strategic-horizon-scanning-and-external-intelligence)  
+  - [VII.8 Volunteer roles, task acknowledgment, and communication routing](stables_charter.md#vii8-volunteer-roles-task-acknowledgment-and-communication-routing)  
 - [Article VIII — On-Chain Anchoring](stables_charter.md#article-viii--on-chain-anchoring)  
 - [Article IX — AI Agents and Integration](stables_charter.md#article-ix--ai-agents-and-integration)  
   - [IX.1 Purpose and Scope](stables_charter.md#ix1-purpose-and-scope)  
@@ -182,6 +185,16 @@ Wallets that are not explicitly bound into the same Eligibility Commitment shall
 This design direction intentionally favours small and medium merchants and personal relations because it relies on continuity of interaction rather than cold one-off contact. Large, highly unpersonal retail environments where recognition cannot reasonably persist should not be expected to provide the same quality of interaction validation; retrocession entitlement therefore remains primarily driven by **qualified receipts** and enforced **caps**. As a result, simply creating additional Eligibility Commitments does not increase payout without additional qualifying economic activity.
 
 Exact technical mechanisms, eligibility proofs, anti-spam models, and delivery formats are part of implementation and governance documentation, and shall not override the immutable monetary core described in Article II.
+
+#### I.5.6 Minima base-layer activity monitoring (archive infrastructure)
+
+The price of Minima is the **sole external market risk** on the collateral side of the Stables structure (Article II.9). **Co-ordinated trading, layering, engineered liquidity events, or address-cluster behaviour** on the Minima base layer can feed into **oracle inputs and market psychology** even when the protocol’s internal arithmetic remains honest.
+
+The Council shall **maintain or cooperate with archive-grade visibility** into **Minima on-chain activity**: a continuous, queryable record derived from the **Minima chain archive**, including **archive-node-class** synchronisation and **structured exports** (for example **MySQL parity** where deployed under Council administration). This infrastructure exists to **pinpoint forming patterns** that may precede **orderly or disorderly Minima price pressure**, including **related-address clusters**, **abnormal timing or sequencing of flows**, **concentration shifts** read together with **volume and large transfers**, and other **early-warning signals** relevant to **oracle quality, treasury timing, and market-participant allocation**.
+
+Such monitoring is **non-discretionary with respect to protocol rules**: it does **not** replace deterministic issuance, redemption, or median-oracle design (Article II.5). It is a **stewardship, disclosure, and research** capability so that participants and governance can **anticipate manipulation risk** and align stress testing and public communication with **observable base-layer facts**.
+
+Exact schemas, query cadence, access tiers (including read-only analyst access), retention, and publication boundaries shall be specified in **implementation and administration** documentation (including procedures indexed in the project **session map** for the Minima archive). Those operational details remain **subordinate to the immutable monetary core**.
 
 ### I.3 Dual Destination Framework
 
@@ -352,6 +365,8 @@ The protocol distinguishes between two fundamentally different conditions:
 Key constraint: **gating affects issuance only. Redemption remains continuous.**
 
 This is integrity protection, not peg defence.
+
+**Complementary stewardship:** base-layer **Minima activity monitoring** using **archive infrastructure** (Article I.5.6) supports **oracle integrity and risk disclosure** by making **forming on-chain behaviour** legible for governance and participants. It does not replace statistical oracle design or deterministic issuance rules.
 
 ### II.6 No Forced Conversion
 
@@ -603,6 +618,7 @@ The Council becomes:
 
 - **Architect of expansion** — designing new banking functions within invariant boundaries
 - **Coordinator of ecosystem** — facilitating merchant adoption, agent programs, and community growth
+- **Sponsor of strategic horizon scanning** — maintaining routing, volunteer rosters, and publication discipline per Articles VII.7 and VII.8
 - **Guardian of invariant integrity** — ensuring that no upgrade, parameter change, or governance action violates the constitutional core
 
 The Council is not a monetary operator. It does not manage the money supply, defend the peg, or intervene in market dynamics.
@@ -670,6 +686,38 @@ Each phase must produce explicit records:
 #### VII.6.5 Property and Stewardship Distinction
 
 Protocol assets and rights are stewarded for the collectivity. No founder, Council member, or contributor may treat transferred protocol property as personal property once assigned to Council governance. Stewardship rights are fiduciary in nature and bounded by this Charter and approved governance process.
+
+### VII.7 Strategic horizon scanning and external intelligence
+
+**Terminology:** In French this function is often called **veille technologique** when limited to technology; Stables uses the broader idea **veille stratégique**: continuous awareness of **external developments that could materially affect** the protocol, participants, or the Minima base layer. In English this Charter uses **strategic horizon scanning** (sometimes **environmental scanning** in business literature, meaning the **external operating environment**, not only ecology).
+
+**Scope of scanning** shall explicitly include, at minimum:
+
+- **Technology** — cryptography, base-layer upgrades, wallet and node software, quantum and migration timelines, interoperability standards, and payment rails that touch self-custody or settlement.
+- **Law and compliance** — stablecoin, e-money, securities, sanctions, consumer-protection, and tax reporting rules in jurisdictions where the community operates or where infrastructure is hosted.
+- **Geopolitics and macro stability** — sanctions, capital controls, connectivity and hosting risk, and monetary regime shifts relevant to bridges and fiat reference units.
+- **Environment and physical risk** — energy supply, climate-related disruption to infrastructure, and supply-chain or hardware constraints relevant to nodes and merchants.
+- **Market and competitive structure** — alternative monetary designs, other chains, and industry moves that affect perception, liquidity, or oracle inputs.
+
+**Outputs and use:** scanning produces **signals, summaries, and sourced references** for the Council and the community. It does **not** replace **legal counsel, security audits, or protocol invariants**. Findings shall be **dated, attributed, and verifiable** where possible; speculative content shall be **labeled as such**.
+
+**Communication discipline:** summaries that may affect participant behaviour or public understanding of risk shall be **routed through the canonical surfaces** defined in Article VII.8 and in **`0_handshake/links.md`** (or its successor as single index), so that **general chat, official Council lines, security support, and research threads** are not conflated.
+
+### VII.8 Volunteer roles, task acknowledgment, and communication routing
+
+**Volunteer roles** (including horizon-scanning **watch leads** and other **work-stream owners**) shall be **explicitly named**, with a **written scope** (what they watch or deliver, what they do **not** decide, and how often they report).
+
+**Task acknowledgment:** any person accepting a role shall **confirm assignment** on a **Council-maintained roster or task board** (implementation choice: for example a pinned post, GitHub project, or Discord-integrated board). The roster shall show, at minimum: **role title**, **holder**, **start date**, **expected reporting cadence**, and **hand-off or end date** when applicable. **No silent ownership:** if a role is vacant, it shall be marked **vacant** until reassigned.
+
+**Communication routing (exact classes):**
+
+1. **Official Council positions and ratified summaries** — only surfaces designated for **binding-style announcements** (see **`0_handshake/links.md`** → *Council Official* and any successor the Council lists there). Community platforms are for **discussion**, not for impersonating Council finality unless expressly delegated.
+2. **General community discussion** — open hubs listed in **`0_handshake/links.md`** (e.g. community Telegram, Discord, socials) for debate, drafts, and volunteer coordination **before** ratification.
+3. **Security and key support** — **isolated** channels reserved for operational security (see **`0_handshake/links.md`**); **never** use them for general research, legislation threads, or marketing.
+4. **Strategic horizon scanning and working-group detail** — **Discord** (or equivalent long-thread venue) with **named channels or forums per domain** (e.g. legal, tech, geopolitics, environment) as the Council publishes in **`0_handshake/links.md`**; **Telegram Council Official** carries **short pointers** when a summary is ready for broad visibility.
+5. **Contact email** — for **private Council-facing** messages that must not sit in public scrollback; not a substitute for legal advice.
+
+The Council shall **keep `0_handshake/links.md` current** with the **authoritative URLs** and, when applicable, **channel names** for classes 1–4. If a surface changes, the index must change **before** public migration is announced.
 
 ---
 
