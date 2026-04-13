@@ -3,6 +3,7 @@
 **Last Calibration**: 2026-03-23 (v12)
 
 ## 1. THE PERMANENT RULES (GOVERNANCE)
+- **Single source of truth (ALL AGENTS AND OPERATORS):** Mandatory AI behaviour, Council workflow, server references, comms law, and operator notes (including IDE ergonomics such as background shell execution where supported) have **one** canonical home: **`0_handshake/handshake.md`**. Other files (**`0_handshake/README.md`**, **`session_map.md`**, **`global_knowledge_base.md`**, **`full_handshake_agent_command.md`**, **`.cursor/rules/*.mdc`**, host slash-command blurbs) **orient, index, or trigger reads**. **`full_handshake_agent_command.md`** is the **canonical ordered procedure** for the **full handshake review** (what to read, in what order, and how to confirm). It **must not** contradict **`handshake.md`**. If anything disagrees with `handshake.md`, **`handshake.md` wins.** Change the law here first; procedure changes go into **`full_handshake_agent_command.md`** then cross-references here as needed.
 - **Stables Protocol**: All project activities must occur in three dedicated streams:
     - `stream_1_app`: MiniDapp code and assets.
     - `stream_2_community`: Community content and infographics.
@@ -18,7 +19,7 @@
 - **Atomic Folder Rule**: 
     - `task_[description]`: For active/sandbox work.
     - `prod_[description]`: For stable, finalized deliverables.
-- **GitHub Pages static site (naming exception)**: The monorepo working tree that mirrors **`StablesCouncil/stablescouncil.github.io`** MUST live only at **`1_development/stream_1_app/task_stablescouncil_github_io/`**. **Do not** put that tree under a **`prod_*`** folder name (it is not a shipped MiniDapp **`prod_stables_app_*`** line). The nested **git** checkout used for **`git push`** to the public Pages repo, when retired from the monorepo root, is **moved under `3_archive/`** (not deleted). Operators push from **`git -C "<path-to-archived>/stablescouncil.github.io"`**, a fresh clone, or CI; see **`handover_document.md`** for the current path.
+- **GitHub Pages static site (naming exception)**: The monorepo working tree that mirrors **`StablesCouncil/stablescouncil.github.io`** MUST live only at **`1_development/stream_1_app/task_stablescouncil_github_io/`**. **Do not** put that tree under a **`prod_*`** folder name (it is not a shipped MiniDapp **`prod_stables_app_*`** line). The nested **git** checkout used for **`git push`** to the public Pages repo, when retired from the monorepo root, is **moved under `3_archive/`** (not deleted). Operators push from **`git -C "<path-to-archived>/stablescouncil.github.io"`**, a fresh clone, or CI; see **`handover_document.md`** for the current path. **Site generator**: that tree uses **Eleventy** (`@11ty/eleventy`): sources under **`src/`** (layouts in **`src/_includes/`**); run **`npm run build`** there before sync/push whenever **compiled** templates under **`src/`** changed. Root **`playing_field.html`** is **hand-maintained** (not emitted by Eleventy). Contracts and CSS order: **`0_handshake/web_component_spec.md`** (section *GitHub Pages site — Eleventy*).
 - **Active MiniDapp trees (two folders):** **Showcase** — `1_development/stream_1_app/prod_stables_app_v00.00.00.00.03/` (entry: `index.html`). **Demo (default for new product work)** — `1_development/stream_1_app/prod_stables_app_demo/`. **Version pointer, routing, zips:** `0_handshake/minidapp_version.md`.
 - **MiniDapp Versioning Policy (MANDATORY)**:
     - Use four **stages** in communications and release notes: **showcase**, **demo**, **test**, **prod** (see `0_handshake/minidapp_version.md` for on-chain scope per stage).
@@ -29,7 +30,7 @@
     - **Showcase** line: **`v00.00.03`** / **`v00.00.00.00.03`**. **Demo** line: **`v00.00.00.01.00`** (folder **`prod_stables_app_demo`**). See `minidapp_version.md` for bumps and porting rules.
     - Folder names may temporarily keep legacy numbering while migration is in progress; the authoritative mapping (folder path ↔ release label ↔ stage) lives in `0_handshake/minidapp_version.md`.
     - When uncertain, trust `minidapp_version.md` over inline examples elsewhere.
-    - **Cursor (always-on):** `.cursor/rules/stables-handshake.mdc` § **Development versioning** restates this policy for agents.
+    - **Editor automation (optional):** `.cursor/rules/stables-handshake.mdc` § **Development versioning** mirrors this policy where Cursor loads that file; all environments use **`minidapp_version.md`** and this **`handshake.md`** section as authority.
 - **MiniDapp Change Logging (MANDATORY)**: For **each** active MiniDapp folder you touch (showcase and/or demo), log **every user-visible change** in that folder’s `CHANGELOG.md` at the time the change is made. Do not postpone logging to release day.
 - **Release README Rule (MANDATORY)**: Every pushed version package must include a `README.md` section titled **"What changed in this version"** that summarizes the exact changes shipped in that version, sourced from `CHANGELOG.md`.
 - **Packaging Rule**: Zip the *contents* of the **chosen** `prod_stables_app_...` folder (showcase or demo) directly to create the `.mds.zip`. **Exclude** that folder’s `build/` directory (generated zips + notes). No file renaming inside the zip.
@@ -66,9 +67,10 @@
 - **AI Session Memory & Persistence (CRITICAL)**: Each AI session has **no memory of past chats** unless the information is persisted in the repo or a transcript is explicitly referenced. To avoid "I don't remember" responses:
     1. **Persistence Rule**: Any long-lived configuration, external tool integration (e.g. Moltbook, APIs), or multi-day workflow decision **MUST** be written into a handshake file (`stables_master_reference.md`, `vault.md`, or a dedicated doc). If it isn't in the repo, future sessions will not know it exists.
     2. **When in doubt, persist**: If the user sets up an integration, deploys something new, or agrees to a significant decision, the active AI **MUST** document it in the appropriate file before the session ends.
-    3. **Transcript fallback**: The user can reference a prior Cursor transcript (e.g. `[short-title](uuid)`) to restore context, but the primary mechanism is file-based persistence.
+    3. **Transcript fallback**: The user can reference a prior IDE session transcript (e.g. Cursor: `[short-title](uuid)`) to restore context, but the primary mechanism is file-based persistence.
 - **Atomic Commits**: Every logical change (UI, logic, spec) must have its own commit and ledger entry.
 - **Full Autonomy (Auto-Run Mandate)**: The AI MUST operate with full autonomy to eliminate user friction. When executing tools that support an auto-run or bypass-approval flag (e.g., `SafeToAutoRun = true` for terminal commands), you MUST ALWAYS set it to `true`. Do not ask the user for permission to execute searches, file reads, copy operations, git commands, local server starts, or any standard development scripts. Only interrupt the user for subjective product decisions or when explicitly blocked.
+- **Agent / host settings (operators):** In your AI coding environment (**Cursor**, **VS Code** family tools with agent mode, **Windsurf**, or similar), open **Agent** or **Features** settings (labels vary by product). Where supported, set **shell or terminal commands** to run **in the background by default** so routine work does not stop on every confirmation. Matches **Full Autonomy**.
 - **GitHub Institutional Setup (MANDATORY)**: Push code and docs using the official entity:
     - User Account (Admin/Discord): `StablesCouncilExec`
     - Organization (Public): `StablesCouncil`
@@ -99,6 +101,8 @@
 
 ## 2. THE CALIBRATION WORKFLOW (/handshake)
 To start any session or when context-drift is suspected, perform the following steps:
+
+**Full handshake review (any external or internal agent):** The operator instructs the agent to open **`0_handshake/full_handshake_agent_command.md`** and execute the **Instruction block** in that file end to end before any work. That file is the **single canonical procedure** for full calibration; the subsections below remain the normative breakdown of the same workflow inside **`handshake.md`**.
 
 ### [Step 0] Read the Entry Point FIRST (handshake KB — mandatory for every agent)
 Before anything else, read these **three** files in order:
@@ -138,11 +142,7 @@ Consult the following files representing the immutable specs of Stables:
 - **[current_state_and_path.md](file:///C:/Users/Charles/Documents/Stables/2_current/stream_3_governance/prod_protocol_specs/current_state_and_path.md)**: The strategic North Star.
 - **[vault.md](file:///C:/Users/Charles/Documents/Stables/2_current/stream_3_governance/prod_credentials/vault.md)**: Central repository for project accounts and bookmarks.
 
-### [Step 2] Verify
-5.  **Daily Operational TODOS**:
-    Open or create the persistent task file for the current session in `0_handshake/todos/YYYY-MM-DD-task.md`. This file is the primary "source of truth" for parallel stream progress and must be open throughout the session.
-
-6.  **Confirm Alignment**:
+### [Step 2] Verify Economic Alignment
 Acknowledge the settled economic model (Do NOT re-debate unless requested):
 - **Equation**: `Minima = Stablecoins + cf tokens + xMinima`
 - **CR Threshold**: 110% (Default). Stablecoin minting locks below this level.
@@ -191,15 +191,12 @@ When drafting replies for community channels (Telegram, Discord, X, etc.):
 - **Natural tone**: Write like a real person in a casual conversation. Short sentences, natural flow.
 
 ---
-**Active Pilots**:
-- **Lead Pilot**: Antigravity (Google DeepMind)
-- **Co-Pilot**: Cursor AI (Claude/Anthropic)
+**AI tooling (multi-platform):** More than one assistant or host may touch this repo. **Every** environment follows the **same** **`handshake.md`** and **`full_handshake_agent_command.md`**. Examples in active use include **Antigravity** (Google DeepMind) and **Cursor** (Claude/Anthropic); the list is not exclusive.
 
 **Blocked models (MANDATORY — do not use for Stables)**:
 - **Gemini 3 Flash** (Antigravity): Authorized (Ban revoked 2026-03-28). This model is now approved for all Stables work as per user instruction. Rule 150/16 is explicitly revoked.
 
-**Last Verified by Assistant: ANTIGRAVITY**
-*(I have read and locked the above rules into my active state. I will consult the specifications before every turn.)*
+**Housekeeping:** When Council changes model policy or tooling, update this subsection and **`README.md`** (One handshake, every platform) together.
 
 ---
 ## MiniDapp UI: single executable + spec + inventory

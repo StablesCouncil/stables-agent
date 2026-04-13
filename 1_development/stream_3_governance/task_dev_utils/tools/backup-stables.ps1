@@ -39,9 +39,14 @@ if (-not (Test-Path (Join-Path $ProjectRoot "0_handshake"))) {
     throw "Project root not found. Expected 0_handshake at: $ProjectRoot"
 }
 $Timestamp = Get-Date -Format "yyyy-MM-dd_HHmm"
+$TimestampCompact = Get-Date -Format "yyyyMMddHHmmss"
 $ZipName = "Stables_backup_$Timestamp.zip"
 
 $LocalZipPath = Join-Path $env:TEMP $ZipName
+
+# Staging must use a SHORT path: deep trees under 3_archive can exceed Windows MAX_PATH (~260)
+# when nested under AppData\Local\Temp\stables_backup_temp_..., breaking Compress-Archive.
+$StageRoot = Join-Path $env:SystemDrive "_StablesBackupStage"
 
 # Folders to backup (handshake Source of Truth + development + archive)
 $BackupFolders = @(
@@ -95,8 +100,12 @@ After this zip is created, the backup task runs sync-stables.ps1 (commit if dirt
 To list backups on server: ssh $VultrUser@$VultrHost "ls -la $BackupBaseOnServer"
 "@ | Out-File -FilePath $ManifestPath -Encoding utf8
 
-# Create zip using .NET (Compress-Archive has limitations with exclusions)
-$TempDir = Join-Path $env:TEMP "stables_backup_temp_$Timestamp"
+# Create zip using .NET (Compress-Archive has limitations with exclusions and long paths)
+New-Item -ItemType Directory -Path $StageRoot -Force | Out-Null
+$TempDir = Join-Path $StageRoot $TimestampCompact
+if (Test-Path $TempDir) {
+    Remove-Item -Path $TempDir -Recurse -Force -ErrorAction SilentlyContinue
+}
 New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
 
 $RoboExcludeDirs = @("node_modules", ".git", ".gemini", ".agent", "prod_credentials", "venv", "__pycache__", ".venv", "env")
@@ -120,7 +129,12 @@ try {
     }
     Copy-Item $ManifestPath (Join-Path $TempDir "BACKUP_MANIFEST.txt")
     Log "Compressing to zip (this may take several minutes)..."
-    Compress-Archive -Path "$TempDir\*" -DestinationPath $LocalZipPath -Force
+    try {
+        Compress-Archive -Path "$TempDir\*" -DestinationPath $LocalZipPath -Force
+    } catch {
+        Log "ERROR: Zip failed. If paths under 3_archive are extremely deep, enable Windows long paths (Group Policy: Enable Win32 long paths) or prune that archive tree."
+        throw
+    }
 } finally {
     Remove-Item -Path $TempDir -Recurse -Force -ErrorAction SilentlyContinue
 }

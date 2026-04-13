@@ -6,6 +6,8 @@
 
 **StablesAgent parity (Step 0c):** Immediately after this index, read the **entire** **`2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt`** so the session has the **same holistic public corpus** as the in-app / Telegram agent (rollup of all promoted brain `*.md`). Then load **`handshake.md`**, task-specific layers from **`session_map.md`**, and **Step 0b** when economics or protocol copy apply. If `llms.txt` disagrees with **`protocol_mechanics_spec.md`**, the spec wins — fix the brain markdown and regenerate `llms.txt`.
 
+**Full handshake review:** When the operator requires exhaustive calibration in one pass, the agent follows **`0_handshake/full_handshake_agent_command.md`** (Instruction block) before work. That file is the canonical procedure; this index still applies for layer routing after Step 0.
+
 ---
 
 ## Layers (bottom = most durable governance, top = fastest iteration)
@@ -33,7 +35,9 @@
 
 ## How to “refresh” any model in one message
 
-Paste:
+**Full handshake review (exhaustive):** Tell the agent to read and execute **`0_handshake/full_handshake_agent_command.md`** (Instruction block) before any work.
+
+**Protocol-only refresh (economics tasks):**
 
 > Read `0_handshake/global_knowledge_base.md`, the full `2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt`, then `handshake.md` Step 0b; answer from Charter (intent) + `protocol_mechanics_spec.md` (facts).
 

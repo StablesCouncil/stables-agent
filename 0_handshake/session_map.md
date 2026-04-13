@@ -7,7 +7,7 @@
 
 ## HOW TO USE THIS FILE
 
-1. Complete **`handshake.md` [Step 0]** every session, in order: **`README.md`** → **`session_map.md`** (this file) → **`global_knowledge_base.md`**, then **[Step 0c]** — read the full **`2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt`** (StablesAgent / public KB parity). No exceptions.
+1. **Full handshake review:** When the operator requires exhaustive calibration, open **`0_handshake/full_handshake_agent_command.md`** and execute its **Instruction block** before any work (canonical ordered procedure). Otherwise, complete **`handshake.md` [Step 0]** every session, in order: **`README.md`** → **`session_map.md`** (this file) → **`global_knowledge_base.md`**, then **[Step 0c]** — read the full **`2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt`** (StablesAgent / public KB parity). No exceptions.
 2. Based on the task type (see Section 3), load the required files in order (the KB index in **`global_knowledge_base.md`** summarizes layer priority).
 3. Never start work without confirming which files govern the task at hand.
 4. **Protocol economics** (mint, burn, xMinima, fees, CR, treasury, protocol copy): follow **`handshake.md` [Step 0b] Protocol Truth Refresh** — read `protocol_mechanics_spec.md` **before** relying on narrative elsewhere; it overrides conflicting prose.
@@ -20,6 +20,7 @@
 
 | File | Location | Purpose |
 |------|----------|---------|
+| `full_handshake_agent_command.md` | `0_handshake/` | **Full calibration trigger:** canonical ordered steps and paste text so any agent runs the complete handshake review. |
 | `session_map.md` | `0_handshake/` | **This file.** Master navigator. |
 | `global_knowledge_base.md` | `0_handshake/` | **Global KB index:** layer order (Charter → mechanics → master ref → brain → app → comms), tie-breakers, promotion, refresh one-liner. |
 | `llms.txt` | `2_current/stream_3_governance/prod_stablesagent-brain-base/` | **Step 0c — full public KB** (rollup of all brain `*.md` here). Same holistic corpus as StablesAgent; rebuild via `build_llms_txt.js` after editing sources. |
@@ -93,7 +94,7 @@
 |------|----------|---------|
 | `index.html` | `2_current/stream_2_community/` *(canonical)* | Live presentation source for stablescouncil.github.io. |
 | `index.html` | `3_archive/stream_2_community/prod_old_presentations/Presentation V1.0/public_stage/` | Archive of V1.0 for reference. |
-| **`task_stablescouncil_github_io/`** (tree) | `1_development/stream_1_app/task_stablescouncil_github_io/` | **GitHub Pages static site sandbox** (`links.html`, `dapp/`, `circulareconomy/`, etc.). **Not** a `prod_*` folder (handshake naming exception). Nested **`git`** checkout for pushes: **`3_archive/stream_1_app/task_archived_nested_repo_stablescouncil_github_io_2026-04-12/stablescouncil.github.io/`** (see that folder’s `README.md`). |
+| **`task_stablescouncil_github_io/`** (tree) | `1_development/stream_1_app/task_stablescouncil_github_io/` | **GitHub Pages static site sandbox** (`links.html`, `dapp/`, `circulareconomy/`, etc.). **Not** a `prod_*` folder (handshake naming exception). **Eleventy**: `package.json`, **`.eleventy.js`**, templates **`src/`**, shared chrome **`src/_includes/`**; **`npm run build`** emits root HTML for each compiled template. **`playing_field.html`** is **hand-maintained** at repo root (not emitted by Eleventy). Static assets remain at repo root (`stables.css`, `assets/`, …). Nested **`git`** checkout for pushes: **`3_archive/stream_1_app/task_archived_nested_repo_stablescouncil_github_io_2026-04-12/stablescouncil.github.io/`** (see that folder’s `README.md`). |
 
 ### LAYER 8 — CREDENTIALS & LEDGER (Load when committing or deploying)
 

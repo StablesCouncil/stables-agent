@@ -135,7 +135,19 @@ One-click manual sync (without full backup) still uses:
 
 `push-to-github.bat` → `sync-stables.ps1 -Message "One-click manual sync"`.
 
-### 7c. GitHub: `Permission denied (publickey)`
+### 7b. Scheduler user context
+
+For Vultr upload to work (ssh keys available), configure the task to:
+
+- Use account: `LITETOP\Charles`
+- **Run only when user is logged on** (not “whether user is logged on or not”)
+- Do **not** change the `backup-stables.ps1` arguments in the XML; update them via Task Scheduler UI if needed.
+
+### 7c. Zip step: `Could not find a part of the path` / `CompressArchiveUnauthorizedAccessError`
+
+Deep folders under **`3_archive`** can make **full path length** exceed the classic Windows **260-character** limit when files are first copied under a long temp path, then **`Compress-Archive`** runs. The backup script stages under a **short drive-root folder** (for example `C:\_StablesBackupStage\<timestamp>`) to avoid that. If zip still fails, enable **long paths** in Windows (Group Policy or registry `LongPathsEnabled`) or shorten/remove the deepest archived tree.
+
+### 7d. GitHub: `Permission denied (publickey)`
 
 If `git push backup main` fails with **`git@github.com: Permission denied (publickey)`**, your **`backup`** remote is using **SSH** and GitHub is not accepting any key from that shell (interactive PowerShell or Task Scheduler).
 
@@ -156,11 +168,3 @@ ssh -T git@github.com
 ```
 
 You should see a success message naming your GitHub user before relying on automated push.
-
-### 7b. Scheduler user context
-
-For Vultr upload to work (ssh keys available), configure the task to:
-
-- Use account: `LITETOP\Charles`
-- **Run only when user is logged on** (not “whether user is logged on or not”)
-- Do **not** change the `backup-stables.ps1` arguments in the XML; update them via Task Scheduler UI if needed.

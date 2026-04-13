@@ -1,5 +1,5 @@
 # STABLES WEB COMPONENT SPECIFICATION
-**Version**: 1.3  
+**Version**: 1.5  
 **Status**: MANDATORY — Load this file whenever building or editing any Stables web surface.  
 **Shared CSS**: `1_development/stream_3_governance/task_x_agent_node/stables.css`  
 **Reference implementation**: `https://stablescouncil.github.io/`  
@@ -106,6 +106,22 @@ Every new Stables HTML page starts from this shell. Copy verbatim, change nothin
 </body>
 </html>
 ```
+
+---
+
+## GITHUB PAGES SITE — ELEVENTY (`task_stablescouncil_github_io`)
+
+**Tree**: `1_development/stream_1_app/task_stablescouncil_github_io/`
+
+**Rule**: Pages that share the **site chrome** (header, side rail, StablesAgent FAB, consistent OG/Twitter meta) SHOULD be authored as Eleventy templates under **`src/`**, with chrome in **`src/_includes/`**, so one partial change updates every compiled page. Hand-maintained root **`*.html`** may remain until migrated; prefer Eleventy for new long-form or chrome pages.
+
+| Piece | Contract |
+|-------|------------|
+| **Build** | In that folder: `npm install` (once per machine), then **`npm run build`**. Eleventy emits HTML at the **site root** for each template under **`src/`** (excluding `_includes` / `_data`). Run build before copying or pushing when you add or change compiled pages. |
+| **Config** | **`.eleventy.js`** — `input: "src"`, `includes: "_includes"`, output at repo root. Static files (`stables.css`, `assets/`, `CNAME`, images) stay **normal tracked files** at their paths; do not rely on passthrough copy for assets that already exist in the tree unless you add a documented pipeline. |
+| **Data** | **`src/_data/site.js`** — e.g. `url` (`https://stablescouncil.github.io`), `org` (`https://stablescouncil.org`) for canonical URLs and outbound links. |
+| **CSS** | Link **`/stables.css`** first, then **`/assets/site-chrome.css`**, **`/assets/site-rail.css`**, optional **`/assets/<page>.css`**. Same token and button rules as everywhere else in this spec. |
+| **Hand-maintained exception** | **`playing_field.html`** at the repo root of **`task_stablescouncil_github_io/`** is edited directly (Council review workflow). It is **not** overwritten by Eleventy. Reuse **`src/_includes/`** patterns by copy or by adding a new template when you promote another page to the Eleventy pipeline. |
 
 ---
 

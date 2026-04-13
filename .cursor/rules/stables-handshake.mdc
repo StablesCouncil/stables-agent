@@ -1,18 +1,15 @@
 ---
-description: Mandatory Stables project calibration — read at the start of every session
+description: Mandatory Stables calibration at session start — same procedure as every AI host; optional editor mirror when the IDE loads this file
 alwaysApply: true
 ---
 
 # Stables Mandatory Handshake
 
-At the start of **every session**, before any work, read these in order:
+**Single source of truth:** **`0_handshake/handshake.md`** is the only canonical copy of governance and agent operating rules. This `.mdc` file is a **load-order and UI reminder**. If anything here disagrees with `handshake.md`, **`handshake.md` wins.**
 
-1. `0_handshake/README.md` — orientation and calibration order  
-2. `0_handshake/session_map.md` — full file map and task→file matrix  
-3. `0_handshake/global_knowledge_base.md` — handshake KB index (layers, tie-breakers, what to open next)  
-4. **`2_current/stream_3_governance/prod_stablesagent-brain-base/llms.txt` — entire file** — **StablesAgent parity**: same consolidated public knowledge as the in-app / Telegram agent corpus (and as ChatGPT-style “paste one URL”). Rebuild with `node build_llms_txt.js` in that folder if the brain `.md` files changed and the rollup is stale.
+**Full handshake review:** At the start of **every session**, before any work, read and execute every step in **`0_handshake/full_handshake_agent_command.md`** (Instruction block). It is the **canonical ordered procedure** (Step 0, 0c, conditional 0b, full `handshake.md`, Step 1 masters, Step 2, `session_map` task matrix, confirmations).
 
-Then follow the calibration steps in `0_handshake/handshake.md` (including **Step 0b** when the task touches protocol economics or how Stables works in copy).
+Then follow any remaining calibration detail in `0_handshake/handshake.md` (including **Step 0b** when the task touches protocol economics or how Stables works in copy) if not already satisfied by the block above.
 
 **MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first. **Two trees:** showcase **`prod_stables_app_v00.00.00.00.03`**, demo **`prod_stables_app_demo`**. **Default new work → demo** unless the task is showcase-only. Log **every** user-visible change in **`CHANGELOG.md`** in the folder you edit. For every pushed version, the shipped `README.md` must include **"What changed in this version"** from `CHANGELOG.md`. **Version labels** follow § Development versioning below.
 
