@@ -1,8 +1,12 @@
 # Handover Document: Stables Protocol Branding Unification
 
-## Status: **ACTIVE — local work only**
+## Status: **ACTIVE — Pages ship 2026-04-13**
 
-Branding and navigation parity are defined across **six** community-facing HTML nodes. **Do not push** to GitHub until you run an explicit ship checklist.
+Branding and navigation parity are defined across **six** community-facing HTML nodes.
+
+**Last GitHub Pages push:** `StablesCouncil/stablescouncil.github.io` **`main`** commit **`afc3a1f`** (2026-04-13). Sandbox source: `1_development/stream_1_app/task_stablescouncil_github_io/`; publish clone: `3_archive/.../stablescouncil.github.io/` with **`git --git-dir=_embedded_git`**. Remote was reset to **`origin/main`** (`dad99fe`) then re-synced from the sandbox to avoid rebase conflicts.
+
+**Monorepo:** commit any updated files under `3_archive/.../stablescouncil.github.io/` if you version the mirror in the parent repo.
 
 ---
 
