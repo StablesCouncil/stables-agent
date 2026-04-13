@@ -60,20 +60,53 @@ function Invoke-Git {
 }
 
 function Write-PushFailureDiagnostics {
-    param([string]$RemoteName)
+    param(
+        [string]$RemoteName,
+        [string]$FailureText = ""
+    )
+    $ft = if ($FailureText) { $FailureText } else { "" }
     $url = (& $GitExe config --get "remote.$RemoteName.url" 2>$null) | Out-String
     $url = $url.Trim()
     if (-not $url) { return }
     Write-Host "Remote URL: $url" -ForegroundColor DarkGray
+
+    $networkish = $ft -match '(?i)recv failure|connection was reset|broken pipe|timed out|could not resolve|Failed to connect|10054|ECONNRESET|WSAECONNRESET|empty reply|TLS.*unexpected|SSL connection'
+    $authish = $ft -match '(?i)\b401\b|\b403\b|Authentication failed|could not read (Username|Password)|SSL certificate problem|credential|logon failed|access denied'
+
     if ($url -match "^git@github\.com:") {
         $pathPart = ($url -replace "^git@github\.com:", "") -replace "\.git$", ""
         $httpsUrl = "https://github.com/$pathPart.git"
-        Write-Host "DIAGNOSTIC: This remote uses SSH (git@github.com). Permission denied (publickey) means GitHub did not accept any SSH key for this process (missing key, wrong key, or ssh-agent not loaded in Task Scheduler)." -ForegroundColor Yellow
+        if ($networkish) {
+            Write-Host "DIAGNOSTIC: SSH session to GitHub dropped (network/VPN/firewall/antivirus or transient outage). Retry; if it repeats, try another network or HTTPS remote." -ForegroundColor Yellow
+        } elseif ($ft -match '(?i)publickey|Permission denied') {
+            Write-Host "DIAGNOSTIC: GitHub did not accept your SSH key for this shell (missing key, wrong key, or ssh-agent not loaded in Task Scheduler)." -ForegroundColor Yellow
+        } else {
+            Write-Host "DIAGNOSTIC: SSH remote (git@github.com). Check key, ssh-agent, and: ssh -T git@github.com" -ForegroundColor Yellow
+        }
         Write-Host "  Option A — use HTTPS for automated pushes (Git Credential Manager + PAT):" -ForegroundColor Cyan
         Write-Host "    git remote set-url $RemoteName $httpsUrl" -ForegroundColor White
-        Write-Host "  Option B — keep SSH: add a key to your GitHub account, ensure ssh-agent has the key (ssh-add), and test: ssh -T git@github.com" -ForegroundColor Cyan
+        Write-Host "  Option B — keep SSH: add public key to GitHub; ssh-add; test ssh -T git@github.com" -ForegroundColor Cyan
     } elseif ($url -match "^https://github\.com/") {
-        Write-Host "DIAGNOSTIC: HTTPS remote. If push failed on auth, renew the PAT or re-sign in via Git Credential Manager." -ForegroundColor Yellow
+        if ($networkish) {
+            Write-Host "DIAGNOSTIC: HTTPS connection to GitHub was cut mid-flight (Recv failure / reset). This is usually network (Wi-Fi, VPN, firewall, antivirus HTTPS inspection), not a bad PAT. Retry the push; try another network or VPN on/off." -ForegroundColor Yellow
+        } elseif ($authish) {
+            Write-Host "DIAGNOSTIC: HTTPS auth or TLS trust. Renew the PAT or re-sign in via Git Credential Manager; check proxy/SSL inspection certificates." -ForegroundColor Yellow
+        } else {
+            Write-Host "DIAGNOSTIC: HTTPS remote. If the error mentions reset/timeout/recv, treat as network; if 401/403/credential, treat as auth." -ForegroundColor Yellow
+        }
+    }
+}
+
+function Invoke-GitPush {
+    param([string]$RemoteName, [string]$Branch)
+    $out = & $GitExe @("push", $RemoteName, $Branch) 2>&1 | ForEach-Object { "$_" }
+    if ($LASTEXITCODE -ne 0) {
+        $joined = ($out | Where-Object { $_ }) -join "`n"
+        Write-Host "ERROR: git push $RemoteName $Branch failed (exit $LASTEXITCODE)." -ForegroundColor Red
+        if ($joined) { Write-Host $joined -ForegroundColor DarkRed }
+        Write-PushFailureDiagnostics -RemoteName $RemoteName -FailureText $joined
+        Write-Host "TIP: Run 'git remote -v' to confirm fetch/push URLs." -ForegroundColor DarkGray
+        exit 1
     }
 }
 
@@ -98,15 +131,8 @@ if ($Status) {
     } else {
         Invoke-Git @("commit", "-m", $Message)
     }
-    try {
-        Invoke-Git @("push", $Remote, $MainBranch)
-        Write-Host "Successfully pushed to GitHub ($Remote/$MainBranch)." -ForegroundColor Green
-    } catch {
-        Write-Host "ERROR: Git push failed ($($_.Exception.Message))" -ForegroundColor Red
-        Write-PushFailureDiagnostics -RemoteName $Remote
-        Write-Host "TIP: Run 'git remote -v' to confirm fetch/push URLs." -ForegroundColor DarkGray
-        exit 1
-    }
+    Invoke-GitPush -RemoteName $Remote -Branch $MainBranch
+    Write-Host "Successfully pushed to GitHub ($Remote/$MainBranch)." -ForegroundColor Green
     exit 0
 }
 
@@ -125,13 +151,7 @@ if ($AlsoPushWhenClean) {
     }
     if ([int]$ahead -gt 0) {
         Write-Host "Working tree clean but $ahead commit(s) ahead of $RemoteTracking; pushing..." -ForegroundColor Yellow
-        try {
-            Invoke-Git @("push", $Remote, $MainBranch)
-        } catch {
-            Write-Host "ERROR: Git push failed ($($_.Exception.Message))" -ForegroundColor Red
-            Write-PushFailureDiagnostics -RemoteName $Remote
-            exit 1
-        }
+        Invoke-GitPush -RemoteName $Remote -Branch $MainBranch
         Write-Host "Push complete." -ForegroundColor Green
     } else {
         Write-Host "Nothing to push (not ahead of $RemoteTracking)." -ForegroundColor Green

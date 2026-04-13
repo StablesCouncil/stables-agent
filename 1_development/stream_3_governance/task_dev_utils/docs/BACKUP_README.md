@@ -168,3 +168,5 @@ ssh -T git@github.com
 ```
 
 You should see a success message naming your GitHub user before relying on automated push.
+
+**`Recv failure: Connection was reset`** (HTTPS): almost always a **transient network** issue (Wi-Fi, VPN, firewall, antivirus TLS scanning), not a bad password or PAT. Run **`git push backup main`** again when the line is stable; the backup zip and Vultr upload already succeeded.
