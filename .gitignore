@@ -48,6 +48,7 @@ build_llms_txt.js
 
 # Ignore nested git repositories (already handled by their own .git)
 1_development/stream_1_app/task_stablescouncil_github_io/
+_tmp_pages_clone/
 
 # Operational / Credentials / Admin (NEVER PUSH TO GITHUB)
 2_current/stream_3_governance/prod_admin/
