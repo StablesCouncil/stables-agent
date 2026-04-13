@@ -62,7 +62,7 @@ Council handshake name today is **`task_stablescouncil_github_io`**. If you pref
 
 ## Template page (first build)
 
-**Chosen template:** **`links.html`** in **`1_development/stream_1_app/task_stablescouncil_github_io/`** (**Website map**, node 3). Live URL still maps from the Pages repo (`stablescouncil.github.io`).
+**Chosen template:** **`links.html`** in **`1_development/stream_1_app/task_stablescouncil_github_io/`** (**All links** hub, node 3). Live URL still maps from the Pages repo (`stablescouncil.github.io`).
 
 **Why this page first:** It is mostly a structured list inside a single main column; wrapping it in a new global header and footer is mechanically simpler than starting on the long presentation or heavy diagram pages. After the shell looks right here, the same HTML/CSS pattern is copied to the other five files with **content blocks left untouched**.
 
