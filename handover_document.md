@@ -4,7 +4,9 @@
 
 Branding and navigation parity are defined across **six** community-facing HTML nodes.
 
-**Last GitHub Pages push:** `StablesCouncil/stablescouncil.github.io` **`main`** commit **`afc3a1f`** (2026-04-13). Sandbox source: `1_development/stream_1_app/task_stablescouncil_github_io/`; publish clone: `3_archive/.../stablescouncil.github.io/` with **`git --git-dir=_embedded_git`**. Remote was reset to **`origin/main`** (`dad99fe`) then re-synced from the sandbox to avoid rebase conflicts.
+**Last GitHub Pages push:** `StablesCouncil/stablescouncil.github.io` **`main`** commit **`f7f6e45`** (2026-04-13). Includes **`CNAME`** set to **`stablescouncil.org`** (was empty, which caused GitHub’s “There isn’t a GitHub Pages site here” at the apex when DNS already pointed at GitHub). Sandbox source: `1_development/stream_1_app/task_stablescouncil_github_io/`; publish clone: `3_archive/.../stablescouncil.github.io/` with **`git --git-dir=_embedded_git`**. Earlier same day: content sync landed as **`afc3a1f`** after reset to **`origin/main`** (`dad99fe`) to avoid rebase conflicts.
+
+**Custom domain checklist (operators):** Repo root **`CNAME`** must match **GitHub → Settings → Pages → Custom domain** for `stablescouncil.org`. DNS at the registrar must follow [GitHub’s apex docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site) (A/AAAA or ALIAS to Pages). After push, allow a few minutes, then **Enforce HTTPS** once the certificate provisions.
 
 **Monorepo:** commit any updated files under `3_archive/.../stablescouncil.github.io/` if you version the mirror in the parent repo.
 
