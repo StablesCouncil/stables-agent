@@ -99,7 +99,19 @@ function Write-PushFailureDiagnostics {
 
 function Invoke-GitPush {
     param([string]$RemoteName, [string]$Branch)
-    $out = & $GitExe @("push", $RemoteName, $Branch) 2>&1 | ForEach-Object { "$_" }
+    # Git writes progress to stderr; with $ErrorActionPreference = 'Stop' (script default), PS 5.1
+    # surfaces stderr as ErrorRecord and can abort before we read $LASTEXITCODE.
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+    try {
+        $raw = & $GitExe @("push", $RemoteName, $Branch) 2>&1
+    } finally {
+        $ErrorActionPreference = $prevEap
+    }
+    $out = foreach ($line in $raw) {
+        if ($null -eq $line) { continue }
+        if ($line -is [System.Management.Automation.ErrorRecord]) { $line.Exception.Message } else { "$line" }
+    }
     if ($LASTEXITCODE -ne 0) {
         $joined = ($out | Where-Object { $_ }) -join "`n"
         Write-Host "ERROR: git push $RemoteName $Branch failed (exit $LASTEXITCODE)." -ForegroundColor Red
