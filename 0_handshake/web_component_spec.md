@@ -1,5 +1,5 @@
 # STABLES WEB COMPONENT SPECIFICATION
-**Version**: 1.5  
+**Version**: 1.6  
 **Status**: MANDATORY — Load this file whenever building or editing any Stables web surface.  
 **Shared CSS**: `1_development/stream_3_governance/task_x_agent_node/stables.css`  
 **Reference implementation**: `https://stablescouncil.github.io/`  
@@ -122,6 +122,7 @@ Every new Stables HTML page starts from this shell. Copy verbatim, change nothin
 | **Data** | **`src/_data/site.js`** — e.g. `url` (`https://stablescouncil.github.io`), `org` (`https://stablescouncil.org`) for canonical URLs and outbound links. |
 | **CSS** | Link **`/stables.css`** first, then **`/assets/site-chrome.css`**, **`/assets/site-rail.css`**, optional **`/assets/<page>.css`**. Same token and button rules as everywhere else in this spec. |
 | **Hand-maintained exception** | **`playing_field.html`** at the repo root of **`task_stablescouncil_github_io/`** is edited directly (Council review workflow). It is **not** overwritten by Eleventy. Reuse **`src/_includes/`** patterns by copy or by adding a new template when you promote another page to the Eleventy pipeline. |
+| **Site chrome body classes** | Long-form static pages that use the shared header and rail: **`site-chrome-body`**, **`deck-chrome-page`** (taller header, same scale as **`playing_field.html`**), **`links-page-body`** (brand and MINIMA pill aligned to the same horizontal column as the main content, see **`assets/site-chrome.css`**). Default column width for that math is **680px** (All links hub). Pages whose main column is **`site-chrome-main--document`** (max **960px**) add **`playing-field-page`**, **`qr-code-page`**, or **`circulareconomy-page`** on **`<body>`** so **`--links-stack-max`** becomes **960px**. **`ambassadors-doc-page`** uses **860px** to match that page’s **`.container`**. **`has-site-rail`** when the globe/share rail is present. Root pages link **`stables.css`** and **`assets/…`**; one level down (e.g. **`circulareconomy/index.html`**) use **`../stables.css`** and **`../assets/…`** so the same files are loaded from the repo root. |
 
 ---
 

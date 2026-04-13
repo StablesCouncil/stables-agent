@@ -10,20 +10,28 @@ Branding and navigation parity are defined across **six** community-facing HTML 
 
 Paths are relative to the Stables repo root: `C:\Users\Charles\Documents\Stables\`.
 
-| # | Node | Path on this machine (edit here) |
-|---|------|-------------------------------------|
-| 1 | **Home Page** | `2_current/stream_2_community/prod_presentation_v02/index.html` |
-| 2 | **Playing Field** | `2_current/stream_2_community/prod_presentation_v02/playing_field.html` |
-| 3 | **Website map** | `1_development/stream_1_app/task_stablescouncil_github_io/links.html` |
+**Single folder for all six public site nodes (same tree the agent edits):**  
+`1_development/stream_1_app/task_stablescouncil_github_io/`
+
+Council handshake name today is **`task_stablescouncil_github_io`**. If you prefer a short working name (for example **`website`**), treat that as an alias for this path until Council renames the folder or adds a junction/symlink.
+
+| # | Node | Path (edit here) |
+|---|------|------------------|
+| 1 | **Home Page** (full presentation) | `1_development/stream_1_app/task_stablescouncil_github_io/index.html` |
+| 2 | **Playing Field** | `1_development/stream_1_app/task_stablescouncil_github_io/playing_field.html` |
+| 3 | **Website map (All links)** | `1_development/stream_1_app/task_stablescouncil_github_io/links.html` |
 | 4 | **Circular Economy** | `1_development/stream_1_app/task_stablescouncil_github_io/circulareconomy/index.html` |
 | 5 | **Banking System** | `1_development/stream_1_app/task_stablescouncil_github_io/bankingsystem/index.html` |
 | 6 | **Ambassador Program** | `1_development/stream_1_app/task_stablescouncil_github_io/ambassadorsprogramdesc.html` |
+
+**Mirror (optional, not the primary edit target for these six):**  
+`2_current/stream_2_community/prod_presentation_v02/` still holds **`index.html`** and **`playing_field.html`** copies used elsewhere in the repo. When you change the home page or Playing Field for **stablescouncil.org**, edit the **`task_stablescouncil_github_io/`** files above first, then sync into **`prod_presentation_v02/`** if that mirror must stay aligned.
 
 ### Edit path, archive push clone (no root duplicate)
 
 | Role | Path | Why it exists |
 |------|------|----------------|
-| **Edit here** | `1_development/stream_1_app/task_stablescouncil_github_io/` | Sandbox inside the private Stables repo (handshake: **`task_*`**, not **`prod_*`**, so it is not confused with MiniDapp **`prod_stables_app_*`** trees). |
+| **Edit here (website / Pages sandbox)** | `1_development/stream_1_app/task_stablescouncil_github_io/` | Single tree: presentation **`index.html`**, **`playing_field.html`**, **`links.html`**, subfolders, **`assets/`**, **`stables.css`**, **`dapp/`**, etc. Handshake: **`task_*`**, not **`prod_*`**, so it is not confused with MiniDapp **`prod_stables_app_*`** trees. |
 | **Push from here (archived nested repo)** | `3_archive/stream_1_app/task_archived_nested_repo_stablescouncil_github_io_2026-04-12/stablescouncil.github.io/` | Full **`StablesCouncil/stablescouncil.github.io`** clone; Git metadata is stored as **`_embedded_git/`** (not **`.git`**) so the parent repo can version the whole tree. Use **`git --git-dir=.../_embedded_git --work-tree=.../stablescouncil.github.io`** (see archive **`README.md`**), then merge in changes from the sandbox and push. |
 
 **Do not** recreate **`1_development/stream_2_community/prod_stablescouncil_github_io/`** (old duplicate path, removed earlier).
@@ -31,10 +39,6 @@ Paths are relative to the Stables repo root: `C:\Users\Charles\Documents\Stables
 **Ship workflow:** edit under **`task_stablescouncil_github_io/`**; when ready to publish, copy or robocopy changed files into the **archived** checkout’s working tree (same relative paths), commit, and push from that repo. Alternatively clone **`StablesCouncil/stablescouncil.github.io`** elsewhere and sync the same way. **Never** re-add a second full tree at the **Stables** repo root unless Council explicitly chooses submodule layout again.
 
 **Handshake (`0_handshake/README.md`, `handshake.md` §1):** new HTML/CSS work stays under **`1_development/`**; retiring the root nested repo was an **archive move**, not a delete.
-
-**Canonical Pages sandbox in this workspace:**  
-`1_development/stream_1_app/task_stablescouncil_github_io/`  
-(full mirror: `links.html`, `index.html`, `circulareconomy/`, `bankingsystem/`, `dapp/`, etc.)
 
 **Synced (2026-04-12):** Pages tree merged into **`task_stablescouncil_github_io/`**; step-1 chrome: `links.html`, `stables.css`, `assets/site-chrome.css`. **2026-04-12:** Root **`stablescouncil.github.io/`** nested checkout **archived** under **`3_archive/...`**; monorepo **`git rm --cached stablescouncil.github.io`** applied so the parent index no longer tracks a root gitlink.
 
@@ -74,8 +78,8 @@ Each of the six HTML files will **link** `stables.css` (per spec) **and** `site-
 
 1. Finish chrome on **`links.html`** (template).  
 2. **`circulareconomy/index.html`** and **`bankingsystem/index.html`** (wrap existing body; remove duplicate global chrome CSS from those files as it migrates to `site-chrome.css`).  
-3. **`prod_presentation_v02/index.html`** and **`playing_field.html`** (inject shell around existing full-page structure; trim only duplicated global rules).  
-4. **`ambassadorsprogramdesc.html`** (working copy under **`task_stablescouncil_github_io/`**; on ship, mirror into the **archived** Pages checkout or your push clone and push).
+3. **`task_stablescouncil_github_io/index.html`** and **`playing_field.html`** (inject shell around existing full-page structure; trim only duplicated global rules; sync **`prod_presentation_v02/`** if you still use that mirror).  
+4. **`ambassadorsprogramdesc.html`** (under **`task_stablescouncil_github_io/`**; on ship, mirror into the **archived** Pages checkout or your push clone and push).
 
 **Confirmed:** This rollout order is approved.
 
@@ -99,4 +103,4 @@ Step 2 subpages use **`../stables.css`** and **`../assets/site-chrome.css`** rel
 
 ---
 
-*Last update: Handshake no-delete archive rule; Pages sandbox renamed to **`task_stablescouncil_github_io/`**; root nested repo archived and removed from parent index (2026-04-12).*
+*Last update: Handover table retargeted so all six site nodes list **`1_development/stream_1_app/task_stablescouncil_github_io/`** (single website tree); optional **`prod_presentation_v02/`** mirror called out (2026-04-12). Earlier: Handshake no-delete archive rule; root nested repo archived and removed from parent index.*

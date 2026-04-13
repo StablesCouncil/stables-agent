@@ -1,29 +1,30 @@
 <!DOCTYPE html>
+<!-- Main presentation: open from this folder (file:// or http) so stables.css, links.html, and playing_field.html resolve. Public links use https://stablescouncil.org/. -->
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon: local favicon.png in this folder is empty; use hosted symbol so tab icon works from file:// and .org -->
-    <link rel="icon" type="image/png" href="https://stablescouncil.org/brand/assets/logo-symbol.png">
-    <link rel="apple-touch-icon" href="https://stablescouncil.org/brand/assets/logo-symbol.png">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link rel="apple-touch-icon" href="/favicon.png">
 
     <!-- Social Previews (Open Graph) -->
     <meta property="og:title" content="Stables | Be your bank">
     <meta property="og:description"
         content="Money that is truly yours. Secure, Pseudonymous and Unstoppable. Built on Minima.">
-    <meta property="og:image" content="https://stablescouncil.github.io/brand/assets/twitter-header.png">
+    <meta property="og:image" content="https://stablescouncil.org/brand/assets/twitter-header.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://stablescouncil.github.io">
+    <meta property="og:url" content="https://stablescouncil.org">
 
     <!-- Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Stables | Be your bank">
     <meta name="twitter:description" content="Money that is truly yours. Secure, Pseudonymous and Unstoppable.">
-    <meta name="twitter:image" content="https://stablescouncil.github.io/brand/assets/twitter-header.png">
+    <meta name="twitter:image" content="https://stablescouncil.org/brand/assets/twitter-header.png">
 
     <!-- Google Fonts - Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,10 +54,64 @@
             --button-sec: #1f2937;
             --glow: rgba(103, 232, 249, 0.15);
             
-            /* Fluid Spacing (extra gutter for file:// and small viewports) */
-            --container-pad: clamp(1.35rem, 6.5vw, 3.5rem);
+            /* Fluid Spacing */
+            --container-pad: clamp(1rem, 5vw, 2.5rem);
             --section-gap: clamp(2rem, 10vw, 6.25rem);
+            --header-h: 72px;
         }
+
+        /* STICKY HEADER (Sync with dApp behavior) */
+        .stables-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-h);
+            background: rgba(11, 15, 20, 0.4);
+            backdrop-filter: blur(24px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5%;
+            z-index: 1000;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        body.header-hidden .stables-header {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+        }
+
+        .header-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .header-link:hover { color: var(--accent-cyan); }
 
         * {
             box-sizing: border-box;
@@ -71,51 +126,14 @@
             overflow-x: hidden;
             line-height: 1.6;
             font-weight: 400;
-        }
-
-        /* Deck lead-in above Next (playing field) */
-        section#deck-more.deck-more {
-            min-height: auto;
-            padding: clamp(2.5rem, 6vw, 3.5rem) clamp(1rem, 4vw, 2rem) 0;
-            justify-content: flex-end;
-        }
-
-        .deck-more-inner {
-            text-align: center;
-            max-width: 42rem;
-            margin: 0 auto;
-            padding: 0 clamp(0.75rem, 3vw, 1.5rem);
-        }
-
-        .deck-more-title {
-            font-size: clamp(1.75rem, 4vw, 2.5rem);
-            font-weight: 800;
-            color: var(--text-primary);
-            margin-bottom: 0.85rem;
-            line-height: 1.2;
-        }
-
-        .deck-more-lead {
-            color: var(--text-secondary);
-            font-size: clamp(1rem, 2.2vw, 1.15rem);
-            line-height: 1.55;
+            padding-top: var(--header-h);
         }
 
         /* Next step (Playing Field), same strip rhythm as site-map nav */
         section#deck-next.deck-next {
             min-height: auto;
-            padding: clamp(1.25rem, 4vw, 2rem) clamp(1rem, 4vw, 2rem) clamp(2rem, 5vw, 3rem);
+            padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(2rem, 5vw, 3rem);
             justify-content: center;
-        }
-
-        section#deck-next.deck-next .container {
-            padding-left: clamp(1.25rem, 5vw, 3rem);
-            padding-right: clamp(1.25rem, 5vw, 3rem);
-        }
-
-        section#deck-next.deck-next .btn-group {
-            max-width: 26rem;
-            margin: 0 auto;
         }
 
         /* Minimal footer: parity with links.html (site-chrome-footer--minimal) */
@@ -241,7 +259,7 @@
             transform: translateY(30px);
             transition: all 1s ease-out;
             position: relative;
-            padding: 4rem var(--container-pad);
+            padding: 4rem 0;
             background: radial-gradient(circle at top, rgba(103, 232, 249, 0.18), transparent 55%) #0b0f14;
         }
 
@@ -257,41 +275,6 @@
                 min-height: 100vh;
                 display: flex;
                 align-items: center;
-            }
-        }
-
-        /* Hero: pull headline + tagline up toward wordmark; add space before CTAs */
-        section#hero .brand-container .minima-badge {
-            margin-bottom: 8px;
-        }
-
-        section#hero .brand-container .logo-wordmark {
-            margin: 6px auto 4px;
-        }
-
-        section#hero .brand-container .hero-tagline {
-            margin-bottom: clamp(28px, 4.5vw, 44px);
-        }
-
-        section#hero .brand-container .btn-group {
-            margin-top: clamp(10px, 2vw, 20px);
-        }
-
-        @media (max-width: 768px) {
-            section#hero .brand-container .minima-badge {
-                margin-bottom: 6px;
-            }
-
-            section#hero .brand-container .logo-wordmark {
-                margin: 4px auto 3px;
-            }
-
-            section#hero .brand-container .hero-tagline {
-                margin-bottom: clamp(22px, 5vw, 36px);
-            }
-
-            section#hero .brand-container .btn-group {
-                margin-top: clamp(8px, 2.5vw, 16px);
             }
         }
 
@@ -611,6 +594,21 @@
             }
         }
 
+        .hero-cta-text {
+            font-size: clamp(1.25rem, 2.5vw, 1.375rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 12px;
+            margin-top: 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero-cta-text {
+                margin-bottom: 10px;
+                font-size: clamp(1rem, 3vw, 1.125rem);
+            }
+        }
+
         .scroll-indicator {
             margin-top: 20px;
             margin-left: auto;
@@ -777,8 +775,8 @@
         /* Language Switcher & Share Button Container */
         .lang-switcher {
             position: fixed;
-            top: clamp(12px, 3vw, 20px);
-            right: clamp(1rem, 4vw, 2.25rem);
+            top: 20px;
+            right: 20px;
             z-index: 1000;
             display: flex;
             flex-direction: column;
@@ -1041,7 +1039,32 @@
     </style>
 </head>
 
-<body>
+<body class="header-hidden">
+    <header class="stables-header" id="stablesHeader">
+        <div class="header-container">
+            <a href="https://stablescouncil.org/" class="brand-link">
+                <div class="brand">
+                    <img src="https://stablescouncil.org/brand/assets/logo-symbol.png" alt="Stables" class="logo-mark">
+                    <div class="brand-text">
+                        <span class="brand-name">STABLES</span>
+                        <span class="brand-slogan">Be Your Bank</span>
+                    </div>
+                </div>
+            </a>
+
+            <div class="header-actions">
+                <a href="https://stablescouncil.org/links.html" class="nav-btn menu-btn" title="Community Portal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </header>
+
     <div class="lang-switcher">
         <button class="globe-btn" onclick="toggleLangMenu()" aria-label="Select Language">
             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
@@ -1142,13 +1165,13 @@
                 <div class="brand-container">
                     <a href="https://minima.global" target="_blank" class="minima-badge">Built on
                         <strong>MINIMA</strong></a>
-                    <img src="https://stablescouncil.github.io/brand/assets/logo-wordmark.png" alt="Stables" class="logo-wordmark">
+                    <img src="https://stablescouncil.org/brand/assets/logo-wordmark.png" alt="Stables" class="logo-wordmark">
                     <h1 class="hero-title" data-key="hero-title">Be your bank</h1>
                     <p class="hero-tagline" data-key="hero-tagline">Money that is truly yours. Secure, Pseudonymous and
                         Unstoppable</p>
+                    <p class="hero-cta-text" data-key="hero-cta-text">Want to know more?</p>
                     <div class="btn-group">
-                        <a href="https://stablescouncil.org/dapp/showcase/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><span data-key="btn-testing">Test the showcase</span></a>
-                        <span class="btn btn-secondary" style="pointer-events: none; opacity: 0.78; cursor: default;" title="Demo MiniDapp at stablescouncil.org/dapp/demo is coming soon." role="status"><span data-key="btn-demo-label">Demo</span><span class="btn-label" data-key="btn-demo">Coming soon</span></span>
+                        <a href="https://stablescouncil.org/dapp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><span data-key="btn-testing">Test the showcase</span></a>
                     </div>
                     <div class="scroll-indicator">
                         <span class="scroll-indicator-text" data-key="scroll-indicator">Scroll to explore</span>
@@ -1178,7 +1201,7 @@
                 <div class="content-block">
                     <div class="badge badge-merchants" data-key="badge-business">FOR MERCHANTS</div>
                     <h2 data-key="biz-title">Permissionless payments. Live in minutes.</h2>
-                    <p data-key="biz-p1">Stables is merchant-first infrastructure: a permissionless payment solution you can set up in minutes, use anonymously when you choose, and access settled income in seconds, with settlement that stays direct between you and your customers.</p>
+                    <p data-key="biz-p1">Stables is merchant-first infrastructure: a permissionless payment solution you can set up in minutes, use anonymously when you choose, and access settled income in seconds. No rent-seeking intermediaries between you and your customers.</p>
                     <p style="font-size: 16px; opacity: 0.7;" data-key="biz-p2">Self-custody rails, instant settlement, and a checkout you control end to end.</p>
                 </div>
             </div>
@@ -1203,9 +1226,11 @@
                     </div>
                 </div>
                 <div class="content-block">
-                    <div class="badge" data-key="badge-you">FOR SHOPPERS</div>
+                    <div class="badge" data-key="badge-you">FOR YOU</div>
                     <h2 data-key="wallet-title">Pay instantly. Own completely.</h2>
-                    <p data-key="wallet-p">Money that moves as fast as a message through a wallet built for self-custody, transparent fees, and full control of your assets.</p>
+                    <p data-key="wallet-p">Experience money that moves as fast as a message. No banks to freeze your
+                        account. No hidden fees. Just a simple, powerful wallet that gives you 100% control over your
+                        assets.</p>
                     <ul class="check-list">
                         <li data-key="wallet-li1"><strong>100% Self-Custody:</strong> Only you have the keys.</li>
                         <li data-key="wallet-li2"><strong>Day-to-day ready:</strong> Fast, cheap, and simple.</li>
@@ -1215,38 +1240,34 @@
             </div>
         </section>
 
-        <!-- Slide 4: Invest (risk-aligned rails) -->
+        <!-- Slide 4: Growth -->
         <section id="growth">
             <div class="split-layout">
                 <div class="mockup-frame" style="border-color: rgba(167, 139, 250, 0.2);">
-                    <div style="font-size: clamp(1.1rem, 1.5vw, 1.35rem); font-weight: 700; margin-bottom: 14px;"
-                        data-key="mock-investment">Ways to deploy</div>
+                    <div style="font-size: clamp(1.25rem, 2vw, 1.5rem); font-weight: 700; margin-bottom: 24px;"
+                        data-key="mock-investment">
+                        Investment</div>
                     <div
-                        style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: clamp(0.85rem, 1.8vw, 0.95rem);">
-                        <span data-key="mock-inv-row-equity">Equity & governance</span>
-                        <span style="font-size: 10px; opacity: 0.55; white-space: nowrap;" data-key="mock-inv-hint-equity">Long horizon</span>
+                        style="background: rgba(255,255,255,0.03); padding: 16px; border-radius: 12px; display: flex; justify-content: space-between; margin-bottom: 12px;">
+                        <div><span data-key="mock-multi">Multiplicator</span><br><span
+                                style="font-size: 11px; opacity: 0.5;" data-key="mock-pos">Active Position</span></div>
+                        <div style="color: var(--accent-growth); font-weight: 800; font-size: clamp(2rem, 4vw, 3rem);">
+                            1.16x</div>
                     </div>
                     <div
-                        style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: clamp(0.85rem, 1.8vw, 0.95rem);">
-                        <span data-key="mock-inv-row-leverage">Leveraged positioning</span>
-                        <span style="font-size: 10px; opacity: 0.55; color: var(--accent-growth); font-weight: 700;" data-key="mock-inv-hint-leverage">Sized risk</span>
-                    </div>
-                    <div
-                        style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 10px; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: clamp(0.85rem, 1.8vw, 0.95rem);">
-                        <span data-key="mock-inv-row-income">Income-oriented exposure</span>
-                        <span style="font-size: 10px; opacity: 0.55; white-space: nowrap;" data-key="mock-inv-hint-income">Coverage-side</span>
-                    </div>
-                    <div
-                        style="background: rgba(255,255,255,0.03); padding: 10px 14px; border-radius: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: clamp(0.85rem, 1.8vw, 0.95rem);">
-                        <span data-key="mock-inv-row-arb">Arbitrage-style plays</span>
-                        <span style="font-size: 10px; opacity: 0.55; white-space: nowrap;" data-key="mock-inv-hint-arb">Liquidity depth</span>
+                        style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; display: flex; justify-content: space-between;">
+                        <div><span data-key="mock-yield">Yield</span><br><span style="font-size: 11px; opacity: 0.5;"
+                                data-key="mock-apy">Current APY</span></div>
+                        <div style="font-weight: 800; font-size: clamp(2rem, 4vw, 3rem);">3.28%</div>
                     </div>
                 </div>
                 <div class="content-block">
-                    <div class="badge badge-growth" data-key="badge-growth">FOR INVESTORS</div>
-                    <h2 data-key="growth-title">Risk-aware capital, your way.</h2>
-                    <p data-key="growth-p1">Equity, leveraged tools, income-biased coverage exposure, and arbitrage-shaped liquidity paths: pick the lane that matches your risk tolerance and your objective.</p>
-                    <p style="font-size: 16px; opacity: 0.7;" data-key="growth-p2">One protocol stack, one disclosure rhythm, so sizing a position stays legible end to end.</p>
+                    <div class="badge badge-growth" data-key="badge-growth">FOR GROWTH</div>
+                    <h2 data-key="growth-title">The Multiplicator.</h2>
+                    <p data-key="growth-p1">A new way to participate in the stability of the ecosystem. Use the
+                        Multiplicator to amplify your exposure and support the network's resilience.</p>
+                    <p style="font-size: 16px; opacity: 0.7;" data-key="growth-p2">Advanced tools for those who want to
+                        do more than just pay.</p>
                 </div>
             </div>
         </section>
@@ -1256,19 +1277,12 @@
         <section id="cta">
             <div class="content-block">
                 <h2 data-key="cta-title">Ready to shape the future?</h2>
-                <p data-key="cta-p">Join the public test. Stress real usage paths. Help us ship the most reliable money platform we can build together.</p>
+                <p data-key="cta-p">Join the public test. Try to break the system. Help us build the most reliable money
+                    platform in the world.</p>
                 <div class="btn-group">
                     <a href="https://stablescouncil.org/dapp/showcase/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><span data-key="btn-testing">Test the showcase</span></a>
-                    <span class="btn btn-secondary" style="pointer-events: none; opacity: 0.78; cursor: default;" title="Demo MiniDapp at stablescouncil.org/dapp/demo is coming soon." role="status"><span data-key="btn-demo-label">Demo</span><span class="btn-label" data-key="btn-demo">Coming soon</span></span>
-                </div>
-            </div>
-        </section>
-
-        <section id="deck-more" class="deck-more">
-            <div class="container">
-                <div class="deck-more-inner">
-                    <h2 class="deck-more-title" data-key="deck-more-title">Want to know more?</h2>
-                    <p class="deck-more-lead" data-key="deck-more-lead">Walk the structural view next: how each role lines up incentives with the peg.</p>
+                    <a href="https://stablescouncil.org/links.html" class="btn btn-secondary"
+                        data-key="btn-links">All links</a>
                 </div>
             </div>
         </section>
@@ -1303,6 +1317,28 @@
     </div>
 
     <script>
+        // STICKY HEADER LOGIC (Sync with dApp)
+        let lastScroll = 0;
+        const body = document.body;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll <= 0) {
+                body.classList.remove('header-hidden');
+                return;
+            }
+
+            if (currentScroll > lastScroll && !body.classList.contains('header-hidden')) {
+                // Scroll Down
+                if (currentScroll > 72) body.classList.add('header-hidden');
+            } else if (currentScroll < lastScroll && body.classList.contains('header-hidden')) {
+                // Scroll Up
+                body.classList.remove('header-hidden');
+            }
+            lastScroll = currentScroll;
+        });
+
         const translations = {
             eu: {
                 "hero-title": "Izan zure bankua",
@@ -1349,28 +1385,26 @@
             en: {
                 "hero-title": "Be your bank",
                 "hero-tagline": "Money that is truly yours. Secure, Pseudonymous and Unstoppable",
-                "deck-more-title": "Want to know more?",
-                "deck-more-lead": "Walk the structural view next: how each role lines up incentives with the peg.",
+                "hero-cta-text": "Want to know more?",
                 "scroll-indicator": "Scroll to explore",
                 "btn-testing": "Test the showcase",
-                "btn-demo-label": "Demo",
-                "btn-demo": "Coming soon",
+                "btn-links": "All links",
                 "badge-you": "FOR YOU",
                 "wallet-title": "Pay instantly. Own completely.",
-                "wallet-p": "Money that moves as fast as a message through a wallet built for self-custody, transparent fees, and full control of your assets.",
+                "wallet-p": "Experience money that moves as fast as a message. No banks to freeze your account. No hidden fees. Just a simple, powerful wallet that gives you 100% control over your assets.",
                 "wallet-li1": "<strong>100% Self-Custody:</strong> Only you have the keys.",
                 "wallet-li2": "<strong>Day-to-day ready:</strong> Fast, cheap, and simple.",
                 "wallet-li3": "<strong>Stables:</strong> Designed to hold its value.",
                 "badge-business": "FOR MERCHANTS",
                 "biz-title": "Permissionless payments. Live in minutes.",
-                "biz-p1": "Stables is merchant-first infrastructure: a permissionless payment solution you can set up in minutes, use anonymously when you choose, and access settled income in seconds, with settlement that stays direct between you and your customers.",
+                "biz-p1": "Stables is merchant-first infrastructure: a permissionless payment solution you can set up in minutes, use anonymously when you choose, and access settled income in seconds. No rent-seeking intermediaries between you and your customers.",
                 "biz-p2": "Self-custody rails, instant settlement, and a checkout you control end to end.",
-                "badge-growth": "FOR INVESTORS",
-                "growth-title": "Risk-aware capital, your way.",
-                "growth-p1": "Equity, leveraged tools, income-biased coverage exposure, and arbitrage-shaped liquidity paths: pick the lane that matches your risk tolerance and your objective.",
-                "growth-p2": "One protocol stack, one disclosure rhythm, so sizing a position stays legible end to end.",
+                "badge-growth": "FOR GROWTH",
+                "growth-title": "The Multiplicator.",
+                "growth-p1": "A new way to participate in the stability of the ecosystem. Use the Multiplicator to amplify your exposure and support the network's resilience.",
+                "growth-p2": "Advanced tools for those who want to do more than just pay.",
                 "cta-title": "Ready to shape the future?",
-                "cta-p": "Join the public test. Stress real usage paths. Help us ship the most reliable money platform we can build together.",
+                "cta-p": "Join the public test. Try to break the system. Help us build the most reliable money platform in the world.",
                 "footer": "Stables - Informational Overview v1.0",
                 "mock-wallet": "Wallet",
                 "mock-coffee": "Coffee Shop",
@@ -1382,16 +1416,8 @@
                 "mock-paid": "PAID",
                 "mock-order": "Order #8291",
                 "mock-receipt": "Print Receipt",
-                "mock-investment": "Ways to deploy",
-                "mock-inv-row-equity": "Equity & governance",
-                "mock-inv-hint-equity": "Long horizon",
-                "mock-inv-row-leverage": "Leveraged positioning",
-                "mock-inv-hint-leverage": "Sized risk",
-                "mock-inv-row-income": "Income-oriented exposure",
-                "mock-inv-hint-income": "Coverage-side",
-                "mock-inv-row-arb": "Arbitrage-style plays",
-                "mock-inv-hint-arb": "Liquidity depth",
-                "mock-multi": "Leveraged tools",
+                "mock-investment": "Investment",
+                "mock-multi": "Multiplicator",
                 "mock-pos": "Active Position",
                 "mock-yield": "Yield",
                 "mock-apy": "Current APY",
@@ -1405,32 +1431,29 @@
             },
             "en-edgy": {
                 "hero-title": "Be your damn bank",
-                "hero-tagline": "Permissionless rails. Direct settlement. Money you can reason about.",
-                "deck-more-title": "Want to know more?",
-                "deck-more-lead": "Next: the playing field. Same incentive story, one clean map of who does what for the peg.",
+                "hero-tagline": "No permission. No intermediaries. No bullshit.",
+                "hero-cta-text": "Want to know more?",
                 "scroll-indicator": "Scroll to explore",
                 "btn-testing": "Test the showcase",
-                "btn-demo-label": "Demo",
-                "btn-demo": "Coming soon",
                 "btn-follow": "Follow on X",
                 "btn-instagram": "Follow on Instagram",
                 "btn-telegram": "Join on Telegram",
                 "badge-you": "YOUR WALLET",
                 "wallet-title": "Pay instantly. Own completely.",
-                "wallet-p": "Money that moves as fast as a message through a wallet built for self-custody, transparent fees, and full control of your assets.",
+                "wallet-p": "Money that moves as fast as a message. No banks to freeze your shit. No hidden fees. Just a simple wallet that gives you 100% control. Period.",
                 "wallet-li1": "<strong>100% Self-Custody:</strong> Only you have the keys. End of story.",
-                "wallet-li2": "<strong>Day-to-day ready:</strong> Fast, cheap, simple, and straight about what things cost.",
+                "wallet-li2": "<strong>Day-to-day ready:</strong> Fast, cheap, and simple. No BS.",
                 "wallet-li3": "<strong>Stables:</strong> Designed to hold its value. Real talk.",
                 "badge-business": "FOR SHOPS",
                 "biz-title": "Settled in seconds. Connect directly.",
-                "biz-p1": "Payments confirm and settle in seconds so your cash flow matches the day. You run checkout, pricing, and the customer relationship on rails you control, front to back.",
+                "biz-p1": "Stop waiting days for your money. With Stables, payments are confirmed and settled in seconds. Build a direct relationship with your customers. No middlemen taking a cut.",
                 "biz-p2": "Perfect for modern commerce. From local shops to global services.",
-                "badge-growth": "IF YOU DEPLOY",
-                "growth-title": "Deploy capital like you mean it.",
-                "growth-p1": "Equity, leverage when you mean it, income through coverage mechanics, liquidity-and-arbitrage angles when the book offers them: pick what fits your risk budget.",
-                "growth-p2": "Same stack, same receipts: you see the trade-offs before you lean in.",
+                "badge-growth": "MAKE IT GROW",
+                "growth-title": "The Multiplicator.",
+                "growth-p1": "A new way to participate in the stability of the ecosystem. Use the Multiplicator to amplify your exposure and support the network's resilience.",
+                "growth-p2": "Advanced tools for those who want to do more than just pay. Real shit.",
                 "cta-title": "Ready to shape the future?",
-                "cta-p": "Join the public test. Stress real usage paths. Help us ship the most reliable money platform we can build together. Let's do this.",
+                "cta-p": "Join the public test. Try to break the system. Help us build the most reliable money platform in the world. Let's do this.",
                 "footer": "Stables - Informational Overview v1.0",
                 "mock-wallet": "Wallet",
                 "mock-coffee": "Coffee Shop",
@@ -1442,16 +1465,8 @@
                 "mock-paid": "PAID",
                 "mock-order": "Order #8291",
                 "mock-receipt": "Print Receipt",
-                "mock-investment": "Ways to deploy",
-                "mock-inv-row-equity": "Equity & governance",
-                "mock-inv-hint-equity": "Long horizon",
-                "mock-inv-row-leverage": "Leveraged positioning",
-                "mock-inv-hint-leverage": "Sized risk",
-                "mock-inv-row-income": "Income-oriented exposure",
-                "mock-inv-hint-income": "Coverage-side",
-                "mock-inv-row-arb": "Arbitrage-style plays",
-                "mock-inv-hint-arb": "Liquidity depth",
-                "mock-multi": "Leveraged tools",
+                "mock-investment": "Investment",
+                "mock-multi": "Multiplicator",
                 "mock-pos": "Active Position",
                 "mock-yield": "Yield",
                 "mock-apy": "Current APY"
@@ -1749,7 +1764,7 @@
                 "biz-p1": "Ø¯ÛŒÚ¯Ù‡ Ø±ÙˆØ²Ù‡Ø§ Ù…Ù†ØªØ¸Ø± Ù¾ÙˆÙ„ Ø®ÙˆØ¯ Ù†Ù…Ø§Ù†ÛŒØ¯. Ø¨Ø§ StablesØŒ Ù¾Ø±Ø¯Ø§Ø®Øªâ€ŒÙ‡Ø§ Ø¯Ø± Ú†Ù†Ø¯ Ø«Ø§Ù†ÛŒÙ‡ ØªØ£ÛŒÛŒØ¯ Ùˆ ØªØ³ÙˆÛŒÙ‡ Ù…ÛŒâ€ŒØ´ÙˆÙ†Ø¯. Ø¨Ø¯ÙˆÙ† ÙˆØ§Ø³Ø·Ù‡ Ø¨Ø§ Ù…Ø´ØªØ±ÛŒØ§Ù† Ø®ÙˆØ¯ Ø±Ø§Ø¨Ø·Ù‡ Ù…Ø³ØªÙ‚ÛŒÙ… Ø¨Ø±Ù‚Ø±Ø§Ø± Ú©Ù†ÛŒØ¯.",
                 "biz-p2": "Ø§ÛŒØ¯Ù‡â€ŒØ¢Ù„ Ø¨Ø±Ø§ÛŒ ØªØ¬Ø§Ø±Øª Ù…Ø¯Ø±Ù†ØŒ Ø§Ø² ÙØ±ÙˆØ´Ú¯Ø§Ù‡â€ŒÙ‡Ø§ÛŒ Ù…Ø­Ù„ÛŒ ØªØ§ Ø®Ø¯Ù…Ø§Øª Ø¬Ù‡Ø§Ù†ÛŒ.",
                 "badge-growth": "Ø¨Ø±Ø§ÛŒ Ø±Ø´Ø¯",
-                "growth-title": "Ø¶Ø±Ø¨â€ŒÚ©Ù†Ù†Ø¯Ù‡.",
+                "growth-title": "Ø¶Ø±Ø¨â€ŒÚ©Ù†Ù†Ø¯Ù‡ (Multiplicator).",
                 "growth-p1": "Ø±Ø§Ù‡ÛŒ Ø¬Ø¯ÛŒØ¯ Ø¨Ø±Ø§ÛŒ Ù…Ø´Ø§Ø±Ú©Øª Ø¯Ø± Ù¾Ø§ÛŒØ¯Ø§Ø±ÛŒ Ø§Ú©ÙˆØ³ÛŒØ³ØªÙ…. Ø§Ø² Ø¶Ø±Ø¨â€ŒÚ©Ù†Ù†Ø¯Ù‡ Ø¨Ø±Ø§ÛŒ Ø§ÙØ²Ø§ÛŒØ´ Ù…ÙˆØ§Ø¬Ù‡Ù‡ Ùˆ Ø­Ù…Ø§ÛŒØª Ø§Ø² Ø´Ø¨Ú©Ù‡â€Œ Ø§Ø³ØªÙØ§Ø¯Ù‡ Ú©Ù†ÛŒØ¯.",
                 "growth-p2": "Ø§Ø¨Ø²Ø§Ø±Ù‡Ø§ÛŒ Ù¾ÛŒØ´Ø±ÙØªÙ‡ Ø¨Ø±Ø§ÛŒ Ú©Ø³Ø§Ù†ÛŒ Ú©Ù‡ Ù…ÛŒâ€ŒØ®ÙˆØ§Ù‡Ù†Ø¯ ÙØ±Ø§ØªØ± Ø§Ø² Ù¾Ø±Ø¯Ø§Ø®Øª Ø¹Ù…Ù„ Ú©Ù†Ù†Ø¯.",
                 "cta-title": "Ø¢Ù…Ø§Ø¯Ù‡ Ø¨Ø±Ø§ÛŒ Ø³Ø§Ø®ØªÙ† Ø¢ÛŒÙ†Ø¯Ù‡ØŸ",
@@ -2808,7 +2823,7 @@
     <div class="agent-popup" id="agentPopup">
         <div class="agent-popup-header">
             <div class="agent-popup-logo">
-                <img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" />
+                <img src="/stables_agent_avatar.png" alt="StablesAgent" />
             </div>
             <div class="agent-popup-title">
                 <div class="agent-popup-title-main">StablesAgent</div>
@@ -2823,7 +2838,7 @@
         <div class="agent-popup-body">
             <iframe id="agentFrame" title="StablesAgent Chat"></iframe>
             <div class="agent-popup-fallback" id="agentFallback">
-                <img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" style="width:48px;height:48px;opacity:0.7;" />
+                <img src="/stables_agent_avatar.png" alt="StablesAgent" style="width:48px;height:48px;opacity:0.7;" />
                 <p data-key="agent-fallback-p">The chat will load here directly once the secure connection is active.<br>For now, open it in a new tab:</p>
                 <a href="https://agent.stablescouncil.org/chat" target="_blank" rel="noopener noreferrer" data-key="agent-fallback-link">
                     Open StablesAgent â†-
@@ -2839,7 +2854,7 @@
             <span class="agent-fab-pulse"></span>
             <span class="agent-fab-pulse"></span>
             <span class="agent-fab-pulse"></span>
-            <img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" />
+            <img src="/stables_agent_avatar.png" alt="StablesAgent" />
             <span class="agent-fab-dot"></span>
         </div>
     </button>

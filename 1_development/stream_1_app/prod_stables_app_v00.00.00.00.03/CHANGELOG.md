@@ -22,6 +22,10 @@ Post–**v00.00.03** work in the active dev folder. **Do not** describe these it
 
 ### Changed
 
+- **MiniDapp zip and hub entry (aligned with GitHub Pages):** The interactive page lives at **`showcase/index.html`** (paths **`../assets/`**, **`../agent.png`**, etc.). Root **`index.html`** is a small **redirect** to **`showcase/`** for direct opens. **`dapp.conf`** **`web`** is **`showcase/index.html`** so the Minima hub loads the same entry as **stablescouncil.org/dapp/showcase/**. **`assets/routes/feedback.js`** and **`activity-contacts.js`** use **`../agent.png`** for inline agent thumbnails when rendered from **`showcase/`**.
+
+- **Packaging docs:** **`build/README.md`** now matches the **hub = Pages** tree: **`dapp.conf`** **`web`** = **`showcase/index.html`**, zip root layout (**`showcase/`**, **`assets/`**, root art), **`Compress-Archive`** of this folder’s contents excluding **`build/`**, canonical zip name **`Stables_v00.00.00.00.03.mds.zip`**.
+
 - **Dev folder rename (showcase):** **`prod_stables_app_v00.00.02`** → **`prod_stables_app_v00.00.00.00.03`** so the path matches the canonical five-segment label. Handshake, **`minidapp_version.md`**, UI inventory, and Cursor rules point at the new folder. **GitHub Pages** working copy: **`1_development/stream_1_app/task_stablescouncil_github_io/dapp/`** was refreshed from this tree (excluding **`build/`** and **`latest version/`**); **`MINIDAPP_VERSIONING.md`** and **`latest-version/VERSION_HISTORY.md`** note the alignment.
 
 - **Version label (showcase):** **`APP_BUILD_VERSION`**, **`dapp.conf` `version`**, and top bar default use the canonical **five-segment** body **`00.00.00.00.03`** (`vPM.Pn.TT.DD.SS`, see **`0_handshake/minidapp_version.md`**). **`APP_UPDATE_POLICY.latestPublishedVersion`** matches this label; Council comms compares legacy **three-segment** labels as **`a.b.c` → `a.b.0.0.c`** in **`activity-contacts.js`**.

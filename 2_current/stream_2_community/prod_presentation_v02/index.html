@@ -5,9 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon (same folder as index.html for file:// and subpath deploys) -->
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="apple-touch-icon" href="favicon.png">
+    <!-- Favicon: local favicon.png in this folder is empty; use hosted symbol so tab icon works from file:// and .org -->
+    <link rel="icon" type="image/png" href="https://stablescouncil.org/brand/assets/logo-symbol.png">
+    <link rel="apple-touch-icon" href="https://stablescouncil.org/brand/assets/logo-symbol.png">
 
     <!-- Social Previews (Open Graph) -->
     <meta property="og:title" content="Stables | Be your bank">
@@ -257,6 +257,41 @@
                 min-height: 100vh;
                 display: flex;
                 align-items: center;
+            }
+        }
+
+        /* Hero: pull headline + tagline up toward wordmark; add space before CTAs */
+        section#hero .brand-container .minima-badge {
+            margin-bottom: 8px;
+        }
+
+        section#hero .brand-container .logo-wordmark {
+            margin: 6px auto 4px;
+        }
+
+        section#hero .brand-container .hero-tagline {
+            margin-bottom: clamp(28px, 4.5vw, 44px);
+        }
+
+        section#hero .brand-container .btn-group {
+            margin-top: clamp(10px, 2vw, 20px);
+        }
+
+        @media (max-width: 768px) {
+            section#hero .brand-container .minima-badge {
+                margin-bottom: 6px;
+            }
+
+            section#hero .brand-container .logo-wordmark {
+                margin: 4px auto 3px;
+            }
+
+            section#hero .brand-container .hero-tagline {
+                margin-bottom: clamp(22px, 5vw, 36px);
+            }
+
+            section#hero .brand-container .btn-group {
+                margin-top: clamp(8px, 2.5vw, 16px);
             }
         }
 
@@ -1019,30 +1054,30 @@
         </button>
         <div id="langMenu" class="lang-menu">
             <button onclick="updateLanguage('eu')">Euskara</button>
-            <button onclick="updateLanguage('bg')">Ð‘ÑŠÐ»Ð³Ð°Ñ€ÑÐºÐ¸</button>
-            <button onclick="updateLanguage('ca')">CatalÃ </button>
-            <button onclick="updateLanguage('cs')">ÄŒeÅ¡tina</button>
+            <button onclick="updateLanguage('bg')">Български</button>
+            <button onclick="updateLanguage('ca')">Català</button>
+            <button onclick="updateLanguage('cs')">Čeština</button>
             <button onclick="updateLanguage('en')">English</button>
             <button onclick="updateLanguage('en-edgy')">English (Edgy)</button>
-            <button onclick="updateLanguage('zh')">ä¸­æ–‡</button>
-            <button onclick="updateLanguage('fr')">FranÃ§ais</button>
-            <button onclick="updateLanguage('fr-qc-edgy')">QuÃ©bÃ©cois</button>
+            <button onclick="updateLanguage('zh')">中文</button>
+            <button onclick="updateLanguage('fr')">Français</button>
+            <button onclick="updateLanguage('fr-qc-edgy')">Québécois</button>
             <button onclick="updateLanguage('de')">Deutsch</button>
             <button onclick="updateLanguage('it')">Italiano</button>
-            <button onclick="updateLanguage('gn')">GuaranÃ­</button>
-            <button onclick="updateLanguage('lv')">LatvieÅ¡u</button>
-            <button onclick="updateLanguage('lt')">LietuviÅ³</button>
-            <button onclick="updateLanguage('lb')">LÃ«tzebuergesch</button>
-            <button onclick="updateLanguage('ar')">Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©</button>
-            <button onclick="updateLanguage('fa')">ÙØ§Ø±Ø³ÛŒ</button>
-            <button onclick="updateLanguage('he')">×¢×‘×¨×™×ª</button>
-            <button onclick="updateLanguage('yi')">×™×™Ö´×“×™×©</button>
-            <button onclick="updateLanguage('ru')">Ð ÑƒÑÑÐºÐ¸Ð¹</button>
-            <button onclick="updateLanguage('sk')">SlovenÄina</button>
-            <button onclick="updateLanguage('es')">EspaÃ±ol</button>
+            <button onclick="updateLanguage('gn')">Guaraní</button>
+            <button onclick="updateLanguage('lv')">Latviešu</button>
+            <button onclick="updateLanguage('lt')">Lietuvių</button>
+            <button onclick="updateLanguage('lb')">Lëtzebuergesch</button>
+            <button onclick="updateLanguage('ar')">العربية</button>
+            <button onclick="updateLanguage('fa')">فارسی</button>
+            <button onclick="updateLanguage('he')">עברית</button>
+            <button onclick="updateLanguage('yi')">ייִדיש</button>
+            <button onclick="updateLanguage('ru')">Русский</button>
+            <button onclick="updateLanguage('sk')">Slovenčina</button>
+            <button onclick="updateLanguage('es')">Español</button>
             <button onclick="updateLanguage('fi')">Suomi</button>
             <button onclick="updateLanguage('sv')">Svenska</button>
-            <button onclick="updateLanguage('tr')">TÃ¼rkÃ§e</button>
+            <button onclick="updateLanguage('tr')">Türkçe</button>
         </div>
         
         <div class="share-switcher">
@@ -1112,7 +1147,8 @@
                     <p class="hero-tagline" data-key="hero-tagline">Money that is truly yours. Secure, Pseudonymous and
                         Unstoppable</p>
                     <div class="btn-group">
-                        <a href="https://stablescouncil.org/dapp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><span data-key="btn-testing">Test the showcase</span></a>
+                        <a href="https://stablescouncil.org/dapp/showcase/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><span data-key="btn-testing">Test the showcase</span></a>
+                        <span class="btn btn-secondary" style="pointer-events: none; opacity: 0.78; cursor: default;" title="Demo MiniDapp at stablescouncil.org/dapp/demo is coming soon." role="status"><span data-key="btn-demo-label">Demo</span><span class="btn-label" data-key="btn-demo">Coming soon</span></span>
                     </div>
                     <div class="scroll-indicator">
                         <span class="scroll-indicator-text" data-key="scroll-indicator">Scroll to explore</span>
@@ -1222,7 +1258,8 @@
                 <h2 data-key="cta-title">Ready to shape the future?</h2>
                 <p data-key="cta-p">Join the public test. Stress real usage paths. Help us ship the most reliable money platform we can build together.</p>
                 <div class="btn-group">
-                    <a href="https://stablescouncil.org/dapp/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><span data-key="btn-testing">Test the showcase</span></a>
+                    <a href="https://stablescouncil.org/dapp/showcase/" target="_blank" rel="noopener noreferrer" class="btn btn-primary"><span data-key="btn-testing">Test the showcase</span></a>
+                    <span class="btn btn-secondary" style="pointer-events: none; opacity: 0.78; cursor: default;" title="Demo MiniDapp at stablescouncil.org/dapp/demo is coming soon." role="status"><span data-key="btn-demo-label">Demo</span><span class="btn-label" data-key="btn-demo">Coming soon</span></span>
                 </div>
             </div>
         </section>
@@ -1239,7 +1276,7 @@
         <section id="deck-next" class="deck-next">
             <div class="container">
                 <div class="btn-group" style="justify-content: center;">
-                    <a href="playing_field.html" class="btn btn-primary">
+                    <a href="https://stablescouncil.org/playing_field.html" class="btn btn-primary">
                         <span class="btn-label">Next</span>
                         <span>The Playing Field</span>
                     </a>
@@ -1259,7 +1296,7 @@
                         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
                     </svg>
                 </a>
-                <a class="site-chrome-footerSocial__link site-chrome-footerSocial__link--all-links" href="links.html">All links</a>
+                <a class="site-chrome-footerSocial__link site-chrome-footerSocial__link--all-links" href="https://stablescouncil.org/links.html">All links</a>
             </div>
             <p class="site-chrome-footerMeta">Stables | Built on Minima</p>
         </footer>
@@ -1316,6 +1353,8 @@
                 "deck-more-lead": "Walk the structural view next: how each role lines up incentives with the peg.",
                 "scroll-indicator": "Scroll to explore",
                 "btn-testing": "Test the showcase",
+                "btn-demo-label": "Demo",
+                "btn-demo": "Coming soon",
                 "badge-you": "FOR SHOPPERS",
                 "wallet-title": "Pay instantly. Own completely.",
                 "wallet-p": "Money that moves as fast as a message through a wallet built for self-custody, transparent fees, and full control of your assets.",
@@ -1371,6 +1410,8 @@
                 "deck-more-lead": "Next: the playing field. Same incentive story, one clean map of who does what for the peg.",
                 "scroll-indicator": "Scroll to explore",
                 "btn-testing": "Test the showcase",
+                "btn-demo-label": "Demo",
+                "btn-demo": "Coming soon",
                 "btn-follow": "Follow on X",
                 "btn-instagram": "Follow on Instagram",
                 "btn-telegram": "Join on Telegram",
@@ -2767,7 +2808,7 @@
     <div class="agent-popup" id="agentPopup">
         <div class="agent-popup-header">
             <div class="agent-popup-logo">
-                <img src="/stables_agent_avatar.png" alt="StablesAgent" />
+                <img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" />
             </div>
             <div class="agent-popup-title">
                 <div class="agent-popup-title-main">StablesAgent</div>
@@ -2782,7 +2823,7 @@
         <div class="agent-popup-body">
             <iframe id="agentFrame" title="StablesAgent Chat"></iframe>
             <div class="agent-popup-fallback" id="agentFallback">
-                <img src="/stables_agent_avatar.png" alt="StablesAgent" style="width:48px;height:48px;opacity:0.7;" />
+                <img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" style="width:48px;height:48px;opacity:0.7;" />
                 <p data-key="agent-fallback-p">The chat will load here directly once the secure connection is active.<br>For now, open it in a new tab:</p>
                 <a href="https://agent.stablescouncil.org/chat" target="_blank" rel="noopener noreferrer" data-key="agent-fallback-link">
                     Open StablesAgent â†-
@@ -2798,7 +2839,7 @@
             <span class="agent-fab-pulse"></span>
             <span class="agent-fab-pulse"></span>
             <span class="agent-fab-pulse"></span>
-            <img src="/stables_agent_avatar.png" alt="StablesAgent" />
+            <img src="https://stablescouncil.github.io/stables_agent_avatar.png" alt="StablesAgent" />
             <span class="agent-fab-dot"></span>
         </div>
     </button>
