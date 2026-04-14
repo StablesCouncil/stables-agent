@@ -17,6 +17,17 @@ To maintain full transparency with the community:
 - No usernames or personal identifiers are stored. 
 - The CSV file will be periodically pushed to this GitHub repository so anyone can review the questions being asked and verify the AI's responses.
 
+## Files in this folder (quick index)
+
+| File | Purpose |
+|------|---------|
+| **`core_definitions.md`** | Core terms and definitions. |
+| **`comprehensive_knowledge_base.md`** | Long-form synthesis (protocol, philosophy, Academy, website ship summary). |
+| **`github_pages_website_engineering.md`** | Canonical ops doc for the public site: folder layout, **`sync:site`**, ship steps, **`file://`** preview, pointers to **`handover_document.md`**. |
+| **`website_presentation.md`** | On-site marketing copy and StablesAgent / **`llms.txt`** links; points to the engineering doc for build and deploy. |
+| **`charter_overview.md`**, **`banking_system_overview.md`**, **`circular_economy_diagram.md`** | Topic-specific public summaries. |
+| **`minidapp_showcase_app.md`** | Showcase MiniDapp versions, feedback, and in-app behaviour notes. |
+
 ## Contribution
 To correct an AI hallucination or update its knowledge, do **not** change the rigid prompt rules. Instead, update the Markdown files in this directory (such as `core_definitions.md`) with clearer, stronger facts and re-run the ingestion script.
 
@@ -30,6 +41,6 @@ You can interact with the official Stables assistant directly in the Stables com
 If you prefer to use your own LLM, we have formatted the entire knowledge base into a single, internet-standard file.
 You can simply paste the following prompt into ChatGPT or Claude, providing the direct URL to our `llms.txt` file:
 
-> *"Please read the official knowledge base at https://raw.githubusercontent.com/stablescouncil/stablesagent-brain-base/main/llms.txt and answer the following question about Stables: [Your Question]"*
+> *"Please read the official knowledge base at https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt and answer the following question about Stables: [Your Question]"*
 
 *(Note: The `llms.txt` file is auto-generated whenever the brain base is updated, ensuring ChatGPT always has the latest facts).*

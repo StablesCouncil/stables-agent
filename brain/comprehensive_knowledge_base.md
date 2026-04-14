@@ -33,7 +33,7 @@ Stables does not claim to be the final form of human money. It is a necessary br
 - **Stage −1 (Sound Money/State Capture):** Standardisation of gold/silver coins. Trust shifted from community to state. Coercion entered via legal tender and mandated taxation.
 - **Stage 0 (Fiat/Centralised Control):** The current world. Money is issued by decree and managed by central banks. Individuals are assigned a currency by jurisdiction. Participation is mandatory; exclusion is common.
 - **Stage 1 (Stables - Sovereign Opt-In):** The current phase. Stables provides synthetic pegged assets (USDs, EURs, CADs, IRTs) so participants can opt-in to a sovereign network today while maintaining familiar pricing. Minima is listed alongside these as the native destination.
-- **Stage 2 (Minima-Native Economy):** As adoption deepens, participants begin pricing goods and services directly in Minima. The reliance on fiat-pegged bridges fades. Everyone becomes their own bank on infrastructure they validate themselves.
+- **Stage 2 (Minima-Native Economy):** As adoption deepens, participants begin pricing goods and services directly in Minima. The reliance on fiat-pegged bridges fades. Everyone becomes their bank on infrastructure they validate themselves.
 - **Stage 3 (The Circular Horizon):** A future state where monetary power is a fundamental human right. It recognises the right of every human to live with dignity and operates in service of the planet.
 
 **The StablesAgent's Role:** The Agent exists to facilitate Stage 1, guiding users and merchants across the bridge from Stage 0 to Stage 2. 
@@ -54,7 +54,7 @@ Stables is not inventing novel, untested mechanics. It is taking battle-tested e
 
 ## 7. The Stables Banking System: How the Mechanic Works
 
-This section gives the Agent a clean, step‑by‑step description of how the Stables banking system works in practice, mirroring the public "Our Own Banking System" presentation.
+This section gives the Agent a clean, step‑by‑step description of how the Stables banking system works in practice, mirroring the public "Our Banking System" presentation.
 
 ### 7.1 The Three Main Actors
 - **People:** Buyers, savers and senders who hold and use Stables day‑to‑day.
@@ -109,3 +109,25 @@ The Stables Ambassador program is a professional, incentivized network designed 
 The system is mathematically balanced so that "self-onboarding" (bypassing an ambassador) is always more expensive than joining a mentored hub. This ensures the human layer (Ambassadors) is protected by the ledger's logic.
 
 **The StablesAgent's Role (Ambassador Support):** The Agent provides 24/7 technical and strategic support for Ambassadors, helping them manage their Hubs and merchant campaigns.
+
+## 9. Stables Academy (Education Layer, Draft)
+
+Stables Academy is a practical education layer for users and merchants who want to manage sovereign banking safely.
+
+- **Purpose:** improve real-world operational confidence topic by topic, starting with security.
+- **Quiz model (current prototype):** each attempt draws 10 questions from a larger question bank, each with 3 options.
+- **Pass logic:** no single "perfect score" requirement. Pass requires a minimum threshold (6/10) and mandatory critical questions correct.
+- **Progression logic:** retake cool-down, best score retained.
+- **Community learning feedback:** users can optionally authorize anonymized demographic + score contribution to a public learning database used to improve communication priorities.
+- **Recognition:** successful completion unlocks a lightweight certificate and social sharing.
+- **Ambassador path direction:** completing all Academy core topics is being positioned as an onboarding prerequisite for Ambassador status once the full topic set is live.
+
+## 10. Public website: where it lives and how it ships
+
+The Council public site (**https://stablescouncil.org/**, GitHub Pages **`StablesCouncil/stablescouncil.github.io`**) is **authored in the Stables monorepo**, not by editing the Pages repo by hand as the primary workflow.
+
+- **Sandbox:** **`1_development/stream_1_app/task_stablescouncil_github_io/`** with **`webpages/`** (HTML and **`dapp/`** mirror), **`static/`** (shared CSS, brand, **`CNAME`**), and a **generated** **`site/`** tree that matches the live URL layout.
+- **Build:** **`npm run sync:site`** runs **`tools/sync-site.mjs`**: merge **`static/`** into **`site/`**, then copy **`webpages/`** to the mapped outputs (for example home → **`site/index.html`**, links hub → **`site/links.html`**, Playing Field → **`site/playing_field.html`**, directory routes for circular economy and banking system, **`site/dapp/`** for the MiniDapp web tree).
+- **Ship:** copy **contents** of **`site/`** to the **root** of the **`stablescouncil.github.io`** working tree, commit, push **`main`**. **`CNAME`** for **`stablescouncil.org`** must stay consistent with GitHub Pages settings.
+- **Local disk preview:** pages may include a **`file:`** protocol helper that rewrites asset paths and reloads stylesheets and scripts so shared **`static/`** assets and controls still load when opening HTML from the filesystem.
+- **Full detail for the Agent:** **`github_pages_website_engineering.md`** in this brain base; the monorepo **handover** table and status live in **`handover_document.md`** at the repo root.
