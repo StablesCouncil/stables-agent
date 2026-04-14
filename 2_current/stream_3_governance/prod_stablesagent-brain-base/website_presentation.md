@@ -1,6 +1,8 @@
 # Stables Official Website Presentation
 *Source: stablescouncil.github.io*
 
+**Technical reference (build, ship, routes, local preview):** see **`github_pages_website_engineering.md`** in this brain base. It is the canonical operations summary for agents and operators.
+
 ## Be your bank
 Money that is truly yours. Secure, Pseudonymous and Unstoppable. Built on Minima.
 
@@ -24,7 +26,7 @@ Let's be our banking system. The Network of Everybody's Bank.
 ## Stables Showcase MiniDapp (preview)
 
 - The public site **https://stablescouncil.org/** uses a primary call-to-action **Test the showcase**, which opens **https://stablescouncil.org/dapp/** (Showcase web entry). A full-page **All Links** control may appear lower on the page; the hero area focuses on the single showcase CTA.
-- **Published** web and zip versions follow **`dapp/latest-version/`** on GitHub Pages (see **`minidapp_showcase_app.md`** for frozen vs active dev line). On a **Minima node**, install the versioned **`.mds.zip`** from that folder and set the MiniDapp to **write mode** (not read mode) for StablesAgent and structured feedback.
+- **Published** web and zip versions follow **`dapp/latest-version/`** on GitHub Pages. **Version policy:** **`0_handshake/minidapp_version.md`**. **Showcase packaging note:** this folder’s **`minidapp_showcase_app.md`**. On a **Minima node**, install the versioned **`.mds.zip`** from that folder and set the MiniDapp to **write mode** (not read mode) for StablesAgent and structured feedback.
 
 ## StablesAgent and the Knowledge Base
 
