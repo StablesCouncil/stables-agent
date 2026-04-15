@@ -37,6 +37,7 @@
   - [IV.7 Merchant-Led Fiat Exchange and Participant Onboarding](stables_charter.md#iv7-merchant-led-fiat-exchange-and-participant-onboarding)  
 - [Article V — Oracle Framework](stables_charter.md#article-v--oracle-framework)  
 - [Article VI — Transparency Doctrine](stables_charter.md#article-vi--transparency-doctrine)  
+  - [VI.3 Independent stablecoin market reference tools](stables_charter.md#vi3-independent-stablecoin-market-reference-tools)  
 - [Article VII — Governance Evolution (Code-First Structural Limitation)](stables_charter.md#article-vii--governance-evolution-code-first-structural-limitation)  
   - [VII.7 Strategic horizon scanning and external intelligence](stables_charter.md#vii7-strategic-horizon-scanning-and-external-intelligence)  
   - [VII.8 Volunteer roles, task acknowledgment, and communication routing](stables_charter.md#vii8-volunteer-roles-task-acknowledgment-and-communication-routing)  
@@ -593,6 +594,12 @@ Predictability is a structural property of the system. Every participant shall b
 
 The protocol's behaviour under every condition — normal, stressed, and critical — shall be publicly documented and verifiable.
 
+### VI.3 Independent stablecoin market reference tools
+
+Participants, merchants, and **strategic horizon scanning** volunteers (Article VII.7) benefit from **context on the wider stablecoin market**: third-party **ratings**, **risk dashboards**, and **published methodologies** that are independent of Stables.
+
+The Council **does not endorse** any specific external provider. Stables is **not responsible** for third-party models, data delays, or commercial offers on those sites. For **one consolidated list** of URLs, short descriptions, and **non-endorsement** language (including **Bluechip** and **Pharos** entry points), the project maintains **`0_handshake/links.md`** in the section titled **Independent stablecoin risk and ratings (single reference block)**. That index shall be updated when links change so the Charter does not duplicate volatile URLs.
+
 ---
 
 ## ARTICLE VII — Governance Evolution (Code-First Structural Limitation)
@@ -833,6 +840,8 @@ Connectivity monitoring shall explicitly include **internet shortage conditions*
 
 **Cryptography is not assumed permanent.** No system of signatures, hashes, key agreement, or proofs is treated as **everlasting**. Assumptions are **time-bounded**: **quantum computing**, new cryptanalysis, or other technologies may eventually **break or weaken** today’s primitives. Stewardship therefore includes **monitoring the threat landscape**, **planning migration paths** (e.g. post-quantum algorithms, key rotation, protocol upgrades within governance), and **honest disclosure** that security is **provisional** — strong for an era, not guaranteed for all future eras.
 
+**Peer-to-node malware, worms, and supply-chain compromise.** Networks in which participants run **full nodes** and exchange **data that must be parsed and executed at the edges** are exposed to **malicious software** that could attempt to **propagate between peers**, to **trojanised installers**, or to **compromised build and distribution paths**. A successful campaign could **degrade validation**, **corrupt local state**, or create **trust-collapsing uncertainty** at scale, even where **on-chain rules** remain formally unchanged. This category is **not** claimed to be the **sole** existential threat to Stables or Minima (others in this matrix, such as **base-layer consensus failure**, **prolonged global connectivity loss**, or **jurisdictional extinction of use**, can each halt or hollow out the system on their own). It is nevertheless a **first-class operational security** concern because it targets the **same machines that enforce truth**. Mitigation is **layered**: **signed and verifiable releases**, **reproducible-build discipline where practicable**, **OS-level hardening and least privilege**, **diversity of client and deployment paths** where the ecosystem supports it, **incident response and quarantine playbooks**, **responsible disclosure coordination** with Minima reference implementation maintainers, and **participant education** so updates are not fetched from untrusted surfaces. Exact verification steps, release signing keys, and anomaly detection belong in **implementation and security runbooks**, not in the immutable monetary core.
+
 Risk categories to be addressed:
 
 | # | Risk Category | Scope |
@@ -861,6 +870,7 @@ Risk categories to be addressed:
 | 22 | **Human Concentration Risk (Core Development)** | Dependence on a small set of core Minima developers and key maintainers; delivery bottlenecks, continuity risk, and elevated exposure if one or more key contributors become unavailable |
 | 23 | **AI Agent Integration Risk** | Misinformation, hallucination, social engineering, or automation errors by third-party or embedded agents; over-reliance on non-authoritative model output; API or workflow abuse — mitigated by disclosure, provenance to on-chain state, and invariant boundaries (Article IX) |
 | 24 | **Quantum Computing and Cryptanalytic Transition Risk** | Large-scale quantum or other advances that compromise classical public-key cryptography, signatures, or related assumptions; harvest-now-decrypt-later against historical commitments; need for post-quantum primitives, migration, and continued review — no cryptographic layer is treated as permanently secure |
+| 25 | **Peer-to-Node Malware, Worm, and Supply-Chain Risk** | Self-propagating or staged malware moving between validators or light clients; trojanised or substituted binaries; compromised CI/CD or update mirrors; parser or P2P handler exploits that turn one compromised node into a lateral movement path — mitigated by signed distribution, verification discipline, diversity of release paths, incident response, and coordination with base-layer security practice (see narrative paragraph above) |
 
 Each risk shall be paired with:
 

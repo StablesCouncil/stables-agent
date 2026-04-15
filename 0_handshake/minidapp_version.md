@@ -5,6 +5,9 @@
 **Published mirror (community, GitHub Pages repo):**  
 [github.com/StablesCouncil/stablescouncil.github.io/blob/main/dapp/MINIDAPP_VERSIONING.md](https://github.com/StablesCouncil/stablescouncil.github.io/blob/main/dapp/MINIDAPP_VERSIONING.md)
 
+**Working copy (refresh Pages from here):**  
+`1_development/stream_1_app/task_stablescouncil_github_io/webpages/dapp/MINIDAPP_VERSIONING.md` — keep aligned with this handshake file (including **Channel model**). Run **`npm run sync:site`** in **`task_stablescouncil_github_io/`** so it lands in **`site/dapp/`**; ship **`site/`** to the Pages repo (live path **`dapp/MINIDAPP_VERSIONING.md`**).
+
 ## Active trees (two folders)
 
 | | |
@@ -33,6 +36,13 @@
 - **Default:** implement new features in **`prod_stables_app_demo`** unless the task is **showcase-only** (synthetic line, no demo semantics).
 - **Both channels:** land the change in **demo** first when it applies to both, then **port** to showcase only if **synthetic-safe** (no demo-only chain or token-truth wiring). Reverse for a showcase hotfix that must not affect demo yet.
 - **Config:** `assets/config/runtime-config.js` → **`APP_STAGE`** (`showcase` \| `demo` \| `test` \| `prod`) drives the top bar pill with **`APP_BUILD_VERSION`**. Optional **`stage`** in `dapp.conf` for human-readable channel (hub may ignore unknown keys).
+
+### Channel model (showcase, demo, test, prod)
+
+- **One shell, one UX direction:** the same app routes and design system across stages. **Channels differ by functionality** (what may run: simulation vs demo mint semantics vs real test tokens vs prod), plus the **data and backends** those features require, not by maintaining unrelated product UIs.
+- **Showcase** mirrors the **most advanced** experience the Council wants visitors to see, with **rich synthetic / sample data** so the surface reads like a finished product. It stays **synthetic-safe**: port from **demo** only when wiring does not imply chain or token truth that showcase does not have (see **Routing** above).
+- **Test** and **prod** use the same stage names in **`APP_STAGE`** and policy; separate **`prod_…` dev folders** for them are optional until Council splits codebases. Token and environment truth per stage are summarized under **Five-segment version** (on-chain column) and **Demo vs test** below.
+- **Identifiers vs display:** folder names, zips, **`APP_BUILD_VERSION`**, and **`dapp.conf`** use the **canonical two-digit** five-segment form (e.g. **`v00.00.00.00.03`**). Marketing or in-app copy may use a shorter human-readable spelling **only as display**, without changing Council paths or artifact names.
 
 ## Five-segment version: `vPM.Pn.TT.DD.SS` (stage-aware)
 

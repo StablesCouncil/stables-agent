@@ -33,6 +33,13 @@ Council handshake name today is **`task_stablescouncil_github_io`**. If you pref
 
 **MiniDapp tree:** `…/webpages/dapp/` mirrors **`/dapp/`** (`showcase/`, `demo/`, …). Sync copies it to **`site/dapp/`** only.
 
+### MiniDapp channels: Live URL ↔ `C:\` paths
+
+| Channel | Version (canonical) | Live URL | `C:\` paths (set-up) |
+|---------|---------------------|----------|----------------------|
+| **Showcase** | **`v00.00.00.00.03`** (short **`v00.00.03`**) | [stablescouncil.org/dapp/showcase/](https://stablescouncil.org/dapp/showcase/) · [stablescouncil.github.io/dapp/showcase/](https://stablescouncil.github.io/dapp/showcase/) | **MiniDapp source (build .mds.zip):** `C:\Users\Charles\Documents\Stables\1_development\stream_1_app\prod_stables_app_v00.00.00.00.03\` — **Web author (edit, then `npm run sync:site`):** `C:\Users\Charles\Documents\Stables\1_development\stream_1_app\task_stablescouncil_github_io\webpages\dapp\showcase\` — **Synced output:** `C:\Users\Charles\Documents\Stables\1_development\stream_1_app\task_stablescouncil_github_io\site\dapp\showcase\` |
+| **Demo** | **`v00.00.00.01.00`** | [stablescouncil.org/dapp/demo/](https://stablescouncil.org/dapp/demo/) · [stablescouncil.github.io/dapp/demo/](https://stablescouncil.github.io/dapp/demo/) | **MiniDapp source:** `C:\Users\Charles\Documents\Stables\1_development\stream_1_app\prod_stables_app_demo\` — **Web author:** `C:\Users\Charles\Documents\Stables\1_development\stream_1_app\task_stablescouncil_github_io\webpages\dapp\demo\` — **Synced output:** `C:\Users\Charles\Documents\Stables\1_development\stream_1_app\task_stablescouncil_github_io\site\dapp\demo\` |
+
 **Shared CSS, brand, CNAME:** edit **`…/static/`** (not the task folder root). Sync merges it into **`site/`** first.
 
 See **`task_stablescouncil_github_io/webpages/README.md`** for the full map.
@@ -118,4 +125,4 @@ Step 2 subpages use **`../stables.css`** and **`../assets/site-chrome.css`** rel
 
 ---
 
-*Last update: Public pages are authored under **`webpages/pages/<slug>/`** and **`webpages/dapp/`**; shared shipped files under **`static/`**; **`npm run sync:site`** builds **`site/`** only (2026-04-14). Optional **`prod_presentation_v02/`** mirror: copy **`site/index.html`** and **`site/playing_field.html`** after sync. Earlier: Handover table retargeted to **`task_stablescouncil_github_io/`** (2026-04-12).*
+*Last update: **MiniDapp channels** table uses full **`C:\`** paths for showcase / demo (Live URL ↔ `prod_*` and **`webpages/dapp/`** / **`site/dapp/`**) (2026-04-15). Public pages are authored under **`webpages/pages/<slug>/`** and **`webpages/dapp/`**; shared shipped files under **`static/`**; **`npm run sync:site`** builds **`site/`** only. Optional **`prod_presentation_v02/`** mirror: copy **`site/index.html`** and **`site/playing_field.html`** after sync. Earlier: Handover table retargeted to **`task_stablescouncil_github_io/`** (2026-04-12).*

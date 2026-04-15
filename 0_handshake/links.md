@@ -50,6 +50,31 @@ If any of these are **renamed**, update this list and post once on **Telegram Co
 
 **Volunteer roster / task acknowledgment:** the Council shall publish a single **canonical link** (pinned Council post, GitHub, or other board) and announce it on **Council Official** when live. Until then, volunteers coordinate in **Discord** and confirm scope in writing there.
 
+## Independent stablecoin risk and ratings (single reference block)
+
+**Purpose:** one place for **third-party** tools used in **market watch**, **due diligence**, and **education** about the wider stablecoin universe. **Not** Stables product documentation. **Not** an endorsement: each site has its own methodology, errors, and terms.
+
+### Bluechip (economic safety ratings, directory, compare)
+
+- **Home (English):** [https://bluechip.org/en](https://bluechip.org/en)
+
+**Issuer-facing positioning (quoted from Bluechip for convenience; see their site for current wording):**
+
+> Interested in a rating for your stablecoin?  
+> Boost Transparency. Build Trust. Elevate Your Stablecoin.  
+> A good Bluechip rating is not only a badge; it is a signal to users that your stablecoin is credible and reliable. Start the rating process and accelerate your stablecoin's growth today!
+
+Bluechip publishes **grades**, **backing and peg filters**, and framework material on their domain. Use their **Disclaimer** and **User Agreement** before relying on any grade in decisions.
+
+### Pharos (stablecoin risk monitoring, methodology)
+
+- **Start here (orientation):** [https://pharos.watch/start/](https://pharos.watch/start/)  
+- **Methodology (formulas, thresholds):** [https://pharos.watch/methodology/](https://pharos.watch/methodology/)
+
+Pharos describes itself as a **stablecoin risk monitoring** product (dashboard, stability index, safety scores, yield views, alerts). Treat outputs as **informational**, not financial advice (see their footer terms).
+
+**Council note:** when this block moves or grows, keep it **in one section** here so `stables_charter.md` Article VI can point to a **single** link index without duplicating URLs.
+
 ## Development
 *   **GitHub Organization:** [github.com/StablesCouncil](https://github.com/StablesCouncil)
 
