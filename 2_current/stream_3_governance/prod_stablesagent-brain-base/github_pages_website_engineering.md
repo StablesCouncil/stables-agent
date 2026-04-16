@@ -17,14 +17,14 @@
 
 ## 2. Canonical authoring layout (monorepo)
 
-All edits for the seven public HTML nodes and the MiniDapp web tree happen in **one** sandbox folder (paths relative to Stables repo root):
+Authoring spans **two** sibling folders under **`1_development/stream_1_app/`** (paths relative to Stables repo root):
 
-**`1_development/stream_1_app/task_stablescouncil_github_io/`**
+**`1_development/stream_1_app/task_stablescouncil_github_io/`** (static pages + build) and **`1_development/stream_1_app/dapp/`** (MiniDapp only).
 
 | Layer | Path | Role |
 |-------|------|------|
-| **Human page sources** | **`webpages/pages/<slug>/index.html`** | One folder per route; slugs include **`index`**, **`links`**, **`playing_field`**, **`qr-code`**, **`ambassadorsprogramdesc`**, **`circulareconomy`**, **`bankingsystem`**. |
-| **MiniDapp web mirror** | **`webpages/dapp/`** | Same shape as **`/dapp/`** on the live site (`showcase/`, `demo/`, …). |
+| **Human page sources** | **`task_stablescouncil_github_io/webpages/pages/<slug>/index.html`** | One folder per route; slugs include **`index`**, **`links`**, **`playing_field`**, **`qr-code`**, **`ambassadorsprogramdesc`**, **`circulareconomy`**, **`bankingsystem`**. |
+| **MiniDapp web mirror** | **`1_development/stream_1_app/dapp/`** | Same folder layout as **`https://stablescouncil.org/dapp/`** (**`1-showcase/`**, **`2-demo/`**, **`3-test/`**, **`4-prod/`**, optional **`v00…/`** redirect stubs, …). |
 | **Shared shipped assets** | **`static/`** | Shared CSS (including **`stables.css`** pattern from Council spec), **`assets/`** (e.g. **`site-chrome.css`**), brand files, **`CNAME`**, images used across pages. |
 | **Built tree (generated)** | **`site/`** | **Only** output that matches the live URL layout. **Do not hand-edit** files here except **`site/README.md`** (tracked). Everything else under **`site/`** is produced by sync and is typically gitignored. |
 | **Sync tool** | **`tools/sync-site.mjs`** | Implements the merge and copy rules. |
@@ -46,7 +46,7 @@ There is **no** duplicate **`index.html`** or **`dapp/`** at the **task folder r
 | **`webpages/pages/ambassadorsprogramdesc/`** | **`/ambassadorsprogramdesc.html`** | **`ambassadorsprogramdesc.html`** |
 | **`webpages/pages/circulareconomy/`** | **`/circulareconomy/`** | **`circulareconomy/`** (directory) |
 | **`webpages/pages/bankingsystem/`** | **`/bankingsystem/`** | **`bankingsystem/`** (directory) |
-| **`webpages/dapp/`** | **`/dapp/...`** | **`dapp/`** |
+| **`stream_1_app/dapp/`** | **`/dapp/...`** | **`dapp/`** (copied by **`sync-site`** from **`../dapp/`**) |
 
 Detail tables also live in **`task_stablescouncil_github_io/webpages/README.md`** and **`handover_document.md`**.
 

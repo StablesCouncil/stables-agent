@@ -2,6 +2,8 @@
 
 Backs up the project to the Vultr server. Aligned with the handshake structure, restoration protocol, and recent changes (Charter rename, brain base path, presentation, etc.).
 
+**Business continuity (laptop loss, IDE chat restore):** see **`BCP.md`** in this folder.
+
 ---
 
 ## 1. Script Location
@@ -42,9 +44,10 @@ C:\Users\Charles\Documents\Stables
 | `1_development` | Sandbox (brain base edits, agent code, drafts, all dev work) |
 | `2_current` | **Source of Truth** (presentation, ledger, charter, brain, brand masters) |
 | `3_archive` | Historical record |
+| `_bcp_ide_mirror` | **BCP:** Cursor **`agent-transcripts`** + **`rules`** (not full workspace; **`assets`** omitted to avoid MAX_PATH) + **Antigravity** (`%USERPROFILE%\.gemini\antigravity\`). See **`BCP.md`**. Omit with **`-SkipBcpIde`**. |
 
 **Always excluded (sensitive):** `prod_credentials` (entire folder), `.env` and all `.env.*` files.  
-**Also excluded (bloat):** `node_modules`, `.git`, `.gemini`, `.agent`.
+**Also excluded (bloat):** `node_modules`, `.git`, `.gemini`, `.agent` — applies to the **four Stables roots**; the **BCP** copy reads from your user profile paths above (not from inside the repo).
 
 ---
 
@@ -110,6 +113,11 @@ cd C:\Users\Charles\Documents\Stables
 **Skip GitHub (zip + Vultr only):**
 ```powershell
 .\1_development\stream_3_governance\task_dev_utils\tools\backup-stables.ps1 -SkipGithub
+```
+
+**Skip Cursor + Antigravity mirror (smaller zip; Stables four roots unchanged):**
+```powershell
+.\1_development\stream_3_governance\task_dev_utils\tools\backup-stables.ps1 -SkipBcpIde
 ```
 
 ---

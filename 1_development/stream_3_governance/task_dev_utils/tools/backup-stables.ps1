@@ -1,11 +1,12 @@
 <#
 .SYNOPSIS
-    Backs up the Stables project to the Vultr server. Aligned with handshake structure and restoration protocol.
+    Backs up Stables core + lightweight chat continuity artifacts.
 
 .DESCRIPTION
-    Creates a timestamped zip of all project folders (0_handshake, 1_development, 2_current, 3_archive),
-    excluding sensitive data (prod_credentials, .env). Copies zip locally, SCPs to Vultr, then runs
-    sync-stables.ps1 to push to GitHub (uses branch.main.remote, e.g. backup). Run via Task Scheduler or manually.
+    Creates a timestamped CORE zip of all project folders (0_handshake, 1_development, 2_current, 3_archive),
+    excluding sensitive data and bulky caches. Creates a separate CHAT-DELTA zip with only changed chat files
+    from Cursor agent-transcripts and Antigravity conversations (stateful incremental backup).
+    Copies zips locally, uploads to Vultr, then runs sync-stables.ps1 to push to GitHub.
     See BACKUP_README.md for Task Scheduler configuration.
 
 .EXAMPLE
@@ -19,12 +20,60 @@ param(
     [string]$BackupBaseOnServer = "/root/stables-backups",
     [string]$LocalBackupPath = "C:\Users\Charles\Documents\Backup\Stables",
     [switch]$SkipVultr = $false,
-    [switch]$SkipGithub = $false
+    [switch]$SkipGithub = $false,
+    [switch]$SkipBcpIde = $false,
+    [switch]$ForceFullChat = $false
 )
 
 $ErrorActionPreference = "Stop"
 
 function Log { param($Msg) $dt = Get-Date -Format "yyyy-MM-dd HH:mm:ss"; Write-Host "[$dt] $Msg" }
+
+# Cursor names each workspace folder under .cursor/projects/<slug>; slug matches drive + path with hyphens.
+function Get-CursorProjectSlug {
+    param([string]$Root)
+    try {
+        $full = (Resolve-Path -LiteralPath $Root -ErrorAction Stop).ProviderPath
+    } catch {
+        return $null
+    }
+    if ($full -match '^([A-Za-z]):\\') {
+        $drive = $Matches[1].ToLower()
+        $tail = $full.Substring(3) -replace '\\', '-'
+        return "$drive-$tail"
+    }
+    return $null
+}
+
+function Invoke-RoboMirror {
+    param(
+        [string]$SourcePath,
+        [string]$DestPath,
+        [string[]]$ExcludeDirs = @(),
+        [string[]]$ExcludeFiles = @()
+    )
+    if (-not (Test-Path -LiteralPath $SourcePath)) { return $false }
+    New-Item -ItemType Directory -Path (Split-Path $DestPath) -Force | Out-Null
+    $RoboArgs = @($SourcePath, $DestPath, "/E", "/NFL", "/NDL", "/NJH", "/NJS", "/NC", "/NS", "/NP", "/R:0", "/W:0")
+    if ($ExcludeDirs.Count -gt 0) { $RoboArgs += "/XD"; $RoboArgs += $ExcludeDirs }
+    if ($ExcludeFiles.Count -gt 0) { $RoboArgs += "/XF"; $RoboArgs += $ExcludeFiles }
+    & robocopy @RoboArgs 2>$null | Out-Null
+    return $true
+}
+
+function Get-FileKey {
+    param([string]$Base, [string]$FullPath)
+    return ([System.IO.Path]::GetRelativePath($Base, $FullPath)) -replace '\\', '/'
+}
+
+function Get-FileState {
+    param([string]$Path)
+    $i = Get-Item -LiteralPath $Path
+    return @{
+        lastWriteUtc = $i.LastWriteTimeUtc.ToString("o")
+        length       = [string]$i.Length
+    }
+}
 
 # Explicit OpenSSH paths (for Task Scheduler context)
 $SshExe = Join-Path $env:SystemRoot "System32\OpenSSH\ssh.exe"
@@ -40,9 +89,14 @@ if (-not (Test-Path (Join-Path $ProjectRoot "0_handshake"))) {
 }
 $Timestamp = Get-Date -Format "yyyy-MM-dd_HHmm"
 $TimestampCompact = Get-Date -Format "yyyyMMddHHmmss"
-$ZipName = "Stables_backup_$Timestamp.zip"
-
-$LocalZipPath = Join-Path $env:TEMP $ZipName
+$CoreZipName = "Stables_core_$Timestamp.zip"
+$ChatZipName = "Stables_chat_delta_$Timestamp.zip"
+$LocalCoreZipPath = Join-Path $env:TEMP $CoreZipName
+$LocalChatZipPath = Join-Path $env:TEMP $ChatZipName
+$StateDir = Join-Path $ScriptDir "state"
+$ChatStatePath = Join-Path $StateDir "chat-state.json"
+$RunLogPath = Join-Path $StateDir "backup-run-log.csv"
+New-Item -ItemType Directory -Path $StateDir -Force | Out-Null
 
 # Staging must use a SHORT path: deep trees under 3_archive can exceed Windows MAX_PATH (~260)
 # when nested under AppData\Local\Temp\stables_backup_temp_..., breaking Compress-Archive.
@@ -63,7 +117,8 @@ STABLES BACKUP MANIFEST
 ======================
 Generated: $(Get-Date -Format "yyyy-MM-dd HH:mm:ss")
 Project Root: $ProjectRoot
-Zip: $ZipName
+Core zip: $CoreZipName
+Chat zip: $(if ($SkipBcpIde) { "SKIPPED (-SkipBcpIde)" } else { $ChatZipName })
 
 CONTENTS (Handshake-aligned)
 ---------------------------
@@ -71,6 +126,7 @@ CONTENTS (Handshake-aligned)
 - 1_development: Sandbox (drafts, brain base edits, agent code)
 - 2_current: Source of Truth (presentation, ledger, charter, brain, brand masters)
 - 3_archive: Historical record
+- chat delta zip: only changed Cursor agent-transcripts + Antigravity conversations
 
 EXCLUDED (never backed up - sensitive)
 -------------------------------------
@@ -87,11 +143,13 @@ KEY FILES TO FIND ON RESTORE
 
 VULTR DESTINATION
 -----------------
-$BackupBaseOnServer/$ZipName
+$BackupBaseOnServer/$CoreZipName
+$BackupBaseOnServer/$ChatZipName (if generated)
 
 LOCAL COPY (C:)
 ---------------
-$LocalBackupPath/$ZipName
+$LocalBackupPath/$CoreZipName
+$LocalBackupPath/$ChatZipName (if generated)
 
 GITHUB
 ------
@@ -112,6 +170,7 @@ $RoboExcludeDirs = @("node_modules", ".git", ".gemini", ".agent", "prod_credenti
 $RoboExcludeFiles = @(".env", ".env.local", ".env.development.local", ".env.test.local", ".env.production.local")
 
 try {
+    # ---------- CORE STAGING ----------
     foreach ($folder in $BackupFolders) {
         $Src = Join-Path $ProjectRoot $folder
         if (Test-Path $Src) {
@@ -127,29 +186,127 @@ try {
             & robocopy @RoboArgs 2>$null
         }
     }
+
     Copy-Item $ManifestPath (Join-Path $TempDir "BACKUP_MANIFEST.txt")
-    Log "Compressing to zip (this may take several minutes)..."
+    Log "Compressing CORE zip (this may take several minutes)..."
     try {
-        Compress-Archive -Path "$TempDir\*" -DestinationPath $LocalZipPath -Force
+        Compress-Archive -Path "$TempDir\*" -DestinationPath $LocalCoreZipPath -Force
     } catch {
-        Log "ERROR: Zip failed. If paths under 3_archive are extremely deep, enable Windows long paths (Group Policy: Enable Win32 long paths) or prune that archive tree."
+        Log "ERROR: CORE zip failed. If paths are extremely deep, enable Win32 long paths or prune deep archive trees."
         throw
     }
+
+    # ---------- CHAT DELTA STAGING ----------
+    $ChatTempDir = Join-Path $StageRoot "chat_$TimestampCompact"
+    if (Test-Path $ChatTempDir) { Remove-Item -Path $ChatTempDir -Recurse -Force -ErrorAction SilentlyContinue }
+    New-Item -ItemType Directory -Path $ChatTempDir -Force | Out-Null
+
+    $ChatState = @{}
+    if ((-not $ForceFullChat) -and (Test-Path -LiteralPath $ChatStatePath)) {
+        try {
+            $raw = Get-Content -LiteralPath $ChatStatePath -Raw
+            if ($raw) { $ChatState = (ConvertFrom-Json $raw -AsHashtable) }
+        } catch {
+            Log "WARNING: chat-state.json unreadable, fallback to full chat snapshot."
+            $ChatState = @{}
+        }
+    }
+    if ($null -eq $ChatState) { $ChatState = @{} }
+
+    $NextState = @{}
+    $CopiedChatFiles = 0
+
+    if (-not $SkipBcpIde) {
+        $ChatSources = @()
+        $slug = Get-CursorProjectSlug -Root $ProjectRoot
+        if ($slug) {
+            $cursorTranscripts = Join-Path $env:USERPROFILE ".cursor\projects\$slug\agent-transcripts"
+            if (Test-Path -LiteralPath $cursorTranscripts) {
+                $ChatSources += @{ name = "cursor"; base = $cursorTranscripts; dest = (Join-Path $ChatTempDir "cursor\agent-transcripts") }
+                Log "BCP: indexing Cursor transcripts ($slug)..."
+            } else {
+                Log "WARNING: Cursor transcripts not found: $cursorTranscripts"
+            }
+        }
+        $agConversations = Join-Path $env:USERPROFILE ".gemini\antigravity\conversations"
+        if (Test-Path -LiteralPath $agConversations) {
+            $ChatSources += @{ name = "antigravity"; base = $agConversations; dest = (Join-Path $ChatTempDir "antigravity\conversations") }
+            Log "BCP: indexing Antigravity conversations..."
+        } else {
+            Log "WARNING: Antigravity conversations not found: $agConversations"
+        }
+
+        foreach ($src in $ChatSources) {
+            New-Item -ItemType Directory -Path $src.dest -Force | Out-Null
+            $files = Get-ChildItem -LiteralPath $src.base -Recurse -File -ErrorAction SilentlyContinue
+            foreach ($f in $files) {
+                $key = "$($src.name)/$(Get-FileKey -Base $src.base -FullPath $f.FullName)"
+                $state = Get-FileState -Path $f.FullName
+                $changed = $ForceFullChat
+                if (-not $changed) {
+                    if (-not $ChatState.ContainsKey($key)) { $changed = $true }
+                    else {
+                        $prev = $ChatState[$key]
+                        if (($prev.lastWriteUtc -ne $state.lastWriteUtc) -or ($prev.length -ne $state.length)) { $changed = $true }
+                    }
+                }
+                if ($changed) {
+                    $destFile = Join-Path $src.dest (Get-FileKey -Base $src.base -FullPath $f.FullName)
+                    New-Item -ItemType Directory -Path (Split-Path $destFile) -Force | Out-Null
+                    Copy-Item -LiteralPath $f.FullName -Destination $destFile -Force
+                    $CopiedChatFiles++
+                }
+                $NextState[$key] = $state
+            }
+        }
+
+        if ($CopiedChatFiles -gt 0) {
+            Log "Compressing CHAT-DELTA zip ($CopiedChatFiles changed files)..."
+            Compress-Archive -Path "$ChatTempDir\*" -DestinationPath $LocalChatZipPath -Force
+            $NextState | ConvertTo-Json -Depth 6 | Out-File -LiteralPath $ChatStatePath -Encoding utf8
+        } else {
+            Log "No chat changes since last run; skipping chat zip."
+            if ($NextState.Count -gt 0) {
+                $NextState | ConvertTo-Json -Depth 6 | Out-File -LiteralPath $ChatStatePath -Encoding utf8
+            }
+        }
+    } else {
+        Log "Skipped BCP IDE mirror (-SkipBcpIde)."
+    }
+
+    if (-not (Test-Path -LiteralPath $RunLogPath)) {
+        "timestamp,coreZipBytes,chatZipBytes,chatFilesCopied,skipBcpIde,forceFullChat" | Out-File -LiteralPath $RunLogPath -Encoding utf8
+    }
+    $coreSize = if (Test-Path -LiteralPath $LocalCoreZipPath) { (Get-Item -LiteralPath $LocalCoreZipPath).Length } else { 0 }
+    $chatSize = if (Test-Path -LiteralPath $LocalChatZipPath) { (Get-Item -LiteralPath $LocalChatZipPath).Length } else { 0 }
+    "$Timestamp,$coreSize,$chatSize,$CopiedChatFiles,$SkipBcpIde,$ForceFullChat" | Add-Content -LiteralPath $RunLogPath
+
+    Remove-Item -Path $ChatTempDir -Recurse -Force -ErrorAction SilentlyContinue
 } finally {
     Remove-Item -Path $TempDir -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-if (-not (Test-Path $LocalZipPath)) {
-    throw "Backup zip was not created."
+if (-not (Test-Path $LocalCoreZipPath)) {
+    throw "Core backup zip was not created."
 }
 
-Log "Backup created: $LocalZipPath"
+Log "Core backup created: $LocalCoreZipPath"
+if (Test-Path -LiteralPath $LocalChatZipPath) {
+    Log "Chat delta backup created: $LocalChatZipPath"
+}
 
 # Copy to local backup folder on C:
 New-Item -ItemType Directory -Path $LocalBackupPath -Force | Out-Null
-$LocalCopyPath = Join-Path $LocalBackupPath $ZipName
-Copy-Item $LocalZipPath $LocalCopyPath -Force
-Log "Local copy saved to: $LocalCopyPath"
+$LocalCoreCopyPath = Join-Path $LocalBackupPath $CoreZipName
+Copy-Item $LocalCoreZipPath $LocalCoreCopyPath -Force
+Log "Local core copy saved to: $LocalCoreCopyPath"
+
+$LocalChatCopyPath = $null
+if (Test-Path -LiteralPath $LocalChatZipPath) {
+    $LocalChatCopyPath = Join-Path $LocalBackupPath $ChatZipName
+    Copy-Item $LocalChatZipPath $LocalChatCopyPath -Force
+    Log "Local chat delta copy saved to: $LocalChatCopyPath"
+}
 
 # SCP to Vultr (optional)
 if (-not $SkipVultr) {
@@ -162,16 +319,24 @@ if (-not $SkipVultr) {
         if ($LASTEXITCODE -ne 0) {
             Log "WARNING: Cannot reach Vultr (ssh failed, exit code $LASTEXITCODE). Is SSH key set up? Run: ssh root@$VultrHost"
         } else {
-            & $ScpExe $LocalZipPath $RemoteDest
+            & $ScpExe $LocalCoreZipPath $RemoteDest
             if ($LASTEXITCODE -ne 0) {
-                Log "WARNING: SCP upload failed with exit code $LASTEXITCODE. Local backup saved at: $LocalCopyPath"
+                Log "WARNING: SCP upload failed for CORE zip with exit code $LASTEXITCODE. Local backup is still saved."
             } else {
-                Log "Backup complete. Stored at $BackupBaseOnServer/$ZipName on $VultrHost"
+                Log "Core backup uploaded to $BackupBaseOnServer/$CoreZipName on $VultrHost"
+            }
+            if ($LocalChatCopyPath) {
+                & $ScpExe $LocalChatZipPath $RemoteDest
+                if ($LASTEXITCODE -ne 0) {
+                    Log "WARNING: SCP upload failed for CHAT zip with exit code $LASTEXITCODE. Local chat delta is still saved."
+                } else {
+                    Log "Chat delta uploaded to $BackupBaseOnServer/$ChatZipName on $VultrHost"
+                }
             }
         }
     }
 } else {
-    Log "Skipped Vultr upload (-SkipVultr). Local backup at: $LocalCopyPath"
+    Log "Skipped Vultr upload (-SkipVultr). Local backups are saved."
 }
 
 # GitHub sync (after zip + upload so backups succeed even if Git fails)
@@ -198,4 +363,5 @@ if (-not $SkipGithub) {
 }
 
 # Cleanup local zip
-Remove-Item $LocalZipPath -Force -ErrorAction SilentlyContinue
+Remove-Item $LocalCoreZipPath -Force -ErrorAction SilentlyContinue
+Remove-Item $LocalChatZipPath -Force -ErrorAction SilentlyContinue

@@ -1,6 +1,6 @@
 # Stables MiniDapp — UI inventory
 **Status**: MANDATORY reference when adding/removing screens or sections.  
-**Source**: **Showcase** `prod_stables_app_v00.00.00.00.03/index.html` · **Demo** `prod_stables_app_demo/index.html` (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Default for new UI:** demo tree unless the change is showcase-only. **Router:** `0_handshake/minidapp_version.md`.  
+**Source**: **Showcase** **`dapp/1-showcase/index.html`** (with **`dapp/assets/`**) · **Demo** **`dapp/2-demo/index.html`** (+ injected HTML from `assets/routes/activity-contacts.js` where noted). **Default for new UI:** demo tree unless the change is showcase-only. **Router:** `0_handshake/minidapp_version.md`.  
 **Companion**: `web_component_spec.md` (patterns), `handshake.md` (single executable + this map).
 
 ## How to use

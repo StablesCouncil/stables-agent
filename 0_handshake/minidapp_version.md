@@ -6,19 +6,25 @@
 [github.com/StablesCouncil/stablescouncil.github.io/blob/main/dapp/MINIDAPP_VERSIONING.md](https://github.com/StablesCouncil/stablescouncil.github.io/blob/main/dapp/MINIDAPP_VERSIONING.md)
 
 **Working copy (refresh Pages from here):**  
-`1_development/stream_1_app/task_stablescouncil_github_io/webpages/dapp/MINIDAPP_VERSIONING.md` — keep aligned with this handshake file (including **Channel model**). Run **`npm run sync:site`** in **`task_stablescouncil_github_io/`** so it lands in **`site/dapp/`**; ship **`site/`** to the Pages repo (live path **`dapp/MINIDAPP_VERSIONING.md`**).
+`1_development/stream_1_app/dapp/MINIDAPP_VERSIONING.md` — keep aligned with this handshake file (including **Channel model**). Run **`npm run sync:site`** in **`task_stablescouncil_github_io/`** so it lands in **`site/dapp/`**; ship **`site/`** to the Pages repo (live path **`dapp/MINIDAPP_VERSIONING.md`**).
 
-## Active trees (two folders)
+**Pages `dapp/` HTML:** showcase shell is **`1_development/stream_1_app/dapp/1-showcase/index.html`**; demo shell is **`1_development/stream_1_app/dapp/2-demo/`** (**authoritative** for new demo work). **Test** and **prod** placeholders: **`dapp/3-test/`**, **`dapp/4-prod/`** (see **`MINIDAPP_VERSIONING.md`**). One shell per channel; no duplicate **`index.html`** under versioned **`dapp/v…/`** paths.
+
+## Active trees (four channels under `dapp/`)
 
 | | |
 |--|--|
-| **Showcase** | `1_development/stream_1_app/prod_stables_app_v00.00.00.00.03/` |
-| **Demo (primary new work)** | `1_development/stream_1_app/prod_stables_app_demo/` |
+| **Showcase** | `1_development/stream_1_app/dapp/` (**`1-showcase/`**, root **`assets/`**, **`dapp.conf`**; hub zip per **`dapp/build/README.md`**; zips under **`1-showcase/latest-version/`**) |
+| **Demo (primary new work)** | `1_development/stream_1_app/dapp/2-demo/` |
+| **Test** | `1_development/stream_1_app/dapp/3-test/` (placeholder until test zip ships) |
+| **Prod** | `1_development/stream_1_app/dapp/4-prod/` (placeholder until prod zip ships) |
 
 | Line | Short label | Full label `vPM.Pn.TT.DD.SS` | `APP_STAGE` / `dapp.conf` `stage` | Change log |
 |------|-------------|------------------------------|-------------------------------------|------------|
-| **Showcase** | **`v00.00.03`** | **`v00.00.00.00.03`** | **`showcase`** | `prod_stables_app_v00.00.00.00.03/CHANGELOG.md` |
-| **Demo** | *(use full or `00.00.00.01.00` in files)* | **`v00.00.00.01.00`** | **`demo`** | `prod_stables_app_demo/CHANGELOG.md` |
+| **Showcase** | **`v00.00.03`** | **`v00.00.00.00.03`** | **`showcase`** | `dapp/CHANGELOG.md` |
+| **Demo** | *(use full or `00.00.00.01.00` in files)* | **`v00.00.00.01.00`** | **`demo`** | `dapp/2-demo/CHANGELOG.md` |
+| **Test** | *(none shipped yet)* | *(Council-chosen)* | **`test`** | `dapp/3-test/CHANGELOG.md` |
+| **Prod** | *(none shipped yet)* | *(Council-chosen)* | **`prod`** | `dapp/4-prod/CHANGELOG.md` |
 
 | | |
 |--|--|
@@ -28,20 +34,21 @@
 | **Frozen v0.01.01 (Showcase public baseline)** | `3_archive/stream_1_app/prod_stables_app_v0.01.01/` — see `FROZEN.md` inside. |
 | **Frozen v0.2.11** | `3_archive/stream_1_app/prod_stables_app_v0.2.11/` |
 | **Frozen v0.2.10** | `3_archive/stream_1_app/prod_stables_app_v0.2.10/` + zip `…/build/Stables_v0.2.10.mds.zip` |
-| **Dev zip (showcase)** | `prod_stables_app_v00.00.00.00.03/build/Stables_v00.00.00.00.03.mds.zip` |
-| **Dev zip (demo)** | `prod_stables_app_demo/build/Stables_v00.00.00.01.00_demo.mds.zip` (see `build/README.md`) |
+| **Dev zip (showcase)** | `dapp/build/Stables_v00.00.00.00.03.mds.zip` (see `dapp/build/README.md`) |
+| **Dev zip (demo)** | `dapp/2-demo/build/Stables_v00.00.00.01.00_demo.mds.zip` (see `dapp/2-demo/build/README.md`) |
 
 ### Routing (agents)
 
-- **Default:** implement new features in **`prod_stables_app_demo`** unless the task is **showcase-only** (synthetic line, no demo semantics).
+- **Porting gap ledger (optional but recommended):** `1_development/stream_1_app/dapp/PORTING_GAP.md` — single place to track **lead channel vs downstream** (prod → test → demo → showcase) so you do not diff four trees manually. Set **Declared lead channel** there when strategy shifts (e.g. demo-first today; prod-first when **`4-prod/`** is a full fork).
+- **Default:** implement new features in **`dapp/2-demo/`** unless the task is **showcase-only** (synthetic line, no demo semantics).
 - **Both channels:** land the change in **demo** first when it applies to both, then **port** to showcase only if **synthetic-safe** (no demo-only chain or token-truth wiring). Reverse for a showcase hotfix that must not affect demo yet.
-- **Config:** `assets/config/runtime-config.js` → **`APP_STAGE`** (`showcase` \| `demo` \| `test` \| `prod`) drives the top bar pill with **`APP_BUILD_VERSION`**. Optional **`stage`** in `dapp.conf` for human-readable channel (hub may ignore unknown keys).
+- **Config:** **`assets/config/runtime-config.js`** under the tree you edit (**`dapp/assets/`** for showcase, **`dapp/2-demo/assets/`** for demo) → **`APP_STAGE`** (`showcase` \| `demo` \| `test` \| `prod`) drives the top bar pill with **`APP_BUILD_VERSION`**. Optional **`stage`** in `dapp.conf` for human-readable channel (hub may ignore unknown keys).
 
 ### Channel model (showcase, demo, test, prod)
 
 - **One shell, one UX direction:** the same app routes and design system across stages. **Channels differ by functionality** (what may run: simulation vs demo mint semantics vs real test tokens vs prod), plus the **data and backends** those features require, not by maintaining unrelated product UIs.
 - **Showcase** mirrors the **most advanced** experience the Council wants visitors to see, with **rich synthetic / sample data** so the surface reads like a finished product. It stays **synthetic-safe**: port from **demo** only when wiring does not imply chain or token truth that showcase does not have (see **Routing** above).
-- **Test** and **prod** use the same stage names in **`APP_STAGE`** and policy; separate **`prod_…` dev folders** for them are optional until Council splits codebases. Token and environment truth per stage are summarized under **Five-segment version** (on-chain column) and **Demo vs test** below.
+- **Test** and **prod** use the same stage names in **`APP_STAGE`** and policy. On Pages they have **`dapp/3-test/`** and **`dapp/4-prod/`** trees (**`latest-version/`** when used). Retired **`previous-versions`** documentation for all channels lives only under **`3_archive/stream_1_app/task_archived_dapp_channel_previous_versions_2026-04-16/dapp/`** (not in active **`dapp/`**). Separate **`prod_…` dev folders** in the workspace for full app forks are optional until Council splits codebases. Token and environment truth per stage are summarized under **Five-segment version** (on-chain column) and **Demo vs test** below.
 - **Identifiers vs display:** folder names, zips, **`APP_BUILD_VERSION`**, and **`dapp.conf`** use the **canonical two-digit** five-segment form (e.g. **`v00.00.00.00.03`**). Marketing or in-app copy may use a shorter human-readable spelling **only as display**, without changing Council paths or artifact names.
 
 ## Five-segment version: `vPM.Pn.TT.DD.SS` (stage-aware)
@@ -89,9 +96,9 @@
 
 **Rules**
 
-- **Two active folders:** showcase **`prod_stables_app_v00.00.00.00.03`**, demo **`prod_stables_app_demo`**. Do not archive either without a Council cut logged in `minidapp_version_log.md`.
+- **Two active product locations:** showcase **`dapp/`** ( **`1-showcase/`** + root **`assets/`** + **`dapp.conf`**; zip per **`dapp/build/README.md`**), demo **`dapp/2-demo/`**. The former **`prod_stables_app_v00.00.00.00.03/`** tree was **moved** to **`3_archive/stream_1_app/task_archived_prod_stables_app_v00_00_00_00_03_2026-04-15/`** (2026-04-15 consolidation); the former **`prod_stables_app_demo/`** folder was **moved** to **`3_archive/stream_1_app/task_archived_prod_stables_app_demo_2026-04-15/`**; nothing was deleted.
 - **`2_current`**: only the user promotes; agents do not move trees there without explicit approval.
-- **Zip**: contents of the chosen `prod_…` folder only — see `handshake.md` **Packaging Rule**; exclude each folder’s `build/` from the archive.
-- **Freeze workflow:** copy folder → `3_archive/stream_1_app/prod_stables_app_vX.Y.Z/`, add `FROZEN.md`, bump new `prod_*` folder + `dapp.conf` / `APP_BUILD_VERSION`, append **Unreleased** section in `CHANGELOG.md`, then remove old active folder (per line).
+- **Zip**: **showcase** per **`dapp/build/README.md`** (staging allowlist from **`dapp/`** root; omit **`2-demo/`**, **`3-test/`**, **`4-prod/`**, **`1-showcase/latest-version/`**); **demo** from **`dapp/2-demo/`** — see `handshake.md` **Packaging Rule**; exclude each **`build/`** from the archive.
+- **Freeze workflow:** move retired tree → `3_archive/stream_1_app/…`, add `FROZEN.md`, bump active paths + `dapp.conf` / `APP_BUILD_VERSION`, append **Unreleased** section in `CHANGELOG.md` (never permanently delete project files).
 
-**Last bumped:** Showcase **2026-04-09** — **SS** advanced to **03** (**`v00.00.03`** / **`v00.00.00.00.03`**); folder **`prod_stables_app_v00.00.00.00.03`**; Pages **`latest-version`** package **`Stables_v00.00.00.00.03.mds.zip`**, prior **`Stables_v00.00.02.mds.zip`** in **`previous-versions`**. **Demo tree:** **v00.00.00.01.00**, **`prod_stables_app_demo`**. **Policy:** five-segment **vPM.Pn.TT.DD.SS** in **handshake.md** and **.cursor/rules/stables-handshake.mdc**.
+**Last bumped:** **2026-04-16** — **Channel folders** on disk and on Pages: **`1-showcase/`**, **`2-demo/`**, **`3-test/`**, **`4-prod/`** (ordered labels; URLs e.g. **`/dapp/1-showcase/`**). Showcase **2026-04-09** — **SS** advanced to **03** (**`v00.00.03`** / **`v00.00.00.00.03`**); active hub path **`dapp/`**; Pages showcase package **`Stables_v00.00.00.00.03.mds.zip`** under **`dapp/1-showcase/latest-version/`**. Older showcase **`.mds.zip`** files: **`3_archive/stream_1_app/task_archived_dapp_showcase_previous_mds_2026-04-16/`**. Per-channel **previous-versions** documentation: **`3_archive/stream_1_app/task_archived_dapp_channel_previous_versions_2026-04-16/dapp/`** only (removed from active **`dapp/`** **2026-04-16** cleanup). **Parity indexes:** **`2_current/stream_1_app/dapp/`**, **`3_archive/stream_1_app/dapp/`** (four channel READMEs). Former root **`dapp/latest-version/`** and **`dapp/previous-versions/`** redirect stubs **retired 2026-04-16** → **`3_archive/stream_1_app/task_archived_dapp_root_redirect_stubs_2026-04-16/`**. **Demo tree:** **v00.00.00.01.00**, **`dapp/2-demo/`**. **Test** / **prod** shells: **`dapp/3-test/`**, **`dapp/4-prod/`**. **Council cuts 2026-04-15:** **`prod_stables_app_demo/`** and **`prod_stables_app_v00.00.00.00.03/`** **moved** to **`3_archive/stream_1_app/`** ( **`FROZEN.md`** ). **Policy:** five-segment **vPM.Pn.TT.DD.SS** in **handshake.md** and **.cursor/rules/stables-handshake.mdc**.

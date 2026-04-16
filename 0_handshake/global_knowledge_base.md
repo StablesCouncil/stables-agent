@@ -18,7 +18,7 @@
 | **2. Locked mechanics** | Mint/burn, CR, Coverage Fund, cf, xMinima, fees (settled math and rules) | **`0_handshake/protocol_mechanics_spec.md` — wins any conflict.** Promoted mirror: `2_current/stream_3_governance/prod_protocol_specs/protocol_mechanics_spec.md`. |
 | **3. Master reference** | Terminology, links, economics summary, §14 locked mechanics recap | `0_handshake/stables_master_reference.md` (keep aligned with layer 2). |
 | **4. Agent brain** | Searchable knowledge for Telegram / web / external agents | **Source of truth after promotion:** `2_current/stream_3_governance/prod_stablesagent-brain-base/`. Sandbox drafts: `1_development/stream_3_governance/task_stablesagent-brain-base/`. Rebuild vectors: `ingest_knowledge.js` in `task_x_agent_node` (see brain `README.md`). |
-| **5. Shipped product** | What users actually see | Active MiniDapps: **showcase** `prod_stables_app_v00.00.00.00.03/`, **demo** `prod_stables_app_demo/` (`minidapp_version.md`). **Dev version rule:** `vPM.Pn.TT.DD.SS` (Cursor: `stables-handshake.mdc` § Development versioning). Inventory: `app_ui_inventory.md`. |
+| **5. Shipped product** | What users actually see | Active MiniDapps: **showcase** + **demo** under `1_development/stream_1_app/dapp/` (**`1-showcase/`** + root **`assets/`** vs **`2-demo/`**; `minidapp_version.md`). **Public `/dapp/` web mirror (dev):** same → `task_stablescouncil_github_io/site/dapp/` via `npm run sync:site`. **Dev version rule:** `vPM.Pn.TT.DD.SS` (Cursor: `stables-handshake.mdc` § Development versioning). Inventory: `app_ui_inventory.md`. |
 | **6. Comms & links** | URLs, tone, campaigns | `0_handshake/links.md`, `2_current/plan/` tone and strategy docs. |
 
 ---

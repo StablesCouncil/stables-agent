@@ -85,7 +85,7 @@
 
 | File | Location | Purpose |
 |------|----------|---------|
-| `index.html` | `1_development/stream_1_app/prod_stables_app_v00.00.00.00.03/` and `…/prod_stables_app_demo/` | Single-file MiniDapp sources: **showcase** + **demo** trees (`0_handshake/minidapp_version.md`). |
+| `index.html` | `1_development/stream_1_app/dapp/1-showcase/` and `…/dapp/2-demo/` (Pages shells); **`prod_stables_app_*`** for zip-shaped product trees | MiniDapp **showcase** + **demo** (`0_handshake/minidapp_version.md`). |
 | `stables_spa/` | `1_development/stream_1_app/stables_spa/` | **Vite + React + TypeScript** app shell — components, features, `npm run build` → `dist/`. See `stables_spa/ARCHITECTURE.md`. |
 
 ### LAYER 7 — PRESENTATION (Load when working on the public presentation)
@@ -94,7 +94,8 @@
 |------|----------|---------|
 | `index.html` | `2_current/stream_2_community/` *(canonical)* | Live presentation source for stablescouncil.github.io. |
 | `index.html` | `3_archive/stream_2_community/prod_old_presentations/Presentation V1.0/public_stage/` | Archive of V1.0 for reference. |
-| **`task_stablescouncil_github_io/`** (tree) | `1_development/stream_1_app/task_stablescouncil_github_io/` | **GitHub Pages static site sandbox**. **Authoring:** hand-maintained pages under **`webpages/pages/<slug>/`** (one folder per static route) and **`webpages/dapp/`** (mirrors `/dapp/showcase`, `/dapp/demo`, …). **`npm run sync:site`** runs **`tools/sync-site.mjs`**: merges **`static/`** then **`webpages/`** into **`site/`** only (no duplicate public tree at this folder’s root). Ship **`site/`** contents to the Pages repo root. **Eleventy**: `package.json`, **`.eleventy.js`**, **`src/`**, **`npm run build`**. **Not** a `prod_*` folder. Nested **`git`** for pushes: **`3_archive/.../stablescouncil.github.io/`** (`README.md` there). |
+| **`task_stablescouncil_github_io/`** (tree) | `1_development/stream_1_app/task_stablescouncil_github_io/` | **GitHub Pages static site sandbox**. **Authoring:** hand-maintained pages under **`webpages/pages/<slug>/`** (one folder per static route). **MiniDapp web mirror:** **`1_development/stream_1_app/dapp/`** (same tree as **`https://stablescouncil.org/dapp/`**: **`1-showcase/`**, **`2-demo/`**, shared **`assets/`** at **`dapp/`** root). **`npm run sync:site`** runs **`tools/sync-site.mjs`**: merges **`static/`**, copies **`webpages/`** (pages only) into **`site/`**, copies sibling **`dapp/`** into **`site/dapp/`** (no duplicate public tree at this folder’s root). Ship **`site/`** contents to the Pages repo root. **Eleventy**: `package.json`, **`.eleventy.js`**, **`src/`**, **`npm run build`**. **Not** a `prod_*` folder. Nested **`git`** for pushes: **`3_archive/.../stablescouncil.github.io/`** (`README.md` there). |
+| **`README.md`** | `1_development/stream_1_app/` | **Dev drive map** for **`stream_1_app`**: how **`task_stablescouncil_github_io/`**, **`dapp/`**, and **`prod_stables_app_*`** relate; **`robocopy`** refresh for **`dapp/2-demo/`**; pointers to **`handover_document.md`** and **`handshake.md`** §1 **Publication parity**. |
 
 ### LAYER 8 — CREDENTIALS & LEDGER (Load when committing or deploying)
 
@@ -138,6 +139,7 @@
 | Commit and log a change | 0 + 8 |
 | Deploy to Vultr server | 0 + 5 + 8 |
 | Configure or run backup to Vultr | 0 + 8, then `task_dev_utils/docs/BACKUP_README.md` |
+| Business continuity (laptop loss, IDE chat restore) | 0 + 8 + `1_development/stream_3_governance/task_dev_utils/docs/BCP.md` |
 | Grant read-only MySQL access to Minima archive DB | 0 + 8 + `2_current/stream_3_governance/prod_minima_archive_admin/mysql_readonly_access_procedure.md` |
 
 ---

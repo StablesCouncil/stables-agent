@@ -1,9 +1,9 @@
 # MiniDapp version log (local)
 
-**Purpose:** Single place in this repo to record **what shipped under each published label** versus **what exists only in the active dev tree** after that cut. Use this before writing Telegram/X copy or editing `stablescouncil.github.io/dapp/latest-version/VERSION_HISTORY.md`.
+**Purpose:** Single place in this repo to record **what shipped under each published label** versus **what exists only in the active dev tree** after that cut. Use this before writing Telegram/X copy or editing `stablescouncil.github.io/dapp/1-showcase/latest-version/VERSION_HISTORY.md`.
 
 **Public mirror (after push):**  
-`https://github.com/StablesCouncil/stablescouncil.github.io/blob/main/dapp/latest-version/VERSION_HISTORY.md`
+`https://github.com/StablesCouncil/stablescouncil.github.io/blob/main/dapp/1-showcase/latest-version/VERSION_HISTORY.md`
 
 ---
 
@@ -12,14 +12,14 @@
 **Stage / channel:** showcase  
 **Declared label (short):** `v00.00.03`  
 **Declared label (full, five-segment):** `v00.00.00.00.03`  
-**Package:** `Stables_v00.00.00.00.03.mds.zip` in **`dapp/latest-version/`** on [stablescouncil.github.io](https://github.com/StablesCouncil/stablescouncil.github.io)  
-**Prior showcase zip moved to:** `dapp/previous-versions/Stables_v00.00.02.mds.zip` (second showcase numbered drop)
+**Package:** `Stables_v00.00.00.00.03.mds.zip` in **`dapp/1-showcase/latest-version/`** on [stablescouncil.github.io](https://github.com/StablesCouncil/stablescouncil.github.io)  
+**Prior showcase zip archived:** `3_archive/stream_1_app/task_archived_dapp_showcase_previous_mds_2026-04-16/Stables_v00.00.02.mds.zip` (second showcase numbered drop; was under **`dapp/1-showcase/previous-versions/`** before **2026-04-16**)
 
 **Included in this drop (summary):**
 
 - Five-segment versioning and top bar **Showcase · v00.00.00.00.03** aligned with handshake **`minidapp_version.md`**
 - Mint xWiniwa chart: fetch timeouts, MDS HTTP status handling, synthetic fallback so the chart does not stick on **Loading…**
-- Dev folder **`prod_stables_app_v00.00.00.00.03`** (path matches **SS = 03**)
+- Dev tree **`dapp/`** (showcase hub slice; former **`prod_stables_app_v00.00.00.00.03/`** archived **2026-04-15**)
 
 **Note:** **The Stables Academy** and other post-cut experiments may still be present in the web tree; Council comms should follow **Included / not part of** lists below for older labels when attributing features.
 
@@ -50,8 +50,9 @@
 
 ## Active dev — showcase line
 
-**Folder:** `1_development/stream_1_app/prod_stables_app_v00.00.00.00.03/` (showcase **SS = 03**; renamed from `prod_stables_app_v00.00.02` then `…00.00.02`)  
-**Current `CHANGELOG.md`:** Keep **post–v00.00.00.00.03** showcase items under **`[Unreleased]`** until you bump **SS** again and publish a new showcase zip.
+**Folder:** `1_development/stream_1_app/dapp/` (**`1-showcase/`**, root **`assets/`**, **`dapp.conf`**; hub zip **`dapp/build/README.md`**)  
+**Council cut (2026-04-15):** Former parallel dev folder **`prod_stables_app_v00.00.00.00.03/`** **moved** to **`3_archive/stream_1_app/task_archived_prod_stables_app_v00_00_00_00_03_2026-04-15/prod_stables_app_v00.00.00.00.03/`** with **`FROZEN.md`**.  
+**Current `CHANGELOG.md`:** **`dapp/CHANGELOG.md`** — keep **post–v00.00.00.00.03** showcase items under **`[Unreleased]`** until you bump **SS** again and publish a new showcase zip.
 
 **Rule:** When you publish the next **showcase** zip, add a row to `VERSION_HISTORY.md` (if using Pages), bump `dapp.conf` / `APP_BUILD_VERSION` / pill, and move the matching `CHANGELOG` section from Unreleased to a dated released section.
 
@@ -59,12 +60,14 @@
 
 ## Active dev — demo line (scaffold, not yet a published zip)
 
-**Folder:** `1_development/stream_1_app/prod_stables_app_demo/`  
+**Folder:** `1_development/stream_1_app/dapp/2-demo/`  
 **Full label:** `v00.00.00.01.00` · **`stage: demo`** · **`APP_STAGE: demo`** in `runtime-config.js`  
-**Origin:** Forked from showcase (`prod_stables_app_v00.00.02`, now **`prod_stables_app_v00.00.00.00.03`**) to start the **demo** channel (see `minidapp_version.md` routing).
+**Origin:** Forked from showcase (legacy **`prod_stables_app_v00.00.02`**, then **`prod_stables_app_v00.00.00.00.03`**, now **`dapp/`** + **`dapp/1-showcase/`**) to start the **demo** channel (see `minidapp_version.md` routing).
+
+**Council cut (2026-04-15):** The former parallel dev folder **`prod_stables_app_demo/`** was **moved** (not deleted) to **`3_archive/stream_1_app/task_archived_prod_stables_app_demo_2026-04-15/prod_stables_app_demo/`** with **`FROZEN.md`**. Active demo edits and demo **`.mds.zip`** packaging use **`dapp/2-demo/`** only.
 
 **Published:** none yet (no row in `VERSION_HISTORY` until Council ships `Stables_v00.00.00.01.00_demo.mds.zip` or equivalent).  
-**`CHANGELOG.md`:** demo-specific and shared work intended for the demo channel.
+**`CHANGELOG.md`:** `dapp/2-demo/CHANGELOG.md` for demo-specific and shared work intended for the demo channel.
 
 ---
 
@@ -72,4 +75,4 @@
 
 1. Open this file and confirm the feature is listed under **Included** for `v00.00.02`, not under **not part of**.
 2. Match `CHANGELOG.md` released section for that label.
-3. Match `dapp/latest-version/VERSION_HISTORY.md` on Pages (after push).
+3. Match `dapp/1-showcase/latest-version/VERSION_HISTORY.md` on Pages (after push).

@@ -18,7 +18,7 @@ Post–**v00.00.03** work in the active dev folder. **Do not** describe these it
 
 ### Changed
 
-- **GitHub Pages / web: showcase URL:** The full interactive page moved from **`/dapp/index.html`** to **`/dapp/showcase/index.html`**. **`/dapp/index.html`** is a short **redirect** to **`showcase/`**. Canonical and Open Graph URLs for the live preview point at **`https://stablescouncil.org/dapp/showcase/`** (and the GitHub Pages host equivalent). Script and image paths in the page use **`../assets/`**, **`../agent.png`**, etc. **`assets/routes/feedback.js`** and **`activity-contacts.js`** use **`../agent.png`** for inline agent thumbnails so they resolve from the **`showcase/`** document.
+- **GitHub Pages / web: showcase URL:** The full interactive page moved from **`/dapp/index.html`** to **`/dapp/1-showcase/index.html`**. **`/dapp/index.html`** is a short **redirect** to **`showcase/`**. Canonical and Open Graph URLs for the live preview point at **`https://stablescouncil.org/dapp/1-showcase/`** (and the GitHub Pages host equivalent). Script and image paths in the page use **`../assets/`**, **`../agent.png`**, etc. **`assets/routes/feedback.js`** and **`activity-contacts.js`** use **`../agent.png`** for inline agent thumbnails so they resolve from the **`showcase/`** document.
 
 - **`dapp.conf` hub entry:** **`web`** is **`showcase/index.html`** so **`.mds.zip`** installs match the **Pages** tree (same relative layout: **`showcase/`** + **`assets/`** at zip root).
 

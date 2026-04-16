@@ -9,8 +9,19 @@
  */
 
 const path = require("path");
-require("dotenv").config({ path: path.join(__dirname, "..", "task_stablesagent-brain-base", ".env") });
 const fs = require("fs");
+const dotenv = require("dotenv");
+const ENV_CANDIDATES = [
+    path.join(__dirname, "..", "task_stablesagent-brain-base", ".env"),
+    path.join(__dirname, ".env"),
+    path.join(process.cwd(), ".env"),
+];
+for (const envPath of ENV_CANDIDATES) {
+    if (fs.existsSync(envPath)) {
+        dotenv.config({ path: envPath });
+        break;
+    }
+}
 const crypto = require("crypto");
 const { MemoryVectorStore } = require("langchain/vectorstores/memory");
 const OpenAI = require("openai");
@@ -18,6 +29,7 @@ const OpenAI = require("openai");
 const API_BASE = "https://www.moltbook.com/api/v1";
 const DB_FILE = path.join(__dirname, "vector_db.json");
 const STATE_FILE = path.join(__dirname, "moltbook_state.json");
+const LLM_MODEL = process.env.OPENROUTER_API_KEY ? "openrouter/free" : "llama-3.3-70b-versatile";
 /** Daily cap for post upvotes (Moltbook has no separate "like" endpoint). */
 const MAX_DAILY_UPVOTES = 4;
 const MAX_DAILY_FOLLOWS = 1;
@@ -220,8 +232,8 @@ function checkEnv() {
         console.error("MOLTBOOK_API_KEY not set in .env");
         process.exit(1);
     }
-    if (!process.env.OPENROUTER_API_KEY) {
-        console.error("OPENROUTER_API_KEY not set in .env");
+    if (!process.env.OPENROUTER_API_KEY && !process.env.GROQ_API_KEY) {
+        console.error("Set OPENROUTER_API_KEY or GROQ_API_KEY in .env");
         process.exit(1);
     }
 }
@@ -293,7 +305,7 @@ async function generateReply(query, vectorStore, llm) {
     const results = await vectorStore.similaritySearch(query, 3);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
     const completion = await llm.chat.completions.create({
-        model: "openrouter/free",
+        model: LLM_MODEL,
         temperature: 0.3,
         max_tokens: 200,
         messages: [
@@ -316,7 +328,7 @@ async function generatePost(vectorStore, llm, angleEntry) {
     const results = await vectorStore.similaritySearch(query, 4);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
     const completion = await llm.chat.completions.create({
-        model: "openrouter/free",
+        model: LLM_MODEL,
         temperature: 0.55,
         max_tokens: 150,
         messages: [
@@ -359,7 +371,7 @@ Write one post: line 1 = title only (no prefix), following lines = body.`,
 async function shouldCommentAndGenerate(post, vectorStore, llm) {
     const text = `${post.title || ""} ${post.content || ""}`.slice(0, 800);
     const completion = await llm.chat.completions.create({
-        model: "openrouter/free",
+        model: LLM_MODEL,
         temperature: 0.2,
         max_tokens: 120,
         messages: [
@@ -422,7 +434,7 @@ function parseMathChallenge(challengeText) {
 
 async function solveVerification(llm, challengeText) {
     const completion = await llm.chat.completions.create({
-        model: "openrouter/free",
+        model: LLM_MODEL,
         temperature: 0,
         max_tokens: 20,
         messages: [
@@ -464,7 +476,9 @@ async function main() {
     }
     console.log("Home data OK, your_account:", JSON.stringify(home.your_account));
 
-    const llm = new OpenAI({ apiKey: process.env.OPENROUTER_API_KEY, baseURL: "https://openrouter.ai/api/v1" });
+    const llm = process.env.OPENROUTER_API_KEY
+        ? new OpenAI({ apiKey: process.env.OPENROUTER_API_KEY, baseURL: "https://openrouter.ai/api/v1" })
+        : new OpenAI({ apiKey: process.env.GROQ_API_KEY, baseURL: "https://api.groq.com/openai/v1" });
     const embeddings = await initXenova();
     const vectorStore = await loadVectorStore(embeddings);
     if (!vectorStore) {

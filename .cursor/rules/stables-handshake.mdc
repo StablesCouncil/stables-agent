@@ -11,7 +11,7 @@ alwaysApply: true
 
 Then follow any remaining calibration detail in `0_handshake/handshake.md` (including **Step 0b** when the task touches protocol economics or how Stables works in copy) if not already satisfied by the block above.
 
-**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first. **Two trees:** showcase **`prod_stables_app_v00.00.00.00.03`**, demo **`prod_stables_app_demo`**. **Default new work → demo** unless the task is showcase-only. Log **every** user-visible change in **`CHANGELOG.md`** in the folder you edit. For every pushed version, the shipped `README.md` must include **"What changed in this version"** from `CHANGELOG.md`. **Version labels** follow § Development versioning below.
+**MiniDapp / `.mds.zip` work:** read `0_handshake/minidapp_version.md` first. **Showcase** hub slice under **`1_development/stream_1_app/dapp/`** (**`1-showcase/`**, root **`assets/`**; zip **`dapp/build/README.md`**; published zips **`dapp/1-showcase/latest-version/`**); **demo** **`dapp/2-demo/`**; **test** / **prod** placeholders **`dapp/3-test/`**, **`dapp/4-prod/`**. **Four-channel README indexes (parity, not app code):** **`2_current/stream_1_app/dapp/`**, **`3_archive/stream_1_app/dapp/`**. **Default new work → demo** unless the task is showcase-only. Log **every** user-visible change in **`CHANGELOG.md`** in the folder you edit. For every pushed version, the shipped `README.md` must include **"What changed in this version"** from `CHANGELOG.md`. **Version labels** follow § Development versioning below.
 
 ---
 
@@ -34,7 +34,7 @@ Then follow any remaining calibration detail in `0_handshake/handshake.md` (incl
 3. **Legacy forms** remain valid **only while prod is unused:** four-segment **`v00.00.00.03`** ≡ five-segment **`v00.00.00.00.03`**; short **`v00.00.03`** = same. Once **PM** or **Pn** is non-zero, use the **five-segment** spelling in new docs, zips, and `dapp.conf` / release notes.
 4. **Authoritative detail and examples:** `0_handshake/minidapp_version.md`. **Governance mirror:** `0_handshake/handshake.md` (MiniDapp Versioning Policy).
 
-**Current pointers** (edit in **`minidapp_version.md`** when bumping): **Showcase** — `prod_stables_app_v00.00.00.00.03`, **v00.00.03** / **v00.00.00.00.03**, **`APP_STAGE` showcase**. **Demo** — `prod_stables_app_demo`, **v00.00.00.01.00**, **`APP_STAGE` demo**.
+**Current pointers** (edit in **`minidapp_version.md`** when bumping): **Showcase** — **`dapp/`** (**`stream_1_app/dapp/`**), **v00.00.03** / **v00.00.00.00.03**, **`APP_STAGE` showcase**. **Demo** — `dapp/2-demo`, **v00.00.00.01.00**, **`APP_STAGE` demo**.
 
 **Protocol economics / mint / burn / xMinima / fees / treasury / protocol comms:** run **handshake Step 0b** before answering: read `0_handshake/protocol_mechanics_spec.md` then `stables_master_reference.md` §14. If any text conflicts, **`protocol_mechanics_spec.md` wins**; note the conflict for review.
 
