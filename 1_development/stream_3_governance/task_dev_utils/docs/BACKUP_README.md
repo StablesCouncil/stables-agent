@@ -4,6 +4,10 @@ Backs up the project to the Vultr server. Aligned with the handshake structure, 
 
 **Business continuity (laptop loss, IDE chat restore):** see **`BCP.md`** in this folder.
 
+The backup now creates two artifacts:
+- `Stables_core_YYYY-MM-DD_HHmm.zip` (project folders)
+- `Stables_chat_delta_YYYY-MM-DD_HHmm.zip` (only changed Cursor/Antigravity chat files)
+
 ---
 
 ## 1. Script Location
@@ -118,6 +122,11 @@ cd C:\Users\Charles\Documents\Stables
 **Skip Cursor + Antigravity mirror (smaller zip; Stables four roots unchanged):**
 ```powershell
 .\1_development\stream_3_governance\task_dev_utils\tools\backup-stables.ps1 -SkipBcpIde
+```
+
+**Force full chat snapshot (ignore delta state for this run):**
+```powershell
+.\1_development\stream_3_governance\task_dev_utils\tools\backup-stables.ps1 -ForceFullChat
 ```
 
 ---

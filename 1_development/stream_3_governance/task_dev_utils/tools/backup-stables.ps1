@@ -63,7 +63,12 @@ function Invoke-RoboMirror {
 
 function Get-FileKey {
     param([string]$Base, [string]$FullPath)
-    return ([System.IO.Path]::GetRelativePath($Base, $FullPath)) -replace '\\', '/'
+    # PS 5.1 / .NET Framework does not expose Path.GetRelativePath.
+    $baseNorm = $Base.TrimEnd('\') + '\'
+    $baseUri = New-Object System.Uri($baseNorm)
+    $fullUri = New-Object System.Uri($FullPath)
+    $rel = $baseUri.MakeRelativeUri($fullUri).ToString()
+    return [System.Uri]::UnescapeDataString($rel)
 }
 
 function Get-FileState {
