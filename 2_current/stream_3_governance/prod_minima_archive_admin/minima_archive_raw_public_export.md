@@ -152,25 +152,8 @@ Keep **N** days of dated files on the VPS (script default **14**). **SQL dumps a
 
 ## Appendix A. `links.html` Council row (stablescouncil.org)
 
-**Where:** Inside **`stablescouncil.github.io`** (GitHub Pages source), in **`links.html`**, section **`Council`** (`<section class="links-section" id="sec-council">` …), next to Telegram / Discord / Charter / Roadmap / GitHub.
+**Shipped:** **`links.html`** in **`StablesCouncil/stablescouncil.github.io`** includes a **Minima archive mirror** row (next to **Telegram Council** and **Discord**) pointing to **`https://stablescouncil.org/minima-archive/`**, which explains downloads and links to **`http://140.82.36.166:8080/`** for raw files.
 
-**When:** Only after the **`href`** below resolves (mirror deployed on the VPS or CDN).
-
-**What to change:** Replace **`REPLACE_ME_ARCHIVE_LATEST_URL`** with the real URL to **`archive_latest.raw.dat`** (must be **`https://`**).
-
-```html
-            <!-- Minima archive mirror (Council infrastructure) -->
-            <a href="REPLACE_ME_ARCHIVE_LATEST_URL" class="link-item council" target="_blank" rel="noopener noreferrer">
-                <div class="link-icon">
-                    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M20.54 5.23l-1.39-1.68C18.88 3.21 18.47 3 18 3H6c-.47 0-.88.21-1.16.55L3.46 5.23C3.17 5.57 3 6.02 3 6.5V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6.5c0-.48-.17-.93-.46-1.27z"/>
-                    </svg>
-                </div>
-                <div class="link-content">
-                    <div class="link-title">Minima archive mirror</div>
-                    <div class="link-description">Daily export for archive-node operators (genesis coverage)</div>
-                </div>
-            </a>
-```
+**If you fork the layout:** reuse the same pattern: public **HTTPS** hub on Pages, large binaries on **Council VPS** (or TLS front-end later), never multi‑gig binaries inside git.
 
 **Council copy freeze:** If the Pages repo is under a “no copy changes” rule, treat this as an **approved infrastructure link** (same class as GitHub). When in doubt, confirm with whoever owns **`github_pages_website_engineering.md`** freeze policy.
