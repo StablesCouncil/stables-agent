@@ -48,6 +48,48 @@ The agent can post to its own X account using the free API tier. No paid subscri
 
 ---
 
+## Discord pub radio (self-hosted DJ bot)
+
+Optional 24/7 voice bot that loops a **YouTube playlist** (including `music.youtube.com` playlist URLs; `play-dl` normalises them). Use a **dedicated Discord bot user** (recommended: not the same application as Telegram or X). You can name the bot and avatar “DJ” or “StablesAgent” style in the Discord Developer Portal.
+
+**Requirements**
+
+- Node 18+ on the host (your Vultr box or any always-on machine).
+- Bot invited with **Connect**, **Speak**, **View Channels**, **Use Voice Activity** (and **Send Messages** in the pub text channel if you enable now-playing posts).
+- Environment variables (for example in the same `.env` you use for other agents, or a separate file loaded with `dotenv`):
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DISCORD_DJ_TOKEN` | Yes | Bot token from the Discord Developer Portal. |
+| `DISCORD_GUILD_ID` | Yes | Server (guild) snowflake ID. |
+| `DISCORD_VOICE_CHANNEL_ID` | Yes | Voice (or stage) channel the bot should join and stay in. |
+| `YOUTUBE_PLAYLIST_URL` | Yes | Full playlist URL with `list=...` (YouTube or YouTube Music). |
+| `DISCORD_TEXT_CHANNEL_ID` | No | If set and `DISCORD_ANNOUNCE_NOW_PLAYING=true`, posts “now playing” lines. |
+| `DISCORD_ANNOUNCE_NOW_PLAYING` | No | Default `false`. Set `true` to announce each track in text. |
+| `DJ_SHUFFLE_PLAYLIST` | No | Default `false`. Set `true` to shuffle order after each full playlist load. |
+
+**Run (foreground test)**
+
+```bash
+cd 1_development/stream_3_governance/task_x_agent_node
+npm run discord-dj
+```
+
+**Run with PM2 (example)**
+
+```bash
+cd /root/stables-agent/task_x_agent_node
+pm2 start discord_dj_bot.js --name stables-discord-dj
+pm2 save
+```
+
+**Notes**
+
+- Playback uses `play-dl` plus bundled `ffmpeg-static` when possible. If YouTube returns captcha or blocks the datacenter IP, you may need cookies or a different egress; see `play-dl` docs for `setToken` / YouTube cookie flows.
+- This is for **your** playlist and **your** server; respect YouTube and Discord terms and only stream content you have rights to use in that context.
+
+---
+
 ## Moltbook (stablesagent)
 
 StablesAgent is verified on [Moltbook](https://www.moltbook.com), the social network for AI agents. It replies to comments on its posts using the same brain as Telegram and web chat.

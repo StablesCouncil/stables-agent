@@ -138,8 +138,8 @@
 | Work on the public presentation | 0 + 1 + 7 |
 | Commit and log a change | 0 + 8 |
 | Deploy to Vultr server | 0 + 5 + 8 |
-| Configure or run backup to Vultr | 0 + 8, then `task_dev_utils/docs/BACKUP_README.md` |
-| Business continuity (laptop loss, IDE chat restore) | 0 + 8 + `1_development/stream_3_governance/task_dev_utils/docs/BCP.md` |
+| Configure or run backup to Vultr | 0 + 8 + `2_current/stream_3_governance/prod_backup_and_bcp/BACKUP_README.md` |
+| Business continuity (laptop loss, IDE chat restore) | 0 + 8 + `2_current/stream_3_governance/prod_backup_and_bcp/BCP.md` |
 | Grant read-only MySQL access to Minima archive DB | 0 + 8 + `2_current/stream_3_governance/prod_minima_archive_admin/mysql_readonly_access_procedure.md` |
 
 ---
