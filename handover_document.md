@@ -50,6 +50,7 @@ Council handshake name today is **`task_stablescouncil_github_io`**. If you pref
 | 5 | **Banking System** | `…/webpages/pages/bankingsystem/index.html` | → `site/bankingsystem/` |
 | 6 | **Ambassador Program** | `…/webpages/pages/ambassadorsprogramdesc/index.html` | → `site/ambassadorsprogramdesc.html` |
 | 7 | **QR code** | `…/webpages/pages/qr-code/index.html` | → `site/qr-code.html` |
+| 8 | **Minima archive mirror** | `…/webpages/pages/minima-archive/index.html` | → `site/minima-archive/` (directory) |
 
 **MiniDapp tree:** `…/dapp/` under **`stream_1_app/`** (path **`1_development/stream_1_app/dapp/`**) mirrors **`https://stablescouncil.org/dapp/`** with numbered channel folders **`1-showcase/`**, **`2-demo/`**, plus placeholder shells **`3-test/`**, **`4-prod/`**. **`npm run sync:site`** copies it to **`site/dapp/`**.
 
