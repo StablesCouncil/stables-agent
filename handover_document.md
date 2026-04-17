@@ -4,11 +4,11 @@
 
 Branding and navigation parity are defined across the **seven** community-facing HTML nodes in the handover table (home through QR code).
 
-**Last GitHub Pages push:** `StablesCouncil/stablescouncil.github.io` **`main`** commit **`0fa30b6`** (2026-04-17): Council **Discord** invite on **`links.html`** points to **`https://discord.gg/rTdqwRGPXR`**; Showcase tile path **`/dapp/1-showcase/`**; optional **`file:`** preview script aligned with monorepo **`sync:site`** output.
+**Last GitHub Pages push:** `StablesCouncil/stablescouncil.github.io` **`main`** commit **`d85b220`** (2026-04-17): replays **Minima archive mirror** hub at **`/minima-archive/`** plus the **Council** row on **`links.html`**; still includes Council **Discord** **`https://discord.gg/rTdqwRGPXR`**, Showcase **`/dapp/1-showcase/`**, and **`file:`** preview script from **`0fa30b6`**.
 
-**Operator clone on this machine (canonical for push):** `C:\Users\Charles\Documents\stablescouncil.github.io` — keep **`main`** fast-forwarded to **`origin/main`** after each ship. A one-off temp clone under **`Documents\stablescouncil-pages-deploy`** was used for that push and **has been removed** to avoid two competing checkouts.
+**Operator clone on this machine (canonical for push):** `C:\Users\Charles\Documents\stablescouncil.github.io` — keep **`main`** aligned with **`origin/main`** after each ship.
 
-**If you had local-only Pages work:** it is preserved as **`git stash`** (WIP **qr-code** + untracked brand file) and branch **`recovery/pages-local-commits-2026-04-17`** (tip **`1a9a7f8`**, two commits that had diverged from GitHub). Cherry-pick or drop as Council decides; do not merge blindly without review.
+**Cleanup note:** the old **stash** (only stray blank lines in **`qr-code.html`**) and branch **`recovery/pages-local-commits-2026-04-17`** were **removed** after replaying the Minima work; the untracked **`logo-symbol-base64.txt`** draft was dropped with the stash. No remaining “mystery” recovery objects on that clone.
 
 **Earlier reference (2026-04-13):** **`6c328e0`** — **Brand PNG fix** (`brand/assets/logo-wordmark.png`, `logo-symbol.png`, `twitter-header.png` had been **0-byte** in the tree; restored from `_tmp_pages_clone/brand/assets/` and pushed). **`CNAME`** = **`stablescouncil.org`** landed in **`f7f6e45`**. Sandbox source: `1_development/stream_1_app/task_stablescouncil_github_io/`; optional archive publish clone: `3_archive/.../stablescouncil.github.io/` with **`git --git-dir=_embedded_git`**.
 
