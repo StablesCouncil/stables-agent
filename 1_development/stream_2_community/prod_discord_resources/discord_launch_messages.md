@@ -20,7 +20,7 @@ Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
 Built on MINIMA.
 
-Join the Discord: https://discord.gg/5ZjCceQP
+Join the Discord: https://discord.gg/rTdqwRGPXR
 
 Would love to have you there! 🚀
 ```
@@ -53,7 +53,7 @@ Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
 Built on MINIMA.
 
-Join our Discord: https://discord.gg/5ZjCceQP
+Join our Discord: https://discord.gg/rTdqwRGPXR
 ---
 
 Let me know if this is okay to post, or if you'd like me to adjust anything!
@@ -93,7 +93,7 @@ Discord is our technical hub for:
 • Telegram: General community chat & updates (stay here!)
 • Discord: Technical discussions & development
 
-🔗 Join Discord: https://discord.gg/5ZjCceQP
+🔗 Join Discord: https://discord.gg/rTdqwRGPXR
 
 Let's build together! 🚀
 ```
@@ -108,7 +108,7 @@ Let's build together! 🚀
 🎉 Stables Discord Server is Now Live!
 
 Join our technical community hub:
-https://discord.gg/5ZjCceQP
+https://discord.gg/rTdqwRGPXR
 
 💬 What's on Discord?
 • Technical discussions
@@ -144,7 +144,7 @@ Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
 Built on @MinimaGlobal
 
-Join: https://discord.gg/5ZjCceQP
+Join: https://discord.gg/rTdqwRGPXR
 
 #Stables #Minima #DeFi
 ```

@@ -18,6 +18,8 @@ Post–**v00.00.00.01.00** demo work: do not describe these items as part of a *
 
 ### Changed
 
+- **Community links (Discord):** **More → Community → Legal & notices** Discord invite updated to **`https://discord.gg/rTdqwRGPXR`** (canonical **`0_handshake/links.md`**).
+
 - **Repo layout (2026-04-15):** **`prod_stables_app_demo/`** **moved** to **`3_archive/stream_1_app/task_archived_prod_stables_app_demo_2026-04-15/`** ( **`FROZEN.md`** ); **`dapp/2-demo/`** is the **only** active demo path. Added **`build/README.md`** for demo **`.mds.zip`** packaging.
 
 - **Winiwa faucet cooldown:** **Get 10,000 Winiwa** can be claimed at most **once per hour** (configurable **`FAUCET_WINIWA_COOLDOWN_MS`** in **`runtime-config.js`**, default **3_600_000** ms). Last claim time is stored in **`localStorage`** (**`FAUCET_WINIWA_LAST_CLAIM_STORAGE_KEY`**). The faucet button shows a live **Available in …** countdown; **More → Get Winiwa** copy notes the cooldown. **Reset demo balances** clears the cooldown timestamp.

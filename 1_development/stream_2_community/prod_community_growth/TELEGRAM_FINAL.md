@@ -31,7 +31,7 @@ Discord is our technical hub for:
 • Telegram: General community chat & updates (stay here!)
 • Discord: Technical discussions & development
 
-🔗 Join Discord: https://discord.gg/5ZjCceQP
+🔗 Join Discord: https://discord.gg/rTdqwRGPXR
 
 🗺️ Expect the roadmap to be made available on Discord soon!
 

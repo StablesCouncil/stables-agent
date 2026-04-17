@@ -18,6 +18,8 @@ Post–**v00.00.03** work in the active dev folder. **Do not** describe these it
 
 ### Changed
 
+- **Community links (Discord):** **More → Community → Legal & notices** Discord invite updated to **`https://discord.gg/rTdqwRGPXR`** (canonical **`0_handshake/links.md`**). Same URL in **showcase** shell **`1-showcase/index.html`**.
+
 - **`0_handshake/handshake.md`:** **Active MiniDapp trees** bullet now references **`dapp/PORTING_GAP.md`** as optional porting ledger (routing defaults unchanged).
 
 - **`dapp/2-demo/`:** Removed duplicate **`latest-version/`** and **`latest version/`** placeholder folders (README-only); **archived** at **`3_archive/stream_1_app/task_archived_dapp_2_demo_latest_placeholders_2026-04-16/`**. **`MINIDAPP_VERSIONING.md`** updated (demo zip pointer → **`2-demo/build/README.md`**).

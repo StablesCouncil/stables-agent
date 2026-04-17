@@ -128,7 +128,7 @@ Stables is a self-custody money platform built on MINIMA.
 • Presentation: https://stablescouncil.github.io
 • X (Twitter): https://x.com/StablesCouncil
 • Instagram: https://instagram.com/stablescouncil
-• Discord: https://discord.gg/cFq4hHAc
+• Discord: https://discord.gg/rTdqwRGPXR
 • Telegram: https://t.me/stablescommunity
 
 Built on MINIMA: https://minima.global

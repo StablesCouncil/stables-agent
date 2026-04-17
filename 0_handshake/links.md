@@ -5,7 +5,7 @@ This file is the single source of truth for all official Stables Council account
 ## Community Hubs
 *   **Website (primary):** [stablescouncil.org](https://stablescouncil.org/) — *Be your bank* (public site)
 *   **GitHub Pages:** [stablescouncil.github.io](https://stablescouncil.github.io) — presentation & static resources
-*   **Discord:** [Stables Discord Server](https://discord.gg/cFq4hHAc)
+*   **Discord:** [Stables Discord Server](https://discord.gg/rTdqwRGPXR)
 *   **Telegram (Community):** [t.me/stablescommunity](https://t.me/stablescommunity)
 *   **Telegram (Security / Vault key support):** [t.me/StablesSecuritySupport](https://t.me/StablesSecuritySupport) (invite must match `SECURITY_SUPPORT_TELEGRAM_URL` in the MiniDapp `runtime-config.js`)
 *   **Telegram (Council Official):** [t.me/StablesCouncilOfficial](https://t.me/StablesCouncilOfficial)
@@ -33,11 +33,11 @@ Use the **right surface for the class of message**. Do not post vault keys, seed
 | :--- | :--- | :--- |
 | **Official Council positions and ratified summaries** | Telegram (Council Official) | [t.me/StablesCouncilOfficial](https://t.me/StablesCouncilOfficial) |
 | **General community discussion and drafts** | Telegram (Community) | [t.me/stablescommunity](https://t.me/stablescommunity) |
-| **Working groups, long threads, strategic horizon scanning** (tech, legal, geopolitics, environment, market) | Discord | [discord.gg/cFq4hHAc](https://discord.gg/cFq4hHAc) |
+| **Working groups, long threads, strategic horizon scanning** (tech, legal, geopolitics, environment, market) | Discord | [discord.gg/rTdqwRGPXR](https://discord.gg/rTdqwRGPXR) |
 | **Security / vault key support only** | Telegram (Security) | [t.me/StablesSecuritySupport](https://t.me/StablesSecuritySupport) |
 | **Private Council-facing mail** | Email | StablesCouncil@protonmail.com |
 
-**Discord — category `STRATEGIC WATCH`** (same server: [discord.gg/cFq4hHAc](https://discord.gg/cFq4hHAc)):
+**Discord — category `STRATEGIC WATCH`** (same server: [discord.gg/rTdqwRGPXR](https://discord.gg/rTdqwRGPXR)):
 
 - `#technology-watch`
 - `#legal-watch`

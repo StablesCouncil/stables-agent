@@ -26,7 +26,7 @@ Money that is truly yours. Secure, Pseudonymous and Unstoppable.
 
 Built on MINIMA.
 
-🔗 Join Discord: https://discord.gg/5ZjCceQP
+🔗 Join Discord: https://discord.gg/rTdqwRGPXR
 
 📱 Note: Telegram remains our main community chat! Discord is for technical discussions and development.
 
@@ -47,5 +47,5 @@ Let's build together! 🚀
 
 ---
 
-**Discord Invite Link:** https://discord.gg/5ZjCceQP  
+**Discord Invite Link:** https://discord.gg/rTdqwRGPXR  
 **This message is final and ready to use!**

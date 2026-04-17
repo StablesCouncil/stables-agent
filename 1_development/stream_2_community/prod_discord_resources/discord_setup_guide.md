@@ -633,7 +633,7 @@ Built on MINIMA.
 - Expire: Never
 - Max Uses: Unlimited
 - Grant Temporary Membership: No
-- Custom URL: discord.gg/stables (if available)
+- Invite URL: https://discord.gg/rTdqwRGPXR
 
 **Where to Share:**
 - X bio
@@ -687,7 +687,7 @@ Join our technical community:
 
 For developers, contributors, and technical enthusiasts.
 
-Join: discord.gg/stables
+Join: https://discord.gg/rTdqwRGPXR
 
 Built on MINIMA
 ```
