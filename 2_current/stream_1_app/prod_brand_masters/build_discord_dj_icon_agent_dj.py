@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 """
-1024x1024 Discord-style icon: StablesAgent avatar only, DJ treatment (headphones + Stables glow).
+Discord DJ / agent icon exports (1024x1024).
 
-Agent image (fixed path from repo root):
+1) Plain upscale of the official agent mark (no new art style):
+   -> exports/discord_dj_icon_agent_plain_1024.png
+
+2) DJ mark: optional handoff image `dj_icon_ai_reference.png` in this folder
+   (same 3D plate / circuit language as the agent mark, with a small music
+   glyph). Letterboxed to 1024 square on #0b0f14 without cropping the art.
+   -> exports/discord_dj_icon_agent_dj_1024.png
+   If the reference file is missing, `discord_dj_icon_agent_dj_1024.png` is
+   a copy of the plain export.
+
+Agent source:
   2_current/stream_3_governance/task_x_agent_node/bot_assets/stables_agent_avatar.png
-  Override with STABLES_AGENT_AVATAR if set.
-
-Output:
-  ./exports/discord_dj_icon_agent_dj_1024.png
+  Override with STABLES_AGENT_AVATAR.
 """
 from __future__ import annotations
 
 import os
+import shutil
 import sys
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFilter
+from PIL import Image
 
 BG = (11, 15, 20)
-CYAN = (103, 232, 249)
-PURPLE = (167, 139, 250)
 OUT = 1024
 
 
@@ -43,70 +49,27 @@ def resolve_agent(repo: Path) -> Path:
     ).resolve()
 
 
-def circular_avatar(img: Image.Image, diameter: int) -> Image.Image:
-    img = img.convert("RGBA").resize((diameter, diameter), Image.Resampling.LANCZOS)
-    mask = Image.new("L", (diameter, diameter), 0)
-    draw = ImageDraw.Draw(mask)
-    draw.ellipse((0, 0, diameter - 1, diameter - 1), fill=255)
-    out = Image.new("RGBA", (diameter, diameter), (0, 0, 0, 0))
-    out.paste(img, (0, 0), mask)
-    return out
+def fit_contain_square(img: Image.Image, size: int) -> Image.Image:
+    """Scale uniformly, center on size x size, pad with BG."""
+    img = img.convert("RGBA")
+    w, h = img.size
+    scale = min(size / w, size / h)
+    nw, nh = max(1, int(w * scale)), max(1, int(h * scale))
+    resized = img.resize((nw, nh), Image.Resampling.LANCZOS)
+    canvas = Image.new("RGBA", (size, size), BG + (255,))
+    x = (size - nw) // 2
+    y = (size - nh) // 2
+    canvas.alpha_composite(resized, (x, y))
+    return canvas
 
 
-def glow_ring(size: int, rgba: tuple[int, int, int, int], width: int) -> Image.Image:
-    ring = Image.new("RGBA", (size, size), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(ring)
-    margin = width + 2
-    draw.ellipse(
-        (margin, margin, size - margin - 1, size - margin - 1),
-        outline=rgba,
-        width=width,
-    )
-    return ring.filter(ImageFilter.GaussianBlur(radius=5))
-
-
-def draw_dj_headphones(
-    draw: ImageDraw.ImageDraw,
-    cx: int,
-    cy: int,
-    face_r: int,
-) -> None:
-    """Over-ear style aligned to the circular face (vector only)."""
-    # Headband (wide arc across the top of the head)
-    band_w = int(face_r * 1.55)
-    band_h = int(face_r * 1.05)
-    bbox = (cx - band_w // 2, cy - face_r - int(face_r * 0.35), cx + band_w // 2, cy - face_r + band_h)
-    draw.arc(bbox, start=200, end=340, fill=CYAN + (235,), width=14)
-
-    # Ear cups (slightly larger than cheek area, overlap rim)
-    cup_rx = int(face_r * 0.42)
-    cup_ry = int(face_r * 0.52)
-    lx = cx - face_r - int(face_r * 0.08)
-    rx = cx + face_r - cup_rx * 2 + int(face_r * 0.08)
-    yy = cy - cup_ry // 3
-
-    draw.ellipse(
-        (lx, yy, lx + 2 * cup_rx, yy + 2 * cup_ry),
-        outline=PURPLE + (240,),
-        width=12,
-    )
-    draw.ellipse(
-        (rx, yy, rx + 2 * cup_rx, yy + 2 * cup_ry),
-        outline=PURPLE + (240,),
-        width=12,
-    )
-    # Inner pad hint
-    pad = 18
-    draw.ellipse(
-        (lx + pad, yy + pad, lx + 2 * cup_rx - pad, yy + 2 * cup_ry - pad),
-        outline=CYAN + (120,),
-        width=4,
-    )
-    draw.ellipse(
-        (rx + pad, yy + pad, rx + 2 * cup_rx - pad, yy + 2 * cup_ry - pad),
-        outline=CYAN + (120,),
-        width=4,
-    )
+def plain_upscale_square(agent_path: Path, size: int) -> Image.Image:
+    """Direct upscale of square agent asset (preserves original look)."""
+    img = Image.open(agent_path).convert("RGBA")
+    w, h = img.size
+    if w != h:
+        return fit_contain_square(img, size)
+    return img.resize((size, size), Image.Resampling.LANCZOS)
 
 
 def main() -> None:
@@ -119,41 +82,22 @@ def main() -> None:
 
     out_dir = here / "exports"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "discord_dj_icon_agent_dj_1024.png"
+    plain_path = out_dir / "discord_dj_icon_agent_plain_1024.png"
+    dj_path = out_dir / "discord_dj_icon_agent_dj_1024.png"
+    ref_path = here / "dj_icon_ai_reference.png"
 
-    cx, cy = OUT // 2, OUT // 2 + 12
-    face_d = 760
-    face_r = face_d // 2
+    plain = plain_upscale_square(agent_path, OUT)
+    plain.save(plain_path, "PNG")
+    print(f"Wrote {plain_path} (from {agent_path})")
 
-    canvas = Image.new("RGBA", (OUT, OUT), BG + (255,))
-    draw = ImageDraw.Draw(canvas)
-
-    draw.rounded_rectangle(
-        (20, 20, OUT - 21, OUT - 21),
-        radius=52,
-        outline=CYAN + (70,),
-        width=3,
-    )
-
-    # Dual halo behind face
-    halo_c = glow_ring(face_d + 120, CYAN + (55,), 4)
-    canvas.alpha_composite(halo_c, (cx - (face_d + 120) // 2, cy - (face_d + 120) // 2))
-    halo_p = glow_ring(face_d + 72, PURPLE + (50,), 3)
-    canvas.alpha_composite(halo_p, (cx - (face_d + 72) // 2, cy - (face_d + 72) // 2))
-
-    agent = Image.open(agent_path).convert("RGBA")
-    av = circular_avatar(agent, face_d)
-    av_ring = glow_ring(face_d + 28, CYAN + (130,), 3)
-    ax = cx - face_d // 2
-    ay = cy - face_d // 2
-    canvas.alpha_composite(av_ring, (ax - 14, ay - 14))
-    canvas.alpha_composite(av, (ax, ay))
-
-    draw_dj_headphones(draw, cx, cy, face_r)
-
-    canvas.save(out_path, "PNG")
-    print(f"Wrote {out_path}")
-    print(f"  agent: {agent_path}")
+    if ref_path.is_file():
+        ref = Image.open(ref_path).convert("RGBA")
+        dj = fit_contain_square(ref, OUT)
+        dj.save(dj_path, "PNG")
+        print(f"Wrote {dj_path} (from {ref_path}, letterboxed)")
+    else:
+        shutil.copyfile(plain_path, dj_path)
+        print(f"Wrote {dj_path} (copy of plain; add dj_icon_ai_reference.png for DJ variant)")
 
 
 if __name__ == "__main__":
