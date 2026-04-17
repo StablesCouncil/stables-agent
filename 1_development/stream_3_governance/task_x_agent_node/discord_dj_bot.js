@@ -1,6 +1,9 @@
-require("dotenv").config();
-
+const fs = require("fs");
 const path = require("path");
+const envPath = fs.existsSync(path.join(__dirname, ".env.dj"))
+  ? path.join(__dirname, ".env.dj")
+  : path.join(__dirname, ".env");
+require("dotenv").config({ path: envPath });
 try {
   const ffmpegStatic = require("ffmpeg-static");
   if (ffmpegStatic) {
@@ -37,6 +40,9 @@ const REQUIRED_ENV = [
 for (const key of REQUIRED_ENV) {
   if (!process.env[key]) {
     console.error(`[CONFIG] Missing required env var: ${key}`);
+    console.error(
+      `[CONFIG] Copy .env.dj.example to .env.dj in this folder, fill values, then run again.`,
+    );
     process.exit(1);
   }
 }
@@ -231,6 +237,7 @@ async function init() {
   state.client = new Client({ intents });
 
   state.client.once("ready", async () => {
+    log(`Env file: ${envPath}`);
     log(`Logged in as ${state.client.user.tag}`);
     const guild = await state.client.guilds.fetch(config.guildId);
     const channel = await guild.channels.fetch(config.voiceChannelId);

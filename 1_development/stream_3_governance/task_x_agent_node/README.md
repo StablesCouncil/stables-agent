@@ -52,11 +52,22 @@ The agent can post to its own X account using the free API tier. No paid subscri
 
 Optional 24/7 voice bot that loops a **YouTube playlist** (including `music.youtube.com` playlist URLs; `play-dl` normalises them). Use a **dedicated Discord bot user** (recommended: not the same application as Telegram or X). You can name the bot and avatar “DJ” or “StablesAgent” style in the Discord Developer Portal.
 
+**One-time Discord setup**
+
+1. [Discord Developer Portal](https://discord.com/developers/applications) → **New Application** → open **Bot** → **Add Bot** → **Reset Token** (this becomes `DISCORD_DJ_TOKEN`).
+2. Under **Bot**, you do **not** need privileged intents for this script (it uses **Guilds** + **Guild Voice States**, and **Guild Messages** only if you turn on now-playing announcements).
+3. **OAuth2** → **URL Generator**: scopes **bot**; permissions at minimum **View Channels**, **Connect**, **Speak**. Add **Send Messages** (+ **Read Message History**) on the pub text channel if `DISCORD_ANNOUNCE_NOW_PLAYING=true`.
+4. Open the generated URL in a browser, pick the **Stables** server, authorize. The bot should appear offline until you run the process below.
+5. In Discord: **User Settings** → **App Settings** → **Advanced** → enable **Developer Mode**. Right-click the **Stables** server icon → **Copy Server ID** (`DISCORD_GUILD_ID`). Right-click **Friday’s Pub** (voice) → **Copy Channel ID** (`DISCORD_VOICE_CHANNEL_ID`). Optionally right-click the pub’s **text** side → **Copy Channel ID** (`DISCORD_TEXT_CHANNEL_ID`).
+
+**Config on disk**
+
+- Copy **`.env.dj.example`** to **`.env.dj`** in **`task_x_agent_node/`** (same folder as `discord_dj_bot.js`). Fill the variables. **`discord_dj_bot.js`** loads **`.env.dj`** if it exists, otherwise **`.env`**. **`.env.dj`** is gitignored at the repo root.
+
 **Requirements**
 
 - Node 18+ on the host (your Vultr box or any always-on machine).
-- Bot invited with **Connect**, **Speak**, **View Channels**, **Use Voice Activity** (and **Send Messages** in the pub text channel if you enable now-playing posts).
-- Environment variables (for example in the same `.env` you use for other agents, or a separate file loaded with `dotenv`):
+- `npm install` once in **`task_x_agent_node/`**.
 
 | Variable | Required | Description |
 |----------|----------|-------------|
