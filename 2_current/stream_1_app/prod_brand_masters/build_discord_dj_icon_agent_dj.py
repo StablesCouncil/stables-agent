@@ -5,12 +5,14 @@ Discord DJ / agent icon exports (1024x1024).
 1) Plain upscale of the official agent mark (no new art style):
    -> exports/discord_dj_icon_agent_plain_1024.png
 
-2) DJ mark: optional handoff image `dj_icon_ai_reference.png` in this folder
+2) DJ mark: optional handoff image `assets/dj_icon_ai_reference.png`
    (same 3D plate / circuit language as the agent mark, with a small music
    glyph). Letterboxed to 1024 square on #0b0f14 without cropping the art.
    -> exports/discord_dj_icon_agent_dj_1024.png
    If the reference file is missing, `discord_dj_icon_agent_dj_1024.png` is
    a copy of the plain export.
+
+Override path with STABLES_DJ_ICON_REFERENCE.
 
 Agent source:
   2_current/stream_3_governance/task_x_agent_node/bot_assets/stables_agent_avatar.png
@@ -84,7 +86,11 @@ def main() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     plain_path = out_dir / "discord_dj_icon_agent_plain_1024.png"
     dj_path = out_dir / "discord_dj_icon_agent_dj_1024.png"
-    ref_path = here / "dj_icon_ai_reference.png"
+    ref_env = os.environ.get("STABLES_DJ_ICON_REFERENCE")
+    if ref_env:
+        ref_path = Path(ref_env).expanduser().resolve()
+    else:
+        ref_path = here / "assets" / "dj_icon_ai_reference.png"
 
     plain = plain_upscale_square(agent_path, OUT)
     plain.save(plain_path, "PNG")
@@ -97,7 +103,9 @@ def main() -> None:
         print(f"Wrote {dj_path} (from {ref_path}, letterboxed)")
     else:
         shutil.copyfile(plain_path, dj_path)
-        print(f"Wrote {dj_path} (copy of plain; add dj_icon_ai_reference.png for DJ variant)")
+        print(
+            f"Wrote {dj_path} (copy of plain; add assets/dj_icon_ai_reference.png for DJ variant)",
+        )
 
 
 if __name__ == "__main__":
