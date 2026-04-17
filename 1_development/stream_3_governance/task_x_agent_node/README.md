@@ -50,6 +50,8 @@ The agent can post to its own X account using the free API tier. No paid subscri
 
 ## Discord pub radio (self-hosted DJ bot)
 
+**Developer Portal icon (1024×1024 PNG):** `assets/discord-dj-app-icon-1024.png` in this folder. Upload it under **General Information** → **App Icon** for **Stables Pub DJ** (or your app name).
+
 Optional 24/7 voice bot that loops a **YouTube playlist** (including `music.youtube.com` playlist URLs; `play-dl` normalises them). Use a **dedicated Discord bot user** (recommended: not the same application as Telegram or X). You can name the bot and avatar “DJ” or “StablesAgent” style in the Discord Developer Portal.
 
 **One-time Discord setup**
