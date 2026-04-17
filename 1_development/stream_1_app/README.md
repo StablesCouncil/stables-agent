@@ -19,7 +19,7 @@ Edit **`dapp/2-demo/`** in place. Then **`cd`** **`task_stablescouncil_github_io
 
 ## Doc index
 
-- **`handover_document.md`** (repo root): ship checklist, **`C:\`** paths, archive clone.
+- **`handover_document.md`** (repo root): ship checklist, **`C:\`** paths, archive clone, **which git repo actually serves `stablescouncil.org`** (not the Stables monorepo push).
 - **`0_handshake/minidapp_version.md`**: versions, routing, **`dapp/MINIDAPP_VERSIONING.md`** pointer.
 - **`dapp/PORTING_GAP.md`**: one-file **lead vs downstream** gap tracker (prod → test → demo → showcase); use when you want a single place to record what still needs porting.
 - **`dapp/README.md`**: short reminder for this tree.

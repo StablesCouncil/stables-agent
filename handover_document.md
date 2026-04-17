@@ -1,10 +1,16 @@
 # Handover Document: Stables Protocol Branding Unification
 
-## Status: **ACTIVE — Pages ship 2026-04-13**
+## Status: **ACTIVE — Pages ship 2026-04-17**
 
 Branding and navigation parity are defined across the **seven** community-facing HTML nodes in the handover table (home through QR code).
 
-**Last GitHub Pages push:** `StablesCouncil/stablescouncil.github.io` **`main`** commit **`6c328e0`** (2026-04-13). **Brand PNG fix:** `brand/assets/logo-wordmark.png`, `logo-symbol.png`, and `twitter-header.png` had been **0-byte files** in the working tree (broken images despite correct `/brand/assets/` URLs); restored from `_tmp_pages_clone/brand/assets/` and pushed. **`CNAME`** = **`stablescouncil.org`** landed in **`f7f6e45`**. Sandbox source: `1_development/stream_1_app/task_stablescouncil_github_io/`; publish clone: `3_archive/.../stablescouncil.github.io/` with **`git --git-dir=_embedded_git`**. Earlier same day: content sync **`afc3a1f`** after reset to **`origin/main`** (`dad99fe`) to avoid rebase conflicts.
+**Last GitHub Pages push:** `StablesCouncil/stablescouncil.github.io` **`main`** commit **`0fa30b6`** (2026-04-17): Council **Discord** invite on **`links.html`** points to **`https://discord.gg/rTdqwRGPXR`**; Showcase tile path **`/dapp/1-showcase/`**; optional **`file:`** preview script aligned with monorepo **`sync:site`** output.
+
+**Operator clone on this machine (canonical for push):** `C:\Users\Charles\Documents\stablescouncil.github.io` — keep **`main`** fast-forwarded to **`origin/main`** after each ship. A one-off temp clone under **`Documents\stablescouncil-pages-deploy`** was used for that push and **has been removed** to avoid two competing checkouts.
+
+**If you had local-only Pages work:** it is preserved as **`git stash`** (WIP **qr-code** + untracked brand file) and branch **`recovery/pages-local-commits-2026-04-17`** (tip **`1a9a7f8`**, two commits that had diverged from GitHub). Cherry-pick or drop as Council decides; do not merge blindly without review.
+
+**Earlier reference (2026-04-13):** **`6c328e0`** — **Brand PNG fix** (`brand/assets/logo-wordmark.png`, `logo-symbol.png`, `twitter-header.png` had been **0-byte** in the tree; restored from `_tmp_pages_clone/brand/assets/` and pushed). **`CNAME`** = **`stablescouncil.org`** landed in **`f7f6e45`**. Sandbox source: `1_development/stream_1_app/task_stablescouncil_github_io/`; optional archive publish clone: `3_archive/.../stablescouncil.github.io/` with **`git --git-dir=_embedded_git`**.
 
 **Custom domain checklist (operators):** Repo root **`CNAME`** must match **GitHub → Settings → Pages → Custom domain** for `stablescouncil.org`. DNS at the registrar must follow [GitHub’s apex docs](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site) (A/AAAA or ALIAS to Pages). After push, allow a few minutes, then **Enforce HTTPS** once the certificate provisions.
 
@@ -14,8 +20,10 @@ Branding and navigation parity are defined across the **seven** community-facing
 
 Council target: **dev**, **GitHub Pages `main`**, **public web**, and **`2_current`** describe the **same** shipped state after you validate (see **`0_handshake/handshake.md`** §1 **Publication parity**).
 
+**Confusion guard (read once):** `git push` from the **Stables monorepo** does **not** change **`stablescouncil.org`**. That site is **`StablesCouncil/stablescouncil.github.io`**. The monorepo **`.gitignore`** excludes **`task_stablescouncil_github_io/`**, so its HTML never rides along on a Stables remote push. You always ship by copying **`site/`** into a **Pages** working tree, then pushing **`main`** there. **2026-04-17:** the **`backup`** and **`backup-ssh`** remotes (they pointed at **`Charles0xhorizonxyz/stables`**, which returned **404**) were **removed** from this monorepo to avoid mistaken pushes; add a new remote when a real backup repository exists.
+
 1. **Edit in dev:** **`task_stablescouncil_github_io/`** (pages + **`static/`**) and **`stream_1_app/dapp/`** (MiniDapp web mirror). Run **`npm run sync:site`**; confirm **`site/`** locally.
-2. **Ship:** copy **`site/`** contents into the Pages repo **root**; push **`main`**; verify **`stablescouncil.org`** (and **`github.io`** if used).
+2. **Ship:** copy **`site/`** contents into the Pages repo **root** (for example **`C:\Users\Charles\Documents\stablescouncil.github.io`**); push **`main`**; verify **`stablescouncil.org`** (and **`github.io`** if used).
 3. **Record:** note **Pages `main` commit SHA** (and zip label if any) in this handover or Council log.
 4. **Promote:** copy or merge the matching paths into **`2_current`** when you are ready so offline **current** matches live.
 5. **Brain:** run **`ingest_knowledge.js`** only **after** brain markdown lives under **`2_current`**, per Knowledge Base Sync Rule.
