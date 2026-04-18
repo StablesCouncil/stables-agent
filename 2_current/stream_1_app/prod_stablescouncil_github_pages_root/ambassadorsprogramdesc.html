@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // Local file:// preview: map /brand and /assets URLs to sibling folders under github_pages_root.
+        if (location.protocol === "file:") {
+            document.addEventListener("DOMContentLoaded", () => {
+                const staticRoot = "./";
+                const toLocal = (value) => {
+                    if (!value) return value;
+                    if (value.startsWith("/brand/")) return staticRoot + value.slice(1);
+                    if (value.startsWith("/assets/")) return staticRoot + value.slice(1);
+                    if (value === "stables.css" || value === "../stables.css") return staticRoot + "stables.css";
+                    if (value.startsWith("assets/")) return staticRoot + value;
+                    if (value.startsWith("../assets/")) return staticRoot + value.slice(3);
+                    if (value === "stables_agent_avatar.png") return staticRoot + "stables_agent_avatar.png";
+                    return value;
+                };
+                document.querySelectorAll("link[rel='stylesheet'][href]").forEach((el) => {
+                    const next = toLocal(el.getAttribute("href"));
+                    if (next !== el.getAttribute("href")) {
+                        const clone = el.cloneNode(true);
+                        clone.setAttribute("href", next);
+                        el.replaceWith(clone);
+                    }
+                });
+                document.querySelectorAll("script[src]").forEach((el) => {
+                    const next = toLocal(el.getAttribute("src"));
+                    if (next !== el.getAttribute("src")) {
+                        const clone = document.createElement("script");
+                        clone.src = next;
+                        if (el.defer) clone.defer = true;
+                        if (el.async) clone.async = true;
+                        el.replaceWith(clone);
+                    }
+                });
+                document.querySelectorAll("img[src], source[src], [src]").forEach((el) => {
+                    if (el.hasAttribute("src")) el.setAttribute("src", toLocal(el.getAttribute("src")));
+                });
+                document.querySelectorAll("meta[content]").forEach((el) => {
+                    el.setAttribute("content", toLocal(el.getAttribute("content")));
+                });
+            });
+        }
+    </script>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/brand/assets/logo-symbol.png">
+    
+    <!-- Social Previews -->
+    <meta property="og:title" content="Stables | Ambassador Program Framework">
+    <meta property="og:description" content="The 16 Big Mac® Economy: A Fair & Global Framework for Protocol Growth. Official Community Draft.">
+    <meta property="og:image" content="/brand/assets/twitter-header.png">
+    <meta property="og:url" content="https://stablescouncil.org/ambassadorsprogramdesc.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Stables">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@StablesCouncil">
+    <meta name="twitter:title" content="Stables | Ambassador Program: The 16 Big Mac® Economy">
+    <meta name="twitter:description" content="Secure, Pseudonymous, and Unstoppable. View the full specification.">
+    
+    <!-- Inter: loaded via stables.css (@import) for same file:// behaviour as playing_field.html -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="stables.css" />
+    <link rel="stylesheet" href="assets/site-chrome.css" />
+    <link rel="stylesheet" href="assets/site-map-nav.css" />
+
+    <title>Stables | Ambassador Program Specification (v0.0.01)</title>
+    <style>
+        :root {
+            --bg: #0b0f14;
+            --panel: rgba(15, 23, 42, 0.85);
+            --text-primary: #e6edf3;
+            --text-secondary: #9fb0c0;
+            --accent-cyan: #67e8f9;
+            --accent-purple: #a78bfa;
+            --accent-amber: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body.site-chrome-body {
+            background: radial-gradient(circle at top, rgba(103, 232, 249, 0.18), transparent 55%) var(--bg);
+            color: var(--text-primary);
+            font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            line-height: 1.7;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 860px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .title-block .version-tag {
+            font-weight: 600;
+        }
+
+        .title-block .draft-disclaimer {
+            font-style: italic;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section {
+            background: var(--panel);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(103, 232, 249, 0.15);
+            border-radius: 24px;
+            padding: clamp(2rem, 5vw, 4rem);
+            margin-bottom: 3rem;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-cyan);
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+            border-bottom: 1px solid rgba(103, 232, 249, 0.1);
+            padding-bottom: 1rem;
+        }
+
+        h3 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 2.5rem 0 1.25rem;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        ul, ol {
+            margin-bottom: 2rem;
+            padding-left: 1.75rem;
+        }
+
+        li {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        strong {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        em {
+            color: var(--text-primary);
+        }
+
+        a {
+            color: var(--accent-cyan);
+            text-decoration: underline;
+            text-underline-offset: 4px;
+            transition: opacity 0.2s;
+        }
+
+        a:hover {
+            opacity: 0.8;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px dashed rgba(103, 232, 249, 0.2);
+            margin: 4rem 0;
+        }
+
+        .highlight-amber {
+            color: var(--accent-amber) !important;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-bottom: 1rem;
+        }
+
+        .built-on-minima {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(103, 232, 249, 0.5);
+            color: var(--accent-cyan);
+            padding: 10px 24px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 30px rgba(103, 232, 249, 0.25);
+            transition: all 0.3s ease;
+        }
+
+        .built-on-minima:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 45px rgba(103, 232, 249, 0.45);
+            border-color: var(--accent-cyan);
+        }
+
+        .github-link {
+            display: block;
+            margin-top: 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .github-link:hover {
+            color: var(--accent-cyan);
+        }
+
+        /* Responsive spacing */
+        @media (max-width: 640px) {
+            .section { padding: 2rem 1.5rem; border-radius: 20px; }
+            h2 { font-size: 1.6rem; }
+            h3 { font-size: 1.25rem; }
+        }
+        /* StablesAgent floating widget + popup */
+        .agent-fab {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 9000;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            padding: 0;
+        }
+        .agent-fab-tip {
+            background: rgba(10,14,20,0.92);
+            border: 1px solid rgba(103,232,249,0.3);
+            color: #e6edf3;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 14px;
+            border-radius: 10px;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(8px);
+            transition: all 0.25s ease;
+            pointer-events: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+        .agent-fab:hover .agent-fab-tip { opacity: 1; transform: translateX(0); }
+        .agent-fab-btn {
+            width: 58px; height: 58px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(103,232,249,0.25), rgba(167,139,250,0.25));
+            border: 1px solid rgba(103,232,249,0.45);
+            box-shadow: 0 0 24px rgba(103,232,249,0.2);
+            display: flex; align-items: center; justify-content: center;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            flex-shrink: 0; position: relative;
+        }
+        .agent-fab:hover .agent-fab-btn { transform: scale(1.1); box-shadow: 0 0 40px rgba(103,232,249,0.4); }
+        .agent-fab-btn img { width: 32px; height: 32px; object-fit: contain; }
+        .agent-fab-dot {
+            position: absolute; top: 3px; right: 3px;
+            width: 11px; height: 11px; border-radius: 50%;
+            background: #6b7280; border: 2px solid #0b0f14;
+            transition: background 0.4s ease;
+        }
+        .agent-fab-pulse {
+            position: absolute; width: 58px; height: 58px;
+            border-radius: 50%; border: 1px solid rgba(103,232,249,0.5);
+            animation: agent-radar 2.4s ease-out infinite; pointer-events: none;
+        }
+        .agent-fab-pulse:nth-child(2) { animation-delay: 0.8s; }
+        .agent-fab-pulse:nth-child(3) { animation-delay: 1.6s; }
+        @keyframes agent-radar {
+            0%   { transform: scale(1);   opacity: 0.6; }
+            100% { transform: scale(2.2); opacity: 0;   }
+        }
+        .agent-backdrop {
+            display: none;
+            position: fixed; inset: 0;
+            z-index: 9050;
+            background: transparent;
+        }
+        .agent-backdrop.open { display: block; }
+        .agent-popup {
+            position: fixed;
+            bottom: 104px;
+            right: 32px;
+            z-index: 9100;
+            width: 390px;
+            height: min(680px, calc(100vh - 130px));
+            background: #101826;
+            border: 1px solid rgba(103,232,249,0.3);
+            border-radius: 20px;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.7), 0 0 40px rgba(103,232,249,0.12);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.97);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            pointer-events: none;
+        }
+        .agent-popup.open {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: all;
+        }
+        .agent-popup-header {
+            display: flex; align-items: center; gap: 11px;
+            padding: 14px 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            flex-shrink: 0;
+        }
+        .agent-popup-logo {
+            width: 34px; height: 34px; border-radius: 8px;
+            background: rgba(103,232,249,0.08);
+            border: 1px solid rgba(103,232,249,0.3);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .agent-popup-logo img { width: 22px; height: 22px; object-fit: contain; }
+        .agent-popup-title { flex: 1; }
+        .agent-popup-title-main {
+            font-size: 13px; font-weight: 700; color: #e6edf3;
+            font-family: 'Inter', sans-serif; letter-spacing: 0.03em;
+        }
+        .agent-popup-title-sub {
+            font-size: 11px; color: #9fb0c0;
+            font-family: 'Inter', sans-serif; margin-top: 1px;
+        }
+        .agent-popup-status {
+            display: flex; align-items: center; gap: 6px;
+            font-size: 11px; color: #9fb0c0;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 999px;
+            transition: background 0.2s;
+        }
+        .agent-popup-status:hover { background: rgba(255,255,255,0.07); }
+        .agent-popup-status-dot {
+            width: 7px; height: 7px; border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
+        }
+        .agent-popup-disclaimer {
+            padding: 7px 16px;
+            background: rgba(251, 191, 36, 0.08);
+            border-bottom: 1px solid rgba(251, 191, 36, 0.25);
+            font-family: 'Inter', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: #fbbf24;
+            text-align: center;
+            flex-shrink: 0;
+            text-transform: none;
+        }
+        .agent-popup-body {
+            flex: 1; position: relative; overflow: hidden;
+        }
+        .agent-popup-body iframe {
+            width: 100%; height: 100%; border: none;
+            background: #101826;
+        }
+        .agent-popup-fallback {
+            display: none;
+            position: absolute; inset: 0;
+            flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 16px; padding: 32px; text-align: center;
+            background: #101826;
+        }
+        .agent-popup-fallback.visible { display: flex; }
+        .agent-popup-fallback p {
+            font-family: 'Inter', sans-serif;
+            font-size: 14px; color: #9fb0c0; line-height: 1.6;
+        }
+        .agent-popup-fallback a {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 11px 22px; border-radius: 12px;
+            background: linear-gradient(135deg, rgba(103,232,249,0.25), rgba(167,139,250,0.25));
+            border: 1px solid rgba(103,232,249,0.4);
+            color: #e6edf3; font-family: 'Inter', sans-serif;
+            font-size: 14px; font-weight: 600; text-decoration: none;
+            transition: all 0.2s;
+        }
+        .agent-popup-fallback a:hover { box-shadow: 0 0 20px rgba(103,232,249,0.3); }
+        @media (max-width: 640px) {
+            .agent-fab { bottom: 20px; right: 20px; }
+            .agent-fab-tip { display: none; }
+            .agent-popup {
+                bottom: 0; right: 0; left: 0;
+                width: 100%; height: 75vh;
+                border-radius: 20px 20px 0 0;
+                border-bottom: none;
+            }
+        }
+    </style>
+</head>
+<body class="site-chrome-body links-page-body has-site-rail deck-chrome-page ambassadors-doc-page" data-rail-sections=".container > .section">
+    <header class="site-chrome-header" role="banner">
+        <a class="site-chrome-header__brand" href="https://stablescouncil.org/">
+            <img class="site-chrome-header__mark" src="/brand/assets/logo-symbol.png" width="48" height="48" alt="Stables">
+            <span class="site-chrome-header__titles">
+                <span class="site-chrome-header__name">Stables</span>
+                <span class="site-chrome-header__slogan">Be your bank</span>
+            </span>
+        </a>
+        <a class="site-chrome-header__pill" href="https://minima.global" target="_blank" rel="noopener noreferrer">Built on MINIMA</a>
+    </header>
+
+    <aside class="site-chrome-side-rail" aria-label="Quick navigation">
+        <div class="site-chrome-side-rail__stack">
+            <div class="lang-switcher">
+                <button type="button" class="globe-btn" onclick="toggleLangMenu()" aria-label="Site navigation">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="2" y1="12" x2="22" y2="12"></line>
+                        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                </button>
+                <div id="langMenu" class="lang-menu" role="menu">
+                    <a href="https://stablescouncil.org/" role="menuitem">Full presentation</a>
+                    <a href="https://stablescouncil.org/links.html" role="menuitem">All links</a>
+                </div>
+            </div>
+            <div class="share-switcher">
+                <button type="button" class="share-btn" onclick="toggleShareMenu()" aria-label="Share">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="18" cy="5" r="3"></circle>
+                        <circle cx="6" cy="12" r="3"></circle>
+                        <circle cx="18" cy="19" r="3"></circle>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                    </svg>
+                </button>
+                <div id="shareMenu" class="share-menu">
+                    <button type="button" onclick="shareToTwitter()">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
+                        X
+                    </button>
+                    <button type="button" onclick="shareToFacebook()">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                        Facebook
+                    </button>
+                    <button type="button" onclick="shareToLinkedIn()">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                        LinkedIn
+                    </button>
+                    <button type="button" onclick="shareToWhatsApp()">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                        </svg>
+                        WhatsApp
+                    </button>
+                    <button type="button" onclick="shareToTelegram()">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                        Telegram
+                    </button>
+                    <button type="button" onclick="copyLink()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                        </svg>
+                        Copy Link
+                    </button>
+                </div>
+            </div>
+        </div>
+        <nav class="site-chrome-side-rail__dots" id="navDotsRail" aria-label="Page sections"></nav>
+    </aside>
+
+    <main class="site-chrome-main site-chrome-main--document" id="main-content">
+    <div class="container">
+        <div class="title-block">
+            <h1>Stables Ambassador Program: The 16 Big Mac® Economy</h1>
+            <p class="subtitle version-tag">Version 0.0.01 | <span class="highlight-amber">Community Draft</span></p>
+            <p class="subtitle draft-disclaimer"><span class="highlight-amber">This document represents an initial draft intended to stimulate protocol-wide community discussion and governance.</span></p>
+        </div>
+
+        <!-- 1. Purpose -->
+        <div class="section" id="section-1">
+            <h2>📋 1. Purpose</h2>
+            <p>This document defines the core architecture of the Stables Ambassador program. Our primary objective is to build a professional, incentivized, Fair & Global network of paid Ambassadors to support the growth of the Stables payment accepting merchant network.</p>
+            <h3><strong>Core Principles:</strong></h3>
+            <ul>
+                <li><strong>Permissionless Entry:</strong> There is <strong>no acceptance mechanism</strong> or gatekeeping; any participant (whether joining as a merchant or purely as an independent professional) can act as an Ambassador as soon as they register themselves in the protocol.</li>
+                <li><strong>The Human Layer:</strong> Ambassadors are the human layer that integrates merchants into the Stables economic loop and ensures a high-quality, trusted directory.</li>
+                <li>Fair & Global Constraint: The economic model is designed to be universally applicable and fair across all geographies, anchored to the protocol's decentralized logic and the <a href="https://worldpopulationreview.com/country-rankings/big-mac-index-by-country" target="_blank">Big Mac Index</a>.</li>
+            </ul>
+        </div>
+
+        <!-- 2. Ecosystem -->
+        <div class="section" id="section-2">
+            <h2>💎 2. The Ecosystem: Five Primary Roles</h2>
+            <p>To ensure the system remains balanced and professional, we define five primary roles within the global Stables structure relating to merchant onboarding:</p>
+            <ol>
+                <li><strong>The Merchants:</strong> Business owners who accept Stables. They choose to pay the 16 Big Mac® fee to be "Verified" and listed in the official directory.</li>
+                <li><strong>The Independent Participant:</strong> A merchant or future ambassador who registers directly through the app without an external pitch. They are anchored to the protocol via the <strong>Universal Anchor</strong>.</li>
+                <li><strong>The Direct Ambassador (Active):</strong> The participant who performs the actual onboarding or pitch for another merchant.</li>
+                <li><strong>The Second Level Ambassador (Mentor):</strong> The participant who successfully onboarded and trained a Direct Ambassador.</li>
+                <li><strong>The Council & Treasury:</strong> The autonomous heart of the protocol. It collects the anchor fees and arbitrage yield to fund community-voted growth.</li>
+            </ol>
+        </div>
+
+        <!-- 3. Problem -->
+        <div class="section" id="section-3">
+            <h2>🛑 3. The Problem: Self-Onboarding Bypass</h2>
+            <p>How do we make sure that the merchants don't have a financial incentive to onboard themselves and capture the Ambassador pay?</p>
+            <p>In an open system, there is a risk that a merchant might try to bypass the Ambassador who pitched them to "self-capture" the onboarding reward.</p>
+        </div>
+
+        <!-- 4. Solution -->
+        <div class="section" id="section-4">
+            <h2>💡 4. Our Solution: The 16 Big Mac® Economy</h2>
+            <p>We solve this by ensuring the entry cost and the active reward are decoupled, and by making the Treasury the default mentor.</p>
+            <h3><strong>Economic Core:</strong></h3>
+            <ul>
+                <li><strong>Universal Anchor Fee:</strong> <strong>16 Big Mac®</strong> (Sunk cost for Independent Registration).</li>
+                <li><strong>Mentored Registration Fee:</strong> <strong>15 Big Mac®</strong> (1 Big Mac® Discount for being mentored by an Ambassador).</li>
+                <li><strong>Global Fairness:</strong> All fees are pegged to the <a href="https://worldpopulationreview.com/country-rankings/big-mac-index-by-country" target="_blank">Big Mac Index</a> to remain globally fair.</li>
+                <li><strong>Active Reward:</strong> <strong>8 Big Mac®</strong> (Fixed for the Direct Ambassador).</li>
+                <li><strong>Mentor Reward:</strong> <strong>1 Big Mac®</strong> (For the Second Level Ambassador).</li>
+                <li><strong>Council Share:</strong> <strong>6-16 Big Mac®</strong> (Standard: 6; plus any unclaimed mentor/premium shares).</li>
+                <li><strong>Listing Duration:</strong> The fee covers a <strong>12-month registration</strong>. Renewals follow the same economic logic.</li>
+                <li><strong>Settlement:</strong> The 16 Big Mac® fee and all Ambassador rewards (retrocession) can be paid and settled in <strong>any token of Stables including Minima</strong> (USDs, EURs, CADs, etc.). It may also be paid in <strong>xMinima</strong> or any other coverage funds share of the participant's choice.</li>
+            </ul>
+        </div>
+
+        <!-- 5. Merchant's Choice -->
+        <div class="section" id="section-5">
+            <h2>🌟 5. The Merchant's Choice: Why Stables? Why listing? Why an Ambassador?</h2>
+            <h3><strong>Why Stables?</strong></h3>
+            <p>Accept all your electronic payments in a <strong>Permissionless</strong> framework where no permission is ever required. Stables is built on three core mottos:</p>
+            <ul>
+                <li><strong>Secure:</strong> Military-grade on-chain security.</li>
+                <li><strong>Pseudonymous:</strong> Protect your financial privacy while <strong>remaining fully compliant</strong>.</li>
+                <li><strong>Unstoppable:</strong> No central authority can freeze your funds or block your business.</li>
+            </ul>
+            <p><strong>Core Advantages:</strong></p>
+            <ul>
+                <li><strong>Instant Settlement:</strong> Payments are received and <strong>fully settled</strong> in a matter of seconds, ready to be spent immediately.</li>
+                <li><strong>Zero Middleman Fees:</strong> Accept payments directly on-chain with no bank fees or card processor cuts.</li>
+                <li><strong>Full Sovereignty:</strong> You own <strong>your bank</strong>, your node, your keys, and your customer relationships.</li>
+            </ul>
+            <h3><strong>Why Listing?</strong></h3>
+            <p>Choosing to pay the 16 Big Mac® entry fee to be listed in the official Stables app provides critical advantages:</p>
+            <ul>
+                <li><strong>Visibility:</strong> Featured on the global Stables map and in the merchant directory.</li>
+                <li><strong>Trust & Verification:</strong> Listing provides a "Verified" status, showing the merchant is part of the official community.</li>
+                <li><strong>Discoverability:</strong> Customers looking to spend Stables can find the merchant based on categories and geolocation.</li>
+                <li><strong>Network Growth:</strong> Access to local Ambassador support and future protocol-wide marketing campaigns.</li>
+            </ul>
+            <h3><strong>Why Not List?</strong></h3>
+            <p>Stables is an open protocol. A shop may decide to accept Stables <strong>without being listed</strong> for several reasons:</p>
+            <ul>
+                <li><strong>Private Operations:</strong> Some merchants preferred to use Stables as a private payment terminal for exclusive or local-only clientele without public advertising.</li>
+                <li><strong>Minimalist Setup:</strong> By simply generating a Minima address, any merchant can accept payments for free and with zero permission.</li>
+                <li><strong>Zero Cost:</strong> If a merchant does not require the visibility, trust, or support layer of the Ambassador program, they can operate entirely for free.</li>
+            </ul>
+            <h3><strong>Why use an Ambassador?</strong></h3>
+            <ul>
+                <li><strong>Close Network Access:</strong> Become part of an exclusive, high-trust local network of verified merchants and professionals.</li>
+                <li><strong>Instant Discount:</strong> Save 1 Big Mac® immediately compared to self-onboarding (15 BM vs 16 BM).</li>
+                <li><strong>Expert Deployment:</strong> Avoid technical hurdles; get it right the first time with a dedicated professional.</li>
+                <li><strong>Peace of Mind:</strong> Have a local human contact who is financially incentivized to see your business grow.</li>
+            </ul>
+        </div>
+
+        <!-- 6. Scenario Breakdown -->
+        <div class="section" id="section-6">
+            <h2>🏗️ 6. Scenario Breakdown: The Ambassador Paths</h2>
+            <p>The Ambassador Program follows a logical progression from independent participation to mentored hub growth. All scenarios are anchored by the "The Shield Principle," ensuring no one can financially benefit from bypassing the protocol's mentorship layers.</p>
+            <h3><strong>Scenario 1: Protocol Direct (Independent Entry)</strong></h3>
+            <p>A merchant or participant registers directly with the protocol without an Ambassador.</p>
+            <ul>
+                <li><strong>Cost Paid:</strong> <strong>16 Big Mac®</strong> (The Universal Anchor).</li>
+                <li><strong>Distribution:</strong> 100% (16 Big Mac) → <strong>Council Treasury</strong>.</li>
+                <li><strong>Result:</strong> Participant is verified but has no dedicated Ambassador support.</li>
+            </ul>
+            <h3><strong>Scenario 2: Standard Onboarding (Direct Ambassador)</strong></h3>
+            <p>An Independent Ambassador (A) onboards a new merchant (B).</p>
+            <ul>
+                <li><strong>Cost Paid:</strong> <strong>15 Big Mac®</strong> (Mentorship Discount).</li>
+                <li><strong>Reward (Ambassador A):</strong> <strong>8 Big Mac®</strong>.</li>
+                <li><strong>Council Share:</strong> <strong>7 Big Mac®</strong> (6 standard + 1 unclaimed mentor share).</li>
+            </ul>
+            <h3><strong>Scenario 3: Mentored Onboarding (Ambassador + Mentor)</strong></h3>
+            <p>An Ambassador (B), who is already mentored by Mentor (A), onboards a new merchant (C).</p>
+            <ul>
+                <li><strong>Cost Paid:</strong> <strong>15 Big Mac®</strong> (Mentorship Discount).</li>
+                <li><strong>Active Reward (B):</strong> <strong>8 Big Mac®</strong>.</li>
+                <li><strong>Mentor Reward (A):</strong> <strong>1 Big Mac®</strong>.</li>
+                <li><strong>Council Share:</strong> <strong>6 Big Mac®</strong>.</li>
+            </ul>
+            <h3><strong>🛡️ The Shield Principle (Neutrality Proof)</strong></h3>
+            <p>The system is economically balanced so that bypassing a mentor provides <strong>zero advantage</strong>.</p>
+            <ul>
+                <li><strong>For the Merchant:</strong> Joining an Ambassador is always cheaper (15 vs 16).</li>
+                <li><strong>Against Self-Onboarding:</strong> A merchant trying to capture the 8 BM reward by "onboarding themselves" must first pay 16 BM to register as an independent participant. Their net cost would be 23 BM (16+15-8), making it far more expensive than simply paying 15 BM to a professional Ambassador.</li>
+            </ul>
+        </div>
+
+        <!-- 7. Service Lifecycle -->
+        <div class="section" id="section-7">
+            <h2>🛠️ 7. The Ambassador's Service Lifecycle</h2>
+            <p>The relationship between an Ambassador and a Merchant is not a one-time transaction; it is a professional partnership built on three pillars of service:</p>
+            <ol>
+                <li><strong>Phase 1: Expert Setup & Verification:</strong>
+                    <ul>
+                        <li>Walking the merchant through the 15 Big Mac® registration.</li>
+                        <li>Configuring the merchant's Minima node and Stables wallet.</li>
+                        <li>Ensuring the shop is correctly geolocated and categorized on the global map.</li>
+                        <li>Providing physical signage (stickers/QR codes) to signal "Stables Accepted Here."</li>
+                    </ul>
+                </li>
+                <li><strong>Phase 2: Continued Technical Support:</strong>
+                    <ul>
+                        <li>Acting as the first point of contact for technical issues or ledger updates.</li>
+                        <li>Training staff on how to accept payments and manage generalized transaction workflows.</li>
+                        <li>Providing periodic health checks on the merchant's listing and directory accuracy.</li>
+                    </ul>
+                </li>
+                <li><strong>Phase 3: Strategic Ads Campaign Management:</strong>
+                    <ul>
+                        <li>Helping the merchant launch protocol-wide publicity campaigns.</li>
+                        <li><strong>Strategic Parameters:</strong> Managing campaigns with varying <strong>scope, target audience, and duration</strong> to maximize merchant ROI.</li>
+                        <li>Analyzing customer review data and responding to feedback.</li>
+                        <li>Strategizing on local promotions to increase Stables spending at the location.</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <!-- 8. Annual Renewal Circle -->
+        <div class="section" id="section-8">
+            <h2>📅 8. The Annual Renewal Cycle: Sustaining Value</h2>
+            <p>To ensure merchants choose to maintain their listing with their original Ambassador (rather than going "independent" on renewal), the protocol enforces a persistent incentive:</p>
+            <ul>
+                <li><strong>The Renewal Discount:</strong> Merchants who renew via their Ambassador keep the <strong>15 Big Mac®</strong> mentored price.</li>
+                <li><strong>Service Continuity:</strong> Moving to an independent listing (Universal Anchor) results in a <strong>16 Big Mac®</strong> fee and the loss of the dedicated Ambassador support layer.</li>
+                <li><strong>Long-term Hub Integrity:</strong> The protocol recognizes the value of the trainer (Second Level Ambassador) by maintaining the 1 Big Mac® mentor share on all renewals, ensuring the original hub that grew the network is rewarded for its stability.</li>
+            </ul>
+        </div>
+
+        <!-- 9. Stables Platform -->
+        <div class="section" id="section-9">
+            <h2>💻 9. Stables Platform: Supporting the Ambassador</h2>
+            <p>The Stables platform is built to empower Ambassadors with professional-grade tools to manage their "Hub" like a business:</p>
+            <ol>
+                <li><strong>Ambassador Dashboard (CRM):</strong> A specialized view in the app to track all mentored merchants, their status, renewal dates, and performance.</li>
+                <li><strong>Merchant Communication Tools:</strong> Integrated messaging to broadcast updates, tips, or promotion ideas to the entire hub.</li>
+                <li><strong>Campaign Templates:</strong> Pre-built marketing assets (posters, social media kits, and ad templates) that Ambassadors can customize for their local merchants.</li>
+                <li><strong>Training Resources:</strong> A library of educational content and "Pitch Decks" to help Ambassadors close more deals and train their mentored merchants effectively.</li>
+                <li><strong>Community Discussion Topic:</strong> <a href="https://t.me/stablescommunity/358" target="_blank">t.me/stablescommunity/358</a> - The direct channel for specification feedback and hub coordination.</li>
+            </ol>
+        </div>
+
+        <!-- 10. Technical Implementation -->
+        <div class="section" id="section-10">
+            <h2>⚖️ 10. Technical Implementation: How the System Distinguishes</h2>
+            <p>The Stables ledger tracks an optional <em>mentor</em> address for every listed participant. This <em>mentor</em> is set only during the very first listing (Scenario 1) and can never be changed.</p>
+            <ul>
+                <li><strong>Self-Onboarded Merchant:</strong> The <em>mentor</em> field is NULL.</li>
+                <li><strong>Mentored Merchant:</strong> The <em>mentor</em> field is set to the Ambassador who performed the onboarding.</li>
+            </ul>
+            <p>When an Ambassador (B) registers a new merchant (C), the code checks <strong>B’s record:</strong></p>
+            <ol>
+                <li>Does B have a mentor?
+                    <ul>
+                        <li><strong>Yes (A mentored B):</strong> B is part of a Hub. Split is <strong>8 to B, 1 to A, 6 to Council</strong> (Total 15).</li>
+                        <li><strong>No (B is independent):</strong> B is solo. Split is <strong>8 to B, 7 to Council</strong> (The 1 mentor share reverts to Treasury. Total 15).</li>
+                    </ul>
+                </li>
+                <li>The active reward for B is <strong>always 8 Big Mac®</strong>. This fixed reward ensures B has no financial incentive to bypass their original mentor.</li>
+            </ol>
+            <h3><strong>No-Cost Payment Acceptance</strong></h3>
+            <p>Stables is built on open protocol technology. Any merchant can accept Stables payments immediately and without incurring any cost simply by generating a Minima address. Accepting payments is free and permissionless.</p>
+            <h3><strong>Ambassadors as Specialized Merchants</strong></h3>
+            <p>Ambassadors are themselves listed as a type of merchant within the app. This allows them to present their services and be found by other merchants based on geolocation and other criteria. A merchant can search for an Ambassador nearby to receive training, onboarding help, or technical support.</p>
+            <h3><strong>Side Letter Agreements</strong></h3>
+            <p>The Stables protocol defines the standard on-chain distribution of fees. However, we anticipate that Ambassadors and Merchants may enter into "Side Letter Agreements" to share commissions.</p>
+            <ul>
+                <li><strong>On-chain Transparency:</strong> These parameters can be agreed upon directly within the onboarding contract, making the kickback terms visible on-chain to anyone.</li>
+                <li><strong>Private Flexibility:</strong> Alternatively, these agreements can be made independently as a private second step outside the primary listing protocol.</li>
+            </ul>
+            <p>While the protocol default is the 8/1/6 split, these side letters allow for bespoke commercial relationships while the 16 Big Mac® anchor always protects the Treasury's baseline.</p>
+            <h3><strong>On-chain Review & Rating System</strong></h3>
+            <p>To ensure the quality of the Stables merchant network, the app includes a star review and comment system.</p>
+            <ul>
+                <li><strong>On-chain Verification:</strong> Every review is tied to an on-chain transaction, proving that the reviewer is a true customer.</li>
+                <li><strong>Anti-Spam Mechanism:</strong> To maintain high-integrity feedback, a review is only published if the customer has spent a <strong>minimum threshold amount</strong> at the merchant's shop.</li>
+                <li><strong>Ambassador Moderation:</strong> Ambassadors play a key role in monitoring these reviews to support their mentored merchants.</li>
+            </ul>
+        </div>
+
+        <!-- 11. Council Treasury -->
+        <div class="section" id="section-11">
+            <h2>💎 11. Council Treasury: The Autonomous Protocol Heart</h2>
+            <p>The Stables Council Treasury is the protocol's economic engine, designed for absolute transparency and self-sovereign growth.</p>
+            <h3><strong>The Treasury Flow: Where the Anchor Fees Go</strong></h3>
+            <p>Every 16 Big Mac® entry fee is a direct contribution to the network's liquidity and growth. The protocol's smart contract automatically distributes these fees based on the onboarding scenario:</p>
+            <ul>
+                <li><strong>Scenario 1 (Independent):</strong> <strong>16 Big Mac®</strong> enters the Treasury.</li>
+                <li><strong>Scenario 2 (Direct):</strong> <strong>7 Big Mac®</strong> enters the Treasury (6 standard + 1 unclaimed mentor share).</li>
+                <li><strong>Scenario 3 (Mentored):</strong> <strong>6 Big Mac®</strong> enters the Treasury.</li>
+            </ul>
+            <h3><strong>Governance & Control: Who Watches the Code?</strong></h3>
+            <p>To ensure the protocol remains "Unstoppable," the control of the Treasury is divided between autonomous code and human governance:</p>
+            <ul>
+                <li><strong>Rule of Code (No Arbitrary Access):</strong> The Treasury funds are locked in a protocol-owned contract. No individual, Council member, or developer can withdraw funds for personal gain or arbitrary reasons.</li>
+                <li><strong>The Council’s Role:</strong> The <strong>executive branch of the Council</strong> acts as the protocol’s <strong>Authorized Signatories</strong> and <strong>Curators</strong>. They are responsible for executing the strategic releases already approved by the community.</li>
+                <li><strong>The Community’s Power:</strong> All major budget allocations, protocol upgrades, and utility expansions are subject to <strong>Time-Weighted Voting</strong>. Community members with skin-in-the-game control the direction of the Treasury’s growth engine.</li>
+                <li><strong>Real-Time Audit:</strong> Because Stables is built on the Minima ledger, every Big Mac® equivalent that enters or leaves the Treasury is <strong>fully visible on-chain</strong>. Anyone can audit the Treasury’s health at any time.</li>
+            </ul>
+            <h3><strong>The Investment Principle: Participant Ownership</strong></h3>
+            <p>The entire Stables structure is owned collectively by its participants. The Council Treasury is the property of the collectivity, meaning the 16 Big Mac® fee is neither a payment nor a donation—it is a <strong>100% investment</strong> into the Stables infrastructure. While the funds may change wallet addresses as they move through the protocol, they remain in the hands of the participants and are utilized exclusively for the platform's stability, arbitrage, and community-voted growth.</p>
+        </div>
+
+        <!-- 12. Integrity Clause -->
+        <div class="section" id="section-12">
+            <h2>🛡️ 12. The Integrity Clause: Risk & Transparency</h2>
+            <p>Stables is a "Ruled by Code" protocol, but we recognize the human reality of a mission with no initial track record. For early Ambassadors and Merchants, the following transparency is critical:</p>
+            <h3><strong>The Early Adopter’s Journey</strong></h3>
+            <p>As of Version 0.0.01, Stables has no established reputation or historical performance. Participants are committing their capital (the 16 Big Mac® anchor) and their local reputation based on the protocol’s vision, not its history.</p>
+            <h3><strong>The Perception Risk</strong></h3>
+            <p>Ambassadors carry the "frontline" reputational risk. If the protocol fails to achieve mass adoption, there is a risk of being perceived as having fallen for a "scam" or a failed experiment.</p>
+            <h3><strong>Protections Built into the Code</strong></h3>
+            <p>To mitigate this risk logically (rather than emotionally), we rely on the primary mottos:</p>
+            <ul>
+                <li><strong>Sovereignty is the Shield:</strong> Even if the "Stables" brand or community disperses, you remain in control of your Minima node and your private keys. The system is designed so that no central authority—not even the original developers—can "rug pull" your funds or your data.</li>
+                <li><strong>Protocol vs. Platform:</strong> Stables is an open protocol first, and an app second. Your participation is a commitment to a decentralized standard of exchange that exists independently of its marketing.</li>
+                <li><strong>Skin in the Game:</strong> The entry fee is a transparent contribution to the global Council Treasury, which is itself governed by the protocol’s autonomous rules.</li>
+            </ul>
+            <h3><strong>The Pioneer Advantage</strong></h3>
+            <p>High-integrity Ambassadors are the pioneers who will own the "prime real estate" of the local hubs once the track record is proven. We acknowledge the risk is real, but so is the sovereignty you gain from the first day you join.</p>
+        </div>
+
+        <!-- 13. Summary -->
+        <div class="section" id="section-13">
+            <h2>🎬 13. Summary</h2>
+            <p>This framework demonstrates a "ruled by code" economy that rewards mentorship while protecting the treasury. It turns human competition into a collaborative cells-and-hubs structure where the community always grows.</p>
+        </div>
+
+        <div class="footer">
+            <a href="https://github.com/StablesCouncil/stablescouncil.github.io/blob/main/ambassador_framework_full_spec.md" class="github-link" target="_blank">View technical specification on GitHub</a>
+        </div>
+    </div>
+    </main>
+
+    <nav id="siteMapNav" class="site-map-nav" data-site-map-index="4" aria-label="Previous and next in site map order"></nav>
+
+    <footer class="site-chrome-footer site-chrome-footer--minimal" role="contentinfo">
+        <div class="site-chrome-footerSocial">
+            <a class="site-chrome-footerSocial__link site-chrome-footerSocial__link--icon" href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer" aria-label="Telegram community">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+                    <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                </svg>
+            </a>
+            <a class="site-chrome-footerSocial__link site-chrome-footerSocial__link--icon" href="https://x.com/StablesCouncil" target="_blank" rel="noopener noreferrer" aria-label="Stables on X">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                </svg>
+            </a>
+            <a class="site-chrome-footerSocial__link site-chrome-footerSocial__link--all-links" href="https://stablescouncil.org/links.html" rel="noopener noreferrer">All links</a>
+        </div>
+        <p class="site-chrome-footerMeta">Stables | Built on Minima</p>
+    </footer>
+
+    <script src="assets/site-rail-controls.js" defer></script>
+    <script src="assets/site-rail.js" defer></script>
+    <script src="assets/site-map-nav.js" defer></script>
+
+    <!-- Agent Backdrop -->
+    <div class="agent-backdrop" id="agentBackdrop" onclick="closeAgent()"></div>
+
+    <!-- Agent Popup Panel -->
+    <div class="agent-popup" id="agentPopup">
+        <div class="agent-popup-header">
+            <div class="agent-popup-logo">
+                <img src="stables_agent_avatar.png" alt="StablesAgent" />
+            </div>
+            <div class="agent-popup-title">
+                <div class="agent-popup-title-main">StablesAgent</div>
+                <div class="agent-popup-title-sub">Ask anything about Stables</div>
+            </div>
+            <div class="agent-popup-status" onclick="closeAgent()" title="Close">
+                <span class="agent-popup-status-dot"></span>
+                <span>Online</span>
+            </div>
+        </div>
+        <div class="agent-popup-disclaimer">DO NOT SHARE PRIVATE OR SENSITIVE INFORMATION</div>
+        <div class="agent-popup-body">
+            <iframe id="agentFrame" title="StablesAgent Chat"></iframe>
+            <div class="agent-popup-fallback" id="agentFallback">
+                <img src="stables_agent_avatar.png" alt="StablesAgent" style="width:48px;height:48px;opacity:0.7;" />
+                <p>The chat will load here directly once the secure connection is active.<br>For now, open it in a new tab:</p>
+                <a href="https://agent.stablescouncil.org/chat" target="_blank" rel="noopener noreferrer">
+                    Open StablesAgent ↗
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Agent FAB button -->
+    <button class="agent-fab" id="agentFab" onclick="toggleAgent()" aria-label="Chat with StablesAgent">
+        <span class="agent-fab-tip">Chat with StablesAgent</span>
+        <div class="agent-fab-btn">
+            <span class="agent-fab-pulse"></span>
+            <span class="agent-fab-pulse"></span>
+            <span class="agent-fab-pulse"></span>
+            <img src="stables_agent_avatar.png" alt="StablesAgent" />
+            <span class="agent-fab-dot"></span>
+        </div>
+    </button>
+
+    <script>
+        const AGENT_URL   = 'https://agent.stablescouncil.org/chat?embed=1';
+        const HEALTH_URL  = 'https://agent.stablescouncil.org/health';
+        let agentOpen = false;
+
+        function setStatus(online) {
+            const dot  = document.querySelector('.agent-popup-status-dot');
+            const label = document.querySelector('.agent-popup-status span:last-child');
+            const fabDot = document.querySelector('.agent-fab-dot');
+            const color = online ? '#22c55e' : '#6b7280';
+            const glow  = online ? 'rgba(34,197,94,0.2)' : 'none';
+            if(dot) {
+                dot.style.background = color;
+                dot.style.boxShadow = `0 0 0 3px ${glow}`;
+            }
+            if(fabDot) fabDot.style.background = color;
+            if(label) label.textContent = online ? 'Online' : 'Offline';
+        }
+
+        async function pingAgent() {
+            try {
+                const r = await fetch(HEALTH_URL, { method: 'GET', signal: AbortSignal.timeout(4000) });
+                setStatus(r.ok);
+            } catch {
+                setStatus(false);
+            }
+        }
+
+        pingAgent();
+        setInterval(pingAgent, 30000);
+
+        function toggleAgent() {
+            agentOpen ? closeAgent() : openAgent();
+        }
+        function openAgent() {
+            const popup    = document.getElementById('agentPopup');
+            const backdrop = document.getElementById('agentBackdrop');
+            const frame    = document.getElementById('agentFrame');
+            const fb       = document.getElementById('agentFallback');
+            const agentSrc = AGENT_URL;
+            if (frame.src !== agentSrc) {
+                frame.src = agentSrc;
+                const t = setTimeout(() => { fb.classList.add('visible'); }, 3000);
+                frame.onload = () => clearTimeout(t);
+            }
+            popup.classList.add('open');
+            backdrop.classList.add('open');
+            agentOpen = true;
+        }
+        function closeAgent() {
+            document.getElementById('agentPopup').classList.remove('open');
+            document.getElementById('agentBackdrop').classList.remove('open');
+            agentOpen = false;
+        }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && agentOpen) closeAgent(); });
+    </script>
+</body>
+</html>

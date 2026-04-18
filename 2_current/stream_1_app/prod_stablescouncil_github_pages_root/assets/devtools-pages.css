@@ -1,0 +1,388 @@
+/* /devtools/* — panels, forms, and utilities. Title stack (h1 + .subtitle) comes from
+   site-chrome.css via main > .container > .title-block (same as qr-code, playing_field, …). */
+
+body.devtools-hub-page.site-chrome-body,
+body.devtools-sub-page.site-chrome-body {
+    background: radial-gradient(circle at 50% 0%, rgba(103, 232, 249, 0.12), transparent 55%) var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+.devtools-hub-inner,
+.devtools-sub-inner {
+    width: 100%;
+    padding-bottom: 1.5rem;
+    box-sizing: border-box;
+}
+
+.devtools-panel {
+    background: var(--panel);
+    border: 1px solid rgba(103, 232, 249, 0.25);
+    border-radius: 16px;
+    padding: 1.5rem 1.5rem 1.25rem;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    margin-bottom: 1.25rem;
+}
+
+.devtools-panel-heading {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 0.75rem;
+    color: var(--accent-cyan);
+    letter-spacing: -0.02em;
+}
+
+.devtools-panel p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.55;
+}
+
+.devtools-crumb {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin: 0 0 1.25rem;
+    text-align: center;
+}
+
+.devtools-crumb a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.devtools-crumb a:hover {
+    text-decoration: underline;
+}
+
+.devtools-hub-inner .buttons,
+.devtools-sub-inner .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.devtools-hub-inner .btn,
+.devtools-sub-inner .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 220px;
+    height: 64px;
+    border-radius: 16px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-decoration: none;
+    border: 1px solid rgba(103, 232, 249, 0.3);
+    box-shadow: 0 4px 24px rgba(103, 232, 249, 0.15);
+}
+
+.devtools-hub-inner .btn-primary,
+.devtools-sub-inner .btn-primary {
+    color: var(--text-primary);
+    background: linear-gradient(135deg, rgba(103, 232, 249, 0.3), rgba(167, 139, 250, 0.3));
+}
+
+.devtools-hub-inner .btn-secondary,
+.devtools-sub-inner .btn-secondary {
+    color: var(--text-primary);
+    background: rgba(15, 23, 42, 0.6);
+}
+
+.devtools-hub-inner .btn[disabled],
+.devtools-hub-inner .btn[aria-disabled="true"],
+.devtools-sub-inner .btn[disabled],
+.devtools-sub-inner .btn[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.65;
+}
+
+.devtools-back {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.devtools-back a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.devtools-back a:hover {
+    text-decoration: underline;
+}
+
+.devtools-hub-inner code,
+.devtools-sub-inner code {
+    font-size: 0.85rem;
+    color: var(--accent);
+}
+
+.devtools-panel ul {
+    margin: 0 0 1rem 1.25rem;
+    padding: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.devtools-panel ul a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.devtools-panel ul a:hover {
+    text-decoration: underline;
+}
+
+.devtools-repo-ref {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.devtools-sub-inner label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.35rem;
+}
+
+.devtools-sub-inner input,
+.devtools-sub-inner textarea,
+.devtools-sub-inner select {
+    width: 100%;
+    padding: 0.65rem 0.85rem;
+    border-radius: 12px;
+    border: 1px solid rgba(103, 232, 249, 0.25);
+    background: rgba(15, 23, 42, 0.85);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.devtools-sub-inner select {
+    cursor: pointer;
+    appearance: auto;
+}
+
+.devtools-sub-inner textarea {
+    min-height: 4rem;
+    resize: vertical;
+}
+
+.devtools-field-hint {
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    margin: -0.65rem 0 1rem;
+}
+
+.devtools-chart-placeholder {
+    margin-top: 1.5rem;
+    padding: 2rem 1rem;
+    border: 1px dashed rgba(103, 232, 249, 0.35);
+    border-radius: 16px;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Minima holdings query: chart-first, centered */
+.devtools-holdings-chart-panel {
+    text-align: center;
+}
+
+.devtools-block-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0 0 1.25rem;
+}
+
+.devtools-block-pill {
+    background: rgba(15, 23, 42, 0.75);
+    border: 1px solid rgba(103, 232, 249, 0.28);
+    border-radius: 14px;
+    padding: 0.65rem 1.1rem;
+    min-width: 160px;
+    text-align: center;
+}
+
+.devtools-block-pill .devtools-block-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-bottom: 0.35rem;
+}
+
+.devtools-block-pill .devtools-block-value {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--accent-cyan);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Holdings query: keep block readouts compact at top of panel */
+.devtools-block-row--holdings-compact {
+    margin: 0 0 0.5rem;
+    gap: 0.5rem;
+}
+
+.devtools-block-row--holdings-compact .devtools-block-pill {
+    min-width: 0;
+    padding: 0.3rem 0.65rem;
+    border-radius: 10px;
+}
+
+.devtools-block-row--holdings-compact .devtools-block-pill .devtools-block-label {
+    font-size: 0.6rem;
+    margin-bottom: 0.12rem;
+    letter-spacing: 0.05em;
+}
+
+.devtools-block-row--holdings-compact .devtools-block-pill .devtools-block-value {
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.devtools-chart-frame {
+    position: relative;
+    width: 100%;
+    max-width: 720px;
+    height: min(360px, 52vw);
+    margin: 0 auto 1rem;
+}
+
+/* Query row under chart — same panel, left-aligned fields */
+.devtools-holdings-query-inline {
+    text-align: left;
+    max-width: 640px;
+    margin: 0 auto;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(103, 232, 249, 0.18);
+}
+
+.devtools-holdings-query-inline .buttons {
+    justify-content: center;
+    margin-top: 0.25rem;
+}
+
+.devtools-holdings-sub-label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.45rem;
+}
+
+.devtools-holdings-segment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.devtools-holdings-segment label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin: 0;
+    cursor: pointer;
+}
+
+.devtools-holdings-segment input[type="radio"] {
+    width: auto;
+    margin: 0;
+    accent-color: var(--accent-cyan);
+}
+
+.devtools-holdings-dates {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.devtools-holdings-dates input[type="date"][readonly] {
+    opacity: 0.75;
+    cursor: default;
+}
+
+@media (max-width: 520px) {
+    .devtools-holdings-dates {
+        grid-template-columns: 1fr;
+    }
+}
+
+.devtools-holdings-query-inline #minima-addr {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+}
+
+.devtools-holdings-naming-panel .devtools-holdings-naming-lead {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0 0 1rem;
+    line-height: 1.5;
+}
+
+.devtools-holdings-naming-form {
+    margin: 0;
+}
+
+.devtools-holdings-naming-form textarea {
+    margin-bottom: 0;
+}
+
+.devtools-repo-ref--standalone {
+    text-align: center;
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.devtools-holdings-meta {
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    max-width: 640px;
+    margin: 0 auto 0.75rem;
+}
+
+.devtools-holdings-status {
+    font-size: 0.85rem;
+    margin: 0 auto 1rem;
+    max-width: 640px;
+    padding: 0.5rem 0.75rem;
+    border-radius: 10px;
+}
+
+.devtools-holdings-status--loading {
+    background: rgba(103, 232, 249, 0.08);
+    color: var(--text-secondary);
+}
+
+.devtools-holdings-status--ok {
+    background: rgba(34, 197, 94, 0.1);
+    color: #86efac;
+}
+
+.devtools-holdings-status--warn {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fcd34d;
+}
+
+.devtools-discord-panel .buttons {
+    justify-content: center;
+    margin-top: 0.75rem;
+}
