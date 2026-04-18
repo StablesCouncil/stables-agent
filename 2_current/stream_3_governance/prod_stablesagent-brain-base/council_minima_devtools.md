@@ -4,7 +4,8 @@ Canonical public URLs (custom domain `stablescouncil.org`):
 
 - **Hub:** `https://stablescouncil.org/devtools/` — lists archive chain exports for archive nodes and the Minima address holdings explorer.
 - **Archive downloads (devtools path):** `https://stablescouncil.org/devtools/minima-archive/` — same `archive_*.raw.dat` files as the public mirror; large files are served from Council VPS, not from GitHub.
-- **Holdings query:** `https://stablescouncil.org/devtools/minima-query/` — operator-facing form and chart placeholder; the live query requires a Council-hosted API (GitHub Pages cannot reach MySQL directly).
+- **Holdings query:** `https://stablescouncil.org/devtools/minima-query/` — centered holdings chart (Chart.js), default address MEXC hot wallet `0x4AD25252814256BEDDF7EA6F0CF75E48FC10E8D11FE3FC70551BB427A2BBA84A`, readouts **Block live** vs **Block (DB)**, CSV export. Browser calls **`GET /api/devtools/minima-holdings?address=…`** on the `stablescouncil.org` origin (or `window.STABLES_MINIMA_HOLDINGS_API`); implementers see JSON contract in Pages **`assets/minima-holdings-query.js`**. Server-side cache should refresh when the MySQL archive ingest advances.
+- **Discord (on-chain thread):** `https://discord.com/channels/1461269219009232997/1493173250497450066` — coordinate archive node exports, DB query/API, and this webpage with operators.
 
 **All links page:** Under the **Council** section there is a single row, **Minima dev tools** (wrench icon), pointing to the hub. Sub-tools are not listed separately on the links page.
 
