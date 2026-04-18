@@ -24,6 +24,7 @@ To maintain full transparency with the community:
 | **`core_definitions.md`** | Core terms and definitions. |
 | **`comprehensive_knowledge_base.md`** | Long-form synthesis (protocol, philosophy, Academy, website ship summary). |
 | **`github_pages_website_engineering.md`** | Canonical ops doc for the public site: folder layout, **`sync:site`**, ship steps, **`file://`** preview, pointers to **`handover_document.md`**. |
+| **`council_minima_devtools.md`** | Public **Minima dev tools** URLs (`/devtools/`, archive + query subpages), links page rule (single Council row), site chrome expectations. |
 | **`website_presentation.md`** | On-site marketing copy and StablesAgent / **`llms.txt`** links; points to the engineering doc for build and deploy. |
 | **`charter_overview.md`**, **`banking_system_overview.md`**, **`circular_economy_diagram.md`** | Topic-specific public summaries. |
 | **`minidapp_showcase_app.md`** | Showcase MiniDapp versions, feedback, and in-app behaviour notes. |

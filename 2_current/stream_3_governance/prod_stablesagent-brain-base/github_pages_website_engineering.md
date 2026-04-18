@@ -49,6 +49,8 @@ There is **no** duplicate **`index.html`** or **`dapp/`** at the **task folder r
 | **`webpages/pages/bankingsystem/`** | **`/bankingsystem/`** | **`bankingsystem/`** (directory) |
 | **`stream_1_app/dapp/`** | **`/dapp/...`** | **`dapp/`** (copied by **`sync-site`** from **`../dapp/`**) |
 
+**Minima devtools pages** use the same ship pattern as **`qr-code.html`**: link **`../stables.css`** (or **`../../stables.css`** in nested routes), **`assets/site-chrome.css`**, **`assets/site-map-nav.css`**, **`assets/devtools-pages.css`**, then header, right rail (globe menu includes **Minima dev tools**), **`site-chrome-main`**, **`siteMapNav`** with **`data-site-map-index="5"`** (same ring position as **All links**), minimal footer, **`site-rail` scripts**, and the **StablesAgent** FAB block. Brain summary for StablesAgent: **`council_minima_devtools.md`**.
+
 Detail tables also live in **`task_stablescouncil_github_io/webpages/README.md`** and **`handover_document.md`**.
 
 ---

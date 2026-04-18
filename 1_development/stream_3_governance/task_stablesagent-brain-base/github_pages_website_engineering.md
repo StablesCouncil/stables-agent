@@ -41,12 +41,15 @@ There is **no** duplicate **`index.html`** or **`dapp/`** at the **task folder r
 |--------|------------------|---------------------------|
 | **`webpages/pages/index/`** | **`/`** | **`index.html`** |
 | **`webpages/pages/links/`** | **`/links.html`** | **`links.html`** |
+| **`devtools/`** (at **Pages repo root**, hand-maintained until synced from monorepo) | **`/devtools/`**, **`/devtools/minima-archive/`**, **`/devtools/minima-query/`** | same paths under **`site/`** if copied by your ship process |
 | **`webpages/pages/playing_field/`** | **`/playing_field.html`** | **`playing_field.html`** |
 | **`webpages/pages/qr-code/`** | **`/qr-code.html`** | **`qr-code.html`** |
 | **`webpages/pages/ambassadorsprogramdesc/`** | **`/ambassadorsprogramdesc.html`** | **`ambassadorsprogramdesc.html`** |
 | **`webpages/pages/circulareconomy/`** | **`/circulareconomy/`** | **`circulareconomy/`** (directory) |
 | **`webpages/pages/bankingsystem/`** | **`/bankingsystem/`** | **`bankingsystem/`** (directory) |
 | **`stream_1_app/dapp/`** | **`/dapp/...`** | **`dapp/`** (copied by **`sync-site`** from **`../dapp/`**) |
+
+**Minima devtools pages** use the same ship pattern as **`qr-code.html`**: link **`../stables.css`** (or **`../../stables.css`** in nested routes), **`assets/site-chrome.css`**, **`assets/site-map-nav.css`**, **`assets/devtools-pages.css`**, then header, right rail (globe menu includes **Minima dev tools**), **`site-chrome-main`**, **`siteMapNav`** with **`data-site-map-index="5"`**, minimal footer, **`site-rail` scripts**, and the **StablesAgent** FAB block. Brain summary for StablesAgent: **`council_minima_devtools.md`**.
 
 Detail tables also live in **`task_stablescouncil_github_io/webpages/README.md`** and **`handover_document.md`**.
 
