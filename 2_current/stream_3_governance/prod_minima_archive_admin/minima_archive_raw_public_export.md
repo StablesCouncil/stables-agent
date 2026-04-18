@@ -23,6 +23,7 @@ So: **land the mirror on the server and prove one good export**, merge the gover
 
 - Static file HTTP: **`http://140.82.36.166:8080/`** (Python **`http.server`**, systemd **`minima-archive-http.service`**, root **`/var/www/minima-archive`**). Large downloads use this origin until a TLS hostname is added.
 - **GitHub Pages hub:** **`https://stablescouncil.org/minima-archive/`** (landing page in **`StablesCouncil/stablescouncil.github.io`**), linked from **`https://stablescouncil.org/links.html`** next to Council Telegram / Discord.
+- **Devtools (same Pages repo):** **`https://stablescouncil.org/devtools/`** (index), **`https://stablescouncil.org/devtools/minima-archive/`** (same downloads, operator framing), **`https://stablescouncil.org/devtools/minima-query/`** (holdings query **UI preview**; needs a Council API + finalized SQL before it runs for real). All three are listed under **Devtools** on **`links.html`**.
 - **`nginx`** install was deferred when **`apt`** was locked by unattended upgrades; you can switch to nginx + TLS later and disable the Python unit.
 
 **First successful export (2026-04-18):** `archive action:exportraw` via **`MinimaRPCClient`** produced **`archive_2026-04-18.raw.dat`** (~**923 MB** on disk, blocks **1–1629388** in JSON response). **`publish-archive-raw.sh`** then published **`archive_latest.raw.dat`** + **`.sha256`**. Re-run on a schedule with **`tools/run-archive-export-on-vps.sh`** (VPS-only; reads **`-rpcpassword`** from **`systemctl show minima`**; prefer moving RPC auth to a root-only file and a wrapper that does not expose secrets in **`ps`** long term).
@@ -103,7 +104,15 @@ The repo ships **`tools/publish-archive-raw.sh`** for steps **2–3** once the e
 
 **Password hygiene:** If **`-rpcpassword`** contains characters that break shell quoting or HTTP Basic Auth, use a **password file** and a small wrapper that reads it safely, or **rotate** to an alphanumeric RPC password documented in `minima_mysql_full_archive_procedure.md`.
 
-**Example cron (conceptual):** run export trigger + publish script nightly; use **absolute paths** for `/usr/bin/curl`, bash, and logs.
+**Scheduling (important):** nothing updates **`archive_YYYY-MM-DD.raw.dat`** by itself. Each new file appears only after **`run-archive-export-on-vps.sh`** (or a manual **`exportraw`**) completes successfully. Until you add a scheduler, the latest file stays on the last run date.
+
+**Example cron on the VPS (not installed by default):** as root, `crontab -e`:
+
+```cron
+15 3 * * * /root/tools/run-archive-export-on-vps.sh >> /var/log/minima-archive-export-cron.log 2>&1
+```
+
+Adjust time and log path as needed. Use **`systemd` timers** instead if you prefer.
 
 ---
 
