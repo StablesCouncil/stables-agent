@@ -25,6 +25,8 @@ So: **land the mirror on the server and prove one good export**, merge the gover
 - **GitHub Pages hub:** **`https://stablescouncil.org/minima-archive/`** (landing page in **`StablesCouncil/stablescouncil.github.io`**), linked from **`https://stablescouncil.org/links.html`** next to Council Telegram / Discord.
 - **`nginx`** install was deferred when **`apt`** was locked by unattended upgrades; you can switch to nginx + TLS later and disable the Python unit.
 
+**First successful export (2026-04-18):** `archive action:exportraw` via **`MinimaRPCClient`** produced **`archive_2026-04-18.raw.dat`** (~**923 MB** on disk, blocks **1–1629388** in JSON response). **`publish-archive-raw.sh`** then published **`archive_latest.raw.dat`** + **`.sha256`**. Re-run on a schedule with **`tools/run-archive-export-on-vps.sh`** (VPS-only; reads **`-rpcpassword`** from **`systemctl show minima`**; prefer moving RPC auth to a root-only file and a wrapper that does not expose secrets in **`ps`** long term).
+
 ---
 
 ## 1. Prerequisites
@@ -94,6 +96,8 @@ Minima **`minima.jar`** is a **long-running** process; cron jobs should talk to 
 3. **Publish:** move or copy into the public directory, write **SHA-256**, update a **`archive_latest.raw.dat`** symlink, **prune** old files.
 
 The repo ships **`tools/publish-archive-raw.sh`** for steps **2–3** once the export file exists.
+
+**One-shot on the VPS (export + publish):** run as root **`tools/run-archive-export-on-vps.sh`** (uses **`MinimaRPCClient`** to **`https://127.0.0.1:9005`**, then **`publish-archive-raw.sh`**). Optional: **`tools/run-minima-exportraw-once.py integrity`** for a quick RPC check (GET-style URL builder; **`MinimaRPCClient` path is canonical** if anything disagrees).
 
 **RPC details** (URL, port, POST body, Basic Auth user) **vary by Minima version** and your flags (`-rpcssl`, custom `-port`). Capture the working pattern once from your environment (for example browser devtools while issuing the same command from Terminal MiniDapp), then put secrets only in a **root-only** file, for example **`/root/minima-archive-export.env`** (`chmod 600`), never in git.
 
