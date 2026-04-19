@@ -493,21 +493,22 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
             AND c.address = ?
         ),
 
-        /* Real block timeline from coins.date (network-wide, not address-specific).
-           coins.date format is 'DD/MM/YYYY HH:MM:SS'.
-           NULL date params → no date filter (full history). */
+        /* Global block timeline — one max block per calendar day across all 0x00 coins.
+           No date filter here: we always build the full timeline so that addresses
+           whose coins were created outside the requested range still appear correctly.
+           coins.date format: 'DD/MM/YYYY HH:MM:SS'. */
         day_max_block AS (
           SELECT
             DATE(STR_TO_DATE(\`date\`, '%d/%m/%Y %H:%i:%s')) AS snap_date,
             MAX(blockcreated)                                AS max_block
           FROM minima_archive.coins
           WHERE tokenid = '0x00'
-            AND (? IS NULL OR DATE(STR_TO_DATE(\`date\`, '%d/%m/%Y %H:%i:%s')) >= ?)
-            AND (? IS NULL OR DATE(STR_TO_DATE(\`date\`, '%d/%m/%Y %H:%i:%s')) <= ?)
           GROUP BY snap_date
         ),
 
-        /* Roll daily snapshots into the requested interval bucket */
+        /* Roll daily snapshots into the requested interval bucket.
+           Date range is applied here so the output is scoped without affecting
+           the block→date mapping built above. */
         bucketed AS (
           SELECT
             CASE ?
@@ -521,6 +522,8 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
             END            AS period_start,
             MAX(max_block) AS period_max_block
           FROM day_max_block
+          WHERE (? IS NULL OR snap_date >= ?)
+            AND (? IS NULL OR snap_date <= ?)
           GROUP BY period_start
         )
 
@@ -540,17 +543,17 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
      * Positional params for the 7 ? placeholders above:
      *   1  address        latest_coins JOIN subquery: address = ?
      *   2  address        latest_coins WHERE:         c.address = ?
-     *   3  dateFrom       day_max_block: IS NULL check
-     *   4  dateFrom       day_max_block: actual >= comparison
-     *   5  dateTo         day_max_block: IS NULL check
-     *   6  dateTo         day_max_block: actual <= comparison
-     *   7  interval       bucketed:      CASE ? WHEN …
+     *   3  interval       bucketed: CASE ? WHEN …
+     *   4  dateFrom       bucketed: IS NULL check  (? IS NULL OR snap_date >= ?)
+     *   5  dateFrom       bucketed: actual >= comparison
+     *   6  dateTo         bucketed: IS NULL check  (? IS NULL OR snap_date <= ?)
+     *   7  dateTo         bucketed: actual <= comparison
      */
     const params = [
         address, address,
+        interval,
         dateFrom, dateFrom,
         dateTo,   dateTo,
-        interval,
     ];
 
     const [rows] = await pool.query(sql, params);
