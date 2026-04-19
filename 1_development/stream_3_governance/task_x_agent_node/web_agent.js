@@ -566,11 +566,13 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
  * file_size_mb comes from fs.stat on MINIMA_ARCHIVE_FILE_PATH.
  */
 async function queryArchiveMeta(pool) {
+    /* ORDER BY block DESC LIMIT 1 uses the block index (no full-table scan).
+       Avoids MAX(timemilli) which forces a full scan on the 1.8M-row table. */
     const [rows] = await pool.query(`
-        SELECT
-            MAX(block)      AS latest_block,
-            MAX(timemilli)  AS last_timemilli
+        SELECT block AS latest_block, timemilli AS last_timemilli
         FROM syncblock
+        ORDER BY block DESC
+        LIMIT 1
     `);
     const row = rows[0] || {};
     const latest_block = row.latest_block != null ? Number(row.latest_block) : null;
