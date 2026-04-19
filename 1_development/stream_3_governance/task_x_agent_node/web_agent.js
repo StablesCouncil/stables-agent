@@ -336,9 +336,9 @@ RULES:
 
             (async () => {
                 try {
-                    /* Latest synced block for metadata */
+                    /* Latest synced block — ORDER BY block DESC LIMIT 1 uses the index (fast). */
                     const [[metaRow]] = await pool.query(
-                        "SELECT MAX(block) AS block_db, MAX(timemilli) AS last_ts FROM syncblock"
+                        "SELECT block AS block_db, timemilli AS last_ts FROM syncblock ORDER BY block DESC LIMIT 1"
                     );
                     const block_db        = metaRow.block_db != null ? Number(metaRow.block_db) : null;
                     const db_refreshed_at = metaRow.last_ts
