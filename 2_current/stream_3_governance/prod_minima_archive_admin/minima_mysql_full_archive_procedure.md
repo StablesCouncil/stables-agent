@@ -202,6 +202,41 @@ See **`mysql_readonly_access_procedure.md`** (internal) and **`mysql_readonly_ac
 
 ---
 
-## G. Public `archive_*.raw.dat` mirror (no SQL)
+## G. Refresh `day_blocks` after any archive import
+
+`day_blocks` is a **materialized summary table** used by the Onchain Watch API
+(`/api/devtools/minima-holdings`). It maps each calendar day to the highest
+`blockcreated` value seen in the `coins` table for that day.
+
+It must be rebuilt after **every full archive import** (section C) and should be
+refreshed after large incremental updates (e.g. monthly).
+
+```bash
+sudo mysql minima_archive -e "
+INSERT INTO day_blocks (snap_date, max_block)
+SELECT
+  DATE(STR_TO_DATE(\`date\`, '%d/%m/%Y %H:%i:%s')) AS snap_date,
+  MAX(blockcreated) AS max_block
+FROM coins
+WHERE tokenid = '0x00'
+GROUP BY snap_date
+ON DUPLICATE KEY UPDATE max_block = VALUES(max_block);
+SELECT COUNT(*) AS days_indexed FROM day_blocks;
+"
+```
+
+Typically takes **1–2 minutes** on the full coins table (~2 M rows).
+After rebuilding, the Onchain Watch graph will show data through the most
+recent day present in the `coins` table.
+
+**When does it fall behind?**  
+The live MySQL streaming sync (`mysql action:autobackup`, `mysqlcoins autobackup`)
+writes new blocks to `syncblock` and `coins` continuously, but does **not**
+update `day_blocks`. The API will still serve queries but the most recent
+~2 hours of blocks won't appear in the graph until a refresh is run.
+
+---
+
+## H. Public `archive_*.raw.dat` mirror (no SQL)
 
 For **community archive bootstrap** (dated **`archive_YYYY-MM-DD.raw.dat`**, checksums, web directory), see **`minima_archive_raw_public_export.md`** and **`tools/publish-archive-raw.sh`**.
