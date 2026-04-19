@@ -1,16 +1,14 @@
-# prod_stablescouncil_github_pages_root
+# github_pages_root
 
-**Purpose:** This folder is the **promoted** copy of the **GitHub Pages repository root** layout (what [stablescouncil.org](https://stablescouncil.org/) serves): `index.html`, `links.html`, `stables.css`, `assets/`, `brand/`, `dapp/`, `devtools/` (including **`devtools/minima-archive/`**), `CNAME`, and the rest of the flat tree. There is **no** top-level **`minima-archive/`** in the shipped tree.
+**Single authoring tree** for the static site: **folder names and layout match** the [GitHub Pages](https://github.com/StablesCouncil/stablescouncil.github.io) repository **root** (and **`2_current/stream_1_app/prod_stablescouncil_github_pages_root/`** after promotion), except:
 
-**Authoring stays in dev:** Edit sources only under **`1_development/stream_1_app/task_stablescouncil_github_io/github_pages_root/`** and **`1_development/stream_1_app/dapp/`**. Run **`npm run sync:site`** there so **`site/`** is regenerated.
+- **`dapp/`** is **not** stored here. It is authored at **`1_development/stream_1_app/dapp/`** and **overlaid** into **`site/dapp/`** on every **`npm run sync:site`**.
 
-**Promotion (run when live matches what you want in `2_current`):**
+**Workflow:** edit HTML, CSS, and assets **here** → **`npm run sync:site`** → review **`../site/`** → **`npm run promote:current`** → review **`2_current/.../prod_stablescouncil_github_pages_root/`** → copy to your **`stablescouncil.github.io`** clone and push.
 
-1. From **`task_stablescouncil_github_io`**: `npm run sync:site`
-2. Then: `powershell -NoProfile -ExecutionPolicy Bypass -File tools/promote-site-to-current.ps1`
+See **`CANONICAL_LAYOUT.md`** (required tree and naming) and **`ARCHIVE_POLICY.md`** (how **`3_archive/`** snapshots keep the **same** interior names).
 
-**Ship to GitHub Pages:** Copy **this folder’s contents** (after promotion) into your **`stablescouncil.github.io`** working tree root, commit, push **`main`**.
+## Recent layout (changelog)
 
-**Note:** The script mirrors **`site/`** then restores this README so it is not replaced by **`site/README.md`**.
-
-**Interior names** must stay aligned with **`1_development/.../github_pages_root/CANONICAL_LAYOUT.md`** and **`ARCHIVE_POLICY.md`** in that folder.
+- **2026-04-18:** Minima archive hub is **`devtools/minima-archive/`** (matches **`/devtools/minima-archive/`** online). There is **no** root **`minima-archive/`** folder in this tree (avoid duplicate URL surface). **`devtools/index.html`** lists the two tools using the same **tile** pattern as **`links.html`** (see **`assets/devtools-hub-tiles.css`**). **`devtools/minima-archive/index.html`** uses the same **full document chrome** as **`devtools/minima-query/`** (header, rail, **`devtools-pages.css`** panel, footer, StablesAgent FAB).
+- **2026-04-19:** Archive page layout: centered panel, breadcrumb (cyan parent + gray **Archive**), lede with highlighted **`code`** / **cadence**, two-line **Download** button (`assets/devtools-pages.css`, **`body.devtools-archive-page`**).

@@ -324,11 +324,19 @@ RULES:
         https.createServer(sslOptions, requestHandler).listen(443, () => {
             console.log(`🔒 Web agent listening on https://agent.stablescouncil.org/chat`);
         });
-        // Redirect HTTP → HTTPS
-        http.createServer((req, res) => {
+        // Redirect HTTP → HTTPS (best-effort: skip if port 80 is already held by nginx or another proxy)
+        const httpRedirect = http.createServer((req, res) => {
             res.writeHead(301, { Location: `https://agent.stablescouncil.org${req.url}` });
             res.end();
-        }).listen(80, () => {
+        });
+        httpRedirect.on("error", (err) => {
+            if (err.code === "EADDRINUSE") {
+                console.log(`↪  Port 80 already in use (nginx/proxy present) — HTTP redirect skipped.`);
+            } else {
+                console.error(`HTTP redirect server error: ${err.message}`);
+            }
+        });
+        httpRedirect.listen(80, () => {
             console.log(`↪  HTTP redirect active on port 80`);
         });
     } else {
