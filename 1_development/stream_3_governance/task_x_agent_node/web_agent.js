@@ -493,17 +493,14 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
             AND c.address = ?
         ),
 
-        /* Global block timeline — one max block per calendar day across all 0x00 coins.
-           No date filter here: we always build the full timeline so that addresses
-           whose coins were created outside the requested range still appear correctly.
-           coins.date format: 'DD/MM/YYYY HH:MM:SS'. */
+        /* Block timeline from pre-computed day_blocks table (PRIMARY KEY on snap_date).
+           ~1100 rows, index range scan — instant.  Rebuilt nightly after archive import.
+           Coins created before date_from are still counted via blockcreated <= period_max_block. */
         day_max_block AS (
-          SELECT
-            DATE(STR_TO_DATE(\`date\`, '%d/%m/%Y %H:%i:%s')) AS snap_date,
-            MAX(blockcreated)                                AS max_block
-          FROM minima_archive.coins
-          WHERE tokenid = '0x00'
-          GROUP BY snap_date
+          SELECT snap_date, max_block
+          FROM minima_archive.day_blocks
+          WHERE (? IS NULL OR snap_date >= ?)
+            AND (? IS NULL OR snap_date <= ?)
         ),
 
         /* Roll daily snapshots into the requested interval bucket.
@@ -540,17 +537,23 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
     `;
 
     /*
-     * Positional params for the 7 ? placeholders above:
+     * Positional params — ordered by first ? appearance in the SQL text:
      *   1  address        latest_coins JOIN subquery: address = ?
      *   2  address        latest_coins WHERE:         c.address = ?
-     *   3  interval       bucketed: CASE ? WHEN …
-     *   4  dateFrom       bucketed: IS NULL check  (? IS NULL OR snap_date >= ?)
-     *   5  dateFrom       bucketed: actual >= comparison
-     *   6  dateTo         bucketed: IS NULL check  (? IS NULL OR snap_date <= ?)
-     *   7  dateTo         bucketed: actual <= comparison
+     *   3  dateFrom       day_max_block: IS NULL check (? IS NULL OR snap_date >= ?)
+     *   4  dateFrom       day_max_block: snap_date >= ?
+     *   5  dateTo         day_max_block: IS NULL check (? IS NULL OR snap_date <= ?)
+     *   6  dateTo         day_max_block: snap_date <= ?
+     *   7  interval       bucketed: CASE ? WHEN …
+     *   8  dateFrom       bucketed: IS NULL check  (? IS NULL OR snap_date >= ?)
+     *   9  dateFrom       bucketed: actual >= comparison
+     *  10  dateTo         bucketed: IS NULL check  (? IS NULL OR snap_date <= ?)
+     *  11  dateTo         bucketed: actual <= comparison
      */
     const params = [
-        address, address,
+        address,  address,
+        dateFrom, dateFrom,
+        dateTo,   dateTo,
         interval,
         dateFrom, dateFrom,
         dateTo,   dateTo,
