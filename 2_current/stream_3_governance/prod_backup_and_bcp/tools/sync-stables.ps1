@@ -132,6 +132,18 @@ if ([string]::IsNullOrWhiteSpace($Remote)) {
 $RemoteTracking = "${Remote}/${MainBranch}"
 Write-Host "Remote for push/fetch: $Remote (tracking ref: $RemoteTracking)" -ForegroundColor DarkGray
 
+# Fetch to establish/refresh the remote tracking ref so git can compute a minimal pack.
+# Without this, on the first push after a fresh remote setup git may not know what the
+# remote has and will try to send a huge pack, causing HTTP 408 timeouts.
+Write-Host "Fetching remote tracking refs from $Remote..." -ForegroundColor DarkGray
+$prevEap = $ErrorActionPreference; $ErrorActionPreference = "Continue"
+& $GitExe fetch $Remote 2>&1 | Out-Null
+$fetchCode = $LASTEXITCODE
+$ErrorActionPreference = $prevEap
+if ($fetchCode -ne 0) {
+    Write-Host "WARNING: git fetch $Remote failed (exit $fetchCode); push may be slower on first run." -ForegroundColor Yellow
+}
+
 $Status = & $GitExe status --porcelain
 if ($LASTEXITCODE -ne 0) { throw "git status failed with exit code $LASTEXITCODE" }
 
@@ -152,11 +164,6 @@ if ($Status) {
 Write-Host "No working tree changes." -ForegroundColor Green
 
 if ($AlsoPushWhenClean) {
-    & $GitExe fetch $Remote 2>&1 | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "WARNING: git fetch $Remote failed (exit $LASTEXITCODE); cannot check ahead count." -ForegroundColor Yellow
-        exit 0
-    }
     $ahead = & $GitExe rev-list --count "${RemoteTracking}..HEAD" 2>$null
     if ($LASTEXITCODE -ne 0) {
         Write-Host "WARNING: Could not compare to $RemoteTracking (exit $LASTEXITCODE). Push skipped." -ForegroundColor Yellow
