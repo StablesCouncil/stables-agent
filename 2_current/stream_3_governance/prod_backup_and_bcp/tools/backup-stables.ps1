@@ -28,7 +28,8 @@ param(
     [switch]$SkipServerRetention = $false,
     [string[]]$ExtraBackupPaths = @('C:\Users\Charles\Documents\Crypto\StablesLocal\Working files'),
     [switch]$SkipExtraBackupPaths = $false,
-    [int]$LocalRetentionZips = 0
+    [int]$LocalRetentionZips = 0,
+    [string]$PersonalGitHubPat = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -440,6 +441,37 @@ if (-not $SkipVultr) {
 
 # GitHub sync (after zip + upload so backups succeed even if Git fails)
 if (-not $SkipGithub) {
+
+    # One-time PAT store: if -PersonalGitHubPat is supplied, write it into Windows Credential Manager
+    # via 'git credential approve' so the backup remote can push without an interactive prompt.
+    # After the first successful run you do not need to pass this parameter again.
+    if (-not [string]::IsNullOrWhiteSpace($PersonalGitHubPat)) {
+        $GitExeForCred = $null
+        foreach ($p in @(
+            (Join-Path ${env:ProgramFiles} "Git\cmd\git.exe"),
+            (Join-Path ${env:ProgramFiles} "Git\bin\git.exe"),
+            (Join-Path ${env:ProgramFiles(x86)} "Git\cmd\git.exe")
+        )) {
+            if ($p -and (Test-Path $p)) { $GitExeForCred = $p; break }
+        }
+        if (-not $GitExeForCred) {
+            $g = Get-Command git.exe -ErrorAction SilentlyContinue
+            if ($g) { $GitExeForCred = $g.Source }
+        }
+        if ($GitExeForCred) {
+            Log "Storing personal GitHub PAT in Windows Credential Manager (one-time setup)..."
+            $credInput = "protocol=https`nhost=github.com`nusername=Charles0xhorizonxyz`npassword=$PersonalGitHubPat`n"
+            $credInput | & $GitExeForCred credential approve
+            if ($LASTEXITCODE -eq 0) {
+                Log "PAT stored. Future runs do not need -PersonalGitHubPat."
+            } else {
+                Log "WARNING: git credential approve exited $LASTEXITCODE - PAT may not be stored."
+            }
+        } else {
+            Log "WARNING: git.exe not found; cannot store PAT via credential approve."
+        }
+    }
+
     $SyncScript = Join-Path $ScriptDir "sync-stables.ps1"
     $Pwsh = Join-Path $env:SystemRoot "System32\WindowsPowerShell\v1.0\powershell.exe"
     if (-not (Test-Path $SyncScript)) {

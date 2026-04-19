@@ -219,14 +219,13 @@ git config branch.main.remote backup
 git config --global "credential.https://github.com/Charles0xhorizonxyz.helper" "manager"
 ```
 
-**Step 5 — Initial push** (establishes full tracking ref; Windows Credential Manager will prompt for your PAT on first use and cache it):
+**Step 5 — Initial push with credential store** (run once; stores PAT in Windows Credential Manager for all future silent pushes):
 
 ```powershell
-cd C:\Users\Charles\Documents\Stables
-git push -u backup main
+& "C:\Users\Charles\Documents\Stables\2_current\stream_3_governance\prod_backup_and_bcp\tools\backup-stables.ps1" -PersonalGitHubPat "ghp_YOURPAT"
 ```
 
-When prompted, enter `Charles0xhorizonxyz` as the username and a [fine-grained or classic PAT](https://github.com/settings/tokens) with **Contents: Read and write** on the `stables` repo as the password. Git Credential Manager stores it; future pushes (including Task Scheduler) are unattended.
+Replace `ghp_YOURPAT` with a [fine-grained or classic PAT](https://github.com/settings/tokens) for `Charles0xhorizonxyz` with **Contents: Read and write** on the `stables` repo. The script stores the credential via `git credential approve`, then immediately runs the full backup + push. After this succeeds, omit `-PersonalGitHubPat` on all future runs — Task Scheduler will push silently.
 
 **Verify:**
 

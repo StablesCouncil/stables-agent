@@ -33,6 +33,7 @@ C:\Users\Charles\Documents\Stables\2_current\stream_3_governance\prod_backup_and
 | `ExtraBackupPaths` | string[] | `C:\Users\Charles\Documents\Crypto\StablesLocal\Working files` | Absolute folders merged into the **core** zip under `EXTRA_*` names; missing paths are skipped with a warning |
 | `SkipExtraBackupPaths` | switch | off | Do not copy any `ExtraBackupPaths` entries |
 | `LocalRetentionZips` | int | `0` (disabled) | Keep only the newest N `*.zip` files in `LocalBackupPath` after copying; `0` = no pruning |
+| `PersonalGitHubPat` | string | `""` (disabled) | **One-time setup.** Pass a PAT for `Charles0xhorizonxyz` on first run; the script stores it in Windows Credential Manager via `git credential approve` so all future runs (including Task Scheduler) push silently. Do not pass on subsequent runs. |
 
 **Example (any directory):**
 
@@ -70,6 +71,16 @@ Core zip + chat delta (if changes) + local copy + Vultr + GitHub.
 ```powershell
 & "C:\Users\Charles\Documents\Stables\2_current\stream_3_governance\prod_backup_and_bcp\tools\backup-stables.ps1" -ForceFullChat
 ```
+
+### 5) One-time GitHub credential setup (run once, then never again)
+
+Stores your `Charles0xhorizonxyz` PAT in Windows Credential Manager so the backup remote can push silently on all future runs including Task Scheduler. Replace `ghp_YOURPAT` with your actual PAT (repo / Contents read+write scope).
+
+```powershell
+& "C:\Users\Charles\Documents\Stables\2_current\stream_3_governance\prod_backup_and_bcp\tools\backup-stables.ps1" -PersonalGitHubPat "ghp_YOURPAT"
+```
+
+After this run succeeds, omit `-PersonalGitHubPat` on all future runs.
 
 ---
 
