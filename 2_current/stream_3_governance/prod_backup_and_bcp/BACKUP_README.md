@@ -211,13 +211,22 @@ git remote add backup https://github.com/Charles0xhorizonxyz/stables.git
 git config branch.main.remote backup
 ```
 
-**Step 4 — Initial push** (establishes full tracking ref on the remote):
+**Step 4 — Configure the credential helper for the personal account URL**
+
+`gh` CLI is authenticated as `StablesCouncilExec`. It cannot access private repos owned by `Charles0xhorizonxyz`. Override the credential helper for that URL prefix so Windows Credential Manager handles it instead:
 
 ```powershell
+git config --global "credential.https://github.com/Charles0xhorizonxyz.helper" "manager"
+```
+
+**Step 5 — Initial push** (establishes full tracking ref; Windows Credential Manager will prompt for your PAT on first use and cache it):
+
+```powershell
+cd C:\Users\Charles\Documents\Stables
 git push -u backup main
 ```
 
-If prompted for credentials, use a [fine-grained or classic PAT](https://github.com/settings/tokens) with **Contents: Read and write** on the `stables` repo. Store it via Git Credential Manager so Task Scheduler can push unattended.
+When prompted, enter `Charles0xhorizonxyz` as the username and a [fine-grained or classic PAT](https://github.com/settings/tokens) with **Contents: Read and write** on the `stables` repo as the password. Git Credential Manager stores it; future pushes (including Task Scheduler) are unattended.
 
 **Verify:**
 
