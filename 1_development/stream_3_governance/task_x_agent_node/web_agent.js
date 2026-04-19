@@ -475,39 +475,22 @@ function getDbPool() {
  * interval must be one of DAY | WEEK | MONTH | QUARTER | YEAR.
  */
 async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
-    const sql = `
-        WITH
+    /*
+     * Two-query approach: MySQL can't do a range join efficiently when the range
+     * boundaries come from a materialized CTE (no index seek, only full-address scan).
+     * Instead we fetch the two datasets separately and aggregate in JS:
+     *
+     * Q1 — Period buckets (fast: ~1100 rows in day_blocks, PRIMARY KEY range scan).
+     * Q2 — Canonical coin state for this address (fast: idx_coins_token_addr_coin_mmr).
+     *
+     * JS aggregation: O(N_buckets × N_coins) comparisons in memory — typically < 5 ms
+     * even for the heaviest addresses (32k coins × 30 buckets = 960k simple comparisons).
+     */
 
-        /* One canonical MMR state per coin for this address (Minima 0x00 token only) */
-        latest_coins AS (
-          SELECT c.coinid, c.amountdouble, c.spent, c.blockcreated, c.blockspent
-          FROM minima_archive.coins c
-          JOIN (
-            SELECT coinid, MAX(mmrentrynumber) AS maxmmr
-            FROM minima_archive.coins
-            WHERE tokenid = '0x00'
-              AND address = ?
-            GROUP BY coinid
-          ) m ON m.coinid = c.coinid AND m.maxmmr = c.mmrentrynumber
-          WHERE c.tokenid = '0x00'
-            AND c.address = ?
-        ),
-
-        /* Block timeline from pre-computed day_blocks table (PRIMARY KEY on snap_date).
-           ~1100 rows, index range scan — instant.  Rebuilt nightly after archive import.
-           Coins created before date_from are still counted via blockcreated <= period_max_block. */
-        day_max_block AS (
-          SELECT snap_date, max_block
-          FROM minima_archive.day_blocks
-          WHERE (? IS NULL OR snap_date >= ?)
-            AND (? IS NULL OR snap_date <= ?)
-        ),
-
-        /* Roll daily snapshots into the requested interval bucket.
-           Date range is applied here so the output is scoped without affecting
-           the block→date mapping built above. */
-        bucketed AS (
-          SELECT
+    /* Q1 – bucketed period list */
+    const sqlBuckets = `
+        SELECT
+          DATE_FORMAT(
             CASE ?
               WHEN 'DAY'     THEN snap_date
               WHEN 'WEEK'    THEN DATE(DATE_SUB(snap_date, INTERVAL WEEKDAY(snap_date) DAY))
@@ -516,51 +499,71 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
                                  LPAD((QUARTER(snap_date)-1)*3+1, 2, '0'), '-01'))
               WHEN 'YEAR'    THEN DATE(DATE_FORMAT(snap_date, '%Y-01-01'))
               ELSE snap_date
-            END            AS period_start,
-            MAX(max_block) AS period_max_block
-          FROM day_max_block
-          WHERE (? IS NULL OR snap_date >= ?)
-            AND (? IS NULL OR snap_date <= ?)
-          GROUP BY period_start
-        )
-
-        SELECT
-          DATE_FORMAT(b.period_start, '%Y-%m-%d') AS x,
-          COALESCE(SUM(lc.amountdouble), 0)       AS y,
-          COUNT(lc.coinid)                         AS utxo_count
-        FROM bucketed b
-        LEFT JOIN latest_coins lc
-          ON  lc.blockcreated <= b.period_max_block
-          AND (lc.spent = 0 OR lc.blockspent > b.period_max_block)
-        GROUP BY b.period_start
-        ORDER BY b.period_start ASC
+            END,
+            '%Y-%m-%d'
+          ) AS period_start,
+          MAX(max_block) AS period_max_block
+        FROM minima_archive.day_blocks
+        WHERE (? IS NULL OR snap_date >= ?)
+          AND (? IS NULL OR snap_date <= ?)
+        GROUP BY period_start
+        ORDER BY period_start ASC
     `;
-
-    /*
-     * Positional params — ordered by first ? appearance in the SQL text:
-     *   1  address        latest_coins JOIN subquery: address = ?
-     *   2  address        latest_coins WHERE:         c.address = ?
-     *   3  dateFrom       day_max_block: IS NULL check (? IS NULL OR snap_date >= ?)
-     *   4  dateFrom       day_max_block: snap_date >= ?
-     *   5  dateTo         day_max_block: IS NULL check (? IS NULL OR snap_date <= ?)
-     *   6  dateTo         day_max_block: snap_date <= ?
-     *   7  interval       bucketed: CASE ? WHEN …
-     *   8  dateFrom       bucketed: IS NULL check  (? IS NULL OR snap_date >= ?)
-     *   9  dateFrom       bucketed: actual >= comparison
-     *  10  dateTo         bucketed: IS NULL check  (? IS NULL OR snap_date <= ?)
-     *  11  dateTo         bucketed: actual <= comparison
-     */
-    const params = [
-        address,  address,
-        dateFrom, dateFrom,
-        dateTo,   dateTo,
+    const [bucketRows] = await pool.query(sqlBuckets, [
         interval,
         dateFrom, dateFrom,
         dateTo,   dateTo,
-    ];
+    ]);
 
-    const [rows] = await pool.query(sql, params);
-    return rows;
+    if (bucketRows.length === 0) return [];
+
+    /* Derive block range from Q1 results to pre-filter Q2.
+       Coins created after the last period, or spent before the first period,
+       contribute zero balance to every bucket — skip them entirely. */
+    const firstMaxBlock = Number(bucketRows[0].period_max_block);
+    const lastMaxBlock  = Number(bucketRows[bucketRows.length - 1].period_max_block);
+
+    /* Q2 – canonical coin state per coinid for this address.
+       idx_coins_token_addr_coin_mmr covers (tokenid, address, coinid, mmrentrynumber).
+       Pre-filter: only coins active in at least one bucket in the requested range. */
+    const sqlCoins = `
+        SELECT c.coinid, c.amountdouble, c.spent, c.blockcreated, c.blockspent
+        FROM minima_archive.coins c
+        JOIN (
+          SELECT coinid, MAX(mmrentrynumber) AS maxmmr
+          FROM minima_archive.coins
+          WHERE tokenid   = '0x00'
+            AND address   = ?
+            AND blockcreated <= ?
+          GROUP BY coinid
+        ) m ON m.coinid = c.coinid AND m.maxmmr = c.mmrentrynumber
+        WHERE c.tokenid = '0x00'
+          AND c.address = ?
+          AND c.blockcreated <= ?
+          AND (c.spent = 0 OR c.blockspent > ?)
+    `;
+    const [coinRows] = await pool.query(sqlCoins, [
+        address, lastMaxBlock,
+        address, lastMaxBlock, firstMaxBlock,
+    ]);
+
+    /* JS aggregation: for each bucket, sum coins active at that period's max block. */
+    return bucketRows.map(({ period_start, period_max_block }) => {
+        const maxBlock = Number(period_max_block);
+        let balance = 0;
+        let utxo = 0;
+        for (const coin of coinRows) {
+            const created = Number(coin.blockcreated);
+            if (created > maxBlock) continue;
+            const spent   = coin.spent === 1 || coin.spent === true;
+            const spentAt = spent ? Number(coin.blockspent) : Infinity;
+            if (spentAt > maxBlock) {
+                balance += Number(coin.amountdouble);
+                utxo++;
+            }
+        }
+        return { x: period_start, y: balance, utxo_count: utxo };
+    });
 }
 
 /**
