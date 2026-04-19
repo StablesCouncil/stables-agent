@@ -442,9 +442,12 @@ if (-not $SkipVultr) {
 # GitHub sync (after zip + upload so backups succeed even if Git fails)
 if (-not $SkipGithub) {
 
-    # One-time PAT store: if -PersonalGitHubPat is supplied, write it into Windows Credential Manager
-    # via 'git credential approve' so the backup remote can push without an interactive prompt.
-    # After the first successful run you do not need to pass this parameter again.
+    # One-time setup: if -PersonalGitHubPat is supplied, wire up the backup remote so it
+    # bypasses gh CLI (which authenticates as StablesCouncilExec) and uses the personal PAT.
+    # Root cause: gh CLI answers credential lookups for https://github.com/* before Windows
+    # Credential Manager, returning the wrong account. Fix: embed the username in the remote
+    # URL (https://Charles0xhorizonxyz@github.com/...) so git uses a different credential
+    # config path that does not match the gh CLI helper.
     if (-not [string]::IsNullOrWhiteSpace($PersonalGitHubPat)) {
         $GitExeForCred = $null
         foreach ($p in @(
@@ -459,16 +462,39 @@ if (-not $SkipGithub) {
             if ($g) { $GitExeForCred = $g.Source }
         }
         if ($GitExeForCred) {
-            Log "Storing personal GitHub PAT in Windows Credential Manager (one-time setup)..."
+            Log "One-time GitHub setup: configuring backup remote for Charles0xhorizonxyz..."
+
+            # Step A: Rewrite backup remote URL to include the username.
+            # gh CLI is configured for https://github.com (no username); a username-qualified
+            # URL (https://user@github.com/...) does NOT match that config, so gh CLI is
+            # skipped entirely during credential lookup for this remote.
+            & $GitExeForCred -C $ProjectRoot remote set-url backup `
+                "https://Charles0xhorizonxyz@github.com/Charles0xhorizonxyz/stables.git"
+            Log "Backup remote URL updated to username-qualified form."
+
+            # Step B: Configure Windows Credential Manager as the helper for the
+            # username-qualified URL. The empty string first clears any helper that would
+            # otherwise be inherited from the broader https://github.com config (i.e. gh CLI).
+            & $GitExeForCred config --global `
+                "credential.https://Charles0xhorizonxyz@github.com.helper" ""
+            & $GitExeForCred config --global --add `
+                "credential.https://Charles0xhorizonxyz@github.com.helper" "manager"
+
+            # Step C: Remove the earlier incomplete path-based config (harmless but tidy).
+            & $GitExeForCred config --global --unset-all `
+                "credential.https://github.com/Charles0xhorizonxyz.helper" 2>$null | Out-Null
+
+            # Step D: Store the PAT in Windows Credential Manager via the now-correct helper.
+            Log "Storing personal GitHub PAT in Windows Credential Manager..."
             $credInput = "protocol=https`nhost=github.com`nusername=Charles0xhorizonxyz`npassword=$PersonalGitHubPat`n"
             $credInput | & $GitExeForCred credential approve
             if ($LASTEXITCODE -eq 0) {
-                Log "PAT stored. Future runs do not need -PersonalGitHubPat."
+                Log "Setup complete. Future runs do not need -PersonalGitHubPat."
             } else {
                 Log "WARNING: git credential approve exited $LASTEXITCODE - PAT may not be stored."
             }
         } else {
-            Log "WARNING: git.exe not found; cannot store PAT via credential approve."
+            Log "WARNING: git.exe not found; cannot complete one-time GitHub setup."
         }
     }
 
