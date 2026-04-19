@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@discordjs/voice": "^0.19.2",
+    "mysql2": "^3.11.0",
     "@langchain/community": "^0.3.16",
     "@langchain/core": "^1.1.31",
     "@langchain/openai": "^1.2.12",
@@ -19,6 +20,7 @@
     "ffmpeg-static": "^5.3.0",
     "langchain": "^0.3.5",
     "node-telegram-bot-api": "^0.67.0",
+    "opusscript": "^0.1.1",
     "play-dl": "^1.9.7",
     "twitter-api-v2": "^1.29.0"
   }

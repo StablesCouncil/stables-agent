@@ -1,24 +1,27 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Copy web_agent.js to your server and restart the process (optional: git push first).
+  Copy web_agent.js (and optionally package.json) to your server, run npm install if needed, and restart.
 
 .DESCRIPTION
-  1. Optional: stage + commit + push only task_x_agent_node/web_agent.js (use -GitPush).
-  2. Loads deploy.local.ps1 from the task_x_agent_node folder if present (copy from deploy.local.ps1.example).
-  3. scp web_agent.js to the server, then ssh to run your restart command.
+  1. Optional: stage + commit + push task_x_agent_node files (use -GitPush).
+  2. Loads deploy.local.ps1 from the task_x_agent_node folder (copy from deploy.local.ps1.example).
+  3. scp web_agent.js to the server.
+  4. If -NpmInstall is set, also scp package.json and run "npm install --omit=dev" remotely before restart.
+  5. ssh to run your restart command.
 
   Requires OpenSSH Client (Windows: Settings → Apps → Optional features → OpenSSH Client).
 
 .EXAMPLE
   .\scripts\Deploy-WebAgent.ps1
 .EXAMPLE
-  .\scripts\Deploy-WebAgent.ps1 -GitPush -Message "agent: /api/feedback"
+  .\scripts\Deploy-WebAgent.ps1 -NpmInstall -GitPush -Message "agent: add mysql2"
 .EXAMPLE
   .\scripts\Deploy-WebAgent.ps1 -WhatIf
 #>
 param(
     [switch] $GitPush,
+    [switch] $NpmInstall,
     [string] $Message = "chore(agent): deploy web_agent.js",
     [switch] $WhatIf
 )
@@ -56,7 +59,9 @@ if (-not $global:STABLES_AGENT_SSH -or -not $global:STABLES_AGENT_REMOTE_DIR -or
 if ($GitPush) {
     Push-Location $repoRoot
     try {
-        git add -- "1_development/stream_3_governance/task_x_agent_node/web_agent.js"
+        git add -- "1_development/stream_3_governance/task_x_agent_node/web_agent.js" `
+                   "1_development/stream_3_governance/task_x_agent_node/package.json" `
+                   "1_development/stream_3_governance/task_x_agent_node/package-lock.json"
         git status --short -- "1_development/stream_3_governance/task_x_agent_node/web_agent.js"
         if ($WhatIf) {
             Write-Host "[WhatIf] Would: git commit and git push" -ForegroundColor Magenta
@@ -74,25 +79,44 @@ if ($GitPush) {
     }
 }
 
-$remoteFile = ($global:STABLES_AGENT_REMOTE_DIR.TrimEnd("/\") + "/web_agent.js")
-$scpTarget = "{0}:{1}" -f $global:STABLES_AGENT_SSH, $remoteFile
+$remoteDir    = $global:STABLES_AGENT_REMOTE_DIR.TrimEnd("/\")
+$remoteAgent  = "$remoteDir/web_agent.js"
+$remotePkg    = "$remoteDir/package.json"
+$scpAgent     = "{0}:{1}" -f $global:STABLES_AGENT_SSH, $remoteAgent
+$scpPkg       = "{0}:{1}" -f $global:STABLES_AGENT_SSH, $remotePkg
+$packageJson  = Join-Path $agentDir "package.json"
 
 if ($WhatIf) {
-    Write-Host "[WhatIf] scp `"$webAgent`" `"$scpTarget`"" -ForegroundColor Magenta
-    Write-Host "[WhatIf] ssh $($global:STABLES_AGENT_SSH) `"cd $($global:STABLES_AGENT_REMOTE_DIR) && $($global:STABLES_AGENT_RESTART)`"" -ForegroundColor Magenta
+    Write-Host "[WhatIf] scp `"$webAgent`" `"$scpAgent`"" -ForegroundColor Magenta
+    if ($NpmInstall) {
+        Write-Host "[WhatIf] scp `"$packageJson`" `"$scpPkg`"" -ForegroundColor Magenta
+        Write-Host "[WhatIf] ssh $($global:STABLES_AGENT_SSH) `"cd $remoteDir && npm install --omit=dev`"" -ForegroundColor Magenta
+    }
+    Write-Host "[WhatIf] ssh $($global:STABLES_AGENT_SSH) `"cd $remoteDir && $($global:STABLES_AGENT_RESTART)`"" -ForegroundColor Magenta
     exit 0
 }
 
-Write-Host "Uploading web_agent.js → $scpTarget" -ForegroundColor Cyan
-& scp $webAgent $scpTarget
+Write-Host "Uploading web_agent.js → $scpAgent" -ForegroundColor Cyan
+& scp $webAgent $scpAgent
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-$remoteCmd = "cd $($global:STABLES_AGENT_REMOTE_DIR) && $($global:STABLES_AGENT_RESTART)"
+if ($NpmInstall) {
+    Write-Host "Uploading package.json → $scpPkg" -ForegroundColor Cyan
+    & scp $packageJson $scpPkg
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+    Write-Host "Running npm install --omit=dev on server..." -ForegroundColor Cyan
+    & ssh $global:STABLES_AGENT_SSH "cd $remoteDir && npm install --omit=dev"
+    if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+}
+
+$remoteCmd = "cd $remoteDir && $($global:STABLES_AGENT_RESTART)"
 Write-Host "Restarting: $($global:STABLES_AGENT_RESTART)" -ForegroundColor Cyan
 & ssh $global:STABLES_AGENT_SSH $remoteCmd
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 Write-Host ""
-Write-Host "Done. Quick check from PowerShell:" -ForegroundColor Green
+Write-Host "Done. Quick checks:" -ForegroundColor Green
 Write-Host '  curl -s https://agent.stablescouncil.org/health' -ForegroundColor Gray
+Write-Host '  curl -s "https://agent.stablescouncil.org/api/devtools/archive-meta"' -ForegroundColor Gray
 Write-Host ""

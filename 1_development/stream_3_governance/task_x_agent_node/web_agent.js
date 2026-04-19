@@ -4,6 +4,7 @@ const fs = require("fs");
 const http = require("http");
 const https = require("https");
 const OpenAI = require("openai");
+const mysql = require("mysql2/promise");
 
 const DB_FILE = path.join(__dirname, "vector_db.json");
 const CSV_FILE = path.join(__dirname, "interaction_logs_web.csv");
@@ -312,6 +313,98 @@ RULES:
             return;
         }
 
+        // ── GET /api/devtools/minima-holdings ────────────────────────────────
+        if (req.method === "GET" && reqPath === "/api/devtools/minima-holdings") {
+            const qs = new URLSearchParams((req.url || "").split("?")[1] || "");
+            const address     = (qs.get("address") || "").trim();
+            const dateFrom    = qs.get("date_from") || null;
+            const dateTo      = qs.get("date_to")   || null;
+            const intervalRaw = (qs.get("interval_type") || "DAY").toUpperCase();
+            const interval    = ["DAY","WEEK","MONTH","QUARTER","YEAR"].includes(intervalRaw)
+                ? intervalRaw : "DAY";
+
+            if (!address || !/^0x[0-9A-Fa-f]+$/i.test(address)) {
+                res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
+                return res.end(JSON.stringify({ ok: false, error: "Valid Minima address required (0x…)" }));
+            }
+
+            const pool = getDbPool();
+            if (!pool) {
+                res.writeHead(503, { "Content-Type": "application/json; charset=utf-8" });
+                return res.end(JSON.stringify({ ok: false, error: "DB not configured (MINIMA_DB_USER missing)" }));
+            }
+
+            (async () => {
+                try {
+                    /* Latest synced block for metadata */
+                    const [[metaRow]] = await pool.query(
+                        "SELECT MAX(block) AS block_db, MAX(timemilli) AS last_ts FROM syncblock"
+                    );
+                    const block_db        = metaRow.block_db != null ? Number(metaRow.block_db) : null;
+                    const db_refreshed_at = metaRow.last_ts
+                        ? new Date(Number(metaRow.last_ts)).toISOString()
+                        : null;
+
+                    /* Holdings time series */
+                    const rows = await queryHoldings(pool, address, dateFrom, dateTo, interval);
+
+                    const series      = [];
+                    const utxo_series = [];
+                    let   hasUtxo     = false;
+
+                    for (const r of rows) {
+                        const x = String(r.x);
+                        const y = parseFloat(r.y) || 0;
+                        series.push({ x, y });
+                        if (r.utxo_count != null) {
+                            utxo_series.push({ x, y: Number(r.utxo_count) });
+                            hasUtxo = true;
+                        }
+                    }
+
+                    const body = {
+                        address,
+                        block_live:      block_db,   /* TODO: replace with Minima RPC tip if available */
+                        block_db,
+                        db_refreshed_at,
+                        series,
+                    };
+                    if (hasUtxo) body.utxo_series = utxo_series;
+
+                    console.log(`📊 Holdings query: ${address.slice(0, 10)}… → ${series.length} points`);
+                    res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+                    return res.end(JSON.stringify(body));
+                } catch (err) {
+                    console.error("❌ /api/devtools/minima-holdings:", err.message);
+                    const isConfig = err.message && err.message.startsWith("SQL_NOT_CONFIGURED");
+                    res.writeHead(isConfig ? 501 : 500, { "Content-Type": "application/json; charset=utf-8" });
+                    return res.end(JSON.stringify({ ok: false, error: err.message }));
+                }
+            })();
+            return;
+        }
+
+        // ── GET /api/devtools/archive-meta ───────────────────────────────────
+        if (req.method === "GET" && reqPath === "/api/devtools/archive-meta") {
+            const pool = getDbPool();
+            if (!pool) {
+                res.writeHead(503, { "Content-Type": "application/json; charset=utf-8" });
+                return res.end(JSON.stringify({ ok: false, error: "DB not configured" }));
+            }
+            (async () => {
+                try {
+                    const meta = await queryArchiveMeta(pool);
+                    res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+                    return res.end(JSON.stringify({ ok: true, ...meta }));
+                } catch (err) {
+                    console.error("❌ /api/devtools/archive-meta:", err.message);
+                    res.writeHead(500, { "Content-Type": "application/json; charset=utf-8" });
+                    return res.end(JSON.stringify({ ok: false, error: err.message }));
+                }
+            })();
+            return;
+        }
+
         res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
         res.end("Not found");
     }
@@ -345,6 +438,156 @@ RULES:
         });
     }
 }
+
+// ─── Minima archive DB layer ─────────────────────────────────────────────────
+
+/** Lazy mysql2 connection pool. Created only when MINIMA_DB_USER is present in env. */
+let _dbPool = null;
+function getDbPool() {
+    if (_dbPool) return _dbPool;
+    if (!process.env.MINIMA_DB_USER || !process.env.MINIMA_DB_PASS) return null;
+    _dbPool = mysql.createPool({
+        host:             process.env.MINIMA_DB_HOST || "127.0.0.1",
+        port:             parseInt(process.env.MINIMA_DB_PORT || "3306", 10),
+        database:         process.env.MINIMA_DB_NAME || "minima_archive",
+        user:             process.env.MINIMA_DB_USER,
+        password:         process.env.MINIMA_DB_PASS,
+        connectionLimit:  5,
+        waitForConnections: true,
+        connectTimeout:   8000,
+        dateStrings:      true,   /* DATE columns → 'YYYY-MM-DD' strings, not JS Date objects */
+    });
+    console.log("🗄️  Minima DB pool created (host: " + (process.env.MINIMA_DB_HOST || "127.0.0.1") + ")");
+    return _dbPool;
+}
+
+/**
+ * Returns time-series rows { x: 'YYYY-MM-DD', y: balanceFloat, utxo_count: int }
+ * for the given Minima address over the requested date range and interval.
+ *
+ * Query logic (adapted from tested SQL):
+ *   1. latest_coins  — one canonical row per coinid (highest MMR entry) for the address
+ *   2. day_max_block — global date→block mapping from coins.date (network-wide)
+ *   3. bucketed      — rolls day_max_block into the requested interval
+ *   4. Final JOIN    — for each bucket, sum unspent amountdouble and count UTXOs
+ *
+ * dateFrom / dateTo may be null → full history, no date filter applied.
+ * interval must be one of DAY | WEEK | MONTH | QUARTER | YEAR.
+ */
+async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
+    const sql = `
+        WITH
+
+        /* One canonical MMR state per coin for this address (Minima 0x00 token only) */
+        latest_coins AS (
+          SELECT c.coinid, c.amountdouble, c.spent, c.blockcreated, c.blockspent
+          FROM minima_archive.coins c
+          JOIN (
+            SELECT coinid, MAX(mmrentrynumber) AS maxmmr
+            FROM minima_archive.coins
+            WHERE tokenid = '0x00'
+              AND address = ?
+            GROUP BY coinid
+          ) m ON m.coinid = c.coinid AND m.maxmmr = c.mmrentrynumber
+          WHERE c.tokenid = '0x00'
+            AND c.address = ?
+        ),
+
+        /* Real block timeline from coins.date (network-wide, not address-specific).
+           coins.date format is 'DD/MM/YYYY HH:MM:SS'.
+           NULL date params → no date filter (full history). */
+        day_max_block AS (
+          SELECT
+            DATE(STR_TO_DATE(\`date\`, '%d/%m/%Y %H:%i:%s')) AS snap_date,
+            MAX(blockcreated)                                AS max_block
+          FROM minima_archive.coins
+          WHERE tokenid = '0x00'
+            AND (? IS NULL OR DATE(STR_TO_DATE(\`date\`, '%d/%m/%Y %H:%i:%s')) >= ?)
+            AND (? IS NULL OR DATE(STR_TO_DATE(\`date\`, '%d/%m/%Y %H:%i:%s')) <= ?)
+          GROUP BY snap_date
+        ),
+
+        /* Roll daily snapshots into the requested interval bucket */
+        bucketed AS (
+          SELECT
+            CASE ?
+              WHEN 'DAY'     THEN snap_date
+              WHEN 'WEEK'    THEN DATE(DATE_SUB(snap_date, INTERVAL WEEKDAY(snap_date) DAY))
+              WHEN 'MONTH'   THEN DATE(DATE_FORMAT(snap_date, '%Y-%m-01'))
+              WHEN 'QUARTER' THEN DATE(CONCAT(YEAR(snap_date), '-',
+                                 LPAD((QUARTER(snap_date)-1)*3+1, 2, '0'), '-01'))
+              WHEN 'YEAR'    THEN DATE(DATE_FORMAT(snap_date, '%Y-01-01'))
+              ELSE snap_date
+            END            AS period_start,
+            MAX(max_block) AS period_max_block
+          FROM day_max_block
+          GROUP BY period_start
+        )
+
+        SELECT
+          DATE_FORMAT(b.period_start, '%Y-%m-%d') AS x,
+          COALESCE(SUM(lc.amountdouble), 0)       AS y,
+          COUNT(lc.coinid)                         AS utxo_count
+        FROM bucketed b
+        LEFT JOIN latest_coins lc
+          ON  lc.blockcreated <= b.period_max_block
+          AND (lc.spent = 0 OR lc.blockspent > b.period_max_block)
+        GROUP BY b.period_start
+        ORDER BY b.period_start ASC
+    `;
+
+    /*
+     * Positional params for the 7 ? placeholders above:
+     *   1  address        latest_coins JOIN subquery: address = ?
+     *   2  address        latest_coins WHERE:         c.address = ?
+     *   3  dateFrom       day_max_block: IS NULL check
+     *   4  dateFrom       day_max_block: actual >= comparison
+     *   5  dateTo         day_max_block: IS NULL check
+     *   6  dateTo         day_max_block: actual <= comparison
+     *   7  interval       bucketed:      CASE ? WHEN …
+     */
+    const params = [
+        address, address,
+        dateFrom, dateFrom,
+        dateTo,   dateTo,
+        interval,
+    ];
+
+    const [rows] = await pool.query(sql, params);
+    return rows;
+}
+
+/**
+ * Returns { latest_block, db_refreshed_at, file_size_mb }.
+ * latest_block and db_refreshed_at come from syncblock MAX scan.
+ * file_size_mb comes from fs.stat on MINIMA_ARCHIVE_FILE_PATH.
+ */
+async function queryArchiveMeta(pool) {
+    const [rows] = await pool.query(`
+        SELECT
+            MAX(block)      AS latest_block,
+            MAX(timemilli)  AS last_timemilli
+        FROM syncblock
+    `);
+    const row = rows[0] || {};
+    const latest_block = row.latest_block != null ? Number(row.latest_block) : null;
+    const exported_at  = row.last_timemilli
+        ? new Date(Number(row.last_timemilli)).toISOString()
+        : null;
+
+    let file_size_mb = null;
+    const archivePath = process.env.MINIMA_ARCHIVE_FILE_PATH;
+    if (archivePath) {
+        try {
+            const stat = await fs.promises.stat(archivePath);
+            file_size_mb = Math.round((stat.size / (1024 * 1024)) * 10) / 10;
+        } catch (_) { /* file not accessible from this process — skip */ }
+    }
+
+    return { latest_block, exported_at, file_size_mb };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 startWebAgent().catch((err) => {
     console.error("Fatal error starting web agent:", err);
