@@ -336,13 +336,18 @@ RULES:
 
             (async () => {
                 try {
-                    /* Latest synced block — ORDER BY block DESC LIMIT 1 uses the index (fast). */
-                    const [[metaRow]] = await pool.query(
-                        "SELECT block AS block_db, timemilli AS last_ts FROM syncblock ORDER BY block DESC LIMIT 1"
-                    );
+                    /* Latest synced block + live chain tip (parallel fetch). */
+                    const [[metaRows], block_live] = await Promise.all([
+                        pool.query("SELECT block AS block_db, timemilli AS last_ts FROM syncblock ORDER BY block DESC LIMIT 1"),
+                        fetchMinimaTip(),
+                    ]);
+                    const metaRow         = metaRows[0] || {};
                     const block_db        = metaRow.block_db != null ? Number(metaRow.block_db) : null;
                     const db_refreshed_at = metaRow.last_ts
                         ? new Date(Number(metaRow.last_ts)).toISOString()
+                        : null;
+                    const block_behind    = (block_live != null && block_db != null)
+                        ? (block_live - block_db)
                         : null;
 
                     /* Holdings time series */
@@ -364,8 +369,9 @@ RULES:
 
                     const body = {
                         address,
-                        block_live:      block_db,   /* TODO: replace with Minima RPC tip if available */
+                        block_live,
                         block_db,
+                        block_behind,
                         db_refreshed_at,
                         series,
                     };
@@ -567,13 +573,46 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
 }
 
 /**
- * Returns { latest_block, db_refreshed_at, file_size_mb }.
- * latest_block and db_refreshed_at come from syncblock MAX scan.
- * file_size_mb comes from fs.stat on MINIMA_ARCHIVE_FILE_PATH.
+ * Fetches the current chain tip from the local Minima node RPC via curl.
+ * Node.js's built-in https fails against Minima's self-signed + HTTP/2 setup;
+ * curl handles it correctly with -sk (insecure, silent).
+ * Env vars: MINIMA_RPC_URL (e.g. https://127.0.0.1:9005)
+ *           MINIMA_RPC_USER / MINIMA_RPC_PASS (basic auth)
+ */
+function fetchMinimaTip() {
+    const rpcUrl  = process.env.MINIMA_RPC_URL;
+    const rpcUser = process.env.MINIMA_RPC_USER;
+    const rpcPass = process.env.MINIMA_RPC_PASS;
+    if (!rpcUrl || !rpcUser || !rpcPass) return Promise.resolve(null);
+
+    const { execFile } = require("child_process");
+    const endpoint = rpcUrl.replace(/\/$/, "") + "/status";
+    return new Promise((resolve) => {
+        execFile(
+            "curl",
+            ["-sk", "--max-time", "4", "-u", `${rpcUser}:${rpcPass}`, endpoint],
+            { timeout: 5000 },
+            (err, stdout) => {
+                if (err) return resolve(null);
+                try {
+                    const json  = JSON.parse(stdout);
+                    const block = json?.response?.chain?.block ?? null;
+                    resolve(block != null ? Number(block) : null);
+                } catch (_) { resolve(null); }
+            }
+        );
+    });
+}
+
+/**
+ * Returns { block_db, block_live, block_behind, exported_at, file_size_mb }.
+ *   block_db    – highest block indexed in the archive MySQL DB
+ *   block_live  – current chain tip from the Minima node RPC (null if unavailable)
+ *   block_behind – block_live - block_db (null if either is unavailable)
+ *   latest_block – alias for block_db (kept for backward compat)
  */
 async function queryArchiveMeta(pool) {
-    /* ORDER BY block DESC LIMIT 1 uses the block index (no full-table scan).
-       Avoids MAX(timemilli) which forces a full scan on the 1.8M-row table. */
+    /* ORDER BY block DESC LIMIT 1 uses the block index (no full-table scan). */
     const [rows] = await pool.query(`
         SELECT block AS latest_block, timemilli AS last_timemilli
         FROM syncblock
@@ -581,9 +620,14 @@ async function queryArchiveMeta(pool) {
         LIMIT 1
     `);
     const row = rows[0] || {};
-    const latest_block = row.latest_block != null ? Number(row.latest_block) : null;
-    const exported_at  = row.last_timemilli
+    const block_db    = row.latest_block != null ? Number(row.latest_block) : null;
+    const exported_at = row.last_timemilli
         ? new Date(Number(row.last_timemilli)).toISOString()
+        : null;
+
+    const block_live   = await fetchMinimaTip();
+    const block_behind = (block_live != null && block_db != null)
+        ? (block_live - block_db)
         : null;
 
     let file_size_mb = null;
@@ -595,7 +639,14 @@ async function queryArchiveMeta(pool) {
         } catch (_) { /* file not accessible from this process — skip */ }
     }
 
-    return { latest_block, exported_at, file_size_mb };
+    return {
+        latest_block: block_db,   /* backward compat */
+        block_db,
+        block_live,
+        block_behind,
+        exported_at,
+        file_size_mb,
+    };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
