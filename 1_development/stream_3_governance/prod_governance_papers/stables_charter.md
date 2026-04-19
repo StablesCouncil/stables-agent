@@ -38,6 +38,7 @@
 - [Article V — Oracle Framework](stables_charter.md#article-v--oracle-framework)  
 - [Article VI — Transparency Doctrine](stables_charter.md#article-vi--transparency-doctrine)  
   - [VI.3 Independent stablecoin market reference tools](stables_charter.md#vi3-independent-stablecoin-market-reference-tools)  
+  - [VI.4 Network truth and isolation detection layer](stables_charter.md#vi4-network-truth-and-isolation-detection-layer)  
 - [Article VII — Governance Evolution (Code-First Structural Limitation)](stables_charter.md#article-vii--governance-evolution-code-first-structural-limitation)  
   - [VII.7 Strategic horizon scanning and external intelligence](stables_charter.md#vii7-strategic-horizon-scanning-and-external-intelligence)  
   - [VII.8 Volunteer roles, task acknowledgment, and communication routing](stables_charter.md#vii8-volunteer-roles-task-acknowledgment-and-communication-routing)  
@@ -599,6 +600,34 @@ The protocol's behaviour under every condition — normal, stressed, and critica
 Participants, merchants, and **strategic horizon scanning** volunteers (Article VII.7) benefit from **context on the wider stablecoin market**: third-party **ratings**, **risk dashboards**, and **published methodologies** that are independent of Stables.
 
 The Council **does not endorse** any specific external provider. Stables is **not responsible** for third-party models, data delays, or commercial offers on those sites. For **one consolidated list** of URLs, short descriptions, and **non-endorsement** language (including **Bluechip** and **Pharos** entry points), the project maintains **`0_handshake/links.md`** in the section titled **Independent stablecoin risk and ratings (single reference block)**. That index shall be updated when links change so the Charter does not duplicate volatile URLs.
+
+### VI.4 Network truth and isolation detection layer
+
+Because Stables relies on participant-operated network connectivity, a node can appear "online" while still being **misaligned with global network reality** (for example: lagging, partitioned, locally clustered, or effectively isolated). This creates direct user-safety risk: participants may wrongly assume balances are globally current, that transactions are globally propagated, or that settlement certainty is higher than it is.
+
+The Stables application shall implement a **Network Truth and Isolation Detection Layer** as a client-side safety function. Its purpose is to estimate confidence in global alignment and to adapt user-facing behavior under uncertainty.
+
+The layer is explicitly **probabilistic**, not absolute. It shall classify operational conditions at minimum as:
+
+- **Healthy global connectivity**
+- **Degraded connectivity**
+- **High uncertainty**
+- **Probable isolation**
+- **Offline**
+
+Signal families should include, at minimum:
+
+- **Peer diversity analysis** (count, distribution, concentration)
+- **Chain consistency checks** (height/hash/checkpoint agreement where observable)
+- **Propagation checks** (whether local actions appear to reach broader network view)
+- **Freshness checks** (block cadence and sync lag)
+- **Aggregated confidence scoring** over time
+
+Under degraded confidence, the application shall adapt safely by design: clearer uncertainty messaging, reduced claims of finality, action-sensitive warnings before high-impact operations, and optional restrictions for merchant or user safety modes.
+
+Non-objectives are equally explicit: this layer does **not** replace consensus, does **not** claim perfect truth detection, and does **not** rely on a single central authority as oracle of network reality.
+
+Privacy and sovereignty constraints apply. External comparison calls must be minimised, transparent, and configurable where implementation permits; no diagnostic feature should silently expand user metadata exposure beyond documented boundaries.
 
 ---
 

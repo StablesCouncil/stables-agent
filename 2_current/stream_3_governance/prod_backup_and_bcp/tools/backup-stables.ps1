@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Creates a timestamped CORE zip of all project folders (0_handshake, 1_development, 2_current, 3_archive),
-    excluding sensitive data and bulky caches. Creates a separate CHAT-DELTA zip with only changed chat files
+    excluding sensitive data and bulky caches. Optionally includes extra absolute paths (default: Crypto StablesLocal working folder). Creates a separate CHAT-DELTA zip with only changed chat files
     from Cursor agent-transcripts and Antigravity conversations (stateful incremental backup).
     Copies zips locally, uploads to Vultr (prunes older zips on server to keep newest N by default),
     then runs sync-stables.ps1 to push to GitHub.
@@ -25,7 +25,10 @@ param(
     [switch]$SkipBcpIde = $false,
     [switch]$ForceFullChat = $false,
     [int]$ServerRetentionZips = 14,
-    [switch]$SkipServerRetention = $false
+    [switch]$SkipServerRetention = $false,
+    [string[]]$ExtraBackupPaths = @('C:\Users\Charles\Documents\Crypto\StablesLocal\Working files'),
+    [switch]$SkipExtraBackupPaths = $false,
+    [int]$LocalRetentionZips = 0
 )
 
 $ErrorActionPreference = "Stop"
@@ -81,6 +84,17 @@ function Get-FileState {
         lastWriteUtc = $i.LastWriteTimeUtc.ToString("o")
         length       = [string]$i.Length
     }
+}
+
+function Get-ExtraBackupDestName {
+    param([string]$FullPath)
+    $lp = (Resolve-Path -LiteralPath $FullPath -ErrorAction Stop).Path.TrimEnd('\')
+    $segs = $lp -split '\\'
+    $take = [Math]::Min(3, $segs.Count)
+    if ($take -lt 1) { return "EXTRA_unknown" }
+    $tail = ($segs[($segs.Count - $take)..($segs.Count - 1)] -join '_')
+    $safe = ($tail -replace '[^a-zA-Z0-9_\-]+', '_')
+    return "EXTRA_$safe"
 }
 
 # Explicit OpenSSH paths (for Task Scheduler context)
@@ -147,6 +161,11 @@ CONTENTS (Handshake-aligned)
 - 2_current: Source of Truth (presentation, ledger, charter, brain, brand masters)
 - 3_archive: Historical record
 - chat delta zip: only changed Cursor agent-transcripts + Antigravity conversations
+$(if (-not $SkipExtraBackupPaths -and $ExtraBackupPaths -and $ExtraBackupPaths.Count -gt 0) {
+"- extra paths (inside core zip): see BACKUP_MANIFEST.txt section EXTRA PATHS after run"
+} else {
+"- extra paths: SKIPPED (-SkipExtraBackupPaths or empty list)"
+})
 
 EXCLUDED (never backed up - sensitive)
 -------------------------------------
@@ -211,7 +230,47 @@ try {
         }
     }
 
+    if (-not $SkipExtraBackupPaths -and $ExtraBackupPaths -and $ExtraBackupPaths.Count -gt 0) {
+        foreach ($extraRoot in $ExtraBackupPaths) {
+            $er = if ($null -eq $extraRoot) { "" } else { "$extraRoot".Trim() }
+            if ([string]::IsNullOrWhiteSpace($er)) { continue }
+            if (-not (Test-Path -LiteralPath $er)) {
+                Log "WARNING: Extra backup path missing (skip): $er"
+                continue
+            }
+            try {
+                $destName = Get-ExtraBackupDestName -FullPath $er
+            } catch {
+                Log "WARNING: Cannot resolve extra path (skip): $er"
+                continue
+            }
+            $Dest = Join-Path $TempDir $destName
+            Log "Copying extra path -> $destName ..."
+            $RoboArgs = @($er, $Dest, "/E", "/NFL", "/NDL", "/NJH", "/NJS", "/NC", "/NS", "/NP", "/R:0", "/W:0")
+            if ($RoboExcludeDirs) { $RoboArgs += "/XD"; $RoboArgs += $RoboExcludeDirs }
+            if ($RoboExcludeFiles) { $RoboArgs += "/XF"; $RoboArgs += $RoboExcludeFiles }
+            & robocopy @RoboArgs 2>$null
+        }
+    }
+
     Copy-Item $ManifestPath (Join-Path $TempDir "BACKUP_MANIFEST.txt")
+    if (-not $SkipExtraBackupPaths -and $ExtraBackupPaths -and $ExtraBackupPaths.Count -gt 0) {
+        $mf = Join-Path $TempDir "BACKUP_MANIFEST.txt"
+        Add-Content -LiteralPath $mf -Encoding utf8 -Value @(
+            "",
+            "EXTRA PATHS (robocopy into core zip)",
+            "--------------------------------------"
+        )
+        foreach ($extraRoot in $ExtraBackupPaths) {
+            $er = if ($null -eq $extraRoot) { "" } else { "$extraRoot".Trim() }
+            if ([string]::IsNullOrWhiteSpace($er)) { continue }
+            if (-not (Test-Path -LiteralPath $er)) { continue }
+            try {
+                $dn = Get-ExtraBackupDestName -FullPath $er
+                Add-Content -LiteralPath $mf -Encoding utf8 -Value ('- {0} -> {1}' -f $er, $dn)
+            } catch { }
+        }
+    }
     Log "Compressing CORE zip (this may take several minutes)..."
     try {
         Compress-Archive -Path "$TempDir\*" -DestinationPath $LocalCoreZipPath -Force
@@ -332,6 +391,20 @@ if (Test-Path -LiteralPath $LocalChatZipPath) {
     Log "Local chat delta copy saved to: $LocalChatCopyPath"
 }
 
+# Local retention (optional): prune oldest zips in LocalBackupPath keeping newest N
+if ($LocalRetentionZips -ge 1) {
+    $localZips = Get-ChildItem -LiteralPath $LocalBackupPath -Filter "*.zip" -File -ErrorAction SilentlyContinue |
+        Sort-Object LastWriteTime -Descending
+    $toDelete = $localZips | Select-Object -Skip $LocalRetentionZips
+    if ($toDelete) {
+        foreach ($z in $toDelete) {
+            Remove-Item -LiteralPath $z.FullName -Force -ErrorAction SilentlyContinue
+            Log "Local retention: removed $($z.Name)"
+        }
+    }
+    Log "Local retention: kept newest $LocalRetentionZips zip(s) in $LocalBackupPath"
+}
+
 # SCP to Vultr (optional)
 if (-not $SkipVultr) {
     if (-not (Test-Path $SshExe) -or -not (Test-Path $ScpExe)) {
@@ -343,7 +416,6 @@ if (-not $SkipVultr) {
         if ($LASTEXITCODE -ne 0) {
             Log "WARNING: Cannot reach Vultr (ssh failed, exit code $LASTEXITCODE). Is SSH key set up? Run: ssh root@$VultrHost"
         } else {
-            Invoke-VultrBackupRetention -KeepCount $ServerRetentionZips
             & $ScpExe $LocalCoreZipPath $RemoteDest
             if ($LASTEXITCODE -ne 0) {
                 Log "WARNING: SCP upload failed for CORE zip with exit code $LASTEXITCODE. Local backup is still saved."
@@ -358,6 +430,7 @@ if (-not $SkipVultr) {
                     Log "Chat delta uploaded to $BackupBaseOnServer/$ChatZipName on $VultrHost"
                 }
             }
+            # Prune once after all uploads so retention never races with an in-progress scp
             Invoke-VultrBackupRetention -KeepCount $ServerRetentionZips
         }
     }

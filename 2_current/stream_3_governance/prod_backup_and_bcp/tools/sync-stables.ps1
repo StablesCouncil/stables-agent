@@ -123,7 +123,8 @@ function Invoke-GitPush {
 }
 
 $MainBranch = "main"
-$Remote = (& $GitExe config --get "branch.$MainBranch.remote").Trim()
+$RemoteRaw = & $GitExe config --get "branch.$MainBranch.remote" 2>$null
+$Remote = if ($RemoteRaw) { "$RemoteRaw".Trim() } else { "" }
 if ([string]::IsNullOrWhiteSpace($Remote)) {
     Write-Host "WARNING: branch.$MainBranch.remote is not set; using origin." -ForegroundColor Yellow
     $Remote = "origin"

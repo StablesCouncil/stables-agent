@@ -11,7 +11,7 @@ Backs up the project to the Vultr server. Aligned with the handshake structure, 
 
 The backup creates two artifacts per run:
 
-- `Stables_core_YYYY-MM-DD_HHmm.zip` (project folders)
+- `Stables_core_YYYY-MM-DD_HHmm.zip` (project folders plus optional extra local paths; see below)
 - `Stables_chat_delta_YYYY-MM-DD_HHmm.zip` (only changed Cursor/Antigravity chat files, unless `-ForceFullChat` or `-SkipBcpIde`)
 
 ---
@@ -62,6 +62,22 @@ C:\Users\Charles\Documents\Stables
 **Always excluded (sensitive):** `prod_credentials` (entire folder), `.env` and all `.env.*` files.  
 **Also excluded (bloat):** `node_modules`, `.git`, `.gemini`, `.agent`, `venv`, `__pycache__`, `.venv`, `env` (see script for full list).
 
+### Extra paths (inside the core zip)
+
+By default, `backup-stables.ps1` also **robocopies** one folder that lives **outside** the repo tree into the core zip under a generated top-level folder name (last three path segments, prefixed with `EXTRA_`), for example:
+
+`C:\Users\Charles\Documents\Crypto\StablesLocal\Working files` → `EXTRA_Crypto_StablesLocal_Working_files\`
+
+The same **sensitive and bloat exclusions** as the main tree apply. If the path does not exist on this PC, the script logs a warning and continues.
+
+| Switch / parameter | Effect |
+|--------------------|--------|
+| `-ExtraBackupPaths @('D:\other')` | Replace the default list (pass multiple strings for several roots). |
+| `-ExtraBackupPaths @()` | No extra paths. |
+| `-SkipExtraBackupPaths` | Skip all extra-path copies regardless of defaults. |
+
+Details: `BACKUP_SCRIPT_REFERENCE.md`.
+
 ### Chat delta zip (`Stables_chat_delta_*.zip`) — unless `-SkipBcpIde`
 
 | Source on this PC | Inside the zip |
@@ -90,7 +106,7 @@ Only **changed** files since the last run are included (tracked in `tools/state/
 | **Naming** | `Stables_core_YYYY-MM-DD_HHmm.zip`, `Stables_chat_delta_YYYY-MM-DD_HHmm.zip` (and older `Stables_backup_*.zip` if present) |
 | **Manifest** | Core zip contains `BACKUP_MANIFEST.txt` listing contents and key restore paths |
 
-**Local copy:** Each run copies finished zips to `C:\Users\Charles\Documents\Backup\Stables\` (same timestamped filenames).
+**Local copy:** Each run copies finished zips to `C:\Users\Charles\Documents\Backup\Stables\` (same timestamped filenames). Local zips are not pruned by default; use `-LocalRetentionZips N` to keep the newest N zips (e.g. `-LocalRetentionZips 14`).
 
 **Retention (Vultr):** After each successful SSH reach to the server, `backup-stables.ps1` keeps only the **newest 14 `*.zip` files** in `/root/stables-backups` (by modification time). Older zips are deleted on the server so the disk does not fill. Override with **`-ServerRetentionZips N`** or disable with **`-SkipServerRetention`**. **Local** copies under `C:\Users\Charles\Documents\Backup\Stables` are not pruned by the script (prune manually or add a separate policy if you want).
 
@@ -172,7 +188,46 @@ cd C:\Users\Charles\Documents\Stables
 ## 7. Prerequisites
 
 - **Git for Windows** (so `git.exe` exists under `C:\Program Files\Git\...`). The sync script resolves this path for Task Scheduler.
-- **Git remote:** whatever `git config branch.main.remote` returns (this repo uses **`backup`**). The URL is **whatever you set locally** (often `git@github.com:Charles0xhorizonxyz/stables.git` for SSH or `https://github.com/Charles0xhorizonxyz/stables.git` for HTTPS). There is no `origin` remote; use `git fetch backup` and `git log backup/main -1`.
+- **Git remote:** this repo uses a remote named **`backup`** pointing to the private Stables monorepo (`Charles0xhorizonxyz/stables`). There is no `origin` remote; use `git fetch backup` and `git log backup/main -1`.
+
+### 7e. First-time GitHub remote setup (fresh machine or missing remote)
+
+If `git remote -v` does not show a `backup` remote, run these steps once:
+
+**Step 1 — Create the private repo on GitHub** (if it does not exist):
+
+Go to [https://github.com/new](https://github.com/new), sign in as `Charles0xhorizonxyz`, create a **private** repo named `stables`. Do not initialise with a README (push the existing repo).
+
+**Step 2 — Add the remote:**
+
+```powershell
+cd C:\Users\Charles\Documents\Stables
+git remote add backup https://github.com/Charles0xhorizonxyz/stables.git
+```
+
+**Step 3 — Set the tracking config** (what `sync-stables.ps1` reads):
+
+```powershell
+git config branch.main.remote backup
+```
+
+**Step 4 — Initial push** (establishes full tracking ref on the remote):
+
+```powershell
+git push -u backup main
+```
+
+If prompted for credentials, use a [fine-grained or classic PAT](https://github.com/settings/tokens) with **Contents: Read and write** on the `stables` repo. Store it via Git Credential Manager so Task Scheduler can push unattended.
+
+**Verify:**
+
+```powershell
+git remote -v
+git config branch.main.remote
+git log backup/main -1
+```
+
+Expected: remote shows `backup https://github.com/Charles0xhorizonxyz/stables.git`, config returns `backup`, and the log shows the latest commit.
 - **OpenSSH:** built-in `ssh.exe` / `scp.exe` under `C:\Windows\System32\OpenSSH\`
 - **SSH key auth** to `root@140.82.36.166` (or password when prompted)
 - **robocopy** (built-in on Windows)

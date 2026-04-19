@@ -30,6 +30,9 @@ C:\Users\Charles\Documents\Stables\2_current\stream_3_governance\prod_backup_and
 | `ForceFullChat` | switch | off | Chat zip includes all tracked chat files this run (not delta-only) |
 | `ServerRetentionZips` | int | `14` | On server: keep newest N `*.zip` files in `BackupBaseOnServer` (mtime order; **all** `*.zip` names count together) |
 | `SkipServerRetention` | switch | off | Do not delete old zips on the server |
+| `ExtraBackupPaths` | string[] | `C:\Users\Charles\Documents\Crypto\StablesLocal\Working files` | Absolute folders merged into the **core** zip under `EXTRA_*` names; missing paths are skipped with a warning |
+| `SkipExtraBackupPaths` | switch | off | Do not copy any `ExtraBackupPaths` entries |
+| `LocalRetentionZips` | int | `0` (disabled) | Keep only the newest N `*.zip` files in `LocalBackupPath` after copying; `0` = no pruning |
 
 **Example (any directory):**
 
@@ -74,7 +77,7 @@ Core zip + chat delta (if changes) + local copy + Vultr + GitHub.
 
 | Artifact | When |
 |----------|------|
-| `Stables_core_YYYY-MM-DD_HHmm.zip` | Always (four roots + manifest) |
+| `Stables_core_YYYY-MM-DD_HHmm.zip` | Always (four repo roots + optional `EXTRA_*` paths + manifest) |
 | `Stables_chat_delta_YYYY-MM-DD_HHmm.zip` | When chat files changed (or always if `-ForceFullChat`) unless `-SkipBcpIde` |
 
 ---

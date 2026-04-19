@@ -33,6 +33,8 @@ const LLM_MODEL = process.env.OPENROUTER_API_KEY ? "openrouter/free" : "llama-3.
 /** Daily cap for post upvotes (Moltbook has no separate "like" endpoint). */
 const MAX_DAILY_UPVOTES = 4;
 const MAX_DAILY_FOLLOWS = 1;
+/** At most one reply to "activity on your posts" per run (reduces duplicate_comment risk). */
+const MAX_NOTIFICATION_REPLIES_PER_RUN = 1;
 
 function sleep(ms) {
     return new Promise((r) => setTimeout(r, ms));
@@ -149,6 +151,12 @@ function isLikelyApiSuccess(res) {
     if (res.post || res.comment || res.agent) return true;
     if (code != null && code >= 200 && code < 300) return true;
     return false;
+}
+
+/** Only treat comment create as success when API returns a comment id (avoids recording fingerprints on rejected dupes). */
+function commentCreateSucceeded(res) {
+    const c = res?.comment || res?.data?.comment;
+    return !!(c && c.id);
 }
 
 /** Moltbook follow uses agent login name, e.g. "someagent" (not numeric id). */
@@ -576,9 +584,11 @@ async function main() {
         );
     }
 
-    // 2. Reply to comments on our posts
+    // 2. Reply to comments on our posts (max one successful reply per run)
     const activity = home.activity_on_your_posts || [];
+    let notificationRepliesThisRun = 0;
     for (const item of activity) {
+        if (notificationRepliesThisRun >= MAX_NOTIFICATION_REPLIES_PER_RUN) break;
         if ((item.new_notification_count || 0) === 0) continue;
 
         const commentsRes = await moltbookGet(`/posts/${item.post_id}/comments?sort=new&limit=20`);
@@ -614,8 +624,23 @@ async function main() {
             }
         }
 
+        if (!commentCreateSucceeded(commentRes)) {
+            console.log("Comment not accepted (no id); skipping fingerprint. Raw:", JSON.stringify(commentRes).slice(0, 500));
+            if (commentRes?.statusCode === 403) {
+                const until = parseSuspendedUntil(commentRes?.message);
+                if (until) {
+                    state.suspendedUntil = until;
+                    saveState(state);
+                    console.log("Recorded suspension until", until);
+                    return;
+                }
+            }
+            continue;
+        }
+
         state.commentFingerprints = [...(state.commentFingerprints || []), fp];
         runStats.replyComments++;
+        notificationRepliesThisRun++;
         saveState(state);
 
         await moltbookPost(`/notifications/read-by-post/${item.post_id}`);
@@ -689,6 +714,19 @@ async function main() {
             if (v?.verification_code && v?.challenge_text) {
                 const answer = await solveVerification(llm, v.challenge_text);
                 if (answer) await moltbookPost("/verify", { verification_code: v.verification_code, answer });
+            }
+            if (!commentCreateSucceeded(commentRes)) {
+                console.log("Feed comment not accepted (no id); skipping fingerprint. Raw:", JSON.stringify(commentRes).slice(0, 500));
+                if (commentRes?.statusCode === 403) {
+                    const until = parseSuspendedUntil(commentRes?.message);
+                    if (until) {
+                        state.suspendedUntil = until;
+                        saveState(state);
+                        console.log("Recorded suspension until", until);
+                        return;
+                    }
+                }
+                continue;
             }
             commented.add(postId);
             state.commentedPostIds = [...commented];

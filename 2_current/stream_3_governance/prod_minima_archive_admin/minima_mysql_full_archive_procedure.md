@@ -199,3 +199,9 @@ Always re-save login with the **full** **`setlogin`** line (see section B). Othe
 ## F. Read-only analysts
 
 See **`mysql_readonly_access_procedure.md`** (internal) and **`mysql_readonly_access_procedure_community.md`** (public redacted copy).
+
+---
+
+## G. Public `archive_*.raw.dat` mirror (no SQL)
+
+For **community archive bootstrap** (dated **`archive_YYYY-MM-DD.raw.dat`**, checksums, web directory), see **`minima_archive_raw_public_export.md`** and **`tools/publish-archive-raw.sh`**.
