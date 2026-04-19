@@ -67,8 +67,9 @@
     var to = new Date();
     to.setHours(0, 0, 0, 0);
     var from = new Date(to);
-    if (mode === "1y") from.setFullYear(from.getFullYear() - 1);
-    else from.setMonth(from.getMonth() - 1);
+    if (mode === "1y")      from.setFullYear(from.getFullYear() - 1);
+    else if (mode === "3m") from.setMonth(from.getMonth() - 3);
+    else                    from.setMonth(from.getMonth() - 1);
     return { from: localYMD(from), to: localYMD(to) };
   }
 
@@ -512,8 +513,6 @@
     /* Update block info only when the payload contains real values. */
     if (payload.block_live != null) setText("holdings-block-live", fmtBlock(payload.block_live));
     if (payload.block_db   != null) setText("holdings-block-db",   fmtBlock(payload.block_db));
-    /* Behind-by indicator (defined in onchain-watch.html inline script) */
-    if (typeof setBlockBehind === "function") setBlockBehind(payload.block_behind ?? null);
 
     var series     = normalizeSeries(payload);
     var utxoSeries = normalizeUtxoSeries(payload);
