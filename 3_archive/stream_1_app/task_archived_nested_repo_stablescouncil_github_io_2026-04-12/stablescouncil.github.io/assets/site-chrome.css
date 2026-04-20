@@ -5,7 +5,9 @@
 @import url("site-rail.css");
 
 :root {
-  --site-header-h: 52px;
+  --site-header-h: 64px;
+  /* Minimal footer bar: reserve enough so social row + meta never clip; body padding uses same token */
+  --site-footer-minimal-h: 112px;
 }
 
 /* --- Global shell -------------------------------------------------------- */
@@ -47,30 +49,76 @@ body.links-page-body .lang-menu::-webkit-scrollbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 clamp(14px, 4vw, 32px);
-  background: var(--bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  /* Longhand overrides — align brand + pill with the 680px .links-page-stack column.
+     .links-page-stack is 680px max-width, margin:auto inside .site-chrome-main--links.
+     main--links has: pad-left=28px, pad-right=84px (28px + 56px side-rail, ≥768px).
+     Centering: margin:auto on margin = 0 auto gives column at 50vw, NOT offset by main padding.
+     So left edge of column = (vw − 680)/2 = 50vw − 340px from left.
+     But the main left-padding of 28px effectively adds 28px to where the column truly sits.
+     Empirically confirmed at 1536px: brand target = 400px → 50vw − 368px.
+     Pill right-edge target = 1080px from left = right at 456px → 50vw − 312px.
+     Clamp mins prevent negative values on narrow screens. */
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left:  clamp(40px, calc(50vw - 368px), 50vw);
+  padding-right: clamp(112px, calc(50vw - 312px), 50vw);
+  background: rgba(16, 24, 38, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(103, 232, 249, 0.22);
-  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.45);
+  box-shadow: 0 4px 28px rgba(0, 0, 0, 0.35);
+  transition: transform 0.28s ease;
+  will-change: transform;
+}
+
+.site-chrome-header--hidden {
+  transform: translateY(-100%);
+}
+
+/* Mobile: taller header, bigger brand */
+@media (max-width: 767px) {
+  :root {
+    --site-header-h: 72px;
+  }
+
+  .site-chrome-header__mark {
+    width: 52px;
+    height: 52px;
+    border-radius: 12px;
+  }
+
+  .site-chrome-header__name {
+    font-size: 1.375rem;
+    letter-spacing: 0.15em;
+  }
+
+  .site-chrome-header__slogan {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    margin-top: 4px;
+  }
+
+  .site-chrome-header__brand {
+    gap: 16px;
+  }
 }
 
 .site-chrome-header__brand {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   min-width: 0;
   text-decoration: none;
   color: inherit;
 }
 
 .site-chrome-header__mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
   flex-shrink: 0;
   object-fit: contain;
-  filter: drop-shadow(0 0 10px rgba(103, 232, 249, 0.22));
+  filter: drop-shadow(0 0 14px rgba(103, 232, 249, 0.35));
 }
 
 .site-chrome-header__titles {
@@ -82,19 +130,19 @@ body.links-page-body .lang-menu::-webkit-scrollbar {
 }
 
 .site-chrome-header__name {
-  font-size: 0.9375rem;
+  font-size: 1.125rem;
   font-weight: 900;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-primary);
 }
 
 .site-chrome-header__slogan {
-  font-size: 0.5625rem;
+  font-size: 0.6875rem;
   font-weight: 700;
   color: var(--accent-cyan);
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   margin-top: 3px;
 }
 
@@ -127,60 +175,17 @@ body.links-page-body .lang-menu::-webkit-scrollbar {
     0 0 22px rgba(103, 232, 249, 0.28);
 }
 
-/*
- * Links page: brand centered on the main column (pl + inner_w/2), same axis as the
- * centered .links-page-stack below — not the midpoint of pl→stack_right (that sits
- * left when inner_w > 680px). MINIMA pill absolute to the stack’s right edge.
- */
-body.links-page-body {
-  --links-h-pad-l: clamp(12px, 4vw, 28px);
-  --links-h-pad-r: clamp(12px, 4vw, 28px);
-  --links-inner-w: calc(100vw - var(--links-h-pad-l) - var(--links-h-pad-r));
-  /* Default: All links hub column (680px). Override per page to match main max-width. */
-  --links-stack-max: 680px;
-  --links-stack-w: min(var(--links-stack-max), var(--links-inner-w));
-  --links-stack-right: calc(var(--links-h-pad-l) + (var(--links-inner-w) + var(--links-stack-w)) / 2);
-}
 
-/* Same centered header as links.html; stack width matches .site-chrome-main--document (960px). */
-body.links-page-body.playing-field-page,
-body.links-page-body.qr-code-page,
-body.links-page-body.circulareconomy-page,
-body.links-page-body.bankingsystem-page {
-  --links-stack-max: 960px;
-}
-
-/* Ambassador program spec: main .container max-width 860px */
-body.links-page-body.ambassadors-doc-page {
-  --links-stack-max: 860px;
-}
-
-@media (min-width: 768px) {
-  body.links-page-body {
-    --links-h-pad-r: calc(clamp(12px, 4vw, 28px) + 56px);
-  }
-}
-
-body.links-page-body .site-chrome-header {
-  display: block;
-  padding-left: var(--links-h-pad-l);
-  padding-right: calc(100vw - var(--links-stack-right));
-}
-
+/* Brand left-aligned, pill right — natural flex; no centering overrides */
 body.links-page-body .site-chrome-header__brand {
-  position: absolute;
-  left: calc(var(--links-h-pad-l) + var(--links-inner-w) / 2);
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
+  position: static;
+  transform: none;
 }
 
 body.links-page-body .site-chrome-header__pill {
-  position: absolute;
-  right: calc(100vw - var(--links-stack-right));
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1;
+  position: static;
+  transform: none;
+  margin-left: auto;
 }
 
 .site-chrome-main {
@@ -190,6 +195,13 @@ body.links-page-body .site-chrome-header__pill {
   min-height: 0;
 }
 
+/* Deck *document* pages only (not links hub): avoid flex:1 viewport stretch so long
+   content does not paint under the fixed minimal footer (z-index 700). */
+body.links-page-body.deck-chrome-page .site-chrome-main.site-chrome-main--document {
+  flex: none;
+  width: 100%;
+}
+
 /*
  * Document deck pages: first title stack (reference: circulareconomy/).
  * Same offset below the fixed header, same Inter scale for h1 + .subtitle.
@@ -197,8 +209,10 @@ body.links-page-body .site-chrome-header__pill {
 body.links-page-body.deck-chrome-page .site-chrome-main--document {
   padding-top: var(--site-header-h);
   padding-left: clamp(12px, 4vw, 28px);
-  padding-right: calc(clamp(12px, 4vw, 28px) + 52px);
-  padding-bottom: 2.5rem;
+  /* Mobile: full width — fixed rail floats on top as overlay */
+  padding-right: clamp(12px, 4vw, 28px);
+  /* Clear fixed minimal footer + home indicator; main must own this gap once flex trap is fixed */
+  padding-bottom: calc(var(--site-footer-minimal-h) + env(safe-area-inset-bottom, 0px) + 2.5rem);
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
@@ -207,6 +221,7 @@ body.links-page-body.deck-chrome-page .site-chrome-main--document {
   align-items: stretch;
 }
 
+/* Desktop only: push content clear of the 44px fixed rail */
 @media (min-width: 768px) {
   body.links-page-body.deck-chrome-page .site-chrome-main--document {
     padding-right: calc(clamp(12px, 4vw, 28px) + 56px);
@@ -282,22 +297,20 @@ body.links-page-body.deck-chrome-page .title-block > .subtitle.philosophy-text {
   }
 }
 
-/* Links (and similar) template: scrollable column, room for right rail */
+/* Links (and similar) template: scrollable column */
 .site-chrome-main--links {
   padding-top: var(--site-header-h);
   align-items: stretch;
   justify-content: flex-start;
   padding-left: clamp(12px, 4vw, 28px);
-  /* Base: leave space for fixed 44px rail + gutter (matches mobile-first rail) */
-  padding-right: calc(clamp(12px, 4vw, 28px) + 52px);
-  padding-bottom: 2.5rem;
+  /* Mobile: full width — fixed rail floats on top as overlay */
+  padding-right: clamp(12px, 4vw, 28px);
+  /* Match document pages: fixed minimal footer + meta sits above scroll; body.links-page-body uses padding:0 so main must reserve the gap */
+  padding-bottom: calc(var(--site-footer-minimal-h) + env(safe-area-inset-bottom, 0px) + 2.5rem);
   position: relative;
 }
 
-body.has-site-rail {
-  padding-right: calc(clamp(12px, 4vw, 28px) + 52px);
-}
-
+/* Desktop only: push content clear of the fixed 44px rail */
 @media (min-width: 768px) {
   .site-chrome-main--links {
     padding-right: calc(clamp(12px, 4vw, 28px) + 56px);
@@ -306,13 +319,7 @@ body.has-site-rail {
   body.has-site-rail {
     padding-right: calc(clamp(12px, 4vw, 28px) + 56px);
   }
-}
 
-/*
- * Presentation `index.html`: rail is first in body; no `has-site-rail` body padding.
- * Skip `body.has-site-rail` (e.g. qr-code) so we do not stack inset with body padding.
- */
-@media (max-width: 767px) {
   body:not(.has-site-rail):has(> aside.site-chrome-side-rail) > .container {
     padding-right: calc(var(--container-pad, 1rem) + 52px);
   }
@@ -342,16 +349,39 @@ body.has-site-rail {
   display: none;
 }
 
-/* Links page footer: compact bar, same glass + cyan edge tone as .site-chrome-header */
+/* Compact footer bar fixed at bottom — slides DOWN to hide (anti-sync with header) */
 .site-chrome-footer.site-chrome-footer--minimal {
-  flex-shrink: 0;
-  margin-top: auto;
-  padding: 0.95rem clamp(12px, 4vw, 28px) 1rem;
-  border-top: none;
-  background: rgba(11, 15, 20, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.35);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 700;
+  min-height: var(--site-footer-minimal-h);
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px clamp(14px, 4vw, 32px) calc(14px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgba(103, 232, 249, 0.22);
+  background: rgba(16, 24, 38, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 -4px 28px rgba(0, 0, 0, 0.35);
+  transition: transform 0.28s ease;
+  will-change: transform;
+}
+
+.site-chrome-footer.site-chrome-footer--minimal.site-chrome-footer--hidden {
+  transform: translateY(100%);
+}
+
+/* Push page content above the fixed footer with a comfortable gap (incl. iOS home indicator) */
+html:has(.site-chrome-footer--minimal) {
+  scroll-padding-bottom: calc(var(--site-footer-minimal-h) + env(safe-area-inset-bottom, 0px) + 12px);
+}
+
+body:has(.site-chrome-footer--minimal) {
+  padding-bottom: calc(var(--site-footer-minimal-h) + env(safe-area-inset-bottom, 0px) + 48px);
 }
 
 .site-chrome-footer.site-chrome-footer--minimal .site-chrome-footerSocial {
