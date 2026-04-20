@@ -38,7 +38,7 @@ One **authoritative** tree after promotion: **`2_current/stream_3_governance/pro
 |--------|-------------|-------------|
 | **Sandbox drafts** | **`1_development/stream_3_governance/task_stablesagent-brain-base/`** (this folder) | Edit here first, then promote into **`prod_stablesagent-brain-base/`**. |
 | **Public GitHub rollup** | **`brain/`** at the **Stables monorepo root** | After promotion: sync from **`prod_stablesagent-brain-base/`**, run **`node brain/build_llms_txt.js`**, commit **`brain/`** including **`llms.txt`**, push **`StablesCouncil/stables-agent`**. External models: **`https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt`**. |
-| **Council VPS (Telegram RAG)** | **`/root/stables-agent/task_stablesagent-brain-base/`** | **`rsync -av --delete`** from **`prod_stablesagent-brain-base/`**, then **`node ingest_knowledge.js`** in **`task_x_agent_node`**, then **`pm2 restart stables-telegram-agent`**. |
+| **Council VPS (Telegram RAG)** | **`/root/stables-agent/task_stablesagent-brain-base/`** | **`git pull`** in **`/root/stables-agent-sync`** (remote **`origin`**). **`rsync -av --delete --exclude='.env' --exclude='.env.*'`** from prod brain into **`task_stablesagent-brain-base/`**, then **`node ingest_knowledge.js`**, then **`pm2 restart stables-telegram-agent`**. |
 
 ## Contribution
 To correct an AI hallucination or update its knowledge, do **not** change the rigid prompt rules. Instead, update the Markdown files in this directory (such as `core_definitions.md`) with clearer, stronger facts and re-run the ingestion script.
