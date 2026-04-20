@@ -185,6 +185,14 @@ Background: `rgba(15,23,42,0.6)`. Colour: `#e6edf3`. Use for all non-primary act
 </div>
 ```
 
+#### Button hierarchy (mandatory)
+
+- **`btn-primary`**: Use for the **single main** call to action in each obvious visual group (hero button row, card footer, modal actions, panel footer, form step). Readers must see one clear “do this” choice.
+- **`btn-secondary`**: Use for supporting actions (cancel, back, optional path, lower-priority choice next to the primary).
+- **Do not mix hierarchy**: Do not give **`btn-primary`** to disabled, unavailable, or “coming soon only” actions. Use **`btn-secondary`**, plain text, or omit the control until the action is real. Use `disabled` / `aria-disabled` where appropriate; do not fake an inactive state while keeping gradient styling.
+- **Two primaries**: Two **`btn-primary`** elements side by side is allowed only when the product intentionally offers **two equal** commitments (document that in the change or PR). Default is **at most one primary** per group.
+- **Same rule** applies to the MiniDapp shell and GitHub Pages deck pages: reuse these classes, do not invent parallel “almost primary” styles.
+
 > **NEVER use `btn-link`** — it does not exist. The secondary class is `btn-secondary`.  
 > **Mobile**: buttons stack to full width, centred.
 
