@@ -30,6 +30,16 @@ To maintain full transparency with the community:
 | **`charter_overview.md`**, **`banking_system_overview.md`**, **`circular_economy_diagram.md`** | Topic-specific public summaries. |
 | **`minidapp_showcase_app.md`** | Showcase MiniDapp versions, feedback, and in-app behaviour notes. |
 
+## Where this knowledge is mirrored (operators)
+
+One **authoritative** tree after promotion: **`2_current/stream_3_governance/prod_stablesagent-brain-base/`** (this folder). Everything below must be refreshed whenever you change brain `*.md` here.
+
+| Mirror | Path or URL | What to run |
+|--------|-------------|-------------|
+| **Sandbox drafts** | **`1_development/stream_3_governance/task_stablesagent-brain-base/`** | Edit here first, then promote into **`prod_stablesagent-brain-base/`**. |
+| **Public GitHub rollup** | **`brain/`** at the **Stables monorepo root** (same content as this folder for shipped docs + committed **`llms.txt`**) | After promotion: copy `*.md` + **`build_llms_txt.js`** from here into **`brain/`**, run **`node brain/build_llms_txt.js`**, commit **`brain/`** including **`llms.txt`**, push **`StablesCouncil/stables-agent`**. External models use **`https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt`**. |
+| **Council VPS (Telegram RAG)** | **`/root/stables-agent/task_stablesagent-brain-base/`** | **`rsync -av --delete`** from monorepo **`2_current/.../prod_stablesagent-brain-base/`** into that directory, then **`cd /root/stables-agent/task_x_agent_node && node ingest_knowledge.js`**, then **`pm2 restart stables-telegram-agent`**. |
+
 ## Contribution
 To correct an AI hallucination or update its knowledge, do **not** change the rigid prompt rules. Instead, update the Markdown files in this directory (such as `core_definitions.md`) with clearer, stronger facts and re-run the ingestion script.
 

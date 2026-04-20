@@ -28,6 +28,17 @@ To maintain full transparency with the community:
 | **`council_minima_devtools.md`** | Public **Minima dev tools** URLs (`/devtools/`, archive + query subpages), links page rule (single Council row), site chrome expectations. |
 | **`website_presentation.md`** | On-site marketing copy and StablesAgent / **`llms.txt`** links; points to the engineering doc for build and deploy. |
 | **`charter_overview.md`**, **`banking_system_overview.md`**, **`circular_economy_diagram.md`** | Topic-specific public summaries. |
+| **`minidapp_showcase_app.md`** | Showcase MiniDapp versions, feedback, and in-app behaviour notes. |
+
+## Where this knowledge is mirrored (operators)
+
+One **authoritative** tree after promotion: **`2_current/stream_3_governance/prod_stablesagent-brain-base/`**. Everything below must be refreshed whenever brain `*.md` change there.
+
+| Mirror | Path or URL | What to run |
+|--------|-------------|-------------|
+| **Sandbox drafts** | **`1_development/stream_3_governance/task_stablesagent-brain-base/`** (this folder) | Edit here first, then promote into **`prod_stablesagent-brain-base/`**. |
+| **Public GitHub rollup** | **`brain/`** at the **Stables monorepo root** | After promotion: sync from **`prod_stablesagent-brain-base/`**, run **`node brain/build_llms_txt.js`**, commit **`brain/`** including **`llms.txt`**, push **`StablesCouncil/stables-agent`**. External models: **`https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt`**. |
+| **Council VPS (Telegram RAG)** | **`/root/stables-agent/task_stablesagent-brain-base/`** | **`rsync -av --delete`** from **`prod_stablesagent-brain-base/`**, then **`node ingest_knowledge.js`** in **`task_x_agent_node`**, then **`pm2 restart stables-telegram-agent`**. |
 
 ## Contribution
 To correct an AI hallucination or update its knowledge, do **not** change the rigid prompt rules. Instead, update the Markdown files in this directory (such as `core_definitions.md`) with clearer, stronger facts and re-run the ingestion script.

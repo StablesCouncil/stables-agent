@@ -4,121 +4,6 @@
 
 
 ========================================
-## SOURCE FILE: ambassador_framework_full_spec.md
-========================================
-
-# Stables Ambassador Program: The 16 Big Mac® Economy
-
-This document defines the core architecture of the Stables Ambassador program, specifically the "16 Big Mac® economy."
-
-## 🎯 1. Objective
-Our primary objective is to build a professional, incentivized network of paid Ambassadors to support the growth of the Stables payment accepting merchant network. Ambassadors are the human layer that integrates merchants into the Stables economic loop and ensures a high-quality, trusted directory.
-
-## ⚖️ 2. Constraints
-- **Fully Open:** We have a fully open structure where everyone can become an Ambassador.
-- **Fair & Global:** All fees are pegged to the Big Mac Index to remain globally fair.
-  Reference: [Big Mac Index by Country](https://worldpopulationreview.com/country-rankings/big-mac-index-by-country)
-
-## 🛑 3. The Problem: Self-Onboarding Bypass
-How do we make sure that the merchants don't have a financial incentive to onboard themselves and capture the Ambassador pay? 
-
-In an open system, there is a risk that a merchant might try to bypass the Ambassador who pitched them to "self-capture" the onboarding reward.
-
-## 💡 4. Our Solution: The 16 Big Mac® Economy
-We solve this by ensuring the entry cost and the active reward are decoupled, and by making the Treasury the default mentor.
-
-### **Economic Core:**
-- **Entry Fee:** 16 Big Mac® is a sunk cost for everyone (Merchants and Ambassadors alike).
-- **Onboarding Split:** 
-    - 8 Big Mac® Active Onboarder (in a mentored hub) or 9 Big Mac® (if direct)
-    - 1 Big Mac® Mentor Reward (if the onboarder was themselves mentored)
-    - 7 Big Mac® Council Share
-- **Treasury Captures:** The Council Treasury captures **7, 8, or 16 Big Mac®** depending on the scenario.
-- **Listing Duration:** The 16 Big Mac® entry fee covers a **12-month listing**. Renewals follow the same economic logic.
-- **Future Utility:** This same logic applies to merchant publicity campaigns, with a **8/1/7 split** per 16 Big Mac® spent.
-
----
-
-## 🏗️ 5. Technical Implementation: How the System Distinguishes
-
-The Stables ledger tracks an optional `mentor` address for every listed participant. This `mentor` is set only during the very first listing (Scenario 1) and can never be changed.
-
-- **Self-Onboarded Merchant**: The `mentor` field is NULL.
-- **Mentored Merchant**: The `mentor` field is set to the Ambassador who performed the onboarding.
-
-When a participant (B) onboards a new merchant (C), the code checks **B’s record**:
-1. Does B have a mentor?
-   - **Yes (A mentored B):** B is part of a Hub. Split is **8 to B, 1 to A, 7 to Council**.
-   - **No (B is independent):** B is solo. Split is **8 to B, 8 to Council** (the mentor unit reverts to Treasury).
-2. The active reward for B is **always 8 Big Mac®**. This fixed reward ensures B has no financial incentive to bypass their original mentor.
-
-### **No-Cost Payment Acceptance**
-Stables is built on open protocol technology. Any merchant can accept Stables payments immediately and without incurring any cost simply by generating a Minima address. Accepting payments is free and permissionless.
-
-### **The Advantages of Being Listed**
-Choosing to pay the 16 Big Mac® entry fee to be listed in the official Stables app provides critical advantages:
-- **Visibility:** Featured on the global Stables map and in the merchant directory.
-- **Trust & Verification:** Listing provides a "Verified" status, showing the merchant is part of the official community.
-- **Discoverability:** Customers looking to spend Stables can find the merchant based on categories and geolocation.
-- **Network Growth:** Access to local Ambassador support and future protocol-wide marketing campaigns.
-
-### **Ambassadors as Specialized Merchants**
-Ambassadors are themselves listed as a type of merchant within the app. This allows them to present their services and be found by other merchants based on geolocation and other criteria. A merchant can search for an Ambassador nearby to receive training, onboarding help, or technical support.
-
-### **Side Letter Agreements**
-The Stables protocol defines the standard on-chain distribution of fees. However, we anticipate that Ambassadors and Merchants may enter into "Side Letter Agreements" to share commissions.
-- **On-chain Transparency:** These parameters can be agreed upon directly within the onboarding contract, making the kickback terms visible on-chain to anyone.
-- **Private Flexibility:** Alternatively, these agreements can be made independently as a private second step outside the primary listing protocol.
-While the protocol default is the 7/8/16 split, these side letters allow for bespoke commercial relationships while the 16 Big Mac® anchor always protects the Treasury's baseline.
-
-### **Future Publicity Campaigns**
-The mentorship logic established here is not limited to the initial onboarding. The same mechanism will apply to future publicity campaigns run by listed merchants. When a merchant pays to launch a network-wide promotion or campaign, the reward follows the hub model: 8 Big Mac® to the active Ambassador, 1 Big Mac® to the Mentor, and 7 Big Mac® to the Council Treasury.
-
-### **On-chain Review & Rating System**
-To ensure the quality of the Stables merchant network, the app includes a star review and comment system.
-- **On-chain Verification:** Every review is tied to an on-chain transaction, proving that the reviewer is a true customer.
-- **Anti-Spam Mechanism:** To maintain high-integrity feedback, a review is only published if the customer has spent a **minimum threshold amount** at the merchant's shop.
-- **Ambassador Moderation:** Ambassadors play a key role in monitoring these reviews to support their mentored merchants.
-
----
-
-## 📋 6. Scenario Breakdown
-
-### Scenario 1: The First Entry (The Anchor)
-Whether an aspiring Ambassador or a local Merchant, everyone pays the full 16 Big Mac® to be listed for the first time.
-- **Action:** User B lists themselves.
-- **On-chain Lookup:** B has no mentor yet.
-- **Distribution:** 100% (16 Big Mac®) → **Council Treasury**.
-- **Result:** B is now listed and can act as an Ambassador for others. Treasury gets the full anchor fee.
-
-### Scenario 2: Standard Mentored Onboarding
-Ambassador A (Mentor) onboards a new merchant Shop B.
-- **Action:** Shop B is listed by A.
-- **On-chain Lookup:** B's mentor is set to A.
-- **Distribution:** 7 Big Mac® → **Council Treasury** and 9 Big Mac® → **Ambassador A**.
-- **Result:** A is rewarded for the pitch and support. Council gets 7.
-
-### Scenario 3: Hub Expansion (Mentor Reward)
-Merchant B (who was onboarded by A) now onboards Shop C.
-- **Action:** Shop C is listed by B.
-- **On-chain Lookup:** B has a mentor (A).
-- **Distribution:** 7 Big Mac® → **Council Treasury**, 8 Big Mac® → **Merchant B (Active)**, and 1 Big Mac® → **Ambassador A (Mentor)**.
-- **Result:** Merchant B earns for their active work, and A earns for mentoring B. Council gets 7.
-
-### Scenario 4: Independent Onboarding (The Shield)
-Merchant B chooses to bypass Ambassador A and self-onboards to "go independent." Then B onboards Shop C.
-- **Action:** Shop C is listed by B.
-- **On-chain Lookup:** B has NO mentor (self-listed).
-- **Distribution:** 8 Big Mac® → **Council Treasury** and 8 Big Mac® → **Merchant B (Active)**.
-- **Result:** Merchant B still only earns 8 Big Mac®. The "unclaimed mentor share" reverts to the Council. This means B has zero financial benefit to bypassing A.
-
----
-
-## 🎬 7. Summary
-This framework demonstrates a "ruled by code" economy that rewards mentorship while protecting the treasury. It turns human competition into a collaborative cells-and-hubs structure where the community always grows.
-
-
-========================================
 ## SOURCE FILE: banking_system_overview.md
 ========================================
 
@@ -583,6 +468,7 @@ The Council public site (**https://stablescouncil.org/**, GitHub Pages **`Stable
 - **Ship:** copy **contents** of **`site/`** to the **root** of the **`stablescouncil.github.io`** working tree, commit, push **`main`**. **`CNAME`** for **`stablescouncil.org`** must stay consistent with GitHub Pages settings.
 - **Local disk preview:** pages may include a **`file:`** protocol helper that rewrites asset paths and reloads stylesheets and scripts so shared **`static/`** assets and controls still load when opening HTML from the filesystem.
 - **Full detail for the Agent:** **`github_pages_website_engineering.md`** in this brain base; the monorepo **handover** table and status live in **`handover_document.md`** at the repo root.
+- **Public UI buttons:** **`website_button_hierarchy.md`** (how **`btn-primary`** and **`btn-secondary`** must be used); canonical markup in **`0_handshake/web_component_spec.md`** (COMPONENTS → Buttons).
 
 
 ========================================
@@ -601,6 +487,28 @@ This document serves as the absolute source of truth for the Agent regarding spe
 ## The Multiplicator
 - **Definition:** An advanced mechanism designed for participants who want to do more than just pay.
 - **Purpose:** It allows users to amplify their exposure and actively support the resilience and stability of the entire Stables network. 
+
+
+========================================
+## SOURCE FILE: council_minima_devtools.md
+========================================
+
+# Council Minima dev tools (public website)
+
+Canonical public URLs (custom domain `stablescouncil.org`):
+
+- **Hub:** `https://stablescouncil.org/devtools/` — lists archive chain exports for archive nodes and the Minima address holdings explorer.
+- **Archive downloads (devtools path):** `https://stablescouncil.org/devtools/minima-archive/` — same `archive_*.raw.dat` files as the public mirror; large files are served from Council VPS, not from GitHub.
+- **Holdings query:** `https://stablescouncil.org/devtools/minima-query/` — centered holdings chart (Chart.js), default address MEXC hot wallet `0x4AD25252814256BEDDF7EA6F0CF75E48FC10E8D11FE3FC70551BB427A2BBA84A`, readouts **Block live** vs **Block (DB)**, CSV export. Browser calls **`GET /api/devtools/minima-holdings?address=…`** on the `stablescouncil.org` origin (or `window.STABLES_MINIMA_HOLDINGS_API`); implementers see JSON contract in Pages **`assets/minima-holdings-query.js`**. Server-side cache should refresh when the MySQL archive ingest advances.
+- **Discord (on-chain thread):** `https://discord.com/channels/1461269219009232997/1493173250497450066` — coordinate archive node exports, DB query/API, and this webpage with operators.
+
+**All links page:** Under the **Council** section there is a single row, **Minima dev tools** (wrench icon), pointing to the hub. Sub-tools are not listed separately on the links page.
+
+**Site chrome:** The three devtools pages match other document deck pages: Stables header, right-hand rail (globe menu includes Full presentation, Minima dev tools, All links; share menu), **`main` → `div.container` → `div.title-block` (`h1` + `p.subtitle`)** for canonical title spacing and typography, panels below, footer, **`siteMapNav`** with roles **`devtools-hub`**, **`devtools-archive`**, **`devtools-query`**, and the StablesAgent floating button with embedded chat (when the agent service is online). See **`github_pages_website_engineering.md`** (document page uniformity).
+
+**Governance runbooks** (Stables monorepo, not on the public site): operator export, MySQL read-only access, and archive scheduling live under `2_current/stream_3_governance/prod_minima_archive_admin/`.
+
+When SQL and API design are finalised, update this file and the live HTML copy under `StablesCouncil/stablescouncil.github.io` so StablesAgent stays aligned after ingestion.
 
 
 ========================================
@@ -626,14 +534,14 @@ This document serves as the absolute source of truth for the Agent regarding spe
 
 ## 2. Canonical authoring layout (monorepo)
 
-All edits for the seven public HTML nodes and the MiniDapp web tree happen in **one** sandbox folder (paths relative to Stables repo root):
+Authoring spans **two** sibling folders under **`1_development/stream_1_app/`** (paths relative to Stables repo root):
 
-**`1_development/stream_1_app/task_stablescouncil_github_io/`**
+**`1_development/stream_1_app/task_stablescouncil_github_io/`** (static pages + build) and **`1_development/stream_1_app/dapp/`** (MiniDapp only).
 
 | Layer | Path | Role |
 |-------|------|------|
-| **Human page sources** | **`webpages/pages/<slug>/index.html`** | One folder per route; slugs include **`index`**, **`links`**, **`playing_field`**, **`qr-code`**, **`ambassadorsprogramdesc`**, **`circulareconomy`**, **`bankingsystem`**. |
-| **MiniDapp web mirror** | **`webpages/dapp/`** | Same shape as **`/dapp/`** on the live site (`showcase/`, `demo/`, …). |
+| **Human page sources** | **`task_stablescouncil_github_io/webpages/pages/<slug>/index.html`** | One folder per route; slugs include **`index`**, **`links`**, **`playing_field`**, **`qr-code`**, **`ambassadorsprogramdesc`**, **`circulareconomy`**, **`bankingsystem`**. |
+| **MiniDapp web mirror** | **`1_development/stream_1_app/dapp/`** | Same folder layout as **`https://stablescouncil.org/dapp/`** (**`1-showcase/`**, **`2-demo/`**, **`3-test/`**, **`4-prod/`**, optional **`v00…/`** redirect stubs, …). |
 | **Shared shipped assets** | **`static/`** | Shared CSS (including **`stables.css`** pattern from Council spec), **`assets/`** (e.g. **`site-chrome.css`**), brand files, **`CNAME`**, images used across pages. |
 | **Built tree (generated)** | **`site/`** | **Only** output that matches the live URL layout. **Do not hand-edit** files here except **`site/README.md`** (tracked). Everything else under **`site/`** is produced by sync and is typically gitignored. |
 | **Sync tool** | **`tools/sync-site.mjs`** | Implements the merge and copy rules. |
@@ -650,12 +558,17 @@ There is **no** duplicate **`index.html`** or **`dapp/`** at the **task folder r
 |--------|------------------|---------------------------|
 | **`webpages/pages/index/`** | **`/`** | **`index.html`** |
 | **`webpages/pages/links/`** | **`/links.html`** | **`links.html`** |
+| **`devtools/`** (at **Pages repo root**, hand-maintained until synced from monorepo) | **`/devtools/`**, **`/devtools/minima-archive/`**, **`/devtools/minima-query/`** | same paths under **`site/`** if copied by your ship process |
 | **`webpages/pages/playing_field/`** | **`/playing_field.html`** | **`playing_field.html`** |
 | **`webpages/pages/qr-code/`** | **`/qr-code.html`** | **`qr-code.html`** |
 | **`webpages/pages/ambassadorsprogramdesc/`** | **`/ambassadorsprogramdesc.html`** | **`ambassadorsprogramdesc.html`** |
 | **`webpages/pages/circulareconomy/`** | **`/circulareconomy/`** | **`circulareconomy/`** (directory) |
 | **`webpages/pages/bankingsystem/`** | **`/bankingsystem/`** | **`bankingsystem/`** (directory) |
-| **`webpages/dapp/`** | **`/dapp/...`** | **`dapp/`** |
+| **`stream_1_app/dapp/`** | **`/dapp/...`** | **`dapp/`** (copied by **`sync-site`** from **`../dapp/`**) |
+
+**Minima devtools pages** use the same **document deck** pattern as **`qr-code.html`** and **`playing_field.html`**: link **`../stables.css`** (or **`../../stables.css`** in nested routes), **`assets/site-chrome.css`**, **`assets/site-map-nav.css`**, **`assets/devtools-pages.css`**, then the standard **`site-chrome-header`**, right rail (globe menu includes **Full presentation**, **Minima dev tools**, **All links**), **`main.site-chrome-main.site-chrome-main--document`**, minimal footer, **`site-rail` scripts**, and the **StablesAgent** FAB block (same inline widget as other deck pages).
+
+**Document page uniformity (mandatory for new deck pages):** Inside **`main`**, the first content wrapper MUST be **`div.container`** (optionally with a scoped inner class such as **`devtools-hub-inner`**). The first child inside that container MUST be **`div.title-block`** containing exactly one **`h1`** and, when needed, a single lede paragraph with class **`subtitle`** (not ad hoc **`h1`** margins or a custom **`lede`** class). Section blocks below use normal panels or page-specific CSS scoped under the inner wrapper. **`assets/site-chrome.css`** applies the standard header-to-title spacing and gradient **`h1`** to **`main.site-chrome-main--document > .container > .title-block:first-child`** for **`body.links-page-body.deck-chrome-page`**. Hub and subpages use **`data-site-map-role`** values **`devtools-hub`**, **`devtools-archive`**, and **`devtools-query`** (see **`assets/site-map-nav.js`**). Add new deck **`body`** classes to the **`--links-stack-max: 960px`** group in **`site-chrome.css`** when the page should match document stack width. Brain summary for StablesAgent: **`council_minima_devtools.md`**.
 
 Detail tables also live in **`task_stablescouncil_github_io/webpages/README.md`** and **`handover_document.md`**.
 
@@ -691,7 +604,7 @@ Opening **`index.html` (and other pages) directly from disk** uses the **`file:`
 
 **Implemented pattern:** Main pages under **`webpages/pages/.../`** include a small script that runs on **`DOMContentLoaded`**: when the protocol is **`file:`**, it rewrites asset URLs (for example toward **`../../../static/`**), and **re-clones** linked stylesheets and scripts so CSS and JS **reload** after href/src changes. Agent and rail controls that depend on correct asset paths should therefore work under local file preview as well as on the live site.
 
-**Shared chrome:** Global footer/header styling and spacing may be centralized in **`static/assets/site-chrome.css`** (linked from pages after sync). Design tokens and button classes follow **`0_handshake/web_component_spec.md`** and Council **`stables.css`** conventions.
+**Shared chrome:** Global footer/header styling and spacing may be centralized in **`static/assets/site-chrome.css`** (linked from pages after sync). Design tokens and button classes follow **`0_handshake/web_component_spec.md`** and Council **`stables.css`** conventions. For StablesAgent and RAG, the **button hierarchy** (one **`btn-primary`** per group, **`btn-secondary`** for the rest, no primary for inactive states) is summarized in **`website_button_hierarchy.md`** in this brain base; full recipes stay in **`web_component_spec.md`**.
 
 ---
 
@@ -745,11 +658,11 @@ This section is for StablesAgent and external AIs when users ask about the **Sta
 
 | Line | Version | Meaning |
 |------|---------|--------|
-| **Public web + published zip** | **v0.01.01** | What visitors get at **https://stablescouncil.org/dapp/** and **`Stables_v0.01.01.mds.zip`** in Pages `dapp/latest-version/` until Council publishes a newer zip and redeploys web. |
+| **Public web + published zip** | **v0.01.01** | What visitors get at **https://stablescouncil.org/dapp/** and **`Stables_v0.01.01.mds.zip`** in Pages **`dapp/1-showcase/latest-version/`** until Council publishes a newer zip and redeploys web. (Former root **`dapp/latest-version/`** redirect stub **retired 2026-04-16**; see **`0_handshake/minidapp_version.md`** for current paths.) |
 | **Frozen source snapshot** | **v0.01.01** | `3_archive/stream_1_app/prod_stables_app_v0.01.01/` (see `FROZEN.md` there). |
 | **Active repo development** | **v0.01.02** | `1_development/stream_1_app/prod_stables_app_v0.01.02/` per `0_handshake/minidapp_version.md`. Changes are logged in **`CHANGELOG.md`** in that folder. |
 
-If the user asks “what version is live on the web?” answer **0.01.01** until the site and `latest-version` zip are updated. If they ask “what are you building now?” answer **0.01.02** in the development folder.
+If the user asks “what version is live on the web?” answer **0.01.01** until the site and **`1-showcase/latest-version`** zip are updated. If they ask “what are you building now?” answer **0.01.02** in the development folder.
 
 ## 1. What it is
 
@@ -759,7 +672,7 @@ If the user asks “what version is live on the web?” answer **0.01.01** until
 ## 2. Where to open it
 
 - **Web (Showcase):** **https://stablescouncil.org/dapp/** (also under the Council GitHub Pages site). Marketing CTA **Test the showcase** on stablescouncil.org.
-- **Minima node:** Install the **published** package from GitHub **`dapp/latest-version/`** (filename matches the published version, e.g. **`Stables_v0.01.01.mds.zip`** while that remains latest). Zip root = app contents, not a nested folder (`build/README.md` in the active dev folder).
+- **Minima node:** Install the **published** package from GitHub **`dapp/1-showcase/latest-version/`** (filename matches the published version, e.g. **`Stables_v0.01.01.mds.zip`** while that remains latest). Zip root = app contents, not a nested folder (`build/README.md` in the active dev folder).
 
 ## 3. MiniDapp list: write mode vs read mode
 
@@ -792,8 +705,35 @@ If the user asks “what version is live on the web?” answer **0.01.01** until
 ## 8. One-line answers
 
 - **“Where is the Showcase?”** → **https://stablescouncil.org/dapp/**.
-- **“Which zip matches what’s published?”** → Check **`dapp/latest-version/`** on the Pages repo (currently **0.01.01** until a new zip is published).
+- **“Which zip matches what’s published?”** → Check **`dapp/1-showcase/latest-version/`** on the Pages repo (currently **0.01.01** until a new zip is published).
 - **“Feedback won’t send on my phone node.”** → **Write mode**, **online**; else **Telegram** (**t.me/stablescommunity**).
+
+
+========================================
+## SOURCE FILE: website_button_hierarchy.md
+========================================
+
+# Website and MiniDapp: button hierarchy (public UI law)
+
+**Audience:** StablesAgent, contributors, and anyone answering questions about Council HTML or the MiniDapp shell.
+
+**Canonical spec (monorepo):** **`0_handshake/web_component_spec.md`**, section **COMPONENTS → Buttons**, including **Button hierarchy (mandatory)**. **`0_handshake/handshake.md`** §1 states the same obligation in brief.
+
+## What the Agent must remember
+
+1. **Classes only** from Council **`stables.css`**: **`btn btn-primary`** or **`btn btn-secondary`** inside **`<div class="buttons">`**. Do not invent local gradients or ghost styles for actions.
+
+2. **`btn-primary`** (cyan-to-purple gradient): **one** main call to action per obvious visual group (hero row, card footer, modal, panel). Users must see a single clear “do this”.
+
+3. **`btn-secondary`** (dark fill, cyan border): supporting actions (cancel, back, optional path, second choice). Use for anything that is not that single main step.
+
+4. **Inactive or “coming soon only”** actions must **not** use **`btn-primary`**. Use **`btn-secondary`**, plain text, **`disabled`**, or omit the control. Do not keep gradient styling while meaning “unavailable”.
+
+5. **Two primaries** side by side is allowed only when two **equal** commitments are intentional and noted in the change or PR; default is **at most one primary** per group.
+
+6. **GitHub Pages deck pages** and the **MiniDapp shell** follow the same rule. Deck chrome and **`main`** layout: **`github_pages_website_engineering.md`**.
+
+When in doubt, read **`web_component_spec.md`** in the monorepo before suggesting markup.
 
 
 ========================================
@@ -828,7 +768,7 @@ Let's be our banking system. The Network of Everybody's Bank.
 ## Stables Showcase MiniDapp (preview)
 
 - The public site **https://stablescouncil.org/** uses a primary call-to-action **Test the showcase**, which opens **https://stablescouncil.org/dapp/** (Showcase web entry). A full-page **All Links** control may appear lower on the page; the hero area focuses on the single showcase CTA.
-- **Published** web and zip versions follow **`dapp/latest-version/`** on GitHub Pages. **Version policy:** **`0_handshake/minidapp_version.md`**. **Showcase packaging note:** this folder’s **`minidapp_showcase_app.md`**. On a **Minima node**, install the versioned **`.mds.zip`** from that folder and set the MiniDapp to **write mode** (not read mode) for StablesAgent and structured feedback.
+- **Published** web and zip versions follow **`dapp/1-showcase/latest-version/`** on GitHub Pages. **Version policy:** **`0_handshake/minidapp_version.md`**. **Showcase packaging note:** this folder’s **`minidapp_showcase_app.md`**. On a **Minima node**, install the versioned **`.mds.zip`** from that folder and set the MiniDapp to **write mode** (not read mode) for StablesAgent and structured feedback.
 
 ## StablesAgent and the Knowledge Base
 

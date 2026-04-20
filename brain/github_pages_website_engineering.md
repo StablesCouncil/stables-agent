@@ -17,14 +17,14 @@
 
 ## 2. Canonical authoring layout (monorepo)
 
-All edits for the seven public HTML nodes and the MiniDapp web tree happen in **one** sandbox folder (paths relative to Stables repo root):
+Authoring spans **two** sibling folders under **`1_development/stream_1_app/`** (paths relative to Stables repo root):
 
-**`1_development/stream_1_app/task_stablescouncil_github_io/`**
+**`1_development/stream_1_app/task_stablescouncil_github_io/`** (static pages + build) and **`1_development/stream_1_app/dapp/`** (MiniDapp only).
 
 | Layer | Path | Role |
 |-------|------|------|
-| **Human page sources** | **`webpages/pages/<slug>/index.html`** | One folder per route; slugs include **`index`**, **`links`**, **`playing_field`**, **`qr-code`**, **`ambassadorsprogramdesc`**, **`circulareconomy`**, **`bankingsystem`**. |
-| **MiniDapp web mirror** | **`webpages/dapp/`** | Same shape as **`/dapp/`** on the live site (`showcase/`, `demo/`, …). |
+| **Human page sources** | **`task_stablescouncil_github_io/webpages/pages/<slug>/index.html`** | One folder per route; slugs include **`index`**, **`links`**, **`playing_field`**, **`qr-code`**, **`ambassadorsprogramdesc`**, **`circulareconomy`**, **`bankingsystem`**. |
+| **MiniDapp web mirror** | **`1_development/stream_1_app/dapp/`** | Same folder layout as **`https://stablescouncil.org/dapp/`** (**`1-showcase/`**, **`2-demo/`**, **`3-test/`**, **`4-prod/`**, optional **`v00…/`** redirect stubs, …). |
 | **Shared shipped assets** | **`static/`** | Shared CSS (including **`stables.css`** pattern from Council spec), **`assets/`** (e.g. **`site-chrome.css`**), brand files, **`CNAME`**, images used across pages. |
 | **Built tree (generated)** | **`site/`** | **Only** output that matches the live URL layout. **Do not hand-edit** files here except **`site/README.md`** (tracked). Everything else under **`site/`** is produced by sync and is typically gitignored. |
 | **Sync tool** | **`tools/sync-site.mjs`** | Implements the merge and copy rules. |
@@ -41,12 +41,17 @@ There is **no** duplicate **`index.html`** or **`dapp/`** at the **task folder r
 |--------|------------------|---------------------------|
 | **`webpages/pages/index/`** | **`/`** | **`index.html`** |
 | **`webpages/pages/links/`** | **`/links.html`** | **`links.html`** |
+| **`devtools/`** (at **Pages repo root**, hand-maintained until synced from monorepo) | **`/devtools/`**, **`/devtools/minima-archive/`**, **`/devtools/minima-query/`** | same paths under **`site/`** if copied by your ship process |
 | **`webpages/pages/playing_field/`** | **`/playing_field.html`** | **`playing_field.html`** |
 | **`webpages/pages/qr-code/`** | **`/qr-code.html`** | **`qr-code.html`** |
 | **`webpages/pages/ambassadorsprogramdesc/`** | **`/ambassadorsprogramdesc.html`** | **`ambassadorsprogramdesc.html`** |
 | **`webpages/pages/circulareconomy/`** | **`/circulareconomy/`** | **`circulareconomy/`** (directory) |
 | **`webpages/pages/bankingsystem/`** | **`/bankingsystem/`** | **`bankingsystem/`** (directory) |
-| **`webpages/dapp/`** | **`/dapp/...`** | **`dapp/`** |
+| **`stream_1_app/dapp/`** | **`/dapp/...`** | **`dapp/`** (copied by **`sync-site`** from **`../dapp/`**) |
+
+**Minima devtools pages** use the same **document deck** pattern as **`qr-code.html`** and **`playing_field.html`**: link **`../stables.css`** (or **`../../stables.css`** in nested routes), **`assets/site-chrome.css`**, **`assets/site-map-nav.css`**, **`assets/devtools-pages.css`**, then the standard **`site-chrome-header`**, right rail (globe menu includes **Full presentation**, **Minima dev tools**, **All links**), **`main.site-chrome-main.site-chrome-main--document`**, minimal footer, **`site-rail` scripts**, and the **StablesAgent** FAB block (same inline widget as other deck pages).
+
+**Document page uniformity (mandatory for new deck pages):** Inside **`main`**, the first content wrapper MUST be **`div.container`** (optionally with a scoped inner class such as **`devtools-hub-inner`**). The first child inside that container MUST be **`div.title-block`** containing exactly one **`h1`** and, when needed, a single lede paragraph with class **`subtitle`** (not ad hoc **`h1`** margins or a custom **`lede`** class). Section blocks below use normal panels or page-specific CSS scoped under the inner wrapper. **`assets/site-chrome.css`** applies the standard header-to-title spacing and gradient **`h1`** to **`main.site-chrome-main--document > .container > .title-block:first-child`** for **`body.links-page-body.deck-chrome-page`**. Hub and subpages use **`data-site-map-role`** values **`devtools-hub`**, **`devtools-archive`**, and **`devtools-query`** (see **`assets/site-map-nav.js`**). Add new deck **`body`** classes to the **`--links-stack-max: 960px`** group in **`site-chrome.css`** when the page should match document stack width. Brain summary for StablesAgent: **`council_minima_devtools.md`**.
 
 Detail tables also live in **`task_stablescouncil_github_io/webpages/README.md`** and **`handover_document.md`**.
 
@@ -82,7 +87,7 @@ Opening **`index.html` (and other pages) directly from disk** uses the **`file:`
 
 **Implemented pattern:** Main pages under **`webpages/pages/.../`** include a small script that runs on **`DOMContentLoaded`**: when the protocol is **`file:`**, it rewrites asset URLs (for example toward **`../../../static/`**), and **re-clones** linked stylesheets and scripts so CSS and JS **reload** after href/src changes. Agent and rail controls that depend on correct asset paths should therefore work under local file preview as well as on the live site.
 
-**Shared chrome:** Global footer/header styling and spacing may be centralized in **`static/assets/site-chrome.css`** (linked from pages after sync). Design tokens and button classes follow **`0_handshake/web_component_spec.md`** and Council **`stables.css`** conventions.
+**Shared chrome:** Global footer/header styling and spacing may be centralized in **`static/assets/site-chrome.css`** (linked from pages after sync). Design tokens and button classes follow **`0_handshake/web_component_spec.md`** and Council **`stables.css`** conventions. For StablesAgent and RAG, the **button hierarchy** (one **`btn-primary`** per group, **`btn-secondary`** for the rest, no primary for inactive states) is summarized in **`website_button_hierarchy.md`** in this brain base; full recipes stay in **`web_component_spec.md`**.
 
 ---
 

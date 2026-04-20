@@ -8,11 +8,11 @@ This section is for StablesAgent and external AIs when users ask about the **Sta
 
 | Line | Version | Meaning |
 |------|---------|--------|
-| **Public web + published zip** | **v0.01.01** | What visitors get at **https://stablescouncil.org/dapp/** and **`Stables_v0.01.01.mds.zip`** in Pages `dapp/latest-version/` until Council publishes a newer zip and redeploys web. |
+| **Public web + published zip** | **v0.01.01** | What visitors get at **https://stablescouncil.org/dapp/** and **`Stables_v0.01.01.mds.zip`** in Pages **`dapp/1-showcase/latest-version/`** until Council publishes a newer zip and redeploys web. (Former root **`dapp/latest-version/`** redirect stub **retired 2026-04-16**; see **`0_handshake/minidapp_version.md`** for current paths.) |
 | **Frozen source snapshot** | **v0.01.01** | `3_archive/stream_1_app/prod_stables_app_v0.01.01/` (see `FROZEN.md` there). |
 | **Active repo development** | **v0.01.02** | `1_development/stream_1_app/prod_stables_app_v0.01.02/` per `0_handshake/minidapp_version.md`. Changes are logged in **`CHANGELOG.md`** in that folder. |
 
-If the user asks “what version is live on the web?” answer **0.01.01** until the site and `latest-version` zip are updated. If they ask “what are you building now?” answer **0.01.02** in the development folder.
+If the user asks “what version is live on the web?” answer **0.01.01** until the site and **`1-showcase/latest-version`** zip are updated. If they ask “what are you building now?” answer **0.01.02** in the development folder.
 
 ## 1. What it is
 
@@ -22,7 +22,7 @@ If the user asks “what version is live on the web?” answer **0.01.01** until
 ## 2. Where to open it
 
 - **Web (Showcase):** **https://stablescouncil.org/dapp/** (also under the Council GitHub Pages site). Marketing CTA **Test the showcase** on stablescouncil.org.
-- **Minima node:** Install the **published** package from GitHub **`dapp/latest-version/`** (filename matches the published version, e.g. **`Stables_v0.01.01.mds.zip`** while that remains latest). Zip root = app contents, not a nested folder (`build/README.md` in the active dev folder).
+- **Minima node:** Install the **published** package from GitHub **`dapp/1-showcase/latest-version/`** (filename matches the published version, e.g. **`Stables_v0.01.01.mds.zip`** while that remains latest). Zip root = app contents, not a nested folder (`build/README.md` in the active dev folder).
 
 ## 3. MiniDapp list: write mode vs read mode
 
@@ -55,5 +55,5 @@ If the user asks “what version is live on the web?” answer **0.01.01** until
 ## 8. One-line answers
 
 - **“Where is the Showcase?”** → **https://stablescouncil.org/dapp/**.
-- **“Which zip matches what’s published?”** → Check **`dapp/latest-version/`** on the Pages repo (currently **0.01.01** until a new zip is published).
+- **“Which zip matches what’s published?”** → Check **`dapp/1-showcase/latest-version/`** on the Pages repo (currently **0.01.01** until a new zip is published).
 - **“Feedback won’t send on my phone node.”** → **Write mode**, **online**; else **Telegram** (**t.me/stablescommunity**).
