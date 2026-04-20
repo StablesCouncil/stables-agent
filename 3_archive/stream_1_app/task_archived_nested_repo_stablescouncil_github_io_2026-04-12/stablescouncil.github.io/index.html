@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        // Local source preview: resolve root-like asset paths from webpages/pages/* to ../../.. /static.
+        // Local file:// preview: map /brand and /assets URLs to sibling folders under github_pages_root.
         if (location.protocol === "file:") {
             document.addEventListener("DOMContentLoaded", () => {
-                const staticRoot = "../../../static/";
+                const staticRoot = "./";
                 const toLocal = (value) => {
                     if (!value) return value;
                     if (value.startsWith("/brand/")) return staticRoot + value.slice(1);
@@ -859,15 +859,49 @@
             margin: 8px auto 12px;
         }
 
-        @media (max-width: 768px) {
-            .logo-wordmark {
-                margin: 6px auto 10px;
-            }
-        }
-
         @media (max-width: 1023px) {
             .logo-wordmark {
                 max-width: clamp(400px, 85vw, 900px);
+            }
+        }
+
+        /* Mobile brand: icon stacked above text — always centered, no overflow */
+        .logo-wordmark--mobile {
+            display: none;
+        }
+
+        @media (max-width: 767px) {
+            .logo-wordmark--desktop {
+                display: none;
+            }
+
+            .logo-wordmark--mobile {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: clamp(6px, 2vw, 10px);
+                width: 100%;
+                margin: 8px 0 14px;
+            }
+
+            .logo-symbol-mobile {
+                width: clamp(56px, 16vw, 76px);
+                height: clamp(56px, 16vw, 76px);
+                object-fit: contain;
+                filter: drop-shadow(0 0 14px rgba(103, 232, 249, 0.45));
+                flex-shrink: 0;
+            }
+
+            .logo-name-mobile {
+                font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+                font-size: clamp(2.5rem, 11vw, 3.5rem);
+                font-weight: 900;
+                letter-spacing: 0.12em;
+                color: #e6edf3;
+                line-height: 1;
+                text-transform: uppercase;
+                text-align: center;
             }
         }
 
@@ -1239,7 +1273,13 @@
                 <div class="brand-container">
                     <a href="https://minima.global" target="_blank" class="minima-badge">Built on
                         <strong>MINIMA</strong></a>
-                    <img src="/brand/assets/logo-wordmark.png" alt="Stables" class="logo-wordmark">
+                    <!-- Desktop: PNG wordmark -->
+                    <img src="/brand/assets/logo-wordmark.png" alt="Stables" class="logo-wordmark logo-wordmark--desktop">
+                    <!-- Mobile: symbol + CSS text — immune to PNG padding issues -->
+                    <div class="logo-wordmark--mobile" aria-label="Stables">
+                        <img src="/brand/assets/logo-symbol.png" alt="" aria-hidden="true" class="logo-symbol-mobile">
+                        <span class="logo-name-mobile">STABLES</span>
+                    </div>
                     <h1 class="hero-title" data-key="hero-title">Be your bank</h1>
                     <p class="hero-tagline" data-key="hero-tagline">Money that is truly yours. Secure, Pseudonymous and
                         Unstoppable</p>

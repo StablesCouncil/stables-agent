@@ -1,3 +1,1 @@
-UI: refine index end-CTA and footer spacing for readability
-
-Make the index "Want to know more?" block match the final CTA style and increase compact footer spacing so the "The Playing Field" action has clearer breathing room.
+Fix links hub: reserve space above fixed minimal footer (site-chrome-main--links padding).
