@@ -316,16 +316,16 @@ RULES:
         // ── GET /api/devtools/minima-holdings ────────────────────────────────
         if (req.method === "GET" && reqPath === "/api/devtools/minima-holdings") {
             const qs = new URLSearchParams((req.url || "").split("?")[1] || "");
-            const address     = (qs.get("address") || "").trim();
+            const addressRaw  = (qs.get("address") || "").trim();
             const dateFrom    = qs.get("date_from") || null;
             const dateTo      = qs.get("date_to")   || null;
             const intervalRaw = (qs.get("interval_type") || "DAY").toUpperCase();
             const interval    = ["DAY","WEEK","MONTH","QUARTER","YEAR"].includes(intervalRaw)
                 ? intervalRaw : "DAY";
 
-            if (!address || !/^0x[0-9A-Fa-f]+$/i.test(address)) {
+            if (!addressRaw || !isValidMinimaAddressInput(addressRaw)) {
                 res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
-                return res.end(JSON.stringify({ ok: false, error: "Valid Minima address required (0x…)" }));
+                return res.end(JSON.stringify({ ok: false, error: "Valid Minima address required (0x… or Mx…)" }));
             }
 
             const pool = getDbPool();
@@ -336,6 +336,12 @@ RULES:
 
             (async () => {
                 try {
+                    const address = await resolveAddressTo0x(addressRaw);
+                    if (!address) {
+                        res.writeHead(400, { "Content-Type": "application/json; charset=utf-8" });
+                        return res.end(JSON.stringify({ ok: false, error: "Could not resolve address to canonical 0x format." }));
+                    }
+
                     /* Latest synced block + live chain tip (parallel fetch). */
                     const [[metaRows], block_live] = await Promise.all([
                         pool.query("SELECT block AS block_db, timemilli AS last_ts FROM syncblock ORDER BY block DESC LIMIT 1"),
@@ -360,7 +366,11 @@ RULES:
                     for (const r of rows) {
                         const x = String(r.x);
                         const y = parseFloat(r.y) || 0;
-                        series.push({ x, y });
+                        const point = { x, y };
+                        if (r.block_db_snapshot != null) {
+                            point.block_db_snapshot = Number(r.block_db_snapshot);
+                        }
+                        series.push(point);
                         if (r.utxo_count != null) {
                             utxo_series.push({ x, y: Number(r.utxo_count) });
                             hasUtxo = true;
@@ -368,7 +378,8 @@ RULES:
                     }
 
                     const body = {
-                        address,
+                        address,          /* canonical 0x used for SQL */
+                        address_input: addressRaw, /* what user entered (Mx or 0x) */
                         block_live,
                         block_db,
                         block_behind,
@@ -409,6 +420,38 @@ RULES:
                 }
             })();
             return;
+        }
+
+        // ── GET /api/devtools/archive-download ───────────────────────────────
+        if (req.method === "GET" && reqPath === "/api/devtools/archive-download") {
+            const archivePath = process.env.MINIMA_ARCHIVE_FILE_PATH;
+            if (!archivePath) {
+                res.writeHead(503, { "Content-Type": "application/json; charset=utf-8" });
+                return res.end(JSON.stringify({ ok: false, error: "Archive path not configured" }));
+            }
+            let stat;
+            try {
+                stat = fs.statSync(archivePath);
+                if (!stat.isFile()) throw new Error("Archive path is not a file");
+            } catch (err) {
+                console.error("❌ /api/devtools/archive-download:", err.message);
+                res.writeHead(404, { "Content-Type": "application/json; charset=utf-8" });
+                return res.end(JSON.stringify({ ok: false, error: "Archive file not found" }));
+            }
+
+            const filename = path.basename(archivePath);
+            res.writeHead(200, {
+                "Content-Type": "application/octet-stream",
+                "Content-Length": String(stat.size),
+                "Content-Disposition": `attachment; filename="${filename}"`,
+                "Cache-Control": "no-store",
+            });
+            const stream = fs.createReadStream(archivePath);
+            stream.on("error", (err) => {
+                console.error("❌ archive stream error:", err.message);
+                try { res.destroy(err); } catch (_) {}
+            });
+            return stream.pipe(res);
         }
 
         res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
@@ -468,7 +511,8 @@ function getDbPool() {
 }
 
 /**
- * Returns time-series rows { x: 'YYYY-MM-DD', y: balanceFloat, utxo_count: int }
+ * Returns time-series rows
+ * { x: 'YYYY-MM-DD', y: balanceFloat, utxo_count: int, block_db_snapshot: int }
  * for the given Minima address over the requested date range and interval.
  *
  * Query logic (adapted from tested SQL):
@@ -568,7 +612,7 @@ async function queryHoldings(pool, address, dateFrom, dateTo, interval) {
                 utxo++;
             }
         }
-        return { x: period_start, y: balance, utxo_count: utxo };
+        return { x: period_start, y: balance, utxo_count: utxo, block_db_snapshot: maxBlock };
     });
 }
 
@@ -599,6 +643,58 @@ function fetchMinimaTip() {
                     const block = json?.response?.chain?.block ?? null;
                     resolve(block != null ? Number(block) : null);
                 } catch (_) { resolve(null); }
+            }
+        );
+    });
+}
+
+/** Accept canonical Minima address inputs from UI/API. */
+function isValidMinimaAddressInput(address) {
+    const s = String(address || "").trim();
+    if (!s) return false;
+    if (/^0x[0-9A-Fa-f]+$/.test(s)) return true;
+    if (/^Mx[0-9A-Za-z]+$/.test(s)) return true;
+    return false;
+}
+
+/**
+ * Resolves user input address to canonical 0x format for SQL queries.
+ * - 0x... input -> returned as-is (uppercased)
+ * - Mx... input -> resolved through Minima RPC checkaddress
+ */
+async function resolveAddressTo0x(addressInput) {
+    const raw = String(addressInput || "").trim();
+    if (!raw) return null;
+    if (/^0x[0-9A-Fa-f]+$/.test(raw)) return "0x" + raw.slice(2).toUpperCase();
+    if (!/^Mx[0-9A-Za-z]+$/.test(raw)) return null;
+
+    const rpcUrl  = process.env.MINIMA_RPC_URL;
+    const rpcUser = process.env.MINIMA_RPC_USER;
+    const rpcPass = process.env.MINIMA_RPC_PASS;
+    if (!rpcUrl || !rpcUser || !rpcPass) return null;
+
+    const { execFile } = require("child_process");
+    const cmd = "checkaddress address:" + raw;
+    const endpoint = rpcUrl.replace(/\/$/, "") + "/" + encodeURIComponent(cmd);
+
+    return await new Promise((resolve) => {
+        execFile(
+            "curl",
+            ["-sk", "--max-time", "4", "-u", `${rpcUser}:${rpcPass}`, endpoint],
+            { timeout: 5000 },
+            (err, stdout) => {
+                if (err) return resolve(null);
+                try {
+                    const json = JSON.parse(stdout);
+                    const resolved = json?.response?.["0x"] || json?.response?.original || null;
+                    if (resolved && /^0x[0-9A-Fa-f]+$/.test(String(resolved).trim())) {
+                        const cleaned = String(resolved).trim();
+                        return resolve("0x" + cleaned.slice(2).toUpperCase());
+                    }
+                    return resolve(null);
+                } catch (_) {
+                    return resolve(null);
+                }
             }
         );
     });
