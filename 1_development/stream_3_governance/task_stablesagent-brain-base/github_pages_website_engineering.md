@@ -87,7 +87,7 @@ Opening **`index.html` (and other pages) directly from disk** uses the **`file:`
 
 **Implemented pattern:** Main pages under **`webpages/pages/.../`** include a small script that runs on **`DOMContentLoaded`**: when the protocol is **`file:`**, it rewrites asset URLs (for example toward **`../../../static/`**), and **re-clones** linked stylesheets and scripts so CSS and JS **reload** after href/src changes. Agent and rail controls that depend on correct asset paths should therefore work under local file preview as well as on the live site.
 
-**Shared chrome:** Global footer/header styling and spacing may be centralized in **`static/assets/site-chrome.css`** (linked from pages after sync). Design tokens and button classes follow **`0_handshake/web_component_spec.md`** and Council **`stables.css`** conventions.
+**Shared chrome:** Global footer/header styling and spacing may be centralized in **`static/assets/site-chrome.css`** (linked from pages after sync). Design tokens and button classes follow **`0_handshake/web_component_spec.md`** and Council **`stables.css`** conventions. For StablesAgent and RAG, the **button hierarchy** (one **`btn-primary`** per group, **`btn-secondary`** for the rest, no primary for inactive states) is summarized in **`website_button_hierarchy.md`** in this brain base; full recipes stay in **`web_component_spec.md`**.
 
 ---
 

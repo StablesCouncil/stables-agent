@@ -131,3 +131,4 @@ The Council public site (**https://stablescouncil.org/**, GitHub Pages **`Stable
 - **Ship:** copy **contents** of **`site/`** to the **root** of the **`stablescouncil.github.io`** working tree, commit, push **`main`**. **`CNAME`** for **`stablescouncil.org`** must stay consistent with GitHub Pages settings.
 - **Local disk preview:** pages may include a **`file:`** protocol helper that rewrites asset paths and reloads stylesheets and scripts so shared **`static/`** assets and controls still load when opening HTML from the filesystem.
 - **Full detail for the Agent:** **`github_pages_website_engineering.md`** in this brain base; the monorepo **handover** table and status live in **`handover_document.md`** at the repo root.
+- **Public UI buttons:** **`website_button_hierarchy.md`** (how **`btn-primary`** and **`btn-secondary`** must be used); canonical markup in **`0_handshake/web_component_spec.md`** (COMPONENTS → Buttons).
