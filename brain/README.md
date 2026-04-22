@@ -17,6 +17,29 @@ To maintain full transparency with the community:
 - No usernames or personal identifiers are stored. 
 - The CSV file will be periodically pushed to this GitHub repository so anyone can review the questions being asked and verify the AI's responses.
 
+## Files in this folder (quick index)
+
+| File | Purpose |
+|------|---------|
+| **`core_definitions.md`** | Core terms and definitions. |
+| **`comprehensive_knowledge_base.md`** | Long-form synthesis (protocol, philosophy, Academy, website ship summary). |
+| **`github_pages_website_engineering.md`** | Canonical ops doc for the public site: folder layout, **`sync:site`**, ship steps, **`file://`** preview, pointers to **`handover_document.md`**. |
+| **`website_button_hierarchy.md`** | **`btn-primary`** vs **`btn-secondary`** hierarchy for site and MiniDapp shell; points to **`web_component_spec.md`**. |
+| **`council_minima_devtools.md`** | Public **Minima dev tools** URLs (`/devtools/`, archive + query subpages), links page rule (single Council row), site chrome expectations. |
+| **`website_presentation.md`** | On-site marketing copy and StablesAgent / **`llms.txt`** links; points to the engineering doc for build and deploy. |
+| **`charter_overview.md`**, **`banking_system_overview.md`**, **`circular_economy_diagram.md`** | Topic-specific public summaries. |
+| **`minidapp_showcase_app.md`** | Showcase MiniDapp versions, feedback, and in-app behaviour notes. |
+
+## Where this knowledge is mirrored (operators)
+
+One **authoritative** tree after promotion: **`2_current/stream_3_governance/prod_stablesagent-brain-base/`** (this folder). Everything below must be refreshed whenever you change brain `*.md` here.
+
+| Mirror | Path or URL | What to run |
+|--------|-------------|-------------|
+| **Sandbox drafts** | **`1_development/stream_3_governance/task_stablesagent-brain-base/`** | Edit here first, then promote into **`prod_stablesagent-brain-base/`**. |
+| **Public GitHub rollup** | **`brain/`** at the **Stables monorepo root** (same content as this folder for shipped docs + committed **`llms.txt`**) | After promotion: copy `*.md` + **`build_llms_txt.js`** from here into **`brain/`**, run **`node brain/build_llms_txt.js`**, commit **`brain/`** including **`llms.txt`**, push **`StablesCouncil/stables-agent`**. External models use **`https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt`**. |
+| **Council VPS (Telegram RAG)** | **`/root/stables-agent/task_stablesagent-brain-base/`** | **`git pull`** in **`/root/stables-agent-sync`** (remote is usually **`origin`**, not `council`). Then **`rsync -av --delete --exclude='.env' --exclude='.env.*'`** from **`.../prod_stablesagent-brain-base/`** into **`task_stablesagent-brain-base/`** (never sync without **`--exclude=.env`**: secrets live only on the server). Then **`cd /root/stables-agent/task_x_agent_node && node ingest_knowledge.js`**, then **`pm2 restart stables-telegram-agent`**. |
+
 ## Contribution
 To correct an AI hallucination or update its knowledge, do **not** change the rigid prompt rules. Instead, update the Markdown files in this directory (such as `core_definitions.md`) with clearer, stronger facts and re-run the ingestion script.
 
@@ -30,6 +53,6 @@ You can interact with the official Stables assistant directly in the Stables com
 If you prefer to use your own LLM, we have formatted the entire knowledge base into a single, internet-standard file.
 You can simply paste the following prompt into ChatGPT or Claude, providing the direct URL to our `llms.txt` file:
 
-> *"Please read the official knowledge base at https://raw.githubusercontent.com/stablescouncil/stablesagent-brain-base/main/llms.txt and answer the following question about Stables: [Your Question]"*
+> *"Please read the official knowledge base at https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt and answer the following question about Stables: [Your Question]"*
 
 *(Note: The `llms.txt` file is auto-generated whenever the brain base is updated, ensuring ChatGPT always has the latest facts).*

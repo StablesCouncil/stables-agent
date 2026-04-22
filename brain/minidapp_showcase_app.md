@@ -1,42 +1,59 @@
-# Stables MiniDapp — Showcase build (v0.01.01)
+# Stables MiniDapp — Showcase (public) vs active dev line
 
-*Last updated: 2026-03-31 — aligns with active development in `prod_stables_app_v0.01.01`.*
+*Last updated: 2026-04-01.*
 
-This section is for StablesAgent and external AIs when users ask about the **current Stables app preview** (Showcase / MiniDapp), how to open it, and how feedback works.
+This section is for StablesAgent and external AIs when users ask about the **Stables app preview** (Showcase / MiniDapp), how to open it, and how feedback works.
+
+## 0. Version map (do not conflate)
+
+| Line | Version | Meaning |
+|------|---------|--------|
+| **Public web + published zip** | **v0.01.01** | What visitors get at **https://stablescouncil.org/dapp/** and **`Stables_v0.01.01.mds.zip`** in Pages **`dapp/1-showcase/latest-version/`** until Council publishes a newer zip and redeploys web. (Former root **`dapp/latest-version/`** redirect stub **retired 2026-04-16**; see **`0_handshake/minidapp_version.md`** for current paths.) |
+| **Frozen source snapshot** | **v0.01.01** | `3_archive/stream_1_app/prod_stables_app_v0.01.01/` (see `FROZEN.md` there). |
+| **Active repo development** | **v0.01.02** | `1_development/stream_1_app/prod_stables_app_v0.01.02/` per `0_handshake/minidapp_version.md`. Changes are logged in **`CHANGELOG.md`** in that folder. |
+
+If the user asks “what version is live on the web?” answer **0.01.01** until the site and **`1-showcase/latest-version`** zip are updated. If they ask “what are you building now?” answer **0.01.02** in the development folder.
 
 ## 1. What it is
 
-- **Stables v0.01.01** is the **active Showcase / development** MiniDapp: wallet-style UI, demos, StablesAgent hooks, and **More → Feedback** (structured public submissions). It is a **preview**: copy and flows evolve quickly; not a final production release.
-- **Frozen older UIs** (for example v0.2.x) live in archive folders in the repo; **do not** describe them as the current app unless the user explicitly asks about history.
+- The Showcase MiniDapp is a **preview**: wallet-style UI, demos, StablesAgent hooks, and **More → Feedback** (structured public submissions). Not a final production release.
+- **Frozen older UIs** (v0.2.x, etc.) live in archive folders; **do not** describe them as current unless the user asks about history.
 
 ## 2. Where to open it
 
-- **Web (Showcase):** The public site **https://stablescouncil.org/** promotes **Test the showcase**, which opens **https://stablescouncil.org/dapp/** (Showcase entry). The GitHub Pages site may also host the same build under the Council’s `stablescouncil.github.io` tree when published.
-- **Minima node (phone or desktop):** Install the MiniDapp package **`Stables_v0.01.01.mds.zip`** (version in the filename matches the build). The zip contains the **contents** of the app folder at the root (not a nested folder), per the packaging rule in the repo `build/README.md`.
+- **Web (Showcase):** **https://stablescouncil.org/dapp/** (also under the Council GitHub Pages site). Marketing CTA **Test the showcase** on stablescouncil.org.
+- **Minima node:** Install the **published** package from GitHub **`dapp/1-showcase/latest-version/`** (filename matches the published version, e.g. **`Stables_v0.01.01.mds.zip`** while that remains latest). Zip root = app contents, not a nested folder (`build/README.md` in the active dev folder).
 
 ## 3. MiniDapp list: write mode vs read mode
 
 - On a **Minima node**, each MiniDapp can run in **read mode** or **write mode**.
-- For Stables Showcase, **write mode** is required for features that use the node network: **StablesAgent**, **structured feedback** (HTTP POST via the node), and similar. If the user only sees failures for those features, ask them to set Stables to **write mode** (not read mode) in the MiniDapp list.
+- For Stables, **write mode** is required for features that use the node network: **StablesAgent**, **structured feedback** (HTTP POST via the node), and similar. If those fail, ask them to set Stables to **write mode** (not read mode).
 
 ## 4. Structured feedback (More → Feedback)
 
-- The form posts **public** JSON to the Council feedback API (default **`https://agent.stablescouncil.org/api/feedback`**, configurable via app `FEEDBACK_SUBMIT_URL` / `runtime-config`). Submissions are intended for a **public GitHub ledger**; the UI requires **consent** and warns against secrets.
-- **On a normal browser (no Minima):** the app may use **`fetch`** to that URL.
-- **On a Minima node (MiniDapp):** the app uses **`MDS.net.POST`** so the request goes through the **node** (avoids browser CORS limits). The node must be **online** and the MiniDapp in **write mode**.
-- **Community alternatives (always valid):** **Telegram** — **https://t.me/stablescommunity** — and the **public GitHub feedback folder** linked from the app for “see what others sent.”
+- Posts **public** JSON to the Council feedback API (default **`https://agent.stablescouncil.org/api/feedback`**, configurable via `FEEDBACK_SUBMIT_URL` / `runtime-config`). **Web (browser)** typically uses **`fetch`**; **node** uses **`MDS.net.POST`**. Consent required; no secrets.
+- **Community:** **https://t.me/stablescommunity** and the public GitHub feedback folder linked from the app.
 
 ## 5. Known issues (Showcase)
 
-- **Structured feedback on some mobile nodes:** As of late March 2026, **some users report that structured feedback does not complete** on the node even when messages/errors display correctly (toast text was improved to wrap on small screens). **Workaround:** use **Telegram** or GitHub for urgent feedback; engineering is **continuing to debug** node/API delivery.
-- Do **not** promise a fixed date in chat unless the Council has published one.
+- **Some mobile nodes:** structured feedback may not complete on the node; **web** path has been reported working. **Workaround:** Telegram or GitHub; engineering continues to debug node delivery.
 
-## 6. StablesAgent inside the app
+## 6. Mint xWiniwa chart (Showcase)
 
-- When **`MDS`** (Minima) is present, opening StablesAgent may use the **system browser** for the chat URL configured in the app; behaviour matches the Showcase build notes in `runtime-config` / in-app copy.
+- Location: **Mint** tab → **Mint xWiniwa**, **below** the **Mint xWiniwa** button (not above the form).
+- **Three lines:**
+  - **Winiwa · USD (cyan):** about the last **365 days** of spot in **USD**. Data source is **CoinGecko** `market_chart` for the **minima** id (shown in-app as **Winiwa** in this test phase; thinned points for drawing).
+  - **xWiniwa · USD (purple):** demo strip **Winiwa_USD × leverage** at each time step (same leverage series as the green line). **Not** on-chain xWiniwa.
+  - **Leverage (green, right axis):** derived from **headline coverage ratio** as **CR% / (CR% − 100%)** (example: **130%** → **130 / 30 ≈ 4.33×**). The chart sweeps **interpolated** values from in-app **`CR_HIST_DATA`** along the time axis and pins the **last** point to the live Treasury **CR** (`#protocolCRBig`). **Not** on-chain. **Current leverage** on the Mint form and **xWiniwa** demo pricing use the **same** formula from the current CR headline.
+- **Hover or drag (touch):** vertical crosshair and a small panel with **calendar date** plus **Winiwa USD**, **xWiniwa USD**, and **leverage** at the nearest sample.
+- If the chart shows **Unavailable.**, the network or API rate limit blocked the fetch (retry later; **MDS.net.GET** on node when `MDS` is present).
 
-## 7. One-line answers for users
+## 7. StablesAgent inside the app
 
-- **“Where is the Showcase?”** → **https://stablescouncil.org/dapp/** (and the **Test the showcase** button on stablescouncil.org).
-- **“Which zip for my node?”** → **`Stables_v0.01.01.mds.zip`** (current dev Showcase).
-- **“Feedback won’t send on my phone node.”** → Set MiniDapp to **write mode**, stay **online**; if it still fails, use **Telegram** (**t.me/stablescommunity**) until the next fix ships.
+- With **`MDS`**, StablesAgent may open in the **system browser** per `runtime-config` / in-app behaviour.
+
+## 8. One-line answers
+
+- **“Where is the Showcase?”** → **https://stablescouncil.org/dapp/**.
+- **“Which zip matches what’s published?”** → Check **`dapp/1-showcase/latest-version/`** on the Pages repo (currently **0.01.01** until a new zip is published).
+- **“Feedback won’t send on my phone node.”** → **Write mode**, **online**; else **Telegram** (**t.me/stablescommunity**).

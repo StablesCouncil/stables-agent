@@ -13,11 +13,11 @@
 
 This document gives a clear, high-level description of the Stables banking system exactly as it is presented publicly. It is meant to be consumed by external AIs and conversational agents when users ask how the system works.
 
-## 1. Let's be our own banking system
+## 1. Let's be our banking system
 
-Stables is about the **Network of Everybody's Own Bank**.
+Stables is about the **Network of Everybody's Bank**.
 
-- **Be your own bank.**
+- **Be your bank.**
 - **Built on MINIMA.**
 
 Every user holds their own keys and participates directly in the network without intermediaries.
@@ -149,7 +149,186 @@ To remain effective and adaptable, the Constitution is intentionally separated i
 2. **The Companion:** This supporting document contains internal guidelines, locked decisions, and operational definitions. It assists the Council in interpreting the Charter without bloating the main text.
    - Master File: `constitutional_companion.md`
 
-By keeping the core Charter minimal and structurally sound, it remains readable to everyone, ensuring the "Be your own bank" philosophy is accessible to all.
+By keeping the core Charter minimal and structurally sound, it remains readable to everyone, ensuring the "Be your bank" philosophy is accessible to all.
+
+
+========================================
+## SOURCE FILE: circular_economy_diagram.md
+========================================
+
+# Stables circular economy (diagram knowledge for StablesAgent)
+
+## Authority and scope
+
+This document describes the **public concept map** at **https://stablescouncil.org/circulareconomy/**. It is **not** a literal balance sheet and **not** a substitute for locked protocol math.
+
+For **exact mechanics** (transaction fee formula, Coverage Ratio thresholds, cf token behaviour, mint/burn locks, and the rule that **xMinima receives no transaction-fee revenue**), StablesAgent must follow **`0_handshake/protocol_mechanics_spec.md`** and **`stables_master_reference.md`** §14. If any diagram-friendly phrase here could be read as contradicting those specs, **the specs win**.
+
+**Related public page (different map):** https://stablescouncil.org/bankingsystem/
+
+**Terminology bridge:** Older public brain copy (for example **banking_system_overview.md**) refers to a **Liquidity Fund** on the Minima/xMinima liquidity axis. The circular economy page labels that axis **Arbitrage Fund** in Council vocabulary for this map. If a user asks, clarify: on **circulareconomy** use **Arbitrage Fund**; if they say **liquidity fund**, explain that wording differs across materials unless governance defines them as the same.
+
+### Fund vocabulary (all valid concepts)
+
+**Coverage Fund**, **Arbitrage Fund**, and **Liquidity Fund** are all legitimate elements in Stables materials. They answer different questions:
+
+- **Coverage Fund:** In locked mechanics, the buffer tied to **cf** instruments, **transaction fee routing** to cf holders, stress paths between stable and xMinima exposure, and **Coverage Ratio** context. See **`protocol_mechanics_spec.md`** for exact formulas and rules.
+- **Arbitrage Fund:** On **circulareconomy**, the named box on the **Minima x xMinima** axis and the opportunistic, profit-seeking behaviour the page describes for that part of the map (not a peg guarantor).
+- **Liquidity Fund:** Wording still used in materials such as **banking_system_overview** for **deep Minima x xMinima liquidity** and orderly equity-side entry and exit, often described alongside **Council Treasury** support for market depth.
+
+StablesAgent should treat these as **compatible layers of description** (map labels, banking overview, locked ledger math). If a user collapses them into one box, explain the distinction and point to the right page or spec. **Do not** treat any of the three as invalid.
+
+---
+
+## What this is
+
+The Stables circular economy page is a **concept map**. It shows how external capital, on-chain economic activity, protocol treasuries, Stables (debt), xMinima (equity), merchant tooling, and two protocol funds relate in one picture.
+
+**Subtitle on the page:** How capital, Minima, Stables, xMinima, and protocol funds interact.
+
+---
+
+## How to read the arrows (legend)
+
+- **Bidirectional cyan arrows:** In this diagram, reserved for flows that represent **minting and burning mechanism relationships** (two-way coupling between the named boxes), not optional two-way trade in general.
+- **Bidirectional white (non-cyan) arrows:** Two-way links that are **not** labelled as mint/burn in the legend (for example treasury and market links, or operational two-way ties).
+- **One-way white arrows:** Directed flows such as spend/listing direction, fee routing, treasury allocation, or structure work feeding the economy.
+- **TF\*** on the diagram means **transaction fees** (also repeated in the page footnote: **TF: transaction fees**).
+
+---
+
+## Nodes (exact labels as on the page)
+
+### External capital
+
+- **Subtitle:** From CEX/DEX (bridges)
+- **Meaning:** Capital and liquidity that can enter or leave via centralised or decentralised exchanges and bridge routes (off-chain / broader market interface).
+
+### Economic Activity
+
+- **Subtitle:** Goods and services
+- **Meaning:** Real commerce and usage where Stables-related instruments matter as part of the economy (not a specific product screen).
+
+### Community Treasury (Asset)
+
+- **Subtitle:** Minima
+- **Meaning:** Community-side treasury positioned in the diagram as an asset centre (the page explicitly tags it **(Asset)** in the title). It is the bridge in the picture between external capital and the Stables / xMinima layer.
+
+### Merchants listing + Promo
+
+- **Subtitle:** Minima
+- **Meaning:** Merchant-facing listing and promotion paid or denominated in Minima in this schematic (discovery and marketing rail).
+
+### Stables (Debt)
+
+- **Subtitle:** USDs, EURs, JPYs, +
+- **Meaning:** Stablecoin-style debt instruments in the protocol narrative (tickers shown as examples; **+** means other fiat pegs in the same family).
+
+### xMinima (Equity)
+
+- **Subtitle:** Minima price risk takers
+- **Meaning:** Leveraged equity / risk-bearing side of the structure relative to Stables as debt: participants taking Minima price (and related) risk in return for equity-like exposure in this framing.
+
+### Council Treasury
+
+- **Subtitle:** Minima
+- **Meaning:** Council-operated treasury in Minima for governance-directed uses in this diagram (distinct from **Community Treasury (Asset)**).
+
+### Means of Exchange
+
+- **Subtitle:** Accepted by Merchants
+- **Meaning:** What merchants actually accept at checkout in the story of the map (the cash register side of Stables usage).
+
+### TF\*
+
+- **Standalone label** (no subtitle on the box).
+- **Footnote:** TF = transaction fees.
+
+### Coverage Fund
+
+- **Subtitles:** Stables <-> xMinima and USDscf, EURscf, JPYscf, +
+- **Meaning:** Fund whose role in the diagram is tied to the Stables / xMinima axis and coverage instruments (tickers shown as examples; **+** = other variants).
+
+### Arbitrage Fund
+
+- **Subtitle:** Minima <-> xMinima
+- **Meaning:** Fund positioned on the Minima / xMinima axis for arbitrage-style activity. **Terminology note for the agent:** In Council copy on this page, this is **Arbitrage Fund**; do not conflate with a separate **liquidity fund** label if the user distinguishes them.
+
+### Structure Dev
+
+- **Subtitle:** Audit, partners, etc
+- **Meaning:** Structural development spend: audits, partnerships, and similar infrastructure and credibility work.
+
+---
+
+## Connections (directionality as drawn)
+
+### Top band (markets and activity)
+
+- **External capital <-> Economic Activity** (white, both ways): Outside capital and on-chain economic activity are mutually connected in the broad loop.
+
+### Treasury and protocol core
+
+- **Community Treasury (Asset) <-> External capital** (white, both ways): Community treasury and external capital can move in both directions in this schematic (funding and recycling of exposure).
+- **Community Treasury (Asset) <-> Stables (Debt)** (cyan, both ways): Treated in the legend as part of **mint/burn mechanism coupling**.
+- **Community Treasury (Asset) <-> xMinima (Equity)** (cyan, both ways): Same **mint/burn** family of coupling in the diagram’s legend.
+
+### Merchants and Council funding
+
+- **Economic Activity -> Merchants listing + Promo** (white, one way): Activity feeds listings/promo demand (the diagram does not show return flow from merchants listing back to Economic Activity).
+- **Merchants listing + Promo -> Council Treasury** (white, one way): Listing/promo flows into the Council Treasury side in this map.
+
+### Stables rail and merchant acceptance
+
+- **Stables (Debt) -> Means of Exchange** (white, one way): Stables as debt instruments map into what functions as means of exchange in commerce.
+- **Stables (Debt) <-> Coverage Fund** (cyan, both ways): **Mint/burn / mechanism coupling** in the legend.
+- **Means of Exchange -> TF\* -> Coverage Fund** (white, one way through TF\*): Transaction fees are shown as a directed hop from means of exchange toward Coverage Fund (single logical path on the diagram).
+
+### xMinima rail and funds
+
+- **xMinima (Equity) <-> Coverage Fund** (cyan, both ways): **Mint/burn / mechanism coupling** in the legend.
+- **xMinima (Equity) <-> Arbitrage Fund** (cyan, both ways): **Mint/burn / mechanism coupling** in the legend.
+
+### Council treasury allocations
+
+- **Council Treasury -> Arbitrage Fund** (white, one way).
+- **Council Treasury -> Structure Dev** (white, one way).
+
+### Funds and structure
+
+- **Arbitrage Fund <-> Structure Dev** (white, both ways): Bidirectional, but **not** cyan on the page: the diagram treats this as a two-way operational / funding relationship, **not** as one of the cyan mint/burn mechanism pairs.
+
+### Closing the loop
+
+- **Structure Dev -> Economic Activity** (white, one way): Development and partnerships feed back into economic activity (better tooling, trust, integrations).
+
+### Large outer curve
+
+- **Large outer curve** (white, with arrowhead along the path): A visual circularity spine linking the lower / outer part of the map back toward the upper Economic Activity region. Treat it as **narrative closure** of the loop, **not** a substitute for precise accounting.
+
+---
+
+## Explanatory prose on the page (substance to echo)
+
+The page text makes three main claims the agent should be able to restate faithfully:
+
+1. **Coverage Fund** and **Arbitrage Fund** each pursue a **self-interested objective**: maximise profit within their own risk capacity. Together, that behaviour tends to push the system toward **equilibrium** and **peg maintenance**, without claiming either fund is a peg **guarantor**.
+
+2. The peg is **not guaranteed** by the Coverage Fund or the arbitrage function. Those actors are **opportunistic**: they exploit market opportunities during a depeg, similar in spirit to how external capital behaves.
+
+3. The strength of the structure is a **level playing field** where different actors can pursue their own financial goals, while the design should make their interaction support peg maintenance, described on the page as a **priority ordering** idea: **Community Treasury > Debt > leveraged equity > 0** (as written on the page; interpret as **informal structural intuition**, not a formal proof).
+
+For that to work in practice, the page lists **design requirements**: full transparency; tools for each actor to manage exposures and assess risk; visibility of the global positioning of the structure and its risks; and **low friction execution**: no unnecessary barriers and **no or minimal fees** (framing on the page; locked fee math for user transactions remains in **protocol_mechanics_spec.md**).
+
+---
+
+## Agent behaviour notes
+
+- Prefer **Arbitrage Fund** wording when explaining **this** map; if users say **liquidity fund**, clarify they are not the same label in Council vocabulary unless governance defines otherwise.
+- **Community Treasury (Asset)** vs **Council Treasury:** two treasuries in the diagram, different roles and links.
+- **Stables (Debt)** vs **xMinima (Equity):** debt vs equity framing in this illustration; xMinima subtitle is **Minima price risk takers**.
+- When asked **what the cyan arrow means**, answer with the **page legend**: bidirectional cyan = **minting and burning mechanism flows** (this diagram’s convention).
+- **TF\*** always expands to **transaction fees** when explaining the map.
 
 
 ========================================
@@ -191,7 +370,7 @@ Stables does not claim to be the final form of human money. It is a necessary br
 - **Stage −1 (Sound Money/State Capture):** Standardisation of gold/silver coins. Trust shifted from community to state. Coercion entered via legal tender and mandated taxation.
 - **Stage 0 (Fiat/Centralised Control):** The current world. Money is issued by decree and managed by central banks. Individuals are assigned a currency by jurisdiction. Participation is mandatory; exclusion is common.
 - **Stage 1 (Stables - Sovereign Opt-In):** The current phase. Stables provides synthetic pegged assets (USDs, EURs, CADs, IRTs) so participants can opt-in to a sovereign network today while maintaining familiar pricing. Minima is listed alongside these as the native destination.
-- **Stage 2 (Minima-Native Economy):** As adoption deepens, participants begin pricing goods and services directly in Minima. The reliance on fiat-pegged bridges fades. Everyone becomes their own bank on infrastructure they validate themselves.
+- **Stage 2 (Minima-Native Economy):** As adoption deepens, participants begin pricing goods and services directly in Minima. The reliance on fiat-pegged bridges fades. Everyone becomes their bank on infrastructure they validate themselves.
 - **Stage 3 (The Circular Horizon):** A future state where monetary power is a fundamental human right. It recognises the right of every human to live with dignity and operates in service of the planet.
 
 **The StablesAgent's Role:** The Agent exists to facilitate Stage 1, guiding users and merchants across the bridge from Stage 0 to Stage 2. 
@@ -212,7 +391,7 @@ Stables is not inventing novel, untested mechanics. It is taking battle-tested e
 
 ## 7. The Stables Banking System: How the Mechanic Works
 
-This section gives the Agent a clean, step‑by‑step description of how the Stables banking system works in practice, mirroring the public "Our Own Banking System" presentation.
+This section gives the Agent a clean, step‑by‑step description of how the Stables banking system works in practice, mirroring the public "Our Banking System" presentation.
 
 ### 7.1 The Three Main Actors
 - **People:** Buyers, savers and senders who hold and use Stables day‑to‑day.
@@ -268,6 +447,51 @@ The system is mathematically balanced so that "self-onboarding" (bypassing an am
 
 **The StablesAgent's Role (Ambassador Support):** The Agent provides 24/7 technical and strategic support for Ambassadors, helping them manage their Hubs and merchant campaigns.
 
+## 9. Stables Academy (Education Layer, Draft)
+
+Stables Academy is a practical education layer for users and merchants who want to manage sovereign banking safely.
+
+- **Purpose:** improve real-world operational confidence topic by topic, starting with security.
+- **Quiz model (current prototype):** each attempt draws 10 questions from a larger question bank, each with 3 options.
+- **Pass logic:** no single "perfect score" requirement. Pass requires a minimum threshold (6/10) and mandatory critical questions correct.
+- **Progression logic:** retake cool-down, best score retained.
+- **Community learning feedback:** users can optionally authorize anonymized demographic + score contribution to a public learning database used to improve communication priorities.
+- **Recognition:** successful completion unlocks a lightweight certificate and social sharing.
+- **Ambassador path direction:** completing all Academy core topics is being positioned as an onboarding prerequisite for Ambassador status once the full topic set is live.
+
+## 10. Public website: where it lives and how it ships
+
+The Council public site (**https://stablescouncil.org/**, GitHub Pages **`StablesCouncil/stablescouncil.github.io`**) is **authored in the Stables monorepo**, not by editing the Pages repo by hand as the primary workflow.
+
+- **Sandbox:** **`1_development/stream_1_app/task_stablescouncil_github_io/`** with **`webpages/`** (HTML and **`dapp/`** mirror), **`static/`** (shared CSS, brand, **`CNAME`**), and a **generated** **`site/`** tree that matches the live URL layout.
+- **Build:** **`npm run sync:site`** runs **`tools/sync-site.mjs`**: merge **`static/`** into **`site/`**, then copy **`webpages/`** to the mapped outputs (for example home → **`site/index.html`**, links hub → **`site/links.html`**, Playing Field → **`site/playing_field.html`**, directory routes for circular economy and banking system, **`site/dapp/`** for the MiniDapp web tree).
+- **Ship:** copy **contents** of **`site/`** to the **root** of the **`stablescouncil.github.io`** working tree, commit, push **`main`**. **`CNAME`** for **`stablescouncil.org`** must stay consistent with GitHub Pages settings.
+- **Local disk preview:** pages may include a **`file:`** protocol helper that rewrites asset paths and reloads stylesheets and scripts so shared **`static/`** assets and controls still load when opening HTML from the filesystem.
+- **Full detail for the Agent:** **`github_pages_website_engineering.md`** in this brain base; the monorepo **handover** table and status live in **`handover_document.md`** at the repo root.
+- **Public UI buttons:** **`website_button_hierarchy.md`** (how **`btn-primary`** and **`btn-secondary`** must be used); canonical markup in **`0_handshake/web_component_spec.md`** (COMPONENTS → Buttons).
+
+
+========================================
+## SOURCE FILE: constitutional_overview.md
+========================================
+
+# The Stables Constitution: Vision and Structure
+
+*Note: The full Constitution is currently in the drafting phase. This document outlines its conceptual framework and objective so the community can understand its eventual form.*
+
+## Objective
+The Stables Constitution serves as the foundational legal and operational framework for the Stables ecosystem. It is designed to ensure a truly decentralized, censorship-resistant, and equitable banking solution built on the Minima network. 
+
+Its primary purpose is to define the unchangeable rules of the network and to map out the "Transition Doctrine"—a roadmap for evolving from the current financial system into a sovereign, peer-to-peer monetary system.
+
+## Form and Structure
+To remain effective and adaptable, the Constitution is intentionally separated into distinct layers. This separates high-level philosophical doctrines from rigid operational rules:
+
+1. **The Charter:** This is a concise, formal, and public-facing document. It outlines the untouchable core principles (The Pillars) and the ultimate transition doctrine. The Charter represents the soul of the ecosystem.
+2. **The Companion:** This acts as a supporting document containing internal guidelines and operational definitions. It assists the Council and the community in interpreting the Charter without bloating the main text with technical minutiae.
+
+By keeping the core Charter minimal, it remains readable to everyone, ensuring the "Be your bank" philosophy is accessible to all.
+
 
 ========================================
 ## SOURCE FILE: core_definitions.md
@@ -288,51 +512,283 @@ This document serves as the absolute source of truth for the Agent regarding spe
 
 
 ========================================
+## SOURCE FILE: council_minima_devtools.md
+========================================
+
+# Council Minima dev tools (public website)
+
+## Minima Onchain Watch
+
+**URL:** `https://stablescouncil.org/onchain-watch.html`
+
+**What it is:** A public Council devtool page with two main features:
+
+1. **Holdings chart** — enter any Minima address (or pick a saved / preset address) and query its historical balance (Minima) and UTXO count over a chosen date range. Results appear as a dual-axis line chart (Balance on left axis, UTXO count on right). The chart reads from the Council archive MySQL database via the API at `https://agent.stablescouncil.org`. Displays live blockchain block height and the latest DB block height so you can see how current the data is. A **Download CSV** button exports the queried data.
+
+   - **Range presets:** 1 month, 3 months, 1 year, All, Custom dates.
+   - **Interval options:** DAY, WEEK, MONTH, QUARTER, YEAR.
+   - **Saved addresses:** Users can save labelled addresses locally in the browser for quick re-query.
+   - **Default / example address:** MEXC hot wallet `0x4AD25252814256BEDDF7EA6F0CF75E48FC10E8D11FE3FC70551BB427A2BBA84A`.
+
+2. **Minima archive node download** — a direct download button for the latest full Minima archive export (`archive_latest.raw.dat`) served from the community VPS via `https://agent.stablescouncil.org/api/devtools/archive-download`. Direct file path: `http://70.34.244.170/minima-archive/archive_latest.raw.dat`. The export is updated daily by the StablesCouncil VPS. The panel shows the **latest block**, **export timestamp**, and **file size** for the current export.
+
+3. **Discord channel link** — links directly to the on-chain analysis thread in the Stables Discord (`https://discord.com/channels/1461269219009232997/1493173250497450066`) for discussion and sharing of on-chain analysis.
+
+**Who it is for:** Community members, archive node operators, and analysts who want to inspect Minima address holdings history or download a full archive to run their own archive node.
+
+**How to use it (holdings):**
+1. Open `https://stablescouncil.org/onchain-watch.html`.
+2. Paste a Minima address (starts with `0x`) in the address field, or pick a saved address from the dropdown.
+3. Choose a date range preset (or set custom dates) and an interval.
+4. Click **Run query** — the chart updates with balance and UTXO count.
+5. Click **Download CSV** to export the data.
+
+**How to use it (archive download):**
+1. On the same page, scroll to the **Minima archive node** panel.
+2. Click **Download** to get `archive_latest.raw.dat` from the Council VPS.
+3. Use the file to initialise or resync a Minima archive node.
+
+---
+
+## Other devtools URLs (legacy / hub)
+
+Canonical public URLs (custom domain `stablescouncil.org`):
+
+- **Hub:** `https://stablescouncil.org/devtools/` — lists archive chain exports for archive nodes and the Minima address holdings explorer.
+- **Archive downloads (devtools path):** `https://stablescouncil.org/devtools/minima-archive/` — same `archive_*.raw.dat` files; large files served from Council VPS.
+- **Holdings query (devtools path):** `https://stablescouncil.org/devtools/minima-query/` — older URL for the holdings chart.
+- **Onchain Watch (canonical, current):** `https://stablescouncil.org/onchain-watch.html` — this is the current, canonical single-page version combining holdings chart + archive download + Discord link.
+
+**All links page:** Under the **Council** section there is a single row, **Minima Onchain Watch** (chart icon), pointing to `onchain-watch.html`.
+
+**Site chrome:** The page uses `links-page-body has-site-rail deck-chrome-page` body classes — same header/footer/rail chrome as other document deck pages. Right-hand rail nav menu includes Full presentation, Minima dev tools, All links. StablesAgent floating button is present.
+
+**Governance runbooks** (Stables monorepo, not on the public site): operator export, MySQL read-only access, and archive scheduling live under `2_current/stream_3_governance/prod_minima_archive_admin/`.
+
+
+========================================
+## SOURCE FILE: github_pages_website_engineering.md
+========================================
+
+# Stables public website: engineering and operations
+
+**Audience:** StablesAgent, operators, and contributors who need **how the site is built, previewed, and shipped**, not marketing copy.
+
+**Companion docs:** User-facing messaging stays in **`website_presentation.md`**. Protocol and economics stay in **`protocol_mechanics_spec.md`**, **`stables_master_reference.md`**, and **`comprehensive_knowledge_base.md`**. For the **authoritative file map and ship checklist** in the monorepo, use **`handover_document.md`** at the Stables repository root (Status block holds the latest **GitHub Pages** commit reference when maintained).
+
+---
+
+## 1. Live site and repos
+
+- **Public site (custom domain):** `https://stablescouncil.org/`
+- **GitHub Pages origin:** `https://stablescouncil.github.io/` (same deployment; custom domain is **`stablescouncil.org`** via **`CNAME`** in the Pages repo root).
+- **Pages repository:** `StablesCouncil/stablescouncil.github.io` on **`main`**. Only the **root** of that repo is what GitHub Pages serves.
+- **Council handshake task name for authoring:** **`task_stablescouncil_github_io`** (sandbox under **`1_development/stream_1_app/`**).
+
+---
+
+## 2. Canonical authoring layout (monorepo)
+
+Authoring spans **two** sibling folders under **`1_development/stream_1_app/`** (paths relative to Stables repo root):
+
+**`1_development/stream_1_app/task_stablescouncil_github_io/`** (static pages + build) and **`1_development/stream_1_app/dapp/`** (MiniDapp only).
+
+| Layer | Path | Role |
+|-------|------|------|
+| **Human page sources** | **`task_stablescouncil_github_io/webpages/pages/<slug>/index.html`** | One folder per route; slugs include **`index`**, **`links`**, **`playing_field`**, **`qr-code`**, **`ambassadorsprogramdesc`**, **`circulareconomy`**, **`bankingsystem`**. |
+| **MiniDapp web mirror** | **`1_development/stream_1_app/dapp/`** | Same folder layout as **`https://stablescouncil.org/dapp/`** (**`1-showcase/`**, **`2-demo/`**, **`3-test/`**, **`4-prod/`**, optional **`v00…/`** redirect stubs, …). |
+| **Shared shipped assets** | **`static/`** | Shared CSS (including **`stables.css`** pattern from Council spec), **`assets/`** (e.g. **`site-chrome.css`**), brand files, **`CNAME`**, images used across pages. |
+| **Built tree (generated)** | **`site/`** | **Only** output that matches the live URL layout. **Do not hand-edit** files here except **`site/README.md`** (tracked). Everything else under **`site/`** is produced by sync and is typically gitignored. |
+| **Sync tool** | **`tools/sync-site.mjs`** | Implements the merge and copy rules. |
+
+There is **no** duplicate **`index.html`** or **`dapp/`** at the **task folder root**; the root holds **`webpages/`**, **`static/`**, **`site/`**, and tooling.
+
+**Eleventy:** templates may live under **`src/`** with **`npm run build`**; the **hand-maintained** public pages use **`npm run sync:site`** for the tree that ships to Pages.
+
+---
+
+## 3. Route map (source → live URL → `site/` output)
+
+| Source | Typical live URL | Output under **`site/`** |
+|--------|------------------|---------------------------|
+| **`webpages/pages/index/`** | **`/`** | **`index.html`** |
+| **`webpages/pages/links/`** | **`/links.html`** | **`links.html`** |
+| **`devtools/`** (at **Pages repo root**, hand-maintained until synced from monorepo) | **`/devtools/`**, **`/devtools/minima-archive/`**, **`/devtools/minima-query/`** | same paths under **`site/`** if copied by your ship process |
+| **`webpages/pages/playing_field/`** | **`/playing_field.html`** | **`playing_field.html`** |
+| **`webpages/pages/qr-code/`** | **`/qr-code.html`** | **`qr-code.html`** |
+| **`webpages/pages/ambassadorsprogramdesc/`** | **`/ambassadorsprogramdesc.html`** | **`ambassadorsprogramdesc.html`** |
+| **`webpages/pages/circulareconomy/`** | **`/circulareconomy/`** | **`circulareconomy/`** (directory) |
+| **`webpages/pages/bankingsystem/`** | **`/bankingsystem/`** | **`bankingsystem/`** (directory) |
+| **`stream_1_app/dapp/`** | **`/dapp/...`** | **`dapp/`** (copied by **`sync-site`** from **`../dapp/`**) |
+
+**Minima devtools pages** use the same **document deck** pattern as **`qr-code.html`** and **`playing_field.html`**: link **`../stables.css`** (or **`../../stables.css`** in nested routes), **`assets/site-chrome.css`**, **`assets/site-map-nav.css`**, **`assets/devtools-pages.css`**, then the standard **`site-chrome-header`**, right rail (globe menu includes **Full presentation**, **Minima dev tools**, **All links**), **`main.site-chrome-main.site-chrome-main--document`**, minimal footer, **`site-rail` scripts**, and the **StablesAgent** FAB block (same inline widget as other deck pages).
+
+**Document page uniformity (mandatory for new deck pages):** Inside **`main`**, the first content wrapper MUST be **`div.container`** (optionally with a scoped inner class such as **`devtools-hub-inner`**). The first child inside that container MUST be **`div.title-block`** containing exactly one **`h1`** and, when needed, a single lede paragraph with class **`subtitle`** (not ad hoc **`h1`** margins or a custom **`lede`** class). Section blocks below use normal panels or page-specific CSS scoped under the inner wrapper. **`assets/site-chrome.css`** applies the standard header-to-title spacing and gradient **`h1`** to **`main.site-chrome-main--document > .container > .title-block:first-child`** for **`body.links-page-body.deck-chrome-page`**. Hub and subpages use **`data-site-map-role`** values **`devtools-hub`**, **`devtools-archive`**, and **`devtools-query`** (see **`assets/site-map-nav.js`**). Add new deck **`body`** classes to the **`--links-stack-max: 960px`** group in **`site-chrome.css`** when the page should match document stack width. Brain summary for StablesAgent: **`council_minima_devtools.md`**.
+
+Detail tables also live in **`task_stablescouncil_github_io/webpages/README.md`** and **`handover_document.md`**.
+
+---
+
+## 4. Build command
+
+From **`task_stablescouncil_github_io/`**:
+
+```bash
+npm run sync:site
+```
+
+This runs **`node tools/sync-site.mjs`**, which **merges `static/` into `site/` first**, then copies **`webpages/`** into **`site/`** according to the route map. Always run sync after changing **`webpages/`** or **`static/`** before previewing the full site or copying to the Pages repo.
+
+---
+
+## 5. Ship workflow (GitHub Pages)
+
+1. Edit **`webpages/`** and **`static/`** (and **`tools/`** if the pipeline changes).
+2. Run **`npm run sync:site`** so **`site/`** is complete and consistent.
+3. Copy **only the contents** of **`site/`** (not the parent sandbox folder name) into the **root** of the **`stablescouncil.github.io`** working tree, then commit and push **`main`**.
+
+**Monorepo mirror:** A full clone with embedded git metadata may live under **`3_archive/stream_1_app/task_archived_nested_repo_stablescouncil_github_io_2026-04-12/stablescouncil.github.io/`** with **`_embedded_git/`**; the archive **`README.md`** documents **`git --git-dir`** / **`--work-tree`** usage. Operators may instead use a standalone clone of **`StablesCouncil/stablescouncil.github.io`** and copy **`site/`** the same way.
+
+**Custom domain:** Repo root **`CNAME`** must match GitHub Pages custom domain settings for **`stablescouncil.org`**.
+
+---
+
+## 6. Local preview and `file://` behaviour
+
+Opening **`index.html` (and other pages) directly from disk** uses the **`file:`** protocol. Relative paths that assume **`https://stablescouncil.org/`** may fail unless adjusted.
+
+**Implemented pattern:** Main pages under **`webpages/pages/.../`** include a small script that runs on **`DOMContentLoaded`**: when the protocol is **`file:`**, it rewrites asset URLs (for example toward **`../../../static/`**), and **re-clones** linked stylesheets and scripts so CSS and JS **reload** after href/src changes. Agent and rail controls that depend on correct asset paths should therefore work under local file preview as well as on the live site.
+
+**Shared chrome:** Global footer/header styling and spacing may be centralized in **`static/assets/site-chrome.css`** (linked from pages after sync). Design tokens and button classes follow **`0_handshake/web_component_spec.md`** and Council **`stables.css`** conventions. For StablesAgent and RAG, the **button hierarchy** (one **`btn-primary`** per group, **`btn-secondary`** for the rest, no primary for inactive states) is summarized in **`website_button_hierarchy.md`** in this brain base; full recipes stay in **`web_component_spec.md`**.
+
+---
+
+## 7. Content and chrome policy (handover)
+
+**Agreed constraint:** Do **not** change core copy, headings, body text, link targets, link order, diagrams, or interactive behaviour inside existing main content regions unless Council explicitly lifts the freeze. Safe changes: **layout wrappers**, **global header/footer**, **spacing**, **shared styles**, **encoding fixes** for existing characters, **asset path** fixes, and **pipeline** improvements.
+
+**Objective:** One **uniform chrome** (header + footer + shared CSS) so all nodes **feel** like one site. **Template first:** **`links`** hub was chosen as the first shell template, then the same pattern rolls to other pages.
+
+---
+
+## 8. StablesAgent on the site
+
+The public site exposes StablesAgent (FAB / avatar / chat entry points depending on page). **Knowledge** for answers comes from the Council brain pipeline (Markdown brain base → ingestion → **`llms.txt`** / vector store); see **`website_presentation.md`** for the public **`llms.txt`** URL and Telegram / X entry points.
+
+When operators **update this engineering document** or other brain Markdown, they must promote from sandbox **`1_development/stream_3_governance/task_stablesagent-brain-base/`** to **`2_current/stream_3_governance/prod_stablesagent-brain-base/`** per handshake, then run the ingestion script in **`2_current/stream_3_governance/task_x_agent_node/`** (for example **`node ingest_knowledge.js`**) so **`llms.txt`** and embeddings stay current.
+
+---
+
+## 9. Quick operator checklist
+
+1. Edit **`webpages/`** or **`static/`** in **`task_stablescouncil_github_io`**.  
+2. Run **`npm run sync:site`**.  
+3. Spot-check **`site/`** (or open synced HTML with the **`file:`** helper in place).  
+4. Copy **`site/`** contents to **`stablescouncil.github.io`** repo root; commit; push **`main`**.  
+5. Confirm **`CNAME`** and HTTPS when changing domain-related files.  
+6. If brain docs changed: promote **`task_stablesagent-brain-base`** → **`prod_stablesagent-brain-base`**, then ingest.
+
+---
+
+## 10. Related files in the Stables repo (for humans and agents)
+
+- **`handover_document.md`** — Status, seven-node table, ship workflow, archive path.  
+- **`task_stablescouncil_github_io/webpages/README.md`** — Page and **`dapp`** map, sync command.  
+- **`task_stablescouncil_github_io/static/README.md`** — Static assets policy.  
+- **`task_stablescouncil_github_io/site/README.md`** — What **`site/`** is and that it is generated.  
+- **`0_handshake/handshake.md`**, **`0_handshake/web_component_spec.md`**, **`0_handshake/session_map.md`** — Governance, UI tokens, task matrix.
+
+
+========================================
 ## SOURCE FILE: minidapp_showcase_app.md
 ========================================
 
-# Stables MiniDapp — Showcase build (v0.01.01)
+# Stables MiniDapp — Showcase (public) vs active dev line
 
-*Last updated: 2026-03-31 — aligns with active development in `prod_stables_app_v0.01.01`.*
+*Last updated: 2026-04-01.*
 
-This section is for StablesAgent and external AIs when users ask about the **current Stables app preview** (Showcase / MiniDapp), how to open it, and how feedback works.
+This section is for StablesAgent and external AIs when users ask about the **Stables app preview** (Showcase / MiniDapp), how to open it, and how feedback works.
+
+## 0. Version map (do not conflate)
+
+| Line | Version | Meaning |
+|------|---------|--------|
+| **Public web + published zip** | **v0.01.01** | What visitors get at **https://stablescouncil.org/dapp/** and **`Stables_v0.01.01.mds.zip`** in Pages **`dapp/1-showcase/latest-version/`** until Council publishes a newer zip and redeploys web. (Former root **`dapp/latest-version/`** redirect stub **retired 2026-04-16**; see **`0_handshake/minidapp_version.md`** for current paths.) |
+| **Frozen source snapshot** | **v0.01.01** | `3_archive/stream_1_app/prod_stables_app_v0.01.01/` (see `FROZEN.md` there). |
+| **Active repo development** | **v0.01.02** | `1_development/stream_1_app/prod_stables_app_v0.01.02/` per `0_handshake/minidapp_version.md`. Changes are logged in **`CHANGELOG.md`** in that folder. |
+
+If the user asks “what version is live on the web?” answer **0.01.01** until the site and **`1-showcase/latest-version`** zip are updated. If they ask “what are you building now?” answer **0.01.02** in the development folder.
 
 ## 1. What it is
 
-- **Stables v0.01.01** is the **active Showcase / development** MiniDapp: wallet-style UI, demos, StablesAgent hooks, and **More → Feedback** (structured public submissions). It is a **preview**: copy and flows evolve quickly; not a final production release.
-- **Frozen older UIs** (for example v0.2.x) live in archive folders in the repo; **do not** describe them as the current app unless the user explicitly asks about history.
+- The Showcase MiniDapp is a **preview**: wallet-style UI, demos, StablesAgent hooks, and **More → Feedback** (structured public submissions). Not a final production release.
+- **Frozen older UIs** (v0.2.x, etc.) live in archive folders; **do not** describe them as current unless the user asks about history.
 
 ## 2. Where to open it
 
-- **Web (Showcase):** The public site **https://stablescouncil.org/** promotes **Test the showcase**, which opens **https://stablescouncil.org/dapp/** (Showcase entry). The GitHub Pages site may also host the same build under the Council’s `stablescouncil.github.io` tree when published.
-- **Minima node (phone or desktop):** Install the MiniDapp package **`Stables_v0.01.01.mds.zip`** (version in the filename matches the build). The zip contains the **contents** of the app folder at the root (not a nested folder), per the packaging rule in the repo `build/README.md`.
+- **Web (Showcase):** **https://stablescouncil.org/dapp/** (also under the Council GitHub Pages site). Marketing CTA **Test the showcase** on stablescouncil.org.
+- **Minima node:** Install the **published** package from GitHub **`dapp/1-showcase/latest-version/`** (filename matches the published version, e.g. **`Stables_v0.01.01.mds.zip`** while that remains latest). Zip root = app contents, not a nested folder (`build/README.md` in the active dev folder).
 
 ## 3. MiniDapp list: write mode vs read mode
 
 - On a **Minima node**, each MiniDapp can run in **read mode** or **write mode**.
-- For Stables Showcase, **write mode** is required for features that use the node network: **StablesAgent**, **structured feedback** (HTTP POST via the node), and similar. If the user only sees failures for those features, ask them to set Stables to **write mode** (not read mode) in the MiniDapp list.
+- For Stables, **write mode** is required for features that use the node network: **StablesAgent**, **structured feedback** (HTTP POST via the node), and similar. If those fail, ask them to set Stables to **write mode** (not read mode).
 
 ## 4. Structured feedback (More → Feedback)
 
-- The form posts **public** JSON to the Council feedback API (default **`https://agent.stablescouncil.org/api/feedback`**, configurable via app `FEEDBACK_SUBMIT_URL` / `runtime-config`). Submissions are intended for a **public GitHub ledger**; the UI requires **consent** and warns against secrets.
-- **On a normal browser (no Minima):** the app may use **`fetch`** to that URL.
-- **On a Minima node (MiniDapp):** the app uses **`MDS.net.POST`** so the request goes through the **node** (avoids browser CORS limits). The node must be **online** and the MiniDapp in **write mode**.
-- **Community alternatives (always valid):** **Telegram** — **https://t.me/stablescommunity** — and the **public GitHub feedback folder** linked from the app for “see what others sent.”
+- Posts **public** JSON to the Council feedback API (default **`https://agent.stablescouncil.org/api/feedback`**, configurable via `FEEDBACK_SUBMIT_URL` / `runtime-config`). **Web (browser)** typically uses **`fetch`**; **node** uses **`MDS.net.POST`**. Consent required; no secrets.
+- **Community:** **https://t.me/stablescommunity** and the public GitHub feedback folder linked from the app.
 
 ## 5. Known issues (Showcase)
 
-- **Structured feedback on some mobile nodes:** As of late March 2026, **some users report that structured feedback does not complete** on the node even when messages/errors display correctly (toast text was improved to wrap on small screens). **Workaround:** use **Telegram** or GitHub for urgent feedback; engineering is **continuing to debug** node/API delivery.
-- Do **not** promise a fixed date in chat unless the Council has published one.
+- **Some mobile nodes:** structured feedback may not complete on the node; **web** path has been reported working. **Workaround:** Telegram or GitHub; engineering continues to debug node delivery.
 
-## 6. StablesAgent inside the app
+## 6. Mint xWiniwa chart (Showcase)
 
-- When **`MDS`** (Minima) is present, opening StablesAgent may use the **system browser** for the chat URL configured in the app; behaviour matches the Showcase build notes in `runtime-config` / in-app copy.
+- Location: **Mint** tab → **Mint xWiniwa**, **below** the **Mint xWiniwa** button (not above the form).
+- **Three lines:**
+  - **Winiwa · USD (cyan):** about the last **365 days** of spot in **USD**. Data source is **CoinGecko** `market_chart` for the **minima** id (shown in-app as **Winiwa** in this test phase; thinned points for drawing).
+  - **xWiniwa · USD (purple):** demo strip **Winiwa_USD × leverage** at each time step (same leverage series as the green line). **Not** on-chain xWiniwa.
+  - **Leverage (green, right axis):** derived from **headline coverage ratio** as **CR% / (CR% − 100%)** (example: **130%** → **130 / 30 ≈ 4.33×**). The chart sweeps **interpolated** values from in-app **`CR_HIST_DATA`** along the time axis and pins the **last** point to the live Treasury **CR** (`#protocolCRBig`). **Not** on-chain. **Current leverage** on the Mint form and **xWiniwa** demo pricing use the **same** formula from the current CR headline.
+- **Hover or drag (touch):** vertical crosshair and a small panel with **calendar date** plus **Winiwa USD**, **xWiniwa USD**, and **leverage** at the nearest sample.
+- If the chart shows **Unavailable.**, the network or API rate limit blocked the fetch (retry later; **MDS.net.GET** on node when `MDS` is present).
 
-## 7. One-line answers for users
+## 7. StablesAgent inside the app
 
-- **“Where is the Showcase?”** → **https://stablescouncil.org/dapp/** (and the **Test the showcase** button on stablescouncil.org).
-- **“Which zip for my node?”** → **`Stables_v0.01.01.mds.zip`** (current dev Showcase).
-- **“Feedback won’t send on my phone node.”** → Set MiniDapp to **write mode**, stay **online**; if it still fails, use **Telegram** (**t.me/stablescommunity**) until the next fix ships.
+- With **`MDS`**, StablesAgent may open in the **system browser** per `runtime-config` / in-app behaviour.
+
+## 8. One-line answers
+
+- **“Where is the Showcase?”** → **https://stablescouncil.org/dapp/**.
+- **“Which zip matches what’s published?”** → Check **`dapp/1-showcase/latest-version/`** on the Pages repo (currently **0.01.01** until a new zip is published).
+- **“Feedback won’t send on my phone node.”** → **Write mode**, **online**; else **Telegram** (**t.me/stablescommunity**).
+
+
+========================================
+## SOURCE FILE: website_button_hierarchy.md
+========================================
+
+# Website and MiniDapp: button hierarchy (public UI law)
+
+**Audience:** StablesAgent, contributors, and anyone answering questions about Council HTML or the MiniDapp shell.
+
+**Canonical spec (monorepo):** **`0_handshake/web_component_spec.md`**, section **COMPONENTS → Buttons**, including **Button hierarchy (mandatory)**. **`0_handshake/handshake.md`** §1 states the same obligation in brief.
+
+## What the Agent must remember
+
+1. **Classes only** from Council **`stables.css`**: **`btn btn-primary`** or **`btn btn-secondary`** inside **`<div class="buttons">`**. Do not invent local gradients or ghost styles for actions.
+
+2. **`btn-primary`** (cyan-to-purple gradient): **one** main call to action per obvious visual group (hero row, card footer, modal, panel). Users must see a single clear “do this”.
+
+3. **`btn-secondary`** (dark fill, cyan border): supporting actions (cancel, back, optional path, second choice). Use for anything that is not that single main step.
+
+4. **Inactive or “coming soon only”** actions must **not** use **`btn-primary`**. Use **`btn-secondary`**, plain text, **`disabled`**, or omit the control. Do not keep gradient styling while meaning “unavailable”.
+
+5. **Two primaries** side by side is allowed only when two **equal** commitments are intentional and noted in the change or PR; default is **at most one primary** per group.
+
+6. **GitHub Pages deck pages** and the **MiniDapp shell** follow the same rule. Deck chrome and **`main`** layout: **`github_pages_website_engineering.md`**.
+
+When in doubt, read **`web_component_spec.md`** in the monorepo before suggesting markup.
 
 
 ========================================
@@ -342,7 +798,9 @@ This section is for StablesAgent and external AIs when users ask about the **cur
 # Stables Official Website Presentation
 *Source: stablescouncil.github.io*
 
-## Be your own bank
+**Technical reference (build, ship, routes, local preview):** see **`github_pages_website_engineering.md`** in this brain base. It is the canonical operations summary for agents and operators.
+
+## Be your bank
 Money that is truly yours. Secure, Pseudonymous and Unstoppable. Built on Minima.
 
 ## Pay instantly. Own completely.
@@ -360,12 +818,12 @@ A new way to participate in the stability of the ecosystem. Use the Multiplicato
 Advanced tools for those who want to do more than just pay.
 
 ## The Core Concept
-Let's be our own banking system. The Network of Everybody's Own Bank.
+Let's be our banking system. The Network of Everybody's Bank.
 
-## Stables Showcase MiniDapp (preview, v0.01.01)
+## Stables Showcase MiniDapp (preview)
 
 - The public site **https://stablescouncil.org/** uses a primary call-to-action **Test the showcase**, which opens **https://stablescouncil.org/dapp/** (Showcase web entry). A full-page **All Links** control may appear lower on the page; the hero area focuses on the single showcase CTA.
-- On a **Minima node**, install the current package **`Stables_v0.01.01.mds.zip`** and set the MiniDapp to **write mode** (not read mode) for network features such as StablesAgent and structured feedback. See **`minidapp_showcase_app.md`** in this knowledge base for detail, feedback API notes, and known issues.
+- **Published** web and zip versions follow **`dapp/1-showcase/latest-version/`** on GitHub Pages. **Version policy:** **`0_handshake/minidapp_version.md`**. **Showcase packaging note:** this folder’s **`minidapp_showcase_app.md`**. On a **Minima node**, install the versioned **`.mds.zip`** from that folder and set the MiniDapp to **write mode** (not read mode) for StablesAgent and structured feedback.
 
 ## StablesAgent and the Knowledge Base
 
@@ -375,10 +833,10 @@ StablesAgent is the official AI assistant for the Stables community. It can be r
 - In a private conversation with @StablesAgentBot directly.
 - On X at https://x.com/StablesCouncil
 
-Anyone who prefers to use their own AI (ChatGPT, Grok, Claude, or any other tool) can access the full Stables knowledge base using this direct link:
+Anyone who prefers to use their own AI (ChatGPT, Grok, Claude, or any other tool) can access the full Stables knowledge base using this direct link (same URL as the StablesAgent web chat footer):
 
-https://raw.githubusercontent.com/StablesCouncil/stablesagent-brain-base/main/llms.txt
+https://raw.githubusercontent.com/StablesCouncil/stables-agent/main/brain/llms.txt
 
 To use it, paste that link into any AI and say: "Learn everything in this file." The AI will then be able to answer any question about Stables in detail and in any language.
 
-The knowledge base source files and generated rollup live with the Council’s public brain-base repository; interaction logs may be published per that repo’s README.
+The knowledge base source files and generated rollup are published under the **`brain/`** folder in the public **StablesCouncil/stables-agent** repository; interaction logs may be published per that repo’s README.
