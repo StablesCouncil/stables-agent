@@ -332,6 +332,86 @@ For that to work in practice, the page lists **design requirements**: full trans
 
 
 ========================================
+## SOURCE FILE: communication_plan_overview.md
+========================================
+
+# Communication Plan overview
+
+**Live page:** https://stablescouncil.org/communication_plan.html  
+**Status:** Drafting
+
+The Communication Plan is the public planning page for how Stables will communicate across platforms and connect communication work to Dashboard success measures.
+
+## Public versus community/member channels
+
+The plan distinguishes public-facing social platforms from community/member channels.
+
+General public channels include platforms such as:
+
+- X
+- Instagram
+- Facebook
+- YouTube
+- TikTok
+- Twitch
+- Rumble
+- Moltbook
+
+Community/member channels include:
+
+- Telegram Community
+- Telegram Council Official
+- Discord working groups
+
+Telegram and Discord should not be treated as general-public broadcast channels only. They are also places where existing community members, possible Council operators, ambassadors, and contributors can engage in more specific discussion.
+
+## Current communication objective
+
+The immediate communication objective is to announce and invite feedback on:
+
+- the Navigation System,
+- the Dashboard,
+- the Communication Plan,
+- the broader Version 0.0.01 | Community Draft framing.
+
+This should be presented as a community draft, not as final structure.
+
+## Channel rules
+
+For X:
+
+- Follow the handshake X/Twitter rules.
+- Include required hashtags: `#BYB #Stablecoin #Minima`.
+- Keep within 280 characters.
+- Use concise language and a clear link.
+
+For Telegram:
+
+- Do not use hashtags.
+- Use a warmer explanation.
+- Invite comments, questions, and review.
+
+For all channels:
+
+- Do not overclaim automation.
+- Do not say the Dashboard has mature production data.
+- Do not imply the Council structure is final.
+- Do explain that the Dashboard and Navigation System are now public and connected.
+
+## Recommended launch copy base
+
+```text
+We published the first Community Draft of the Stables Navigation System and Dashboard.
+
+Navigation System: direction, streams, cards, dependencies, and work status.
+Dashboard: measurable success indicators we can improve and automate over time.
+
+This is Version 0.0.01, shared for community review and feedback.
+https://stablescouncil.org/links.html
+```
+
+
+========================================
 ## SOURCE FILE: comprehensive_knowledge_base.md
 ========================================
 
@@ -567,6 +647,83 @@ Canonical public URLs (custom domain `stablescouncil.org`):
 
 
 ========================================
+## SOURCE FILE: dashboard_success_metrics.md
+========================================
+
+# Dashboard success metrics and data pipeline
+
+**Live page:** https://stablescouncil.org/council_dashboard.html  
+**Status:** Version 0.0.01 | Community Draft
+
+The Dashboard is a public success measurement layer for Stables. It is not a task tracker and should not be used to show internal development progress. It tracks measurable signals that come from our work: user reach, community and Council engagement, ambassador interest, merchant-network traction, and public channel growth.
+
+## Indicator groups
+
+The Dashboard currently uses three main groups:
+
+1. **Users**
+2. **Community / Council development**
+3. **Ambassadors / Merchant networks**
+
+Ambassador-related measures belong in **Ambassadors / Merchant networks**, not in Community / Council development. Merchant channel activity, merchant listings, ambassador interest, and merchant-network traction also belong in that group.
+
+Community / Council development should focus on Council-specific interest and engagement, especially from dedicated Council social channels. General community chatter belongs to the broader community side, not automatically to Council development.
+
+## Real data vs TBD
+
+The Dashboard must never present fake values as success metrics.
+
+Current rules:
+
+- If the number is collected, show the value and its source.
+- If the number is manually entered, label it as a manual baseline.
+- If the number needs an API or credential, label it as needing API access.
+- If the number does not exist yet, show it as TBD or awaiting baseline.
+- Demo app merchant profiles are not production merchant directory listings.
+
+As of the first public draft, known real baselines include:
+
+- X followers for `@StablesCouncil`: manually held public baseline.
+- TikTok followers for the public Stables account: public page snapshot.
+
+Merchant directory listings are not currently available as production success data unless a real production merchant directory ledger or source is wired.
+
+## Data source files
+
+The Dashboard data pipeline is represented by these website files:
+
+- `dashboard_metrics.json`: metric definitions, groups, labels, sources, and Navigation links.
+- `dashboard_feed_plan.json`: feed status, collection method, next step, and automation plan per metric.
+- `dashboard_manual_inputs.json`: manually entered baselines that should not be invented by the UI.
+- `dashboard_sources.json`: public identifiers and source URLs.
+- `dashboard_state.json`: generated state consumed by the Dashboard page.
+- `data/dashboard_snapshots/latest.json`: latest collected or manual snapshot.
+- `tools/collect-dashboard-snapshots.mjs`: collector runner.
+- `tools/generate-dashboard-state.mjs`: state generator.
+- `tools/dashboard_collectors/`: collectors for X, Telegram, Discord, YouTube, Meta, public profiles, manual baselines, and local ledgers.
+
+## Collection model
+
+The pipeline distinguishes:
+
+- **Manual baseline:** a value entered from a public or operator-confirmed source.
+- **Public snapshot:** a value scraped or discovered from a public page where allowed and technically stable.
+- **API candidate:** a value that should be automated later once credentials or API access are configured.
+- **TBD / awaiting baseline:** a valid metric concept with no current measurement.
+
+APIs or credentials may be needed for X, Telegram, Discord, Meta, YouTube, or other platforms. Until credentials exist, the Dashboard should clearly say the measure needs API access instead of pretending it is automated.
+
+## Dashboard and Navigation link model
+
+Dashboard measures can link back to related Navigation cards. Navigation cards can link to Dashboard measures. These links let users move between:
+
+- the work or roadmap item that explains the initiative, and
+- the success measure that tracks whether the initiative is working.
+
+When metric IDs or Navi card IDs change, both sides must be updated together.
+
+
+========================================
 ## SOURCE FILE: github_pages_website_engineering.md
 ========================================
 
@@ -762,6 +919,163 @@ If the user asks “what version is live on the web?” answer **0.01.01** until
 - **“Where is the Showcase?”** → **https://stablescouncil.org/dapp/**.
 - **“Which zip matches what’s published?”** → Check **`dapp/1-showcase/latest-version/`** on the Pages repo (currently **0.01.01** until a new zip is published).
 - **“Feedback won’t send on my phone node.”** → **Write mode**, **online**; else **Telegram** (**t.me/stablescommunity**).
+
+
+========================================
+## SOURCE FILE: navigation_card_system.md
+========================================
+
+# Navigation System card model
+
+**Live page:** https://stablescouncil.org/council_navigation_system.html  
+**Status:** Version 0.0.01 | Community Draft
+
+The Stables Navigation System is the public roadmap and status map for the project. It is not a marketing page and not a final governance decision. It is a living draft that lets the community see the structure of the work.
+
+## Hierarchy
+
+The Navigation System uses four core levels:
+
+1. **Stream**
+2. **Group**
+3. **Card**
+4. **Element**
+
+Avoid adding extra public hierarchy levels unless there is a clear reason. In particular, do not split the same card into duplicate Showcase and Demo cards. The card itself carries its app phase information.
+
+## Streams
+
+The three public streams are:
+
+- **Technical Stream:** app screens, runtime flows, wallet and mint/burn flows, invest/coverage, merchant tools, infrastructure, security, previews, and production path.
+- **Financial Stream:** mint/burn discipline, peg maintenance, solvency controls, coverage, liquidity, transparent protocol accounting, and merchant accepting payment network foundations for real circulation.
+- **Community Stream:** communication, feedback, ambassadors, merchant growth, Council formation, and community handover.
+
+## Dapp phase logic
+
+The app phase boxes are filters and definitions. They should be understood as:
+
+- **Showcase:** synthetic presentation and local simulation for explaining the product direction. It is not a live on-chain Stables product.
+- **Demo:** current demo channel. It uses Minima where available, but has no official Stables production token on-chain. In-app demo assets remain demo-only.
+- **Test:** future stage for real on-chain Winiwa/Wables test-token work and quests.
+- **Prod:** future Council-declared production stable layer for real Minima and Stables production mechanics.
+
+Minima is used for minting Stables and xMinima. There is no "Maximize MINIMA staking surface" product concept in the current public scope.
+
+## Lens filters
+
+The Navigation System includes lens filters:
+
+- **Charter Lens:** concepts, principles, and agreements.
+- **Dapp Lens:** concrete screens, flows, and practical application.
+
+The Dapp Lens should follow the app order and practical user flow. It should not put Chat ahead of earlier banking, shop, mint, invest, merchant, communication, or dashboard surfaces unless the app structure later changes.
+
+## Card content
+
+Each card can include:
+
+- App phase tags.
+- Progress percentage.
+- Status and blockers.
+- Dependencies.
+- Dashboard Measures.
+- Work Evidence.
+- Links to local or public pages.
+
+Dashboard Measures are for measurable success indicators only. Non-measurable proofs, explanations, scope notes, or work artifacts belong in **Work Evidence**.
+
+## Dashboard links
+
+Navigation cards can link to Dashboard measures. These links are public and should be maintained when cards or metric IDs change.
+
+If a card has no measurable success signal yet, it is acceptable to say that no Dashboard measure is linked yet. Do not force weak or fake indicators.
+
+
+========================================
+## SOURCE FILE: public_draft_navigation_dashboard.md
+========================================
+
+# Public draft Navigation System and Dashboard
+
+**Status:** Version 0.0.01 | Community Draft  
+**First public draft pushed:** 2026-05-08  
+**Live entry point:** https://stablescouncil.org/links.html
+
+This document tells StablesAgent what is now public about the Stables Navigation System, Dashboard, and Communication Plan.
+
+## Live pages
+
+- **Navigation System:** https://stablescouncil.org/council_navigation_system.html
+- **Dashboard:** https://stablescouncil.org/council_dashboard.html
+- **Communication Plan:** https://stablescouncil.org/communication_plan.html
+- **All links:** https://stablescouncil.org/links.html
+
+The visible public names are **Navigation System** and **Dashboard**. Do not call them "Council Navigation System" or "Council Dashboard" in public-facing answers unless quoting an old filename or explaining the URL.
+
+## Public framing
+
+The Navigation System and Dashboard are live as a first community draft. The right public framing is:
+
+- They are shared for review, feedback, and progressive correction.
+- They are not final governance decisions.
+- They are not a claim that every measure is automated or production-ready.
+- The Dashboard tracks measurable success signals, not internal task completion.
+- The Navigation System explains direction, dependencies, cards, and work status.
+
+Use this stage label when asked about maturity:
+
+```text
+Version 0.0.01 | Community Draft
+```
+
+The same Community Draft framing is also used on:
+
+- The Playing Field
+- Stables circular economy
+- Our Banking System
+- Ambassador Program
+
+## Relationship between the two pages
+
+The **Navigation System** answers:
+
+- What are we building?
+- Which stream, group, card, and app phase does an item belong to?
+- What is already done, what is blocked, and what depends on what?
+- Which Dashboard success measures are relevant to each card?
+
+The **Dashboard** answers:
+
+- What external or community success signals can be measured?
+- Which indicators already have a baseline?
+- Which indicators require manual collection, API credentials, or future automation?
+- Which Navigation cards explain the work behind each measure?
+
+The two pages now link to each other:
+
+- Dashboard cards link back to related Navigation cards.
+- Navigation cards link to related Dashboard measures.
+
+## No fake data rule
+
+The Dashboard must not show fake merchant, user, social, or directory numbers. Demo app profiles and synthetic app data are excluded from success metrics unless explicitly labeled as demo-only. If a measure is not available, StablesAgent should say it is **TBD**, **awaiting baseline**, or **needs API**, not invent a number.
+
+## Public communication draft
+
+Use this baseline wording for X or Telegram communication, then adapt to channel rules:
+
+```text
+We published the first Community Draft of the Stables Navigation System and Dashboard.
+
+Navigation System: direction, streams, cards, dependencies, and work status.
+Dashboard: measurable success indicators we can improve and automate over time.
+
+This is Version 0.0.01, shared for community review and feedback.
+https://stablescouncil.org/links.html
+```
+
+For X, the handshake rule still applies: include the mandatory hashtags `#BYB #Stablecoin #Minima` and stay within 280 characters. Do not use hashtags in Telegram community posts.
 
 
 ========================================
