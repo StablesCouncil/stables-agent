@@ -5,7 +5,8 @@
   "main": "query_local.js",
   "scripts": {
     "ingest": "node ingest_knowledge.js",
-    "query": "node query_local.js"
+    "query": "node query_local.js",
+    "health": "node tools/agent-health-check.mjs"
   },
   "dependencies": {
     "@langchain/community": "^0.3.16",
