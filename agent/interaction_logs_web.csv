@@ -305,3 +305,27 @@ Is there something specific you're trying to achieve with the address sharing?"
 Based on the context provided, Stables Council has a dapp accessible at **https://stablescouncil.org/dapp/**. This is the public showcase where visitors can interact with the Stables Council banking system, which is built on the Minima blockchain.
 
 The context shows that the current published version is v0.01.01, and updates are distributed as zip files through their Pages repository."
+"2026-05-08T14:52:22.617Z","how are the indicators of the dashboard determined?","The dashboard indicators are determined through a structured process focused on measurable success signals only.
+
+First, the team identifies what external or community success signals can actually be measured. This means looking for quantifiable data points rather than subjective assessments.
+
+Then, each metric is defined in `dashboard_metrics.json`, which contains the metric definitions, groups, labels, sources, and links to related Navigation cards that explain the work behind each measure.
+
+The collection method for each indicator is documented in `dashboard_feed_plan.json`, which specifies whether the metric uses manual input, API credentials, or is planned for future automation.
+
+Importantly, baselines are manually entered through `dashboard_manual_inputs.json` — the UI does not invent these values. Sources are tracked in `dashboard_sources.json` with public identifiers and URLs for transparency.
+
+If a Navigation card has no measurable success signal yet, it's acceptable to simply state that no dashboard measure is linked. The system explicitly forbids forcing weak or fake indicators just to fill a gap."
+"2026-05-08T17:37:03.444Z","Explain me: Wallet: currencies and ordering","Dans le portefeuille Stables, chaque type de stablecoin (USDs, EURs, JPYs, etc.) est représenté comme une « valeur stable » distincte. Quand vous verrouillez des Minima pour créer un stablecoin, le portefeuille enregistre le montant minté dans la catégorie correspondante.  
+
+L’ordre des monnaies dans le portefeuille reflète la priorité d’utilisation : les stablecoins les plus courants (USDs, EURs) apparaissent en haut, suivis des synthetics moins utilisés. Cette disposition permet de voir rapidement combien de chaque monnaie vous détenez et de choisir celle qui correspond le mieux à votre transaction.  
+
+Lorsque vous effectuez un paiement, le portefeuille sélectionne automatiquement la stablecoin appropriée en fonction du prix du marchand (par exemple, 1 USDs pour 1 $). Si vous avez plusieurs stablecoins, vous pouvez choisir manuellement ou laisser le portefeuille choisir la plus adaptée.  
+
+En résumé, le portefeuille gère plusieurs stablecoins, les classe par ordre de fréquence d’usage, et facilite le choix de la monnaie à utiliser lors d’un paiement."
+"2026-05-08T17:37:15.217Z","Explain me: Wallet: currencies and ordering","Dans un portefeuille Stables, vous avez plusieurs types de monnaies : les stablecoins (USDs, EURs, JPYs, etc.) et la monnaie native Minima. Vous pouvez « entrer » dans le système en verrouillant des Minima pour créer de nouveaux stablecoins, ou en gagnant des stablecoins via des activités.  
+
+Quand vous utilisez votre portefeuille, vous choisissez d’abord la monnaie que vous voulez détenir. Vous pouvez garder des stablecoins comme réserve ou les convertir en Minima en les brûlant. L’ordre est donc : verrouiller Minima → mint de stablecoins → utilisation ou stockage → burn de stablecoins → récupération de Minima.  
+
+Les commerçants acceptent les stablecoins comme paiement. Vous payez en stablecoins, le commerçant peut les conserver ou les brûler pour obtenir des Minima. Le protocole gère ces opérations en mintant et brûlant les stablecoins, tandis que le trésor du conseil finance la liquidité pour garantir que les stablecoins restent à leur valeur cible."
+"2026-05-08T22:33:16.478Z","Explain me: Security: your Vault key is sole access to your bank; never share it","Votre clé de coffre (Vault key) est votre unique moyen d’accéder à vos fonds. Elle vous appartient exclusivement, sans intermédiaire. Si vous la partagez, vous donnez à quelqu’un d’autre le contrôle total de votre compte. Gardez‑la secrète et ne la communiquez à personne."
