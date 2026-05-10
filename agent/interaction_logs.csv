@@ -550,3 +550,6 @@ Quand vous utilisez votre portefeuille, vous choisissez d’abord la monnaie que
 
 Les commerçants acceptent les stablecoins comme paiement. Vous payez en stablecoins, le commerçant peut les conserver ou les brûler pour obtenir des Minima. Le protocole gère ces opérations en mintant et brûlant les stablecoins, tandis que le trésor du conseil finance la liquidité pour garantir que les stablecoins restent à leur valeur cible."
 "2026-05-08T22:33:16.478Z","Explain me: Security: your Vault key is sole access to your bank; never share it","Votre clé de coffre (Vault key) est votre unique moyen d’accéder à vos fonds. Elle vous appartient exclusivement, sans intermédiaire. Si vous la partagez, vous donnez à quelqu’un d’autre le contrôle total de votre compte. Gardez‑la secrète et ne la communiquez à personne."
+"2026-05-09T14:50:37.917Z","What is Stables?","Stables are the stablecoins in the Stables Council system, including USDs, EURs, JPYs and many more. They are designed to be day-to-day money for buyers, savers and senders, allowing people to pay, save and send money.
+
+Once minted, Stables move as fast as a message and settle on-chain on Minima in seconds. They are designed to hold their value, making them suitable for modern commerce from local shops to global services."
