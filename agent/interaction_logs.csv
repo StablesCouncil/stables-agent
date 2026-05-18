@@ -554,3 +554,18 @@ Les commerçants acceptent les stablecoins comme paiement. Vous payez en stablec
 
 Once minted, Stables move as fast as a message and settle on-chain on Minima in seconds. They are designed to hold their value, making them suitable for modern commerce from local shops to global services."
 "2026-05-15T17:01:34.852Z","Explain to me what the Vault key is.","Je suis désolé, mais je ne dispose pas d’informations sur le « Vault key » dans le contexte fourni."
+"2026-05-17T11:12:56.276Z","Explain me: Security: your Vault key is sole access to your bank; never share it","La clé de votre coffre (Vault key) est votre unique porte d’accès à votre compte bancaire. Elle vous permet de signer toutes les transactions et de déplacer votre valeur. Si vous la partagez, vous donnez à quiconque la possédant le contrôle total de votre argent. Conservez‑la en lieu sûr, hors ligne si possible, et ne la communiquez jamais. C’est la seule façon de garantir que vos fonds restent sous votre contrôle exclusif."
+"2026-05-17T11:13:03.435Z","Explain me: Security: your Vault key is sole access to your bank; never share it","La clé de votre coffre (Vault key) est votre unique moyen d’accéder à votre compte bancaire Stables. Elle vous donne la possession complète de vos actifs et aucune autre entité ne possède cette clé. Si vous la partagez, vous donnez à quelqu’un d’autre le contrôle total de votre argent, ce qui annule l’avantage de la self‑custody. Conservez‑la en lieu sûr, ne la communiquez à personne et ne la stockez pas sur des plateformes non sécurisées."
+"2026-05-17T11:14:12.880Z","Explain me: Mint and burn xWiniwa: lock Winiwa, coverage ratio, reclaim","Dans le protocole Stables, voici comment ces concepts fonctionnent :
+
+**Lock Winiwa (verrouiller Winiwa)** : Pour créer des xWiniwa, vous devez verrouiller du Winiwa (Minima) comme garantie dans le protocole. C'est le collatéral qui sécurise votre position.
+
+**Coverage Ratio (CR)** : C'est le ratio de couverture de votre dette par le collatéral. Dans l'exemple donné, un CR de 130% signifie que vous avez 130% de garantie par rapport à votre dette. Le protocole utilise cette formule pour calculer l'effet de levier : CR% / (CR% − 100%). Donc 130% donne environ 4,33× d'effet de levier.
+
+**Mint xWiniwa** : C'est l'action de créer des tokens xWiniwa en verrouillant du Winiwa. Vous empruntez en quelque sorte contre votre collatéral, avec un effet de levier basé sur le coverage ratio actuel du protocole.
+
+**Burn xWiniwa** : C'est l'action de détruire vos tokens xWiniwa.
+
+**Reclaim** : Lorsque vous brûlez vos xWiniwa, vous récupérez (réclamez) votre Winiwa verrouillé en retour. C'est la sortie de votre position.
+
+Le système est conçu pour maintenir un coverage ratio sain (au-dessus de 100%) pour garantir la solvabilité du protocole."
