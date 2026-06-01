@@ -1,25 +1,46 @@
-const fs = require('fs');
-const path = require('path');
+/**
+ * Concatenate every *.md in this directory into llms.txt for external AIs
+ * (same rollup shape as StablesCouncil/stables-agent brain/llms.txt).
+ * Run from this folder: node build_llms_txt.js
+ * Also invoked automatically by task_x_agent_node/ingest_knowledge.js when present.
+ */
+const fs = require("fs");
+const path = require("path");
 
-const dir = __dirname;
-const outputFile = path.join(dir, 'llms.txt');
+const HERE = __dirname;
+const BUILD_DATE = new Date().toISOString().slice(0, 10);
+const HEADER = `# Stables Council Knowledge Base
+> This file is generated for external AI models (like ChatGPT, Claude) to ingest the complete public knowledge base of the Stables ecosystem from a single URL.
+> Last updated: ${BUILD_DATE}
 
-console.log("🛠️ Building 'llms.txt' for external AIs...");
+`;
 
-const files = fs.readdirSync(dir).filter(f => f.endsWith('.md') && f !== 'README.md');
+function main() {
+    const names = fs
+        .readdirSync(HERE)
+        .filter(
+            (f) =>
+                f.endsWith(".md") &&
+                f.toLowerCase() !== "readme.md" &&
+                fs.statSync(path.join(HERE, f)).isFile()
+        )
+        .sort((a, b) => a.localeCompare(b, "en"));
 
-let combinedContent = "# Stables Council Knowledge Base\n";
-combinedContent += "> This file is generated for external AI models (like ChatGPT, Claude) to ingest the complete public knowledge base of the Stables ecosystem from a single URL.\n\n";
+    if (names.length === 0) {
+        console.error("No .md files found in", HERE);
+        process.exit(1);
+    }
 
-for (const file of files) {
-    const content = fs.readFileSync(path.join(dir, file), 'utf-8');
-    combinedContent += `\n\n========================================\n`;
-    combinedContent += `## SOURCE FILE: ${file}\n`;
-    combinedContent += `========================================\n\n`;
-    combinedContent += content;
-    console.log(`- Added: ${file}`);
+    let body = "";
+    for (const name of names) {
+        const text = fs.readFileSync(path.join(HERE, name), "utf8");
+        body += "\n\n========================================\n## SOURCE FILE: " + name + "\n========================================\n\n";
+        body += text.replace(/\r\n/g, "\n");
+    }
+
+    const outPath = path.join(HERE, "llms.txt");
+    fs.writeFileSync(outPath, HEADER + body, "utf8");
+    console.log("Wrote", outPath, "from", names.length, "markdown sources:", names.join(", "));
 }
 
-fs.writeFileSync(outputFile, combinedContent, 'utf-8');
-console.log(`\n✅ Success! llms.txt generated at: ${outputFile}\n`);
-console.log(`💡 Once you upload this folder to GitHub, you will be able to paste the raw URL of 'llms.txt' into ChatGPT, and it will instantly memorize everything about Stables!`);
+main();
