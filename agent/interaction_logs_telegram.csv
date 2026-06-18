@@ -226,3 +226,26 @@ The example address provided (MEXC hot wallet: `0x4AD25252814256BEDDF7EA6F0CF75E
 "2026-05-29T07:42:39.368Z","can you give me your answer in English?","Sure, here's the answer in English."
 "2026-05-29T07:43:22.747Z","what this means: 可以，但只能通过合约中的铸造/销毁机制实现。也就是说，需要使用系统提供的铸币或销毁功能（例如通过金库或市场的双向链接），而不是直接的双向交易。这样才能在两种资产之间进行兑换。","这句话说明，资产之间的兑换只能通过合约内部的铸造或销毁功能来完成，而不能直接进行双向交易。换句话说，必须使用系统提供的“铸币”或“销毁”操作（例如通过金库或市场的双向链接）来实现两种资产之间的互换。"
 "2026-05-31T07:20:41.338Z","how is the peg maintained?","The peg is kept by the market itself. Because the backing ratio = Available Minima Assets ÷ Stablecoin Liabilities is always visible, anyone can redeem stablecoins for the underlying Minima assets at the current ratio. When the price drifts below the peg, arbitrageurs and the Coverage Fund will buy the stablecoin cheap, redeem it for assets and sell the assets for profit, pushing the price back up. When the price goes above the peg, they will sell stablecoins, redeem the excess assets and profit from the spread, pulling the price down. This continuous, opportunistic arbitrage—combined with the transparent redemption mechanism and the priority ordering that favors the Community Treasury—creates a self‑balancing system that maintains the peg without a centralized defense."
+"2026-06-17T08:30:59.058Z","is Stables a crypto app?","Yes, Stables is a crypto app built on the Minima blockchain."
+"2026-06-17T08:31:16.639Z","how is it working?","Stables works by giving you a simple wallet that you fully control – the private keys never leave your device, so only you can move your funds. Transactions are processed on the Minima network, which makes them fast, cheap and final within seconds, so you can send or receive money instantly without a bank in the middle. The app’s demo mode lets you try live send/receive and QR payments right away, while future test and production stages will bring real on‑chain stable tokens and full banking features."
+"2026-06-17T08:37:00.622Z","/start","Starting..."
+"2026-06-17T08:37:07.181Z","/start","Starting the Stables Agent."
+"2026-06-17T08:37:17.704Z","/help","Here are some useful commands:
+
+- **/info** – Overview of the Stables Council and its functions.  
+- **/balance** – Check your account balance.  
+- **/deposit** – Deposit funds into your Stables account.  
+- **/withdraw** – Withdraw funds from your Stables account.  
+- **/transfer** – Send funds to another Stables address.  
+- **/rate** – View the current stablecoin exchange rate.  
+- **/history** – Show recent transaction history.  
+- **/support** – Get contact information for further assistance.  
+
+Type the command you need for more details."
+"2026-06-17T08:37:23.811Z","/ask","Bitte stellen Sie eine konkrete Frage, damit ich Ihnen weiterhelfen kann."
+"2026-06-17T08:37:28.267Z","/balance","Der aktuelle Backing‑Ratio wird als `Available Minima Assets / Stablecoin Liabilities` angezeigt. Das ist die Kennzahl, die Ihren Kontostand im Stables‑System widerspiegelt."
+"2026-06-17T08:37:39.290Z","/deposit","To deposit, lock Minima into the Stables protocol. This action mints new stablecoins (USDs, EURs, JPYs, etc.) that you can then use within the system. The deposit is the financial on‑ramp: you provide Minima, the protocol issues the corresponding stablecoins, and you can later burn them to redeem Minima."
+"2026-06-17T08:37:50.932Z","/info","Stables Council is a decentralized banking system built on Minima. It offers public documentation such as the charter overview, banking system overview, and circular economy diagram, as well as Minima developer tools. Community members and archive node operators can discuss on‑chain analysis in the Stables Discord thread at https://discord.com/channels/1461269219009232997/1493173250497450066."
+"2026-06-17T09:51:01.529Z","/start","How can I assist you today?"
+"2026-06-17T09:51:06.367Z","/start","/start"
+"2026-06-17T09:51:19.035Z","/ask","Bitte stellen Sie eine konkrete Frage, damit ich Ihnen weiterhelfen kann."

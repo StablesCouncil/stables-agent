@@ -622,3 +622,26 @@ Si vous utilisez un portefeuille réel, la confirmation s’effectue via **MiniM
 "2026-06-11T01:56:42.260Z","minima10年后能达到多钱一个","根据我们掌握的资料，Minima 的未来价值并没有具体的预测数据。项目的长期价值取决于技术发展、生态系统的采用程度以及整体市场环境等多重因素。因此，无法给出 10 年后 Minima 会达到多少美元的确切数字。"
 "2026-06-11T01:57:03.637Z","预测下","在 Stage 2 之后，Minima 生态将逐步实现完全去中心化的本地经济。随着更多用户直接以 Minima 计价，桥接需求将显著下降，社区将进一步自我验证并管理基础设施。接下来，Stage 3 的“循环地平线”将成为目标：货币权利成为基本人权，系统将以服务地球与人类尊严为核心。实现这一目标的关键步骤包括扩大流动性基金、深化 xMinima 交易深度、以及通过 Council Treasury 维持市场深度与稳定性。随着这些机制成熟，Minima 生态将向真正的自给自足与可持续发展迈进。"
 "2026-06-14T09:47:05.850Z","How can i use Stables?","To start using Stables you just need a Minima - based wallet: 1. **Create a wallet** - download a Minima wallet (mobile or desktop) and generate your seed. This gives you a pseudonymous address that only you control. 2. **Obtain Stables** - either purchase Stables on an exchange that lists the token or receive them from another user. Because Stables are built on Minima, they move instantly on - chain. 3. **Send a payment** - enter the recipient’s Minima address, specify the amount of Stables, and confirm. The transaction is validated and settled in seconds, with no intermediary fees. 4. **Receive payments** - share your address with customers or partners. When they send Stables, the funds appear in your wallet instantly, giving you a direct relationship without a middle - man cut. 5. **Use Stables in commerce** - integrate the Stables payment flow into your shop or service (e.g., via QR code, API, or simple address copy). Because the token is designed to hold its value, you can keep it as a stable store of wealth or convert it to other assets whenever you wish. All of this is supported by the Stables Council’s official website and the knowledge base linked on X (https://x.com/StablesCouncil) for deeper technical details."
+"2026-06-17T08:30:59.058Z","is Stables a crypto app?","Yes, Stables is a crypto app built on the Minima blockchain."
+"2026-06-17T08:31:16.639Z","how is it working?","Stables works by giving you a simple wallet that you fully control – the private keys never leave your device, so only you can move your funds. Transactions are processed on the Minima network, which makes them fast, cheap and final within seconds, so you can send or receive money instantly without a bank in the middle. The app’s demo mode lets you try live send/receive and QR payments right away, while future test and production stages will bring real on‑chain stable tokens and full banking features."
+"2026-06-17T08:37:00.622Z","/start","Starting..."
+"2026-06-17T08:37:07.181Z","/start","Starting the Stables Agent."
+"2026-06-17T08:37:17.704Z","/help","Here are some useful commands:
+
+- **/info** – Overview of the Stables Council and its functions.  
+- **/balance** – Check your account balance.  
+- **/deposit** – Deposit funds into your Stables account.  
+- **/withdraw** – Withdraw funds from your Stables account.  
+- **/transfer** – Send funds to another Stables address.  
+- **/rate** – View the current stablecoin exchange rate.  
+- **/history** – Show recent transaction history.  
+- **/support** – Get contact information for further assistance.  
+
+Type the command you need for more details."
+"2026-06-17T08:37:23.811Z","/ask","Bitte stellen Sie eine konkrete Frage, damit ich Ihnen weiterhelfen kann."
+"2026-06-17T08:37:28.267Z","/balance","Der aktuelle Backing‑Ratio wird als `Available Minima Assets / Stablecoin Liabilities` angezeigt. Das ist die Kennzahl, die Ihren Kontostand im Stables‑System widerspiegelt."
+"2026-06-17T08:37:39.290Z","/deposit","To deposit, lock Minima into the Stables protocol. This action mints new stablecoins (USDs, EURs, JPYs, etc.) that you can then use within the system. The deposit is the financial on‑ramp: you provide Minima, the protocol issues the corresponding stablecoins, and you can later burn them to redeem Minima."
+"2026-06-17T08:37:50.932Z","/info","Stables Council is a decentralized banking system built on Minima. It offers public documentation such as the charter overview, banking system overview, and circular economy diagram, as well as Minima developer tools. Community members and archive node operators can discuss on‑chain analysis in the Stables Discord thread at https://discord.com/channels/1461269219009232997/1493173250497450066."
+"2026-06-17T09:51:01.529Z","/start","How can I assist you today?"
+"2026-06-17T09:51:06.367Z","/start","/start"
+"2026-06-17T09:51:19.035Z","/ask","Bitte stellen Sie eine konkrete Frage, damit ich Ihnen weiterhelfen kann."
