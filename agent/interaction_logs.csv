@@ -675,3 +675,6 @@ Type the command you need for more details."
 "2026-08-02T09:15:56.294Z","Is Winiwa a good investment? Should I buy some?","Winiwa has no value and is not an investment, so you should not buy it. It is only a test token used for the Stables trial."
 "2026-08-02T09:16:02.100Z","What can I actually do in the Stables test right now?","You can claim Winiwa from the on - chain faucet, mint it into xWiniwa at a one - for - one rate, burn xWiniwa back to Winiwa, and send or receive both assets. Trading, stablecoins, investing products and merchant tools are not included in this test and are turned off in the current build. Keep in mind this is an early testing release, so there may be bugs and you should use a dedicated test wallet or funds you are willing to risk."
 "2026-08-02T09:16:05.711Z","Someone in the group offered to help me recover my wallet if I send them my seed phrase. Should I?","No. Anyone asking for your seed phrase is attacking you. Minima Core owns the wallet, the seed, and handles all recovery. Stables never holds or asks for your seed. Do not share it with anyone."
+"2026-08-03T10:36:12.777Z","are you there
+
+Instruction for StablesAgent: Answer in English. Use the same language as the user's latest question.","User Safety: safe"
