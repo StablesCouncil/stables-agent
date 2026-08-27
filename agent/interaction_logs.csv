@@ -678,3 +678,8 @@ Type the command you need for more details."
 "2026-08-03T10:36:12.777Z","are you there
 
 Instruction for StablesAgent: Answer in English. Use the same language as the user's latest question.","User Safety: safe"
+"2026-08-26T11:42:54.344Z","项目进展到哪一步了？","目前项目仅处于第一轮社区测试阶段。这一轮测试范围较窄，主要支持以下功能： - 与 Minima Core 钱包配对
+- 从水龙头领取 Winiwa 测试代币
+- 按1:1比例铸造 xWiniwa
+- 销毁 xWiniwa
+- 发送或接收 Winiwa 和 xWiniwa 这两种资产 需要说明的是，Winiwa 和 xWiniwa 仅是毫无价值的测试代币，不应当作为真正的货币或投资来对待。 至于稳定币 USDw、交易功能、交易所、订单簿、流动性基金、Multiplicator 机制等，目前均尚未上线，属于设计阶段的内容，无法在当前测试中使用。 如果你想了解更多信息，可以关注 Stables Council 的官方渠道。"
