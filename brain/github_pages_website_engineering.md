@@ -2,7 +2,7 @@
 
 **Audience:** StablesAgent, operators, and contributors who need **how the site is built, previewed, and shipped**, not marketing copy.
 
-**Companion docs:** User-facing messaging stays in **`website_presentation.md`**. Protocol and economics stay in **`protocol_mechanics_spec.md`**, **`stables_master_reference.md`**, and **`comprehensive_knowledge_base.md`**. For the **authoritative file map and ship checklist** in the monorepo, use **`handover_document.md`** at the Stables repository root (Status block holds the latest **GitHub Pages** commit reference when maintained).
+**Companion docs:** User-facing messaging stays in **`website_presentation.md`**. Protocol and economics stay in **`protocol_mechanics_spec.md`**, **`stables_master_reference.md`**, and **`comprehensive_knowledge_base.md`**. The authoritative website map is **`1_development/stream_1_app/website/CANONICAL_LAYOUT.md`**. Repository release law remains in the handshake and the active website implementation plan.
 
 ---
 
@@ -11,117 +11,111 @@
 - **Public site (custom domain):** `https://stablescouncil.org/`
 - **GitHub Pages origin:** `https://stablescouncil.github.io/` (same deployment; custom domain is **`stablescouncil.org`** via **`CNAME`** in the Pages repo root).
 - **Pages repository:** `StablesCouncil/stablescouncil.github.io` on **`main`**. Only the **root** of that repo is what GitHub Pages serves.
-- **Council handshake task name for authoring:** **`task_stablescouncil_github_io`** (sandbox under **`1_development/stream_1_app/`**).
+- **Only authoring source:** **`1_development/stream_1_app/website/`**. Publish checkouts, archives, generated outputs, and the retired task tree are not authoring sources.
 
 ---
 
 ## 2. Canonical authoring layout (monorepo)
 
-Authoring spans **two** sibling folders under **`1_development/stream_1_app/`** (paths relative to Stables repo root):
+The complete public website and Pages-hosted MiniDapp are authored directly in:
 
-**`1_development/stream_1_app/task_stablescouncil_github_io/`** (static pages + build) and **`1_development/stream_1_app/dapp/`** (MiniDapp only).
+**`1_development/stream_1_app/website/`**
 
 | Layer | Path | Role |
 |-------|------|------|
-| **Human page sources** | **`task_stablescouncil_github_io/webpages/pages/<slug>/index.html`** | One folder per route; slugs include **`index`**, **`links`**, **`playing_field`**, **`qr-code`**, **`ambassadorsprogramdesc`**, **`circulareconomy`**, **`bankingsystem`**. |
-| **MiniDapp web mirror** | **`1_development/stream_1_app/dapp/`** | Same folder layout as **`https://stablescouncil.org/dapp/`** (**`1-showcase/`**, **`2-demo/`**, **`3-test/`**, **`4-prod/`**, optional **`v00…/`** redirect stubs, …). |
-| **Shared shipped assets** | **`static/`** | Shared CSS (including **`stables.css`** pattern from Council spec), **`assets/`** (e.g. **`site-chrome.css`**), brand files, **`CNAME`**, images used across pages. |
-| **Built tree (generated)** | **`site/`** | **Only** output that matches the live URL layout. **Do not hand-edit** files here except **`site/README.md`** (tracked). Everything else under **`site/`** is produced by sync and is typically gitignored. |
-| **Sync tool** | **`tools/sync-site.mjs`** | Implements the merge and copy rules. |
+| **Public pages** | **`website/*.html`** | Root routes such as home, Resources, Playing Field, Banking System, Circular Economy, Council pages, and public tools. |
+| **MiniDapp** | **`website/dapp/`** | Showcase, frozen demo, active test, future prod, shared assets, and package surfaces. |
+| **Shared website assets** | **`website/assets/`**, **`website/brand/`**, **`website/stables.css`** | Shared chrome, behavior, local Inter, and approved brand exports. |
+| **Root deployment files** | **`website/CNAME`**, **`website/favicon.png`**, **`website/stables_agent_avatar.png`** | Files copied to the GitHub Pages repository root. |
+| **Support and publish tooling** | **`1_development/stream_1_app/work/`** | Verifiers, evidence, tasks, dependencies, and the publish checkout. Not website source. |
 
-There is **no** duplicate **`index.html`** or **`dapp/`** at the **task folder root**; the root holds **`webpages/`**, **`static/`**, **`site/`**, and tooling.
-
-**Eleventy:** templates may live under **`src/`** with **`npm run build`**; the **hand-maintained** public pages use **`npm run sync:site`** for the tree that ships to Pages.
+The optional `website/src/`, `website/tools/`, package files, and development-only routes are support material inside the source tree. They do not create a second ship tree. Normal local review serves `website/` directly and requires no build step.
 
 ---
 
-## 3. Route map (source → live URL → `site/` output)
+## 3. Route map
 
-| Source | Typical live URL | Output under **`site/`** |
-|--------|------------------|---------------------------|
-| **`webpages/pages/index/`** | **`/`** | **`index.html`** |
-| **`webpages/pages/links/`** | **`/links.html`** | **`links.html`** |
-| **`devtools/`** (at **Pages repo root**, hand-maintained until synced from monorepo) | **`/devtools/`**, **`/devtools/minima-archive/`**, **`/devtools/minima-query/`** | same paths under **`site/`** if copied by your ship process |
-| **`webpages/pages/playing_field/`** | **`/playing_field.html`** | **`playing_field.html`** |
-| **`webpages/pages/qr-code/`** | **`/qr-code.html`** | **`qr-code.html`** |
-| **`webpages/pages/ambassadorsprogramdesc/`** | **`/ambassadorsprogramdesc.html`** | **`ambassadorsprogramdesc.html`** |
-| **`webpages/pages/circulareconomy/`** | **`/circulareconomy/`** | **`circulareconomy/`** (directory) |
-| **`webpages/pages/bankingsystem/`** | **`/bankingsystem/`** | **`bankingsystem/`** (directory) |
-| **`stream_1_app/dapp/`** | **`/dapp/...`** | **`dapp/`** (copied by **`sync-site`** from **`../dapp/`**) |
+| Source | Public URL |
+|--------|------------|
+| **`website/index.html`** | **`/`** (the merchant-first homepage since 2026-09-03; the previous homepage is archived under `3_archive/stream_1_app/task_old_homepage_retired_2026-09-03/`) |
+| **`website/payment-app/index.html`** | **`/payment-app/`** (application access: Download for the standalone Android app; the other offers are coming soon or planned) |
+| **`website/new/index.html`**, **`website/new/payment-app/index.html`** | **`/new/`**, **`/new/payment-app/`**: redirect stubs to `/` and `/payment-app/` (the candidate preview routes, kept only so old links land) |
+| **`website/links.html`** | **`/links.html`** |
+| **`website/playing_field.html`** | **`/playing_field.html`** |
+| **`website/ambassadorsprogramdesc.html`** | **`/ambassadorsprogramdesc.html`** |
+| **`website/bankingsystem.html`** | **`/bankingsystem.html`** |
+| **`website/circulareconomy.html`** | **`/circulareconomy.html`** |
+| **`website/brand_assets.html`** | **`/brand_assets.html`** |
+| **`website/communication_plan.html`** | **`/communication_plan.html`** |
+| **`website/council_dashboard.html`** | **`/council_dashboard.html`** |
+| **`website/council_navigation_system.html`** | **`/council_navigation_system.html`** |
+| **`website/onchain-watch.html`** | **`/onchain-watch.html`** |
+| **`website/dapp/`** | **`/dapp/`** and its channel routes |
 
-**Minima devtools pages** use the same **document deck** pattern as **`qr-code.html`** and **`playing_field.html`**: link **`../stables.css`** (or **`../../stables.css`** in nested routes), **`assets/site-chrome.css`**, **`assets/site-map-nav.css`**, **`assets/devtools-pages.css`**, then the standard **`site-chrome-header`**, right rail (globe menu includes **Full presentation**, **Minima dev tools**, **All links**), **`main.site-chrome-main.site-chrome-main--document`**, minimal footer, **`site-rail` scripts**, and the **StablesAgent** FAB block (same inline widget as other deck pages).
-
-**Document page uniformity (mandatory for new deck pages):** Inside **`main`**, the first content wrapper MUST be **`div.container`** (optionally with a scoped inner class such as **`devtools-hub-inner`**). The first child inside that container MUST be **`div.title-block`** containing exactly one **`h1`** and, when needed, a single lede paragraph with class **`subtitle`** (not ad hoc **`h1`** margins or a custom **`lede`** class). Section blocks below use normal panels or page-specific CSS scoped under the inner wrapper. **`assets/site-chrome.css`** applies the standard header-to-title spacing and gradient **`h1`** to **`main.site-chrome-main--document > .container > .title-block:first-child`** for **`body.links-page-body.deck-chrome-page`**. Hub and subpages use **`data-site-map-role`** values **`devtools-hub`**, **`devtools-archive`**, and **`devtools-query`** (see **`assets/site-map-nav.js`**). Add new deck **`body`** classes to the **`--links-stack-max: 960px`** group in **`site-chrome.css`** when the page should match document stack width. Brain summary for StablesAgent: **`council_minima_devtools.md`**.
-
-Detail tables also live in **`task_stablescouncil_github_io/webpages/README.md`** and **`handover_document.md`**.
+The exact inventory is maintained in `website/CANONICAL_LAYOUT.md`. Single public pages use root `.html` files. Multi-page areas use folders. Old Banking System and Circular Economy folder routes remain redirect stubs. There is no approved `qr-code.html` route or `devtools/` static website directory.
 
 ---
 
-## 4. Build command
+## 4. Local preview
 
-From **`task_stablescouncil_github_io/`**:
+Serve the active website tree directly from the repository root:
 
-```bash
-npm run sync:site
+```powershell
+node 1_development/stream_1_app/work/tools/website/serve-local.mjs ../../website 8080
 ```
 
-This runs **`node tools/sync-site.mjs`**, which **merges `static/` into `site/` first**, then copies **`webpages/`** into **`site/`** according to the route map. Always run sync after changing **`webpages/`** or **`static/`** before previewing the full site or copying to the Pages repo.
+Open `http://localhost:8080/`. No build or sync step is required for ordinary preview. Before trusting localhost, compare the active tree with the publish checkout and the live URL and classify every runtime-file difference.
 
 ---
 
 ## 5. Ship workflow (GitHub Pages)
 
-1. Edit **`webpages/`** and **`static/`** (and **`tools/`** if the pipeline changes).
-2. Run **`npm run sync:site`** so **`site/`** is complete and consistent.
-3. Copy **only the contents** of **`site/`** (not the parent sandbox folder name) into the **root** of the **`stablescouncil.github.io`** working tree, then commit and push **`main`**.
+1. Complete the active website implementation plan, preservation records, responsive and accessibility gates, source checks, and founder review.
+2. Receive explicit founder approval for publication. Local approval and publication approval are separate decisions.
+3. Build an isolated publication candidate from the validated contents of `website/`. Exclude development-only routes and tooling according to the active release plan.
+4. Prove the isolated candidate against the active source and preserve `CNAME`, redirects, downloads, and required operational data.
+5. Copy the approved candidate contents into the root of the publish checkout under `1_development/stream_1_app/work/publish_checkout/`.
+6. Commit and push the Pages repository `main` branch with Council identity and credentials.
+7. Verify the custom domain and Pages origin live, including direct routes, downloads, redirects, and rollback evidence.
 
-**Monorepo mirror:** A full clone with embedded git metadata may live under **`3_archive/stream_1_app/task_archived_nested_repo_stablescouncil_github_io_2026-04-12/stablescouncil.github.io/`** with **`_embedded_git/`**; the archive **`README.md`** documents **`git --git-dir`** / **`--work-tree`** usage. Operators may instead use a standalone clone of **`StablesCouncil/stablescouncil.github.io`** and copy **`site/`** the same way.
-
-**Custom domain:** Repo root **`CNAME`** must match GitHub Pages custom domain settings for **`stablescouncil.org`**.
-
----
-
-## 6. Local preview and `file://` behaviour
-
-Opening **`index.html` (and other pages) directly from disk** uses the **`file:`** protocol. Relative paths that assume **`https://stablescouncil.org/`** may fail unless adjusted.
-
-**Implemented pattern:** Main pages under **`webpages/pages/.../`** include a small script that runs on **`DOMContentLoaded`**: when the protocol is **`file:`**, it rewrites asset URLs (for example toward **`../../../static/`**), and **re-clones** linked stylesheets and scripts so CSS and JS **reload** after href/src changes. Agent and rail controls that depend on correct asset paths should therefore work under local file preview as well as on the live site.
-
-**Shared chrome:** Global footer/header styling and spacing may be centralized in **`static/assets/site-chrome.css`** (linked from pages after sync). Design tokens and button classes follow **`0_handshake/web_component_spec.md`** and Council **`stables.css`** conventions. For StablesAgent and RAG, the **button hierarchy** (one **`btn-primary`** per group, **`btn-secondary`** for the rest, no primary for inactive states) is summarized in **`website_button_hierarchy.md`** in this brain base; full recipes stay in **`web_component_spec.md`**.
+The publish checkout is a deployment target only. Never author there and never overwrite unrelated dirty application work.
 
 ---
 
-## 7. Content and chrome policy (handover)
+## 6. Shared website contract
 
-**Agreed constraint:** Do **not** change core copy, headings, body text, link targets, link order, diagrams, or interactive behaviour inside existing main content regions unless Council explicitly lifts the freeze. Safe changes: **layout wrappers**, **global header/footer**, **spacing**, **shared styles**, **encoding fixes** for existing characters, **asset path** fixes, and **pipeline** improvements.
+Public pages load `website/stables.css` and shared files under `website/assets/`. D028 is the approved appearance authority, with controlled page adoption through the active website plan. Use locally bundled Inter and the shared button, header, footer, focus, reflow, reduced-motion, and accessibility contracts. Public website page source and rendered copy must contain no em dash character.
 
-**Objective:** One **uniform chrome** (header + footer + shared CSS) so all nodes **feel** like one site. **Template first:** **`links`** hub was chosen as the first shell template, then the same pattern rolls to other pages.
+---
+
+## 7. Preservation and review policy
+
+Website migrations preserve route purpose, links, downloads, data dependencies, accessibility, responsive behavior, and truthful release status. A visual migration does not authorize content removal or publication. Changes to public narrative, application access, or release claims require their source matrix, automated evidence, and founder review.
 
 ---
 
 ## 8. StablesAgent on the site
 
-The public site exposes StablesAgent (FAB / avatar / chat entry points depending on page). **Knowledge** for answers comes from the Council brain pipeline (Markdown brain base → ingestion → **`llms.txt`** / vector store); see **`website_presentation.md`** for the public **`llms.txt`** URL and Telegram / X entry points.
+The public site exposes StablesAgent through its shared site controls. Knowledge comes from the single authoritative brain, its generated `llms.txt`, and the deployed vector store. See `website_presentation.md` for public access points.
 
-When operators **update this engineering document** or other brain Markdown, they must promote from sandbox **`1_development/stream_3_governance/task_stablesagent-brain-base/`** to **`2_current/stream_3_governance/prod_stablesagent-brain-base/`** per handshake, then run the ingestion script in **`2_current/stream_3_governance/task_x_agent_node/`** (for example **`node ingest_knowledge.js`**) so **`llms.txt`** and embeddings stay current.
+When operators update this document or other brain Markdown, they edit `1_development/stream_3_governance/task_stablesagent-brain-base/`, run `node build_llms_txt.js` there, and run the source and release-scope verifiers. Public GitHub and VPS brain copies are deployment targets only. Deployment and ingestion require founder approval.
 
 ---
 
 ## 9. Quick operator checklist
 
-1. Edit **`webpages/`** or **`static/`** in **`task_stablescouncil_github_io`**.  
-2. Run **`npm run sync:site`**.  
-3. Spot-check **`site/`** (or open synced HTML with the **`file:`** helper in place).  
-4. Copy **`site/`** contents to **`stablescouncil.github.io`** repo root; commit; push **`main`**.  
-5. Confirm **`CNAME`** and HTTPS when changing domain-related files.  
-6. If brain docs changed: promote **`task_stablesagent-brain-base`** → **`prod_stablesagent-brain-base`**, then ingest.
+1. Edit only `1_development/stream_1_app/website/`.
+2. Run the publish-baseline comparison and applicable website gates.
+3. Review the active tree through the canonical local server.
+4. Obtain explicit founder approval before creating or mutating a publication candidate.
+5. Publish the approved isolated candidate through the Pages checkout and verify both live domains.
+6. If public facts changed, update the authoritative brain, rebuild `llms.txt`, verify it, and deploy it only after approval.
 
 ---
 
 ## 10. Related files in the Stables repo (for humans and agents)
 
-- **`handover_document.md`** — Status, seven-node table, ship workflow, archive path.  
-- **`task_stablescouncil_github_io/webpages/README.md`** — Page and **`dapp`** map, sync command.  
-- **`task_stablescouncil_github_io/static/README.md`** — Static assets policy.  
-- **`task_stablescouncil_github_io/site/README.md`** — What **`site/`** is and that it is generated.  
-- **`0_handshake/handshake.md`**, **`0_handshake/web_component_spec.md`**, **`0_handshake/session_map.md`** — Governance, UI tokens, task matrix.
+- **`1_development/stream_1_app/website/CANONICAL_LAYOUT.md`**: route and source map.
+- **`1_development/stream_1_app/README.md`**: active source and support boundary.
+- **`0_handshake/handshake.md`**, **`0_handshake/web_component_spec.md`**, **`0_handshake/session_map.md`**: governance, UI contracts, and task routing.
+- **Active website implementation and release plans under `1_development/stream_1_app/work/`**: current wave, evidence, and founder gates.

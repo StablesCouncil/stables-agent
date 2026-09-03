@@ -1,59 +1,57 @@
-# Stables MiniDapp — Showcase (public) vs active dev line
+# Stables MiniDapp channels: showcase, demo, test
 
-*Last updated: 2026-04-01.*
+*For StablesAgent and external AIs when users ask which version of the Stables app is live, which
+one they should open, and what each one proves. Rewritten 2026-08-01. The previous version of this
+document was dated 2026-04-01 and described a `v0.01.x` line, repo paths that no longer exist, and a
+Mint chart that is not in the product.*
 
-This section is for StablesAgent and external AIs when users ask about the **Stables app preview** (Showcase / MiniDapp), how to open it, and how feedback works.
+## The three channels, and which one matters
 
-## 0. Version map (do not conflate)
+| Channel | Status | What it is |
+|---|---|---|
+| **Showcase** (`dapp/1-showcase/`) | Legacy preview | The earliest public UX shell, with simulated data. Kept for reference; not the current product. |
+| **Demo** (`dapp/2-demo/`) | **Frozen** | The hardened wallet line: payment protection, QR scanning, themes, settings auto-save. Native Minima send and receive were real; Winiwa and Wables balances were simulated. No new work happens here. |
+| **Test** (`dapp/3-test/`) | **Active** | The sole active development line and the basis of the first community test. Real Winiwa and xWiniwa on Minima mainnet, with **no value**. |
 
-| Line | Version | Meaning |
-|------|---------|--------|
-| **Public web + published zip** | **v0.01.01** | What visitors get at **https://stablescouncil.org/dapp/** and **`Stables_v0.01.01.mds.zip`** in Pages **`dapp/1-showcase/latest-version/`** until Council publishes a newer zip and redeploys web. (Former root **`dapp/latest-version/`** redirect stub **retired 2026-04-16**; see **`0_handshake/minidapp_version.md`** for current paths.) |
-| **Frozen source snapshot** | **v0.01.01** | `3_archive/stream_1_app/prod_stables_app_v0.01.01/` (see `FROZEN.md` there). |
-| **Active repo development** | **v0.01.02** | `1_development/stream_1_app/prod_stables_app_v0.01.02/` per `0_handshake/minidapp_version.md`. Changes are logged in **`CHANGELOG.md`** in that folder. |
+If someone asks which they should use, the answer is the **test channel**, through the
+standalone Android app (v0.0.11.38, Download on https://stablescouncil.org/payment-app/). The frozen
+demo package `v0.0.0.3.45` is history, not something to point a new tester at.
 
-If the user asks “what version is live on the web?” answer **0.01.01** until the site and **`1-showcase/latest-version`** zip are updated. If they ask “what are you building now?” answer **0.01.02** in the development folder.
+## Do not assert a version from memory
 
-## 1. What it is
+Version numbers move, and this document will go stale between updates. **Read them, do not recall
+them:**
 
-- The Showcase MiniDapp is a **preview**: wallet-style UI, demos, StablesAgent hooks, and **More → Feedback** (structured public submissions). Not a final production release.
-- **Frozen older UIs** (v0.2.x, etc.) live in archive folders; **do not** describe them as current unless the user asks about history.
+- The published Android test version is the constant `ANDROID_TEST_VERSION` in
+  `1_development/stream_1_app/website/assets/site-download-version.js`, which fills the Download
+  button on the access page. At the time of writing it is `0.0.11.38`.
+- The active test-channel build is `APP_BUILD_VERSION` plus `APP_BUILD_ITERATION` in
+  `dapp/3-test/assets/config/runtime-config.js`. It changes most days.
 
-## 2. Where to open it
+If a user asks for an exact current version and you cannot read those sources, say so and point them
+at the Council's official channels rather than guessing.
 
-- **Web (Showcase):** **https://stablescouncil.org/dapp/** (also under the Council GitHub Pages site). Marketing CTA **Test the showcase** on stablescouncil.org.
-- **Minima node:** Install the **published** package from GitHub **`dapp/1-showcase/latest-version/`** (filename matches the published version, e.g. **`Stables_v0.01.01.mds.zip`** while that remains latest). Zip root = app contents, not a nested folder (`build/README.md` in the active dev folder).
+## What the first community test actually contains
 
-## 3. MiniDapp list: write mode vs read mode
+The test channel's first community release is the **xWiniwa core**: install the standalone Stables Android app, which runs its own Minima node on the phone, claim Winiwa from the on-chain faucet, mint it into xWiniwa at one for
+one, burn xWiniwa back to Winiwa, and send or receive both. **Trading, stablecoins such as USDw,
+Coverage Funds, merchant tools and the Ambassador program are not part of it.** The binding
+statement is **`release_scope_boundary.md`** in this knowledge base; the detail is in
+**`minidapp_test_channel_overview.md`**.
 
-- On a **Minima node**, each MiniDapp can run in **read mode** or **write mode**.
-- For Stables, **write mode** is required for features that use the node network: **StablesAgent**, **structured feedback** (HTTP POST via the node), and similar. If those fail, ask them to set Stables to **write mode** (not read mode).
+## Feedback
 
-## 4. Structured feedback (More → Feedback)
+Structured public feedback is submitted from inside the app through the feedback page. That route is
+included in the first community test.
 
-- Posts **public** JSON to the Council feedback API (default **`https://agent.stablescouncil.org/api/feedback`**, configurable via `FEEDBACK_SUBMIT_URL` / `runtime-config`). **Web (browser)** typically uses **`fetch`**; **node** uses **`MDS.net.POST`**. Consent required; no secrets.
-- **Community:** **https://t.me/stablescommunity** and the public GitHub feedback folder linked from the app.
+## Retired claims, so they are not repeated
 
-## 5. Known issues (Showcase)
+The following appeared in the previous version of this document and are **no longer true or no
+longer relevant**. Do not restate them:
 
-- **Some mobile nodes:** structured feedback may not complete on the node; **web** path has been reported working. **Workaround:** Telegram or GitHub; engineering continues to debug node delivery.
-
-## 6. Mint xWiniwa chart (Showcase)
-
-- Location: **Mint** tab → **Mint xWiniwa**, **below** the **Mint xWiniwa** button (not above the form).
-- **Three lines:**
-  - **Winiwa · USD (cyan):** about the last **365 days** of spot in **USD**. Data source is **CoinGecko** `market_chart` for the **minima** id (shown in-app as **Winiwa** in this test phase; thinned points for drawing).
-  - **xWiniwa · USD (purple):** demo strip **Winiwa_USD × leverage** at each time step (same leverage series as the green line). **Not** on-chain xWiniwa.
-  - **Leverage (green, right axis):** derived from **headline coverage ratio** as **CR% / (CR% − 100%)** (example: **130%** → **130 / 30 ≈ 4.33×**). The chart sweeps **interpolated** values from in-app **`CR_HIST_DATA`** along the time axis and pins the **last** point to the live Treasury **CR** (`#protocolCRBig`). **Not** on-chain. **Current leverage** on the Mint form and **xWiniwa** demo pricing use the **same** formula from the current CR headline.
-- **Hover or drag (touch):** vertical crosshair and a small panel with **calendar date** plus **Winiwa USD**, **xWiniwa USD**, and **leverage** at the nearest sample.
-- If the chart shows **Unavailable.**, the network or API rate limit blocked the fetch (retry later; **MDS.net.GET** on node when `MDS` is present).
-
-## 7. StablesAgent inside the app
-
-- With **`MDS`**, StablesAgent may open in the **system browser** per `runtime-config` / in-app behaviour.
-
-## 8. One-line answers
-
-- **“Where is the Showcase?”** → **https://stablescouncil.org/dapp/**.
-- **“Which zip matches what’s published?”** → Check **`dapp/1-showcase/latest-version/`** on the Pages repo (currently **0.01.01** until a new zip is published).
-- **“Feedback won’t send on my phone node.”** → **Write mode**, **online**; else **Telegram** (**t.me/stablescommunity**).
+- a showcase version line of `v0.01.01` published with `v0.01.02` in development, and the
+  `prod_stables_app_v0.01.0x` repo folders those pointed at;
+- a **Mint xWiniwa chart** drawing a CoinGecko Winiwa-USD series, a demo xWiniwa strip, and a
+  leverage line derived from the coverage ratio. There is no such chart in the shipped test release,
+  and xWiniwa is minted at **par**, not at a leveraged or market rate;
+- any framing that treats the demo channel as the current build.

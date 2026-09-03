@@ -20,7 +20,7 @@ Avoid adding extra public hierarchy levels unless there is a clear reason. In pa
 
 The three public streams are:
 
-- **Technical Stream:** app screens, runtime flows, wallet and mint/burn flows, invest/coverage, merchant tools, infrastructure, security, previews, and production path.
+- **Technical Stream:** app screens, runtime flows, wallet and mint/burn flows, invest/coverage, merchant tools, infrastructure, security, previews, and production path. *(This is the roadmap of work, not a list of shipped features: of these, only the wallet and xWiniwa par mint and burn are in the current test release.)*
 - **Financial Stream:** mint/burn discipline, peg maintenance, solvency controls, coverage, liquidity, transparent protocol accounting, and merchant accepting payment network foundations for real circulation.
 - **Community Stream:** communication, feedback, ambassadors, merchant growth, Council formation, and community handover.
 
@@ -30,7 +30,7 @@ The app phase boxes are filters and definitions. They should be understood as:
 
 - **Showcase:** synthetic presentation and local simulation for explaining the product direction. It is not a live on-chain Stables product.
 - **Demo:** current demo channel. It uses Minima where available, but has no official Stables production token on-chain. In-app demo assets remain demo-only.
-- **Test:** future stage for real on-chain Winiwa/Wables test-token work and quests.
+- **Test:** the **current active stage**, not a future one. It covers real on-chain test-token work with **Winiwa and xWiniwa** (Wables are not part of it). The first community test is the xWiniwa core; see `release_scope_boundary.md`.
 - **Prod:** future Council-declared production stable layer for real Minima and Stables production mechanics.
 
 Minima is used for minting Stables and xMinima. There is no "Maximize MINIMA staking surface" product concept in the current public scope.

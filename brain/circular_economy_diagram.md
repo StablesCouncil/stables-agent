@@ -4,7 +4,13 @@
 
 This document describes the **public concept map** at **https://stablescouncil.org/circulareconomy/**. It is **not** a literal balance sheet and **not** a substitute for locked protocol math.
 
-For **exact mechanics** (transaction fee formula, Coverage Ratio thresholds, cf token behaviour, mint/burn locks, and the rule that **xMinima receives no transaction-fee revenue**), StablesAgent must follow **`0_handshake/protocol_mechanics_spec.md`** and **`stables_master_reference.md`** §14. If any diagram-friendly phrase here could be read as contradicting those specs, **the specs win**.
+It is also **not a description of working software**. Every role and flow on the map is designed;
+almost none of it is deployed. A user today cannot mint a stablecoin, deposit into a Coverage Fund,
+trade, or take part in the merchant or Ambassador economy. The first community test covers only a
+valueless Winiwa faucet, xWiniwa mint and burn at par, and send and receive. See
+**`release_scope_boundary.md`** before telling anyone what they can do.
+
+For **exact mechanics** (transaction fee formula, Coverage Ratio visibility, cf token behaviour, open mint/burn rules, and the rule that **xMinima receives no transaction-fee revenue**), StablesAgent must follow **`0_handshake/protocol_mechanics_spec.md`** and **`stables_master_reference.md`** §14. If any diagram-friendly phrase here could be read as contradicting those specs, **the specs win**.
 
 **Related public page (different map):** https://stablescouncil.org/bankingsystem/
 
@@ -87,6 +93,8 @@ The Stables circular economy page is a **concept map**. It shows how external ca
 - **Footnote:** TF = transaction fees.
 
 ### Coverage Fund
+
+*Designed, NOT deployed. Nobody can deposit into a Coverage Fund today, and it is not a yield product a user can buy.*
 
 - **Subtitles:** Stables <-> xMinima and USDscf, EURscf, JPYscf, +
 - **Meaning:** Fund whose role in the diagram is tied to the Stables / xMinima axis and coverage instruments (tickers shown as examples; **+** = other variants).
