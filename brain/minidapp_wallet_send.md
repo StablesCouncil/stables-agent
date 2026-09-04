@@ -61,7 +61,7 @@ Stables classifies each send into one of three tiers for speed and safety:
 
 Limits use your **wallet primary currency** (the starred currency on Wallet, for example Minima). Other assets are converted to that primary equivalent before comparing limits (same rates as the send modal ≈ line). Configure limits under **Settings → Security → Payment protection**.
 
-**Payment code:** 4-digit spending guard, set under Payment protection or inline on first protected send. Stored as a salted hash on the device only, not your Vault key. Device biometrics as an alternative is planned; phone lock screen still protects the app today.
+**Payment code:** 4-digit spending guard, set under Payment protection or inline on first protected send. Stored as a salted hash on the device only, not your Vault key. On the Stables phone app, fingerprint or face can confirm a protected send instead (Security, Payment protection, "How you confirm a protected send"); phone lock screen still protects the app today.
 
 **Contact payment tier:** On a contact's detail card, set **Payment tier** to Inherit (amount rules), Quick pay, Standard pay, or Protected pay. Favourite chips in the send modal show tier hints.
 

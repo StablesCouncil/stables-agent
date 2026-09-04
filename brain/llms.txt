@@ -1,7 +1,100 @@
 # Stables Council Knowledge Base
 > This file is generated for external AI models (like ChatGPT, Claude) to ingest the complete public knowledge base of the Stables ecosystem from a single URL.
-> Last updated: 2026-09-03
+> Last updated: 2026-09-04
 
+
+
+========================================
+## SOURCE FILE: app_node_sync_and_resync.md
+========================================
+
+# Keeping your bank up to date: Updating, catching up, and Resync
+
+This is about the **Stables standalone Android app**, which carries its own Minima node. Your bank
+is that node. When people say the app is "stuck on Updating", this page is the answer.
+
+## What the states mean
+
+The Network section in Settings and updates shows one of these.
+
+- **Up to date.** The node holds the newest block. Balances are current and everything works.
+- **Updating.** The node is behind the network and is trying to catch up. It also says how old the
+  newest block it holds is, and whether the gap is closing.
+- **Connecting.** The node is starting. Normal for the first seconds after opening the app.
+- **Not connected.** The node is not running, or could not be reached. Close and reopen the app,
+  and check that background mode is on.
+
+## Why your balance is not shown as confirmed while it says Updating
+
+A node that is behind still answers questions. It answers them with what was true when it stopped
+following the chain, which may be days ago. Showing that as your balance would be showing you a
+number the network no longer agrees with.
+
+So while the app is Updating, balances are marked as not current and the actions that would spend
+them (send, mint, burn, claim) stay closed. This is deliberate. **It is not a bug and it is not a
+lost balance:** your coins are on the chain and your key is on your phone. The app is refusing to
+tell you something it cannot currently prove.
+
+### The four words a balance can show instead of a number
+
+Wherever a figure would go, the app shows one of four states rather than a number it cannot stand
+behind. A blank or a word in place of a balance is an answer, not a failure:
+
+- **Syncing…** the app is reading the chain and does not have a proven figure yet.
+- **Stale** the node answered, but the node itself is behind, so the figure is not current. This is
+  what you see while it says Updating.
+- **Proof unavailable** the node cannot currently prove the coins behind this figure, so no number
+  is shown and the actions that would spend it are closed.
+- **Ready** the figure is proven against the chain, and everything is available.
+
+None of these means your money is gone. They mean the app will not show you a number it has not
+proven.
+
+## Catching up normally
+
+A node that has been off for a few hours catches up by itself, usually in minutes. You can watch it
+happen: the Network section names how far back it is and how many blocks it has gained since the
+page opened. Leave the app open, on power if you can, and let it work.
+
+## When catching up will not work, and what to do
+
+Minima nodes catch up by asking their peers for the blocks they missed. A node that has been off
+for a long time falls outside the window peers can serve, and then **waiting does not help, however
+long you wait.** The app tells you when it has reached this point: it says it has not gained a block
+in some minutes, and offers **Repair with Resync**.
+
+### Resync, step by step
+
+1. Open **Settings and updates** and scroll to **Network**. If the app is offering **Repair with
+   Resync**, tap it; it takes you straight to the form. Otherwise scroll on to the **Resync**
+   section.
+2. Leave the **Recovery node** as it is unless you have been given another one. It must be a Minima
+   node with MegaMMR enabled; the default is `spartacusrex.com:9001`.
+3. Tick the acknowledgement, then start the resync.
+4. Leave the app open and the phone on power. It downloads a validated chain snapshot and searches
+   it for your wallet's coins.
+5. The app restarts itself when it finishes, and comes back Up to date.
+
+### What Resync does and does not do
+
+- It **keeps your Vault key, your settings and your local records.** Your wallet is not recreated
+  and your key never leaves the phone.
+- It **replaces this app's local copy of the blockchain** and finds your coins again in it.
+- It **cannot invent history it never had.** App records for activity it never saw, or covenant
+  state it was never tracking, do not come back.
+- It is **not** a factory reset, and it does not require your recovery phrase.
+
+## How to avoid needing it
+
+- Open the app now and then, rather than leaving it closed for weeks.
+- Leave background mode on, so the node keeps following the chain while the app is closed.
+- The network contribution setting decides how hard the phone works on battery, not whether it
+  follows the chain. Even at Pause the node still keeps up when the app is open.
+
+## If you are asked for evidence
+
+Report the **Block height** shown in the Network section, what the Updating line says about how old
+the newest block is and whether it is gaining, and your app version from Settings.
 
 
 ========================================
@@ -576,13 +669,13 @@ Stables Academy is a practical education layer for users and merchants who want 
 
 The **Test channel** (`dapp/3-test/`) is the sole active Stables MiniDapp development line. The earlier Demo channel (`dapp/2-demo/`) is frozen.
 
-**The first community test is the xWiniwa core, and it is deliberately narrow.** Everything in sections 1 to 9 above is protocol design. Most of it is **not deployed** and is **not available to a tester**. Do not describe any of it as something a user can do today unless it appears in the list below.
+**The first community test is the Stables test release, and it is deliberately narrow.** Everything in sections 1 to 9 above is protocol design. Most of it is **not deployed** and is **not available to a tester**. Do not describe any of it as something a user can do today unless it appears in the list below.
 
 - **Test channel tokens:** Winiwa and xWiniwa are real tokens on Minima mainnet with **no value**. They are not money and not an investment.
 - **What ships:** the standalone Android app with its own Minima node on the phone, the trustless Winiwa faucet, **xWiniwa mint and burn at par (one for one, both directions)** through the vault covenant, Winiwa and xWiniwa send and receive, honest four-state balance truth, and the support pages.
 - **Trustless flows:** the faucet and the par vault run through KISS VM covenants; the issuer seeded the pools but does not sign user transactions and need not be online.
 - **Deferred out of this test:** USDw and every stablecoin, the fiat display currencies, all trading (Trade, Exchange, Bulk Orders, order books, liquidity), Coverage Funds, market-priced or forward xWiniwa issuance, merchant and Ambassador tools, the On/Off ramp, and Treasury and Council governance surfaces. Deferred means switched off in the build, not cancelled.
-- **Delivery:** the published test artifact is the **standalone Android app** (v0.0.11.38, GitHub release `StablesCouncil/stables-app` tag `app-v0.0.11.38`, Download button on https://stablescouncil.org/payment-app/). It runs its own Minima node inside the app; the wallet and keys live on the device. The MiniDapp package, the web build and the Core-connected companion are coming soon.
+- **Delivery:** the published test artifact is the **standalone Android app** (v0.0.11.53, GitHub release `StablesCouncil/stables-app` tag `app-v0.0.11.53`, Download button on https://stablescouncil.org/payment-app/). It runs its own Minima node inside the app; the wallet and keys live on the device. The MiniDapp package, the web build and the Core-connected companion are coming soon.
 - **Production phase:** substituting Winiwa for real Minima and enabling real stablecoin issuance is a future phase that begins only after this work is proven.
 
 For the binding scope statement see **`release_scope_boundary.md`**, and for detail see **`minidapp_test_channel_overview.md`**, both in this brain base.
@@ -981,7 +1074,9 @@ The payment code is hashed on device only. It is not sent to Stables servers. Co
 
 ## Android biometrics (standalone app only)
 
-On the signed Android APK, when the device supports strong biometrics, protected pay can confirm with fingerprint or face instead of typing the code. Payment code remains the fallback. Web and MinimaOS hub use payment code only.
+On the Stables phone app, when the phone has fingerprint or face unlock set up, a protected send can be confirmed with fingerprint or face instead of typing the code. Payment code always works too. Web and MinimaOS hub use the payment code only.
+
+Where it is (from v0.0.11.53): More, Security, Payment protection, in the block **How you confirm a protected send**. Two rows, always on screen: **Payment code** (Set, then Change) and **Fingerprint or face** (a checkbox). Set a payment code first; until then the Fingerprint or face row is greyed out and its own line says so ("Set a payment code first"). On a phone with no fingerprint or face enrolled it says "Not set up on this phone"; on web and the MinimaOS hub it says "Not available on this device". It saves as soon as you toggle it. On a protected send the phone's fingerprint or face sheet opens first, even if the phone is already unlocked; tap "Use payment code" there, or "Use fingerprint or face" on the code screen, to switch. Fingerprint or face data never leaves the phone.
 
 ## StablesAgent help
 
@@ -1011,7 +1106,7 @@ Mint chart that is not in the product.*
 | **Test** (`dapp/3-test/`) | **Active** | The sole active development line and the basis of the first community test. Real Winiwa and xWiniwa on Minima mainnet, with **no value**. |
 
 If someone asks which they should use, the answer is the **test channel**, through the
-standalone Android app (v0.0.11.38, Download on https://stablescouncil.org/payment-app/). The frozen
+standalone Android app (v0.0.11.53, Download on https://stablescouncil.org/payment-app/). The frozen
 demo package `v0.0.0.3.45` is history, not something to point a new tester at.
 
 ## Do not assert a version from memory
@@ -1021,7 +1116,7 @@ them:**
 
 - The published Android test version is the constant `ANDROID_TEST_VERSION` in
   `1_development/stream_1_app/website/assets/site-download-version.js`, which fills the Download
-  button on the access page. At the time of writing it is `0.0.11.38`.
+  button on the access page. At the time of writing it is `0.0.11.53`.
 - The active test-channel build is `APP_BUILD_VERSION` plus `APP_BUILD_ITERATION` in
   `dapp/3-test/assets/config/runtime-config.js`. It changes most days.
 
@@ -1030,7 +1125,7 @@ at the Council's official channels rather than guessing.
 
 ## What the first community test actually contains
 
-The test channel's first community release is the **xWiniwa core**: install the standalone Stables Android app, which runs its own Minima node on the phone, claim Winiwa from the on-chain faucet, mint it into xWiniwa at one for
+The test channel's first community release is the **Stables test release**: install the standalone Stables Android app, which runs its own Minima node on the phone, claim Winiwa from the on-chain faucet, mint it into xWiniwa at one for
 one, burn xWiniwa back to Winiwa, and send or receive both. **Trading, stablecoins such as USDw,
 Coverage Funds, merchant tools and the Ambassador program are not part of it.** The binding
 statement is **`release_scope_boundary.md`** in this knowledge base; the detail is in
@@ -1061,7 +1156,7 @@ longer relevant**. Do not restate them:
 # Stables MiniDapp, Test channel overview (active development line)
 
 *For StablesAgent and external AIs: what the Stables test channel is, what works on-chain today, how
-a tester reaches it, and how it relates to the frozen demo and to future production. Rewritten 2026-08-01 for the xWiniwa core test; updated 2026-09-03 for the published standalone Android app (v0.0.11.38). The binding scope statement is
+a tester reaches it, and how it relates to the frozen demo and to future production. Rewritten 2026-08-01 for the first Stables test release; updated 2026-09-04 for the published standalone Android app (v0.0.11.53). The binding scope statement is
 **`release_scope_boundary.md`**; where this document and that one disagree, that one wins.*
 
 ## What the test channel is
@@ -1118,9 +1213,9 @@ later Council decision and a completed handover.
 
 ## How to access the test channel
 
-1. **Standalone Android app, v0.0.11.38, published 2026-09-03.** Install from
+1. **Standalone Android app, v0.0.11.53, published 2026-09-04.** Install from
    https://stablescouncil.org/payment-app/ (the Download button) or from the GitHub release
-   `StablesCouncil/stables-app`, tag `app-v0.0.11.38`, file `Stables_v0.0.11.38.apk`; verify
+   `StablesCouncil/stables-app`, tag `app-v0.0.11.53`, file `Stables_v0.0.11.53.apk`; verify
    the SHA-256 published with the release. Install a new version over the old one and never
    uninstall: the wallet stays on the device.
 2. **Coming soon:** the MiniDapp package for MinimaOS, the web build, and the Core-connected Android
@@ -1128,6 +1223,26 @@ later Council decision and a completed handover.
    downloadable today.
 3. **Local development web preview.** From the repo, serve the website tree and open
    `http://localhost:8080/dapp/3-test/`. This path is for developers, not testers.
+
+## What is new in v0.0.11.53 (2026-09-04)
+
+- **Your bank tells you when it is out of date.** A phone that has been offline too long to catch
+  up on its own says so on the Wallet page, in place of the balance, and offers one action: Resync
+  with the network. The message also arrives once as a pop-up. A first run is never told this.
+  Settings, Network says how far behind the bank is and whether the gap is closing.
+- **Nothing is called failed while your node still has it.** A faucet claim the node had accepted
+  used to be marked failed after three minutes while the node was still relaying it. A claim the
+  node can see now waits; a claim that genuinely fails hands the faucet countdown back.
+- **Payment progress shows the time each step finished and how long the current step has run.**
+  Broadcasting says when the bank has no peers to relay to; Settings, Network reads "Alone" or
+  "Connected to N other nodes".
+- **Fingerprint or face is offered in the open.** Under Payment protection, "How you confirm a
+  protected send" has two rows: Payment code (Set, then Change) and Fingerprint or face. A row the
+  phone cannot honour is greyed out and says why.
+- **Commas for thousands everywhere**, in every figure and every amount field.
+- Opening the app asks the node once for what several parts want at the same moment. Mint and
+  burn work on a fresh node. StablesAgent answers on the first try. Send sits on the right and
+  Receive on the left wherever both are offered. Recent activity has See all.
 
 ## What is new in v0.0.11.38
 
@@ -1243,7 +1358,7 @@ Stables classifies each send into one of three tiers for speed and safety:
 
 Limits use your **wallet primary currency** (the starred currency on Wallet, for example Minima). Other assets are converted to that primary equivalent before comparing limits (same rates as the send modal ≈ line). Configure limits under **Settings → Security → Payment protection**.
 
-**Payment code:** 4-digit spending guard, set under Payment protection or inline on first protected send. Stored as a salted hash on the device only, not your Vault key. Device biometrics as an alternative is planned; phone lock screen still protects the app today.
+**Payment code:** 4-digit spending guard, set under Payment protection or inline on first protected send. Stored as a salted hash on the device only, not your Vault key. On the Stables phone app, fingerprint or face can confirm a protected send instead (Security, Payment protection, "How you confirm a protected send"); phone lock screen still protects the app today.
 
 **Contact payment tier:** On a contact's detail card, set **Payment tier** to Inherit (amount rules), Quick pay, Standard pay, or Protected pay. Favourite chips in the send modal show tier hints.
 
@@ -1328,7 +1443,7 @@ The app phase boxes are filters and definitions. They should be understood as:
 
 - **Showcase:** synthetic presentation and local simulation for explaining the product direction. It is not a live on-chain Stables product.
 - **Demo:** current demo channel. It uses Minima where available, but has no official Stables production token on-chain. In-app demo assets remain demo-only.
-- **Test:** the **current active stage**, not a future one. It covers real on-chain test-token work with **Winiwa and xWiniwa** (Wables are not part of it). The first community test is the xWiniwa core; see `release_scope_boundary.md`.
+- **Test:** the **current active stage**, not a future one. It covers real on-chain test-token work with **Winiwa and xWiniwa** (Wables are not part of it). The first community test is the Stables test release; see `release_scope_boundary.md`.
 - **Prod:** future Council-declared production stable layer for real Minima and Stables production mechanics.
 
 Minima is used for minting Stables and xMinima. There is no "Maximize MINIMA staking surface" product concept in the current public scope.
@@ -1455,20 +1570,20 @@ For X, the handshake rule still applies: include the mandatory hashtags `#BYB #S
 
 # Stables first community test: what is in scope and what is not
 
-*Authoritative scope boundary for StablesAgent and external AIs. Written 2026-08-01 for the xWiniwa core test (`TV81-P12-XR1`, decisions `TV81-D23` and `TV81-D24`); updated 2026-09-03 when the standalone Android app became the first published artifact. If any other
+*Authoritative scope boundary for StablesAgent and external AIs. Written 2026-08-01 for the first Stables test release (`TV81-P12-XR1`, decisions `TV81-D23` and `TV81-D24`); updated 2026-09-03 when the standalone Android app became the first published artifact. If any other
 document in this knowledge base describes a capability as available and this document says it is
 deferred, **this document wins.** Every statement below is about what a tester can actually do.*
 
 ## The one-line answer
 
-The first Stables community test is the **xWiniwa core**: claim Winiwa from an on-chain faucet, mint
+The first Stables community test is the **Stables test release**: claim Winiwa from an on-chain faucet, mint
 it into xWiniwa at one for one, burn xWiniwa back to Winiwa, and send or receive both. Trading,
 stablecoins, investing products and merchant tools are **not part of this test** and are switched off
 in the build.
 
 ## What a tester can do
 
-- Install the **standalone Stables Android app** (v0.0.11.38); it runs its own Minima node on the phone.
+- Install the **standalone Stables Android app** (v0.0.11.53); it runs its own Minima node on the phone.
 - Claim **Winiwa** from the on-chain faucet covenant.
 - **Mint** Winiwa into **xWiniwa** at par, one for one, through the on-chain vault covenant.
 - **Burn** xWiniwa back into Winiwa at the same par rate, in whole or in part.
@@ -1523,11 +1638,11 @@ test-token address. A tester needs a small amount of real MINIMA to pay signing 
 
 ## How the app reaches the chain
 
-The first published artifact is the **standalone Stables Android app** (v0.0.11.38, published
+The first published artifact is the **standalone Stables Android app** (v0.0.11.53, first published 2026-09-03 as v0.0.11.38, current release published
 2026-09-03). It runs **its own Minima node inside the app**, on the phone.
 
 - Install from **https://stablescouncil.org/payment-app/** (the Download button) or from the GitHub
-  release **StablesCouncil/stables-app, tag app-v0.0.11.38**, file `Stables_v0.0.11.38.apk`.
+  release **StablesCouncil/stables-app, tag app-v0.0.11.53**, file `Stables_v0.0.11.53.apk`.
   Verify the SHA-256 published with the release before installing an APK from anywhere else.
 - Nothing else has to be installed. There is no pairing step, no RPC address and no RPC password:
   if a user is being asked for one, they are not on the standalone app.
@@ -1560,8 +1675,8 @@ truthful about proof, not a bug.
 
 ## Status of the release itself
 
-**Stables v0.0.11.38 for Android is published** (2026-09-03): GitHub release
-`StablesCouncil/stables-app` tag `app-v0.0.11.38`, and the Download button on
+**Stables v0.0.11.53 for Android is published** (2026-09-04; the first build, v0.0.11.38, on 2026-09-03): GitHub release
+`StablesCouncil/stables-app` tag `app-v0.0.11.53`, and the Download button on
 https://stablescouncil.org/payment-app/. It is an early test build for the existing Minima community.
 It is **not** a stablecoin launch, not a trading release, not a complete Stables protocol launch, and
 not a production-readiness claim. Bugs are expected. Testers should use a wallet holding only value
@@ -1636,7 +1751,7 @@ four ways to run Stables, in this order, and only the first is available today:
 
 | Offer | Status on the page |
 |-------|--------------------|
-| **Standalone Android** ("Stables, your wallet, and your Minima node in one mobile app.") | **Download** button, "Test channel v0.0.11.38. Test tokens only, no value." The button downloads `Stables_v0.0.11.38.apk` from the GitHub release `StablesCouncil/stables-app`, tag `app-v0.0.11.38`. |
+| **Standalone Android** ("Stables, your wallet, and your Minima node in one mobile app.") | **Download** button, "Test channel v0.0.11.53. Test tokens only, no value." The button downloads `Stables_v0.0.11.53.apk` from the GitHub release `StablesCouncil/stables-app`, tag `app-v0.0.11.53`. |
 | **Stables Desktop** ("Stables and a Minima node you control in one simple desktop installation.") | Planned prototype. |
 | **Minima-connected Android** ("Use Stables with the official Minima Core Android app.") | Coming soon. The standalone Android app is released first. |
 | **MDS MiniDapp** ("Install Stables inside MinimaOS and use your existing node.") | Coming soon. The standalone Android app is released first. |

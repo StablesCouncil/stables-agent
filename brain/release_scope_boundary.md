@@ -1,19 +1,19 @@
 # Stables first community test: what is in scope and what is not
 
-*Authoritative scope boundary for StablesAgent and external AIs. Written 2026-08-01 for the xWiniwa core test (`TV81-P12-XR1`, decisions `TV81-D23` and `TV81-D24`); updated 2026-09-03 when the standalone Android app became the first published artifact. If any other
+*Authoritative scope boundary for StablesAgent and external AIs. Written 2026-08-01 for the first Stables test release (`TV81-P12-XR1`, decisions `TV81-D23` and `TV81-D24`); updated 2026-09-03 when the standalone Android app became the first published artifact. If any other
 document in this knowledge base describes a capability as available and this document says it is
 deferred, **this document wins.** Every statement below is about what a tester can actually do.*
 
 ## The one-line answer
 
-The first Stables community test is the **xWiniwa core**: claim Winiwa from an on-chain faucet, mint
+The first Stables community test is the **Stables test release**: claim Winiwa from an on-chain faucet, mint
 it into xWiniwa at one for one, burn xWiniwa back to Winiwa, and send or receive both. Trading,
 stablecoins, investing products and merchant tools are **not part of this test** and are switched off
 in the build.
 
 ## What a tester can do
 
-- Install the **standalone Stables Android app** (v0.0.11.38); it runs its own Minima node on the phone.
+- Install the **standalone Stables Android app** (v0.0.11.53); it runs its own Minima node on the phone.
 - Claim **Winiwa** from the on-chain faucet covenant.
 - **Mint** Winiwa into **xWiniwa** at par, one for one, through the on-chain vault covenant.
 - **Burn** xWiniwa back into Winiwa at the same par rate, in whole or in part.
@@ -68,11 +68,11 @@ test-token address. A tester needs a small amount of real MINIMA to pay signing 
 
 ## How the app reaches the chain
 
-The first published artifact is the **standalone Stables Android app** (v0.0.11.38, published
+The first published artifact is the **standalone Stables Android app** (v0.0.11.53, first published 2026-09-03 as v0.0.11.38, current release published
 2026-09-03). It runs **its own Minima node inside the app**, on the phone.
 
 - Install from **https://stablescouncil.org/payment-app/** (the Download button) or from the GitHub
-  release **StablesCouncil/stables-app, tag app-v0.0.11.38**, file `Stables_v0.0.11.38.apk`.
+  release **StablesCouncil/stables-app, tag app-v0.0.11.53**, file `Stables_v0.0.11.53.apk`.
   Verify the SHA-256 published with the release before installing an APK from anywhere else.
 - Nothing else has to be installed. There is no pairing step, no RPC address and no RPC password:
   if a user is being asked for one, they are not on the standalone app.
@@ -105,8 +105,8 @@ truthful about proof, not a bug.
 
 ## Status of the release itself
 
-**Stables v0.0.11.38 for Android is published** (2026-09-03): GitHub release
-`StablesCouncil/stables-app` tag `app-v0.0.11.38`, and the Download button on
+**Stables v0.0.11.53 for Android is published** (2026-09-04; the first build, v0.0.11.38, on 2026-09-03): GitHub release
+`StablesCouncil/stables-app` tag `app-v0.0.11.53`, and the Download button on
 https://stablescouncil.org/payment-app/. It is an early test build for the existing Minima community.
 It is **not** a stablecoin launch, not a trading release, not a complete Stables protocol launch, and
 not a production-readiness claim. Bugs are expected. Testers should use a wallet holding only value

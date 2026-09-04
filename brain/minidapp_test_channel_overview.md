@@ -1,7 +1,7 @@
 # Stables MiniDapp, Test channel overview (active development line)
 
 *For StablesAgent and external AIs: what the Stables test channel is, what works on-chain today, how
-a tester reaches it, and how it relates to the frozen demo and to future production. Rewritten 2026-08-01 for the xWiniwa core test; updated 2026-09-03 for the published standalone Android app (v0.0.11.38). The binding scope statement is
+a tester reaches it, and how it relates to the frozen demo and to future production. Rewritten 2026-08-01 for the first Stables test release; updated 2026-09-04 for the published standalone Android app (v0.0.11.53). The binding scope statement is
 **`release_scope_boundary.md`**; where this document and that one disagree, that one wins.*
 
 ## What the test channel is
@@ -58,9 +58,9 @@ later Council decision and a completed handover.
 
 ## How to access the test channel
 
-1. **Standalone Android app, v0.0.11.38, published 2026-09-03.** Install from
+1. **Standalone Android app, v0.0.11.53, published 2026-09-04.** Install from
    https://stablescouncil.org/payment-app/ (the Download button) or from the GitHub release
-   `StablesCouncil/stables-app`, tag `app-v0.0.11.38`, file `Stables_v0.0.11.38.apk`; verify
+   `StablesCouncil/stables-app`, tag `app-v0.0.11.53`, file `Stables_v0.0.11.53.apk`; verify
    the SHA-256 published with the release. Install a new version over the old one and never
    uninstall: the wallet stays on the device.
 2. **Coming soon:** the MiniDapp package for MinimaOS, the web build, and the Core-connected Android
@@ -68,6 +68,26 @@ later Council decision and a completed handover.
    downloadable today.
 3. **Local development web preview.** From the repo, serve the website tree and open
    `http://localhost:8080/dapp/3-test/`. This path is for developers, not testers.
+
+## What is new in v0.0.11.53 (2026-09-04)
+
+- **Your bank tells you when it is out of date.** A phone that has been offline too long to catch
+  up on its own says so on the Wallet page, in place of the balance, and offers one action: Resync
+  with the network. The message also arrives once as a pop-up. A first run is never told this.
+  Settings, Network says how far behind the bank is and whether the gap is closing.
+- **Nothing is called failed while your node still has it.** A faucet claim the node had accepted
+  used to be marked failed after three minutes while the node was still relaying it. A claim the
+  node can see now waits; a claim that genuinely fails hands the faucet countdown back.
+- **Payment progress shows the time each step finished and how long the current step has run.**
+  Broadcasting says when the bank has no peers to relay to; Settings, Network reads "Alone" or
+  "Connected to N other nodes".
+- **Fingerprint or face is offered in the open.** Under Payment protection, "How you confirm a
+  protected send" has two rows: Payment code (Set, then Change) and Fingerprint or face. A row the
+  phone cannot honour is greyed out and says why.
+- **Commas for thousands everywhere**, in every figure and every amount field.
+- Opening the app asks the node once for what several parts want at the same moment. Mint and
+  burn work on a fresh node. StablesAgent answers on the first try. Send sits on the right and
+  Receive on the left wherever both are offered. Recent activity has See all.
 
 ## What is new in v0.0.11.38
 

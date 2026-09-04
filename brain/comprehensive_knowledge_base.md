@@ -142,13 +142,13 @@ Stables Academy is a practical education layer for users and merchants who want 
 
 The **Test channel** (`dapp/3-test/`) is the sole active Stables MiniDapp development line. The earlier Demo channel (`dapp/2-demo/`) is frozen.
 
-**The first community test is the xWiniwa core, and it is deliberately narrow.** Everything in sections 1 to 9 above is protocol design. Most of it is **not deployed** and is **not available to a tester**. Do not describe any of it as something a user can do today unless it appears in the list below.
+**The first community test is the Stables test release, and it is deliberately narrow.** Everything in sections 1 to 9 above is protocol design. Most of it is **not deployed** and is **not available to a tester**. Do not describe any of it as something a user can do today unless it appears in the list below.
 
 - **Test channel tokens:** Winiwa and xWiniwa are real tokens on Minima mainnet with **no value**. They are not money and not an investment.
 - **What ships:** the standalone Android app with its own Minima node on the phone, the trustless Winiwa faucet, **xWiniwa mint and burn at par (one for one, both directions)** through the vault covenant, Winiwa and xWiniwa send and receive, honest four-state balance truth, and the support pages.
 - **Trustless flows:** the faucet and the par vault run through KISS VM covenants; the issuer seeded the pools but does not sign user transactions and need not be online.
 - **Deferred out of this test:** USDw and every stablecoin, the fiat display currencies, all trading (Trade, Exchange, Bulk Orders, order books, liquidity), Coverage Funds, market-priced or forward xWiniwa issuance, merchant and Ambassador tools, the On/Off ramp, and Treasury and Council governance surfaces. Deferred means switched off in the build, not cancelled.
-- **Delivery:** the published test artifact is the **standalone Android app** (v0.0.11.38, GitHub release `StablesCouncil/stables-app` tag `app-v0.0.11.38`, Download button on https://stablescouncil.org/payment-app/). It runs its own Minima node inside the app; the wallet and keys live on the device. The MiniDapp package, the web build and the Core-connected companion are coming soon.
+- **Delivery:** the published test artifact is the **standalone Android app** (v0.0.11.53, GitHub release `StablesCouncil/stables-app` tag `app-v0.0.11.53`, Download button on https://stablescouncil.org/payment-app/). It runs its own Minima node inside the app; the wallet and keys live on the device. The MiniDapp package, the web build and the Core-connected companion are coming soon.
 - **Production phase:** substituting Winiwa for real Minima and enabling real stablecoin issuance is a future phase that begins only after this work is proven.
 
 For the binding scope statement see **`release_scope_boundary.md`**, and for detail see **`minidapp_test_channel_overview.md`**, both in this brain base.

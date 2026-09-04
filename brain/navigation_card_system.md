@@ -30,7 +30,7 @@ The app phase boxes are filters and definitions. They should be understood as:
 
 - **Showcase:** synthetic presentation and local simulation for explaining the product direction. It is not a live on-chain Stables product.
 - **Demo:** current demo channel. It uses Minima where available, but has no official Stables production token on-chain. In-app demo assets remain demo-only.
-- **Test:** the **current active stage**, not a future one. It covers real on-chain test-token work with **Winiwa and xWiniwa** (Wables are not part of it). The first community test is the xWiniwa core; see `release_scope_boundary.md`.
+- **Test:** the **current active stage**, not a future one. It covers real on-chain test-token work with **Winiwa and xWiniwa** (Wables are not part of it). The first community test is the Stables test release; see `release_scope_boundary.md`.
 - **Prod:** future Council-declared production stable layer for real Minima and Stables production mechanics.
 
 Minima is used for minting Stables and xMinima. There is no "Maximize MINIMA staking surface" product concept in the current public scope.

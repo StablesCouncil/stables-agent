@@ -14,7 +14,7 @@ Mint chart that is not in the product.*
 | **Test** (`dapp/3-test/`) | **Active** | The sole active development line and the basis of the first community test. Real Winiwa and xWiniwa on Minima mainnet, with **no value**. |
 
 If someone asks which they should use, the answer is the **test channel**, through the
-standalone Android app (v0.0.11.38, Download on https://stablescouncil.org/payment-app/). The frozen
+standalone Android app (v0.0.11.53, Download on https://stablescouncil.org/payment-app/). The frozen
 demo package `v0.0.0.3.45` is history, not something to point a new tester at.
 
 ## Do not assert a version from memory
@@ -24,7 +24,7 @@ them:**
 
 - The published Android test version is the constant `ANDROID_TEST_VERSION` in
   `1_development/stream_1_app/website/assets/site-download-version.js`, which fills the Download
-  button on the access page. At the time of writing it is `0.0.11.38`.
+  button on the access page. At the time of writing it is `0.0.11.53`.
 - The active test-channel build is `APP_BUILD_VERSION` plus `APP_BUILD_ITERATION` in
   `dapp/3-test/assets/config/runtime-config.js`. It changes most days.
 
@@ -33,7 +33,7 @@ at the Council's official channels rather than guessing.
 
 ## What the first community test actually contains
 
-The test channel's first community release is the **xWiniwa core**: install the standalone Stables Android app, which runs its own Minima node on the phone, claim Winiwa from the on-chain faucet, mint it into xWiniwa at one for
+The test channel's first community release is the **Stables test release**: install the standalone Stables Android app, which runs its own Minima node on the phone, claim Winiwa from the on-chain faucet, mint it into xWiniwa at one for
 one, burn xWiniwa back to Winiwa, and send or receive both. **Trading, stablecoins such as USDw,
 Coverage Funds, merchant tools and the Ambassador program are not part of it.** The binding
 statement is **`release_scope_boundary.md`** in this knowledge base; the detail is in
