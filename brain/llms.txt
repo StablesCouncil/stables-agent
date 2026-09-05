@@ -1,6 +1,6 @@
 # Stables Council Knowledge Base
 > This file is generated for external AI models (like ChatGPT, Claude) to ingest the complete public knowledge base of the Stables ecosystem from a single URL.
-> Last updated: 2026-09-04
+> Last updated: 2026-09-05
 
 
 
@@ -675,7 +675,7 @@ The **Test channel** (`dapp/3-test/`) is the sole active Stables MiniDapp develo
 - **What ships:** the standalone Android app with its own Minima node on the phone, the trustless Winiwa faucet, **xWiniwa mint and burn at par (one for one, both directions)** through the vault covenant, Winiwa and xWiniwa send and receive, honest four-state balance truth, and the support pages.
 - **Trustless flows:** the faucet and the par vault run through KISS VM covenants; the issuer seeded the pools but does not sign user transactions and need not be online.
 - **Deferred out of this test:** USDw and every stablecoin, the fiat display currencies, all trading (Trade, Exchange, Bulk Orders, order books, liquidity), Coverage Funds, market-priced or forward xWiniwa issuance, merchant and Ambassador tools, the On/Off ramp, and Treasury and Council governance surfaces. Deferred means switched off in the build, not cancelled.
-- **Delivery:** the published test artifact is the **standalone Android app** (v0.0.11.53, GitHub release `StablesCouncil/stables-app` tag `app-v0.0.11.53`, Download button on https://stablescouncil.org/payment-app/). It runs its own Minima node inside the app; the wallet and keys live on the device. The MiniDapp package, the web build and the Core-connected companion are coming soon.
+- **Delivery:** the published test artifacts are the **standalone Android app** and, since 2026-09-06, the **Minima Core companion** (both v0.0.11.60, GitHub release `StablesCouncil/stables-app` tag `app-v0.0.11.60`, Download buttons on https://stablescouncil.org/payment-app/; the companion needs the official Minima Core Android app on the same phone and is released as pairing-tested, not rehearsed). It runs its own Minima node inside the app; the wallet and keys live on the device. The MiniDapp package, the web build and the Core-connected companion are coming soon.
 - **Production phase:** substituting Winiwa for real Minima and enabling real stablecoin issuance is a future phase that begins only after this work is proven.
 
 For the binding scope statement see **`release_scope_boundary.md`**, and for detail see **`minidapp_test_channel_overview.md`**, both in this brain base.
@@ -1106,7 +1106,7 @@ Mint chart that is not in the product.*
 | **Test** (`dapp/3-test/`) | **Active** | The sole active development line and the basis of the first community test. Real Winiwa and xWiniwa on Minima mainnet, with **no value**. |
 
 If someone asks which they should use, the answer is the **test channel**, through the
-standalone Android app (v0.0.11.53, Download on https://stablescouncil.org/payment-app/). The frozen
+standalone Android app (v0.0.11.60, Download on https://stablescouncil.org/payment-app/; people who already run the official Minima Core app can take the Minima Core companion from the same page instead). The frozen
 demo package `v0.0.0.3.45` is history, not something to point a new tester at.
 
 ## Do not assert a version from memory
@@ -1116,7 +1116,7 @@ them:**
 
 - The published Android test version is the constant `ANDROID_TEST_VERSION` in
   `1_development/stream_1_app/website/assets/site-download-version.js`, which fills the Download
-  button on the access page. At the time of writing it is `0.0.11.53`.
+  button on the access page. At the time of writing it is `0.0.11.60`.
 - The active test-channel build is `APP_BUILD_VERSION` plus `APP_BUILD_ITERATION` in
   `dapp/3-test/assets/config/runtime-config.js`. It changes most days.
 
@@ -1213,18 +1213,48 @@ later Council decision and a completed handover.
 
 ## How to access the test channel
 
-1. **Standalone Android app, v0.0.11.53, published 2026-09-04.** Install from
+1. **Standalone Android app, v0.0.11.60, published 2026-09-06.** Install from
    https://stablescouncil.org/payment-app/ (the Download button) or from the GitHub release
-   `StablesCouncil/stables-app`, tag `app-v0.0.11.53`, file `Stables_v0.0.11.53.apk`; verify
+   `StablesCouncil/stables-app`, tag `app-v0.0.11.60`, file `Stables_v0.0.11.60.apk`; verify
    the SHA-256 published with the release. Install a new version over the old one and never
    uninstall: the wallet stays on the device.
-2. **Coming soon:** the MiniDapp package for MinimaOS, the web build, and the Core-connected Android
-   companion (for people who already run the Minima Core app). Say "coming soon"; none of these is
-   downloadable today.
-3. **Local development web preview.** From the repo, serve the website tree and open
+2. **Minima Core companion, v0.0.11.60, published 2026-09-06, pairing-tested, not rehearsed.** For
+   phones that already run the official Minima Core Android app: the companion has no node of its
+   own and no Internet permission; it pairs with Core on the same phone and uses Core's node and
+   wallet. Same GitHub release, file `StablesCore_v0.0.11.60.apk`, same signing certificate, and
+   the second Download button on the access page. Sends through Core need the payment code set in
+   the app. Tested on one phone (reconnect, claim, mint, partial and full burn, each on the chain);
+   the three-wallet rehearsal has not happened yet.
+3. **Coming soon:** the MiniDapp package for MinimaOS and the web build. Say "coming soon";
+   neither is downloadable today.
+4. **Local development web preview.** From the repo, serve the website tree and open
    `http://localhost:8080/dapp/3-test/`. This path is for developers, not testers.
 
-## What is new in v0.0.11.53 (2026-09-04)
+## What is new in v0.0.11.60 (2026-09-06)
+
+- **A second mint or burn waits for the first to land.** Every mint and burn spends the vault's one
+  balance state coin, so two in flight are a double spend and the network keeps only the first. The
+  app used to guard that with a 70 second timer; a burn measured on a phone took four minutes to
+  mine and a second one started three minutes later vanished in silence. The guard now holds until
+  the coin the operation spent is gone from the node, survives a restart, and lets the next
+  operation through the moment the chain has moved. Meanwhile a second attempt is told: your
+  previous mint or burn is still being confirmed.
+- **A dropped mint or burn is marked failed within minutes**, with the balance corrected, and it
+  stays failed across restarts.
+- **A settling claim or burn is credited once, never twice**: the token row and the total agree while
+  a transaction is landing.
+- **Notes are combined before a payment that would spend too many.** Pre-approved by default through
+  the Wallet management setting Combine notes when a payment needs it; turned off, the app asks
+  first with the exact figures.
+- **The bank says when it has drifted off the network** and offers the resync: a node that came back
+  on its own divergent copy of history can look connected and moving while sharing nothing with
+  everyone else. Nothing is shown while the bank is healthy. On the companion the button opens
+  Minima Core.
+- The burn confirmation wears the same red as the burn button. StablesAgent is told what page you
+  are on and what was just said, and answers once.
+- **The Minima Core companion is published** for the first time (see How to access, item 2).
+
+## What was new in v0.0.11.53 (2026-09-04)
 
 - **Your bank tells you when it is out of date.** A phone that has been offline too long to catch
   up on its own says so on the Wallet page, in place of the balance, and offers one action: Resync
@@ -1583,7 +1613,7 @@ in the build.
 
 ## What a tester can do
 
-- Install the **standalone Stables Android app** (v0.0.11.53); it runs its own Minima node on the phone.
+- Install the **standalone Stables Android app** (v0.0.11.60); it runs its own Minima node on the phone. Or, on a phone that already runs the official Minima Core app, install the **Minima Core companion** (also v0.0.11.60), which uses Core's node and wallet.
 - Claim **Winiwa** from the on-chain faucet covenant.
 - **Mint** Winiwa into **xWiniwa** at par, one for one, through the on-chain vault covenant.
 - **Burn** xWiniwa back into Winiwa at the same par rate, in whole or in part.
@@ -1638,11 +1668,11 @@ test-token address. A tester needs a small amount of real MINIMA to pay signing 
 
 ## How the app reaches the chain
 
-The first published artifact is the **standalone Stables Android app** (v0.0.11.53, first published 2026-09-03 as v0.0.11.38, current release published
-2026-09-03). It runs **its own Minima node inside the app**, on the phone.
+The main published artifact is the **standalone Stables Android app** (v0.0.11.60, first published 2026-09-03 as v0.0.11.38, current release published
+2026-09-06). It runs **its own Minima node inside the app**, on the phone. Since 2026-09-06 the same release also carries the **Minima Core companion** (`StablesCore_v0.0.11.60.apk`): no node of its own, no Internet permission, it pairs with the official Minima Core Android app on the same phone and uses Core's node and wallet. It is released as pairing-tested, not rehearsed: proven on one phone (reconnect after install and restarts, faucet claim, mint, partial and full burn, each on the chain); the three-wallet rehearsal has not happened yet. Sends through Core need the payment code set in the app.
 
 - Install from **https://stablescouncil.org/payment-app/** (the Download button) or from the GitHub
-  release **StablesCouncil/stables-app, tag app-v0.0.11.53**, file `Stables_v0.0.11.53.apk`.
+  release **StablesCouncil/stables-app, tag app-v0.0.11.60**, file `Stables_v0.0.11.60.apk` (companion: `StablesCore_v0.0.11.60.apk`, same release).
   Verify the SHA-256 published with the release before installing an APK from anywhere else.
 - Nothing else has to be installed. There is no pairing step, no RPC address and no RPC password:
   if a user is being asked for one, they are not on the standalone app.
@@ -1675,8 +1705,8 @@ truthful about proof, not a bug.
 
 ## Status of the release itself
 
-**Stables v0.0.11.53 for Android is published** (2026-09-04; the first build, v0.0.11.38, on 2026-09-03): GitHub release
-`StablesCouncil/stables-app` tag `app-v0.0.11.53`, and the Download button on
+**Stables v0.0.11.60 for Android is published** (2026-09-06; the first build, v0.0.11.38, on 2026-09-03; the Minima Core companion joins the release for the first time at v0.0.11.60): GitHub release
+`StablesCouncil/stables-app` tag `app-v0.0.11.60`, and the Download buttons on
 https://stablescouncil.org/payment-app/. It is an early test build for the existing Minima community.
 It is **not** a stablecoin launch, not a trading release, not a complete Stables protocol launch, and
 not a production-readiness claim. Bugs are expected. Testers should use a wallet holding only value
@@ -1751,9 +1781,9 @@ four ways to run Stables, in this order, and only the first is available today:
 
 | Offer | Status on the page |
 |-------|--------------------|
-| **Standalone Android** ("Stables, your wallet, and your Minima node in one mobile app.") | **Download** button, "Test channel v0.0.11.53. Test tokens only, no value." The button downloads `Stables_v0.0.11.53.apk` from the GitHub release `StablesCouncil/stables-app`, tag `app-v0.0.11.53`. |
+| **Standalone Android** ("Stables, your wallet, and your Minima node in one mobile app.") | **Download** button, "Test channel v0.0.11.60. Test tokens only, no value." The button downloads `Stables_v0.0.11.53.apk` from the GitHub release `StablesCouncil/stables-app`, tag `app-v0.0.11.53`. |
 | **Stables Desktop** ("Stables and a Minima node you control in one simple desktop installation.") | Planned prototype. |
-| **Minima-connected Android** ("Use Stables with the official Minima Core Android app.") | Coming soon. The standalone Android app is released first. |
+| **Minima-connected Android** ("Use Stables with the official Minima Core Android app.") | **Download** button, "Requires the official Minima Core Android app. Test channel v0.0.11.60. Test tokens only, no value." The button downloads `StablesCore_v0.0.11.60.apk` from the same GitHub release as the standalone app (since 2026-09-06). |
 | **MDS MiniDapp** ("Install Stables inside MinimaOS and use your existing node.") | Coming soon. The standalone Android app is released first. |
 
 If someone asks what they can download today: the standalone Android app, from that page or the

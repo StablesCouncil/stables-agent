@@ -58,18 +58,48 @@ later Council decision and a completed handover.
 
 ## How to access the test channel
 
-1. **Standalone Android app, v0.0.11.53, published 2026-09-04.** Install from
+1. **Standalone Android app, v0.0.11.60, published 2026-09-06.** Install from
    https://stablescouncil.org/payment-app/ (the Download button) or from the GitHub release
-   `StablesCouncil/stables-app`, tag `app-v0.0.11.53`, file `Stables_v0.0.11.53.apk`; verify
+   `StablesCouncil/stables-app`, tag `app-v0.0.11.60`, file `Stables_v0.0.11.60.apk`; verify
    the SHA-256 published with the release. Install a new version over the old one and never
    uninstall: the wallet stays on the device.
-2. **Coming soon:** the MiniDapp package for MinimaOS, the web build, and the Core-connected Android
-   companion (for people who already run the Minima Core app). Say "coming soon"; none of these is
-   downloadable today.
-3. **Local development web preview.** From the repo, serve the website tree and open
+2. **Minima Core companion, v0.0.11.60, published 2026-09-06, pairing-tested, not rehearsed.** For
+   phones that already run the official Minima Core Android app: the companion has no node of its
+   own and no Internet permission; it pairs with Core on the same phone and uses Core's node and
+   wallet. Same GitHub release, file `StablesCore_v0.0.11.60.apk`, same signing certificate, and
+   the second Download button on the access page. Sends through Core need the payment code set in
+   the app. Tested on one phone (reconnect, claim, mint, partial and full burn, each on the chain);
+   the three-wallet rehearsal has not happened yet.
+3. **Coming soon:** the MiniDapp package for MinimaOS and the web build. Say "coming soon";
+   neither is downloadable today.
+4. **Local development web preview.** From the repo, serve the website tree and open
    `http://localhost:8080/dapp/3-test/`. This path is for developers, not testers.
 
-## What is new in v0.0.11.53 (2026-09-04)
+## What is new in v0.0.11.60 (2026-09-06)
+
+- **A second mint or burn waits for the first to land.** Every mint and burn spends the vault's one
+  balance state coin, so two in flight are a double spend and the network keeps only the first. The
+  app used to guard that with a 70 second timer; a burn measured on a phone took four minutes to
+  mine and a second one started three minutes later vanished in silence. The guard now holds until
+  the coin the operation spent is gone from the node, survives a restart, and lets the next
+  operation through the moment the chain has moved. Meanwhile a second attempt is told: your
+  previous mint or burn is still being confirmed.
+- **A dropped mint or burn is marked failed within minutes**, with the balance corrected, and it
+  stays failed across restarts.
+- **A settling claim or burn is credited once, never twice**: the token row and the total agree while
+  a transaction is landing.
+- **Notes are combined before a payment that would spend too many.** Pre-approved by default through
+  the Wallet management setting Combine notes when a payment needs it; turned off, the app asks
+  first with the exact figures.
+- **The bank says when it has drifted off the network** and offers the resync: a node that came back
+  on its own divergent copy of history can look connected and moving while sharing nothing with
+  everyone else. Nothing is shown while the bank is healthy. On the companion the button opens
+  Minima Core.
+- The burn confirmation wears the same red as the burn button. StablesAgent is told what page you
+  are on and what was just said, and answers once.
+- **The Minima Core companion is published** for the first time (see How to access, item 2).
+
+## What was new in v0.0.11.53 (2026-09-04)
 
 - **Your bank tells you when it is out of date.** A phone that has been offline too long to catch
   up on its own says so on the Wallet page, in place of the balance, and offers one action: Resync

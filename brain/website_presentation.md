@@ -31,9 +31,9 @@ four ways to run Stables, in this order, and only the first is available today:
 
 | Offer | Status on the page |
 |-------|--------------------|
-| **Standalone Android** ("Stables, your wallet, and your Minima node in one mobile app.") | **Download** button, "Test channel v0.0.11.53. Test tokens only, no value." The button downloads `Stables_v0.0.11.53.apk` from the GitHub release `StablesCouncil/stables-app`, tag `app-v0.0.11.53`. |
+| **Standalone Android** ("Stables, your wallet, and your Minima node in one mobile app.") | **Download** button, "Test channel v0.0.11.60. Test tokens only, no value." The button downloads `Stables_v0.0.11.53.apk` from the GitHub release `StablesCouncil/stables-app`, tag `app-v0.0.11.53`. |
 | **Stables Desktop** ("Stables and a Minima node you control in one simple desktop installation.") | Planned prototype. |
-| **Minima-connected Android** ("Use Stables with the official Minima Core Android app.") | Coming soon. The standalone Android app is released first. |
+| **Minima-connected Android** ("Use Stables with the official Minima Core Android app.") | **Download** button, "Requires the official Minima Core Android app. Test channel v0.0.11.60. Test tokens only, no value." The button downloads `StablesCore_v0.0.11.60.apk` from the same GitHub release as the standalone app (since 2026-09-06). |
 | **MDS MiniDapp** ("Install Stables inside MinimaOS and use your existing node.") | Coming soon. The standalone Android app is released first. |
 
 If someone asks what they can download today: the standalone Android app, from that page or the
