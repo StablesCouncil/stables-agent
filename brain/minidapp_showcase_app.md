@@ -14,7 +14,7 @@ Mint chart that is not in the product.*
 | **Test** (`dapp/3-test/`) | **Active** | The sole active development line and the basis of the first community test. Real Winiwa and xWiniwa on Minima mainnet, with **no value**. |
 
 If someone asks which they should use, the answer is the **test channel**, through the
-standalone Android app (v0.0.11.60, Download on https://stablescouncil.org/payment-app/; people who already run the official Minima Core app can take the Minima Core companion from the same page instead). The frozen
+standalone Android app (v0.0.11.63, Download on https://stablescouncil.org/payment-app/; people who already run the official Minima Core app can take the Minima Core companion from the same page instead). The frozen
 demo package `v0.0.0.3.45` is history, not something to point a new tester at.
 
 ## Do not assert a version from memory
@@ -24,7 +24,7 @@ them:**
 
 - The published Android test version is the constant `ANDROID_TEST_VERSION` in
   `1_development/stream_1_app/website/assets/site-download-version.js`, which fills the Download
-  button on the access page. At the time of writing it is `0.0.11.60`.
+  button on the access page. At the time of writing it is `0.0.11.63`.
 - The active test-channel build is `APP_BUILD_VERSION` plus `APP_BUILD_ITERATION` in
   `dapp/3-test/assets/config/runtime-config.js`. It changes most days.
 

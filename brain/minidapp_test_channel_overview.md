@@ -58,15 +58,15 @@ later Council decision and a completed handover.
 
 ## How to access the test channel
 
-1. **Standalone Android app, v0.0.11.60, published 2026-09-06.** Install from
+1. **Standalone Android app, v0.0.11.63, published 2026-09-06.** Install from
    https://stablescouncil.org/payment-app/ (the Download button) or from the GitHub release
-   `StablesCouncil/stables-app`, tag `app-v0.0.11.60`, file `Stables_v0.0.11.60.apk`; verify
+   `StablesCouncil/stables-app`, tag `app-v0.0.11.63`, file `Stables_v0.0.11.63.apk`; verify
    the SHA-256 published with the release. Install a new version over the old one and never
    uninstall: the wallet stays on the device.
-2. **Minima Core companion, v0.0.11.60, published 2026-09-06, pairing-tested, not rehearsed.** For
+2. **Minima Core companion, v0.0.11.63, published 2026-09-06 (first released at v0.0.11.60 the same day), pairing-tested, not rehearsed.** For
    phones that already run the official Minima Core Android app: the companion has no node of its
    own and no Internet permission; it pairs with Core on the same phone and uses Core's node and
-   wallet. Same GitHub release, file `StablesCore_v0.0.11.60.apk`, same signing certificate, and
+   wallet. Same GitHub release, file `StablesCore_v0.0.11.63.apk`, same signing certificate, and
    the second Download button on the access page. Sends through Core need the payment code set in
    the app. Tested on one phone (reconnect, claim, mint, partial and full burn, each on the chain);
    the three-wallet rehearsal has not happened yet.
@@ -74,6 +74,34 @@ later Council decision and a completed handover.
    neither is downloadable today.
 4. **Local development web preview.** From the repo, serve the website tree and open
    `http://localhost:8080/dapp/3-test/`. This path is for developers, not testers.
+
+## What is new in v0.0.11.63 (2026-09-06): the battery release
+
+Everything in this release is about what the app asks its node when nobody is waiting on anything,
+measured on a phone before and after.
+
+- **The Minima Core companion asks Core about ten times less while idle and nothing from the
+  pocket**, with the same screens and the same freshness: Core's own pushes carry the app between
+  reads, a balance or block push that arrives while the app is hidden is remembered and answered on
+  return, and an incoming payment still lands through the transaction push within seconds. Measured
+  on a Pixel: 8.2 commands a minute on screen to 3.0; 2.25 a minute in the background to 0.33.
+- **The standalone app no longer re-tracks an old faucet claim on every open.** It used to resume
+  the most recent faucet claim that was not confirmed, whatever its verdict, and ask for the history
+  every five seconds for ten minutes, with a "Faucet claim syncing" card on the Wallet the whole
+  time. A claim is resumed only while it is genuinely settling.
+- **Merged mint and burn rows are no longer re-judged, removed and re-created on every open**, and
+  an old failed row no longer makes every open re-read transactions that were never this wallet's.
+- **The on-chain chat scans every 15 seconds only while the Chat page is on screen**; elsewhere it is
+  a two-minute safety net, kicked at once by the node's transaction push.
+- **A node that cannot yet prove the faucet pool is retried gently** instead of sixty times a minute.
+- **The app keeps a ledger of who asked the node what** and prints it every five minutes on screen,
+  so the next cadence is attributed rather than guessed.
+
+Measured on the same Pixel, standalone, idle on the Wallet page: 24 node commands a minute at
+v0.0.11.62 to 5 to 9 a minute at v0.0.11.63; the first five minutes after an open: 277 commands to 78.
+If someone asks whether the app drains the battery: the open app's node traffic was measured and cut
+in this release; the numbers above are the measured ones, and the embedded node's own syncing work
+is separate from the app's asking.
 
 ## What is new in v0.0.11.60 (2026-09-06)
 
