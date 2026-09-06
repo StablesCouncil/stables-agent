@@ -182,6 +182,33 @@ unanswered in silence.
 | **Test** | **Active development** | Real Winiwa and xWiniwa on mainnet, no value | Trustless faucet, covenant par mint and burn, on-chain sends, honest proof states |
 | **Production** | Future phase | Real Minima and real stablecoins | Real value, full protocol economics |
 
+## Frequently asked, in plain words
+
+- **What is Stables?** A merchant-owned banking system built on the Minima blockchain and run by the
+  Stables Council: independent businesses and their customers hold and move money in a system they
+  own, with stablecoins designed for everyday payments and a community treasury behind them. Today
+  it is in an early testing phase on Minima mainnet with valueless test tokens; the stablecoins, the
+  trading surfaces and the merchant tools are designed but not part of this test.
+- **What can I test today?** Claim Winiwa from the on-chain faucet, mint it into xWiniwa one for
+  one, burn xWiniwa back to Winiwa, and send or receive both, every step a real transaction on
+  Minima mainnet signed by your own wallet.
+- **How do I get Winiwa?** From the Faucet page in the app: 1,000 Winiwa per claim, once per wallet
+  per hour, from an on-chain covenant that nobody approves and nobody can refuse. The node must be
+  synced first.
+- **What are Winiwa and xWiniwa?** Two real tokens on Minima mainnet made for this test, both with
+  no value. Winiwa stands in for Minima itself; xWiniwa stands in for the equity side of the
+  protocol, minted one for one against Winiwa in the vault and burned back at par.
+- **Is my money safe?** In this test there is no money at stake: the tokens have no value and
+  nothing is an investment. The wallet, the node and the keys live inside the app on the person's
+  device; Stables never asks for a seed phrase or a vault key, and anyone who does is attacking
+  them. It is an early build: use a dedicated test wallet or one holding only funds you are willing
+  to risk, never send real value to test-token addresses, keep recovery details backed up, and
+  update by installing over the old version, never by uninstalling.
+- **Where do I download the app?** From stablescouncil.org/payment-app: the standalone Android app
+  (its own Minima node on the phone) or the Minima Core companion (uses the official Minima Core
+  app's node), both from the GitHub release with SHA-256 checksums. The MiniDapp for MinimaOS and
+  the web version come later.
+
 ## Safety framing for users
 
 - Winiwa and xWiniwa have **no value**. Nothing here is money and nothing here is an investment.
