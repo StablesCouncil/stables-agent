@@ -29,11 +29,7 @@ if ! ollama list | grep -q "llama3.2"; then
 fi
 
 echo "[4/6] Checking Telegram bot token in shared .env..."
-if [ -d "$SCRIPT_DIR/../task_stablesagent-brain-base" ]; then
-  BRAIN_ENV_DIR="$SCRIPT_DIR/../task_stablesagent-brain-base"
-else
-  BRAIN_ENV_DIR="$SCRIPT_DIR/../brain"
-fi
+BRAIN_ENV_DIR="$SCRIPT_DIR/../task_stablesagent-brain-base"
 ENV_FILE="$BRAIN_ENV_DIR/.env"
 
 if [ ! -f "$ENV_FILE" ]; then

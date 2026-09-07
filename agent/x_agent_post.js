@@ -74,16 +74,18 @@ async function main() {
         "self-custody",
         "Minima",
         "stablecoin",
-        "Be your own bank",
+        "Be your bank",
     ];
     const seed = seedQueries[Math.floor(Math.random() * seedQueries.length)];
     const results = await vectorStore.similaritySearch(seed, 4);
     const context = results.map((r, i) => `[${i + 1}] ${r.pageContent}`).join("\n\n");
 
     const completion = await groq.chat.completions.create({
-        model: "llama-3.3-70b-versatile",
+        model: process.env.GROQ_MODEL || "openai/gpt-oss-120b",
         temperature: 0.5,
-        max_tokens: 100,
+        max_tokens: 800,
+        reasoning_effort: "low",
+        include_reasoning: false,
         messages: [
             {
                 role: "system",

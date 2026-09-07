@@ -2,18 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>StablesAgent — Chat Room</title>
+  <title>StablesAgent - Chat Room</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="icon" type="image/png" href="/stables_agent_avatar.png" />
-  <!-- Shared Stables design system — never duplicate its rules locally -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Shared Stables design system - never duplicate its rules locally -->
   <link rel="stylesheet" href="stables.css" />
   <style>
+    /* The chat wears the app's language (founder 2026-09-06: "use the font and background like in
+       the app, no black background"): the same lit field as the app's agent panel, one base tone
+       with two glows, white ink, glass for the things that float, Inter throughout. The tokens
+       below are the app's own (machinery-language.css, R001 identity). */
+    :root {
+      --mx-base: #16334f;
+      --mx-lit-a: rgba(103, 232, 249, .62);
+      --mx-lit-b: rgba(96, 165, 250, .52);
+      --mx-ink: #ffffff;
+      --mx-ink-soft: rgba(255, 255, 255, .80);
+      --mx-ink-faint: rgba(255, 255, 255, .58);
+      --mx-line: rgba(255, 255, 255, .16);
+      --mx-glass: rgba(255, 255, 255, .12);
+      --mx-glass-line: rgba(255, 255, 255, .24);
+      --mx-accent: #67e8f9;
+      --mx-on-accent: #07222c;
+      --mx-amber: #fbbf24;
+    }
+    html, body {
+      background-color: var(--mx-base);
+      background-image:
+        radial-gradient(64% 26% at 14% 2%, var(--mx-lit-a), transparent 66%),
+        radial-gradient(72% 30% at 86% 98%, var(--mx-lit-b), transparent 70%);
+      background-attachment: fixed;
+      color: var(--mx-ink);
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+    }
     body {
       display: flex;
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      padding: 24px var(--container-pad);
+      padding: 24px var(--container-pad, 1.5rem);
     }
 
     .shell {
@@ -21,284 +50,152 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      background: var(--panel);
-      border: 1px solid rgba(103, 232, 249, 0.3);
+      background: transparent;
+      border: 1px solid var(--mx-line);
       border-radius: 1.5rem;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(103,232,249,0.15);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
       min-height: 400px;
       max-height: 90vh;
     }
 
-    /* ── Header ── */
+    /* Header: identity on the field, no bar */
     .shell-header {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 18px 20px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      gap: 12px;
+      padding: 16px 18px 14px;
+      border-bottom: 1px solid var(--mx-line);
     }
     .shell-logo {
-      width: 42px;
-      height: 42px;
+      width: 40px; height: 40px;
       border-radius: 10px;
-      border: 1px solid rgba(103, 232, 249, 0.3);
-      background: rgba(103, 232, 249, 0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      overflow: hidden;
+      border: 1px solid var(--mx-glass-line);
+      background: var(--mx-glass);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; overflow: hidden;
     }
-    .shell-logo img { width: 30px; height: 30px; object-fit: contain; }
-
-    .shell-title-wrap { flex: 1; }
-    .shell-title-main {
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.04em;
-      color: var(--text);
-      line-height: 1.2;
-    }
-    .shell-title-sub {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    /* minima badge — reusing .badge style from stables.css but smaller */
+    .shell-logo img { width: 28px; height: 28px; object-fit: contain; }
+    .shell-title-wrap { flex: 1; min-width: 0; }
+    .shell-title-main { font-size: 14px; font-weight: 900; letter-spacing: 0.03em; color: var(--mx-ink); line-height: 1.2; }
+    .shell-title-sub { font-size: 12px; color: var(--mx-ink-faint); margin-top: 2px; }
     .shell-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 13px;
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.45);
-      border: 1px solid rgba(148, 163, 184, 0.35);
-      font-size: 11px;
-      font-weight: 600;
-      color: var(--muted);
-      white-space: nowrap;
-      letter-spacing: 0.04em;
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--mx-glass); border: 1px solid var(--mx-glass-line);
+      font-size: 11px; font-weight: 700; color: var(--mx-ink-soft);
+      white-space: nowrap; letter-spacing: 0.04em;
     }
-    .shell-status-dot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
-      flex-shrink: 0;
+    .shell-status-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 3px rgba(34,197,94,0.2); flex-shrink: 0; }
+
+    /* The privacy warning keeps its meaning and has no slab */
+    .shell-warn {
+      padding: 10px 16px;
+      font-size: 12px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--mx-amber); text-align: center;
+      border-bottom: 1px solid var(--mx-line);
     }
 
-    /* ── Chat log ── */
-    .chat-area {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      padding: 16px 18px;
-      flex: 1;
-      min-height: 0;
+    /* Conversation: the field shows through, no inner box */
+    .chat-area { display: flex; flex-direction: column; gap: 10px; padding: 14px 14px 12px; flex: 1; min-height: 0; }
+    /* One scrolling region holds the conversation AND the topics, so the input row is always in
+       view whatever the height of the frame around us. The popup on the website clipped the input
+       row when the topic list did not fit (founder 2026-09-06: "we can scroll the dialog pop-up and
+       it doesnt show in full"). */
+    .chat-scroll {
+      flex: 1; min-height: 0; overflow-y: auto; scrollbar-width: none;
+      display: flex; flex-direction: column; gap: 10px;
+      padding: 2px 0; scroll-behavior: smooth;
     }
-    .chat-log {
-      flex: 1;
-      min-height: 200px;
-      overflow-y: auto;
-      scrollbar-width: none;
-      padding: 12px;
-      border-radius: 1rem;
-      border: 1px solid rgba(255,255,255,0.06);
-      background: var(--bg);
-    }
-    .chat-log::-webkit-scrollbar {
-      width: 0;
-      height: 0;
-      display: none;
-    }
+    .chat-scroll::-webkit-scrollbar { width: 0; height: 0; display: none; }
+    .chat-log { flex: 0 0 auto; min-height: 0; }
 
-    /* message bubbles */
+    /* Bubbles, exactly the app's: cyan-tinted for the agent, violet-tinted for the person */
     .msg {
-      max-width: 86%;
-      margin-bottom: 10px;
-      padding: 10px 14px;
-      border-radius: 13px;
-      font-size: 14px;
-      line-height: 1.55;
-      word-wrap: break-word;
-      white-space: pre-wrap;
+      display: flex; gap: 10px; align-items: flex-start;
+      max-width: 92%; margin-bottom: 10px; padding: 12px 14px;
+      font-size: 13px; font-weight: 600; line-height: 1.55; color: var(--mx-ink);
+      word-wrap: break-word; white-space: pre-wrap;
     }
-    .msg-user {
-      margin-left: auto;
-      background: rgba(103,232,249,0.08);
-      border: 1px solid rgba(103,232,249,0.2);
-    }
-    .msg-agent {
-      margin-right: auto;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .msg-label {
-      display: block;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 5px;
-    }
+    .msg-agent { margin-right: auto; background: rgba(103,232,249,.07); border: 1px solid rgba(103,232,249,.12); border-radius: 14px 14px 14px 4px; }
+    .msg-user { margin-left: auto; background: rgba(167,139,250,.11); border: 1px solid rgba(167,139,250,.22); border-radius: 14px 14px 4px 14px; }
+    .msg-avatar { width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0; object-fit: contain; margin-top: 1px; }
+    .msg-body { min-width: 0; flex: 1; }
+    .msg-label { display: block; font-size: 10px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mx-ink-faint); margin-bottom: 4px; }
 
-    /* ── Input row ── */
-    .input-row {
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      min-width: 0;
-      flex-shrink: 0;
+    /* Topics: the app's choice buttons, one per line */
+    .topics { display: flex; flex-direction: column; gap: 8px; padding: 2px 0 6px; }
+    .topics[hidden] { display: none; }
+    .topic-btn {
+      width: 100%; text-align: left;
+      background: rgba(103,232,249,.05); border: 1px solid rgba(103,232,249,.2); border-radius: 12px;
+      padding: 10px 14px; font: 700 13px/1.35 'Inter', ui-sans-serif, system-ui, sans-serif; color: var(--mx-ink);
+      cursor: pointer; transition: background .2s, border-color .2s;
     }
-    .input-row textarea {
-      flex: 1 1 0;
-      min-width: 0;
-      min-height: 42px;
-      max-height: 96px;
-      resize: none;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: var(--bg);
-      color: var(--text);
-      padding: 11px 18px;
-      font: 14px ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
-      outline: none;
-      line-height: 1.4;
-    }
-    textarea::placeholder { color: var(--muted); }
-    textarea:focus {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 1px rgba(103,232,249,0.25);
-    }
-    .send-btn {
-      flex-shrink: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 11px 20px;
-      border-radius: 999px;
-      border: 1px solid var(--accent-cyan);
-      background: var(--accent-cyan);
-      color: var(--bg);
-      font: 600 14px -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    .topic-btn:hover, .topic-btn:focus-visible { background: rgba(103,232,249,.13); border-color: rgba(103,232,249,.4); outline: none; }
+    .topics-toggle {
+      align-self: flex-start;
+      background: var(--mx-glass); border: 1px solid var(--mx-glass-line); border-radius: 999px;
+      padding: 6px 12px; font: 700 12px 'Inter', ui-sans-serif, system-ui, sans-serif; color: var(--mx-ink-soft);
       cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
+    }
+    .topics-toggle[hidden] { display: none; }
+    .topics-toggle:hover { color: var(--mx-ink); border-color: var(--mx-accent); }
+
+    /* Where you type reads as glass */
+    .input-row { display: flex; align-items: flex-end; gap: 10px; min-width: 0; flex-shrink: 0; }
+    .input-row textarea {
+      flex: 1 1 0; min-width: 0; min-height: 44px; max-height: 96px; resize: none;
+      border-radius: 999px; border: 1px solid var(--mx-glass-line); background: var(--mx-glass);
+      color: var(--mx-ink); padding: 12px 16px;
+      font: 700 13px/1.4 'Inter', ui-sans-serif, system-ui, sans-serif; outline: none;
+    }
+    textarea::placeholder { color: var(--mx-ink-faint); font-weight: 600; }
+    textarea:focus { border-color: var(--mx-accent); box-shadow: 0 0 0 1px rgba(103,232,249,0.25); }
+    .send-btn {
+      flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 0 20px; border-radius: 999px;
+      border: 1px solid var(--mx-accent); background: var(--mx-accent); color: var(--mx-on-accent);
+      font: 700 13px 'Inter', ui-sans-serif, system-ui, sans-serif; cursor: pointer; white-space: nowrap;
+      transition: transform .2s, box-shadow .2s;
     }
     .send-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(103,232,249,0.35); }
-    .send-btn[disabled] { opacity: 0.4; cursor: default; }
+    .send-btn[disabled] { opacity: 0.45; cursor: default; transform: none; box-shadow: none; }
 
-    /* ── Footer ── */
-    .shell-footer {
-      padding: 18px 24px 22px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .disclaimer {
-      font-size: clamp(0.8rem, 1.8vw, 0.9375rem);
-      color: var(--muted);
-      line-height: 1.7;
-    }
-    .disclaimer a {
-      color: var(--accent-cyan);
-      text-decoration: none;
-    }
-    .disclaimer a:hover { text-decoration: underline; }
-
-    /* Footer buttons centred, slightly smaller than hero buttons */
+    /* Footer (hidden in embed) */
+    .shell-footer { padding: 16px 20px 20px; border-top: 1px solid var(--mx-line); display: flex; flex-direction: column; gap: 14px; }
     .shell-footer .buttons { justify-content: center; }
-    .shell-footer .btn { width: auto; min-width: 120px; height: 48px; padding: 0 20px; font-size: 14px; }
+    .shell-footer .btn { width: auto; min-width: 120px; height: 46px; padding: 0 20px; font-size: 14px; }
 
-    /* ── Bring your own AI strip (collapsible) ── */
-    .byoai {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      flex-shrink: 0;
-    }
-    .byoai-in-chat {
-      margin-top: 8px;
-      border-top-color: rgba(255,255,255,0.05);
-    }
+    /* Bring your own AI strip (collapsible) */
+    .byoai { border-top: 1px solid var(--mx-line); flex-shrink: 0; }
+    .byoai-in-chat { margin-top: 4px; }
     .byoai-toggle {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      padding: 10px 18px;
-      background: transparent;
-      border: none;
-      font-size: 0.8rem;
-      color: var(--muted);
-      cursor: pointer;
-      transition: color 0.2s;
-      font-family: inherit;
+      display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
+      padding: 10px 14px; background: transparent; border: none;
+      font: 600 12px 'Inter', ui-sans-serif, system-ui, sans-serif; color: var(--mx-ink-faint); cursor: pointer; transition: color .2s;
     }
-    .byoai-toggle:hover { color: var(--accent-cyan); }
-    .byoai-toggle svg {
-      transition: transform 0.2s;
-    }
-    .byoai.expanded .byoai-toggle svg {
-      transform: rotate(180deg);
-    }
-    .byoai-body {
-      display: none;
-      padding: 12px 24px 18px;
-      text-align: center;
-    }
+    .byoai-toggle:hover { color: var(--mx-accent); }
+    .byoai-toggle svg { transition: transform .2s; }
+    .byoai.expanded .byoai-toggle svg { transform: rotate(180deg); }
+    .byoai-body { display: none; padding: 10px 14px 16px; text-align: center; }
     .byoai.expanded .byoai-body { display: block; }
-    .byoai p {
-      font-size: clamp(0.8rem, 1.8vw, 0.9375rem);
-      color: var(--muted);
-      line-height: 1.6;
-      margin-bottom: 12px;
-    }
-    .byoai p em {
-      font-style: italic;
-      color: var(--text-primary);
-    }
+    .byoai p { font-size: 13px; color: var(--mx-ink-soft); line-height: 1.6; margin-bottom: 12px; }
+    .byoai p em { font-style: italic; color: var(--mx-ink); }
     .byoai-copy {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--bg);
-      border: 1px solid rgba(103,232,249,0.25);
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-size: clamp(0.75rem, 1.6vw, 0.875rem);
-      font-family: inherit;
-      color: var(--accent-cyan);
-      cursor: pointer;
-      transition: all 0.2s;
-      user-select: none;
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--mx-glass); border: 1px solid var(--mx-glass-line); border-radius: 10px;
+      padding: 10px 16px; font: 600 13px 'Inter', ui-sans-serif, system-ui, sans-serif; color: var(--mx-accent);
+      cursor: pointer; transition: border-color .2s, box-shadow .2s; user-select: none;
     }
-    .byoai-copy:hover {
-      border-color: rgba(103,232,249,0.55);
-      box-shadow: 0 0 12px rgba(103,232,249,0.12);
-    }
+    .byoai-copy:hover { border-color: var(--mx-accent); box-shadow: 0 0 12px rgba(103,232,249,0.15); }
     .byoai-copy svg { flex-shrink: 0; }
-    .byoai-link {
-      display: block;
-      margin-top: 10px;
-      font-size: 0.8rem;
-      color: var(--muted);
-      word-break: break-all;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .byoai-link:hover { color: var(--accent-cyan); }
+    .byoai-link { display: block; margin-top: 10px; font-size: 12px; color: var(--mx-ink-faint); word-break: break-all; text-decoration: underline; text-underline-offset: 3px; }
+    .byoai-link:hover { color: var(--mx-accent); }
 
-    /* ── Responsive ── */
     @media (max-width: 640px) {
       body { padding: 8px; align-items: flex-start; }
       .shell { border-radius: 1rem; }
-      .chat-area {
-        padding: 10px 12px;
-        height: min(320px, calc(100vh - 320px));
-      }
+      .chat-area { padding: 10px 12px; min-height: 240px; }
       .shell-header { flex-wrap: wrap; gap: 10px; padding: 14px 14px 12px; }
       .shell-status { align-self: flex-start; }
       .shell-footer { padding: 12px 14px 16px; }
@@ -327,16 +224,18 @@
         <span>Built on MINIMA</span>
       </div>
     </div>
+    <div class="shell-warn" id="shellWarn">Do not share private or sensitive information</div>
 
     <!-- Chat -->
     <div class="chat-area">
-      <div id="chatLog" class="chat-log"
-           aria-live="polite" aria-label="Conversation with StablesAgent"></div>
+      <div class="chat-scroll" id="chatScroll">
+        <div id="chatLog" class="chat-log" aria-live="polite" aria-label="Conversation with StablesAgent"></div>
+        <div class="topics" id="topics" role="group" aria-label="Suggested topics"></div>
+      </div>
+      <button type="button" class="topics-toggle" id="topicsToggle" hidden aria-expanded="false" aria-controls="topics"></button>
       <div class="input-row">
         <textarea id="chatInput" rows="1" autocomplete="off"></textarea>
-        <button id="sendBtn" class="send-btn">
-          <span>➤</span><span>Send</span>
-        </button>
+        <button id="sendBtn" class="send-btn"><span>Send</span></button>
       </div>
       <!-- Bring your own AI strip (collapsible, below input to avoid overlap) -->
       <div class="byoai byoai-in-chat" id="byoai">
@@ -362,15 +261,9 @@
     <!-- Footer: buttons only (hidden in embed mode) -->
     <div class="shell-footer">
       <div class="buttons">
-        <a class="btn btn-primary"
-           href="https://t.me/stablescommunity"
-           target="_blank" rel="noopener noreferrer">Telegram</a>
-        <a class="btn btn-secondary"
-           href="https://stablescouncil.github.io/"
-           target="_blank" rel="noopener noreferrer">Presentation</a>
-        <a class="btn btn-secondary"
-           href="https://stablescouncil.github.io/links.html"
-           target="_blank" rel="noopener noreferrer">Links</a>
+        <a class="btn btn-primary" href="https://t.me/stablescommunity" target="_blank" rel="noopener noreferrer">Telegram</a>
+        <a class="btn btn-secondary" href="https://stablescouncil.org/" target="_blank" rel="noopener noreferrer">Presentation</a>
+        <a class="btn btn-secondary" href="https://stablescouncil.org/links.html" target="_blank" rel="noopener noreferrer">Links</a>
       </div>
     </div>
 
@@ -378,109 +271,227 @@
 
   <script>
     const API_URL   = "/api/chat";
+    const AVATAR    = "/stables_agent_avatar.png";
     const chatLog   = document.getElementById("chatLog");
     const chatInput = document.getElementById("chatInput");
     const sendBtn   = document.getElementById("sendBtn");
+    const topicsEl  = document.getElementById("topics");
+    const topicsToggle = document.getElementById("topicsToggle");
 
     const langParam = new URLSearchParams(window.location.search).get("lang") || "en";
     const AGENT_TEXTS = {
       en: {
-        firstMsg: "Hello! How can I help you today?\n\nFeel free to ask me anything about Stables — and I'll answer in the language of your choice.",
-        you: "You", agentName: "StablesAgent", send: "Send",
+        firstMsg: "Hello! How can I help you today?\n\nPick a topic below, or ask me anything about Stables. I answer in the language of your choice.",
+        you: "You", agentName: "StablesAgent", send: "Send", topics: "Topics", placeholder: "Ask StablesAgent...",
+        warn: "Do not share private or sensitive information",
         byoaiToggle: "Use your own AI? Copy knowledge base link",
         byoaiP: "Copy the link below, paste it into ChatGPT, Claude, or any model, and say:<br><em>\"Read this knowledge base and answer my questions about Stables: [paste link]\"</em>",
         copyLabel: "Copy knowledge base link", copied: "Copied!",
         copyFallback: "Right-click the link below to copy",
         maintenance: "I am currently undergoing maintenance. Please try again shortly.",
-        networkError: "Network error. Please check your connection and try again."
+        networkError: "Network error. Please check your connection and try again.",
+        slow: "StablesAgent is taking longer than expected. Please try again shortly.",
+        topicList: [
+          "What is Stables?",
+          "What can I test today?",
+          "How do I get Winiwa?",
+          "What are Winiwa and xWiniwa?",
+          "Is my money safe?",
+          "Where do I download the app?"
+        ]
       },
       fr: {
-        firstMsg: "Bonjour ! Comment puis-je vous aider aujourd'hui ?\n\nN'hésitez pas à me poser vos questions sur Stables — je répondrai dans la langue de votre choix.",
-        you: "Vous", agentName: "StablesAgent", send: "Envoyer",
+        firstMsg: "Bonjour ! Comment puis-je vous aider aujourd'hui ?\n\nChoisissez un sujet ci-dessous, ou posez-moi vos questions sur Stables. Je réponds dans la langue de votre choix.",
+        you: "Vous", agentName: "StablesAgent", send: "Envoyer", topics: "Sujets", placeholder: "Demandez à StablesAgent...",
+        warn: "Ne partagez aucune information privée ou sensible",
         byoaiToggle: "Utiliser votre propre IA ? Copier le lien de la base de connaissances",
         byoaiP: "Copiez le lien ci-dessous, collez-le dans ChatGPT, Claude ou tout autre modèle, et dites :<br><em>\"Lisez cette base de connaissances et répondez à mes questions sur Stables : [collez le lien]\"</em>",
         copyLabel: "Copier le lien de la base de connaissances", copied: "Copié !",
         copyFallback: "Cliquez droit sur le lien ci-dessous pour copier",
         maintenance: "Je suis actuellement en maintenance. Veuillez réessayer sous peu.",
-        networkError: "Erreur réseau. Vérifiez votre connexion et réessayez."
+        networkError: "Erreur réseau. Vérifiez votre connexion et réessayez.",
+        slow: "StablesAgent met plus de temps que prévu. Réessayez dans un instant.",
+        topicList: [
+          "Qu'est-ce que Stables ?",
+          "Que puis-je tester aujourd'hui ?",
+          "Comment obtenir des Winiwa ?",
+          "Que sont Winiwa et xWiniwa ?",
+          "Mon argent est-il en sécurité ?",
+          "Où télécharger l'application ?"
+        ]
       },
       de: {
-        firstMsg: "Hallo! Wie kann ich Ihnen heute helfen?\n\nStellen Sie mir gerne Fragen zu Stables — ich antworte in Ihrer bevorzugten Sprache.",
-        you: "Sie", agentName: "StablesAgent", send: "Senden",
+        firstMsg: "Hallo! Wie kann ich Ihnen heute helfen?\n\nWählen Sie unten ein Thema, oder stellen Sie mir Ihre Fragen zu Stables. Ich antworte in Ihrer bevorzugten Sprache.",
+        you: "Sie", agentName: "StablesAgent", send: "Senden", topics: "Themen", placeholder: "StablesAgent fragen...",
+        warn: "Teilen Sie keine privaten oder sensiblen Informationen",
         byoaiToggle: "Eigene KI nutzen? Wissensdatenbank-Link kopieren",
         byoaiP: "Kopieren Sie den Link unten, fügen Sie ihn in ChatGPT, Claude oder ein anderes Modell ein und sagen Sie:<br><em>\"Lies diese Wissensdatenbank und beantworte meine Fragen zu Stables: [Link einfügen]\"</em>",
         copyLabel: "Wissensdatenbank-Link kopieren", copied: "Kopiert!",
         copyFallback: "Rechtsklicken Sie auf den Link unten zum Kopieren",
         maintenance: "Ich bin derzeit in Wartung. Bitte versuchen Sie es später erneut.",
-        networkError: "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+        networkError: "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+        slow: "StablesAgent braucht länger als erwartet. Bitte versuchen Sie es gleich noch einmal.",
+        topicList: [
+          "Was ist Stables?",
+          "Was kann ich heute testen?",
+          "Wie bekomme ich Winiwa?",
+          "Was sind Winiwa und xWiniwa?",
+          "Ist mein Geld sicher?",
+          "Wo lade ich die App herunter?"
+        ]
       },
       es: {
-        firstMsg: "¡Hola! ¿Cómo puedo ayudarte hoy?\n\nPregúntame lo que quieras sobre Stables — responderé en el idioma de tu elección.",
-        you: "Tú", agentName: "StablesAgent", send: "Enviar",
+        firstMsg: "¡Hola! ¿Cómo puedo ayudarte hoy?\n\nElige un tema abajo, o pregúntame lo que quieras sobre Stables. Respondo en el idioma de tu elección.",
+        you: "Tú", agentName: "StablesAgent", send: "Enviar", topics: "Temas", placeholder: "Pregunta a StablesAgent...",
+        warn: "No compartas información privada o sensible",
         byoaiToggle: "¿Usar tu propia IA? Copiar enlace de la base de conocimientos",
         byoaiP: "Copia el enlace de abajo, pégalo en ChatGPT, Claude o cualquier modelo y di:<br><em>\"Lee esta base de conocimientos y responde mis preguntas sobre Stables: [pega el enlace]\"</em>",
         copyLabel: "Copiar enlace de la base de conocimientos", copied: "¡Copiado!",
         copyFallback: "Clic derecho en el enlace de abajo para copiar",
         maintenance: "Estoy en mantenimiento. Por favor, inténtalo de nuevo en breve.",
-        networkError: "Error de red. Comprueba tu conexión e inténtalo de nuevo."
+        networkError: "Error de red. Comprueba tu conexión e inténtalo de nuevo.",
+        slow: "StablesAgent tarda más de lo esperado. Inténtalo de nuevo en un momento.",
+        topicList: [
+          "¿Qué es Stables?",
+          "¿Qué puedo probar hoy?",
+          "¿Cómo consigo Winiwa?",
+          "¿Qué son Winiwa y xWiniwa?",
+          "¿Está seguro mi dinero?",
+          "¿Dónde descargo la aplicación?"
+        ]
       },
       it: {
-        firstMsg: "Ciao! Come posso aiutarti oggi?\n\nChiedimi pure qualsiasi cosa su Stables — risponderò nella lingua che preferisci.",
-        you: "Tu", agentName: "StablesAgent", send: "Invia",
+        firstMsg: "Ciao! Come posso aiutarti oggi?\n\nScegli un argomento qui sotto, oppure chiedimi qualsiasi cosa su Stables. Rispondo nella lingua che preferisci.",
+        you: "Tu", agentName: "StablesAgent", send: "Invia", topics: "Argomenti", placeholder: "Chiedi a StablesAgent...",
+        warn: "Non condividere informazioni private o sensibili",
         byoaiToggle: "Usare la propria IA? Copia il link della base di conoscenza",
         byoaiP: "Copia il link qui sotto, incollalo in ChatGPT, Claude o qualsiasi modello e di':<br><em>\"Leggi questa base di conoscenza e rispondi alle mie domande su Stables: [incolla link]\"</em>",
         copyLabel: "Copia link base di conoscenza", copied: "Copiato!",
         copyFallback: "Tasto destro sul link qui sotto per copiare",
         maintenance: "Sono in manutenzione. Riprova tra poco.",
-        networkError: "Errore di rete. Controlla la connessione e riprova."
-      },
-      "fr-qc-edgy": {
-        firstMsg: "Salut ! Comment j'peux t'aider aujourd'hui ?\n\nPose-moi tes questions sur Stables — j'vais répondre dans la langue de ton choix. Pour vrai.",
-        you: "Toi", agentName: "StablesAgent", send: "Envoyer",
-        byoaiToggle: "Utiliser ta propre IA ? Copier le lien de la base de connaissances",
-        byoaiP: "Copie le lien en bas, colle-le dans ChatGPT, Claude ou n'importe quel modèle, pis dis :<br><em>\"Lis cette base de connaissances pis réponds à mes questions sur Stables : [colle le lien]\"</em>",
-        copyLabel: "Copier le lien de la base de connaissances", copied: "Copié !",
-        copyFallback: "Clic droit sur le lien en bas pour copier",
-        maintenance: "J'suis en maintenance là. Réessaie dans peu.",
-        networkError: "Erreur de réseau. Vérifie ta connexion pis réessaie."
+        networkError: "Errore di rete. Controlla la connessione e riprova.",
+        slow: "StablesAgent sta impiegando più del previsto. Riprova tra poco.",
+        topicList: [
+          "Che cos'è Stables?",
+          "Cosa posso testare oggi?",
+          "Come ottengo Winiwa?",
+          "Cosa sono Winiwa e xWiniwa?",
+          "I miei soldi sono al sicuro?",
+          "Dove scarico l'app?"
+        ]
       },
       zh: {
-        firstMsg: "你好！今天我能帮你什么？\n\n随时向我询问有关 Stables 的任何问题 — 我会用你选择的语言回答。",
-        you: "你", agentName: "StablesAgent", send: "发送",
+        firstMsg: "你好！今天我能帮你什么？\n\n在下方选择一个主题，或者随时向我询问有关 Stables 的任何问题。我会用你选择的语言回答。",
+        you: "你", agentName: "StablesAgent", send: "发送", topics: "主题", placeholder: "向 StablesAgent 提问...",
+        warn: "请勿分享私人或敏感信息",
         byoaiToggle: "使用您自己的 AI？复制知识库链接",
         byoaiP: "复制下方链接，粘贴到 ChatGPT、Claude 或任何模型中，并说：<br><em>\"阅读此知识库并回答我有关 Stables 的问题：[粘贴链接]\"</em>",
         copyLabel: "复制知识库链接", copied: "已复制！",
         copyFallback: "右键点击下方链接以复制",
         maintenance: "我正在进行维护。请稍后再试。",
-        networkError: "网络错误。请检查您的连接并重试。"
+        networkError: "网络错误。请检查您的连接并重试。",
+        slow: "StablesAgent 的回复比预期慢。请稍后再试。",
+        topicList: [
+          "Stables 是什么？",
+          "我今天可以测试什么？",
+          "如何获得 Winiwa？",
+          "Winiwa 和 xWiniwa 是什么？",
+          "我的资金安全吗？",
+          "在哪里下载应用？"
+        ]
       }
     };
+    AGENT_TEXTS["fr-qc-edgy"] = Object.assign({}, AGENT_TEXTS.fr, {
+      firstMsg: "Salut ! Comment j'peux t'aider aujourd'hui ?\n\nChoisis un sujet en bas, ou pose-moi tes questions sur Stables. J'réponds dans la langue de ton choix. Pour vrai.",
+      you: "Toi"
+    });
     const T = AGENT_TEXTS[langParam] || AGENT_TEXTS.en;
 
     (function applyTranslations() {
       const tgl = document.getElementById("byoaiToggleText");
       const bod = document.getElementById("byoaiBodyP");
       const lbl = document.getElementById("copyBrainLabel");
-      const snd = sendBtn?.querySelector("span:last-child");
+      const snd = sendBtn.querySelector("span:last-child");
+      const warn = document.getElementById("shellWarn");
       if (tgl) tgl.textContent = T.byoaiToggle;
       if (bod) bod.innerHTML = T.byoaiP;
       if (lbl) lbl.textContent = T.copyLabel;
       if (snd) snd.textContent = T.send;
+      if (warn) warn.textContent = T.warn;
+      chatInput.placeholder = T.placeholder;
+      topicsToggle.textContent = T.topics;
     })();
 
     function appendMessage(text, role) {
       const wrap  = document.createElement("div");
       wrap.className = "msg " + (role === "user" ? "msg-user" : "msg-agent");
+      if (role !== "user") {
+        const av = document.createElement("img");
+        av.className = "msg-avatar";
+        av.src = AVATAR;
+        av.alt = "";
+        wrap.appendChild(av);
+      }
+      const body = document.createElement("div");
+      body.className = "msg-body";
       const label = document.createElement("span");
       label.className   = "msg-label";
       label.textContent = role === "user" ? T.you : T.agentName;
-      const body        = document.createElement("div");
-      body.textContent  = text;
-      wrap.appendChild(label);
+      const content = document.createElement("div");
+      content.textContent = text;
+      body.appendChild(label);
+      body.appendChild(content);
       wrap.appendChild(body);
       chatLog.appendChild(wrap);
-      chatLog.scrollTop = chatLog.scrollHeight;
+      return wrap;
     }
+
+    /* Reading position (founder 2026-09-06: "the bottom is shown and the user needs to scroll up
+       to the top"). An exchange is read from its top: the person's question is brought to the top
+       of the region when it is sent, and the answer arrives under it, so a long answer starts in
+       view. The greeting keeps its place on arrival because nothing is anchored before the first
+       question. When what follows the question is shorter than the region, the browser simply
+       shows it all. */
+    function showFromTop(el) {
+      if (!el) return;
+      const scroller = document.getElementById("chatScroll") || chatLog;
+      const delta = el.getBoundingClientRect().top - scroller.getBoundingClientRect().top;
+      scroller.scrollTop = scroller.scrollTop + delta - 2;
+    }
+
+    /* Topics people can choose from, the way the app's agent offers choices (founder
+       2026-09-06). Each one is an ordinary question sent to the agent, so the answer comes from the
+       knowledge base like any typed question. After the first exchange the list folds into a Topics
+       control so the conversation has the room. */
+    /* The six topics in the order the page lists them, by the id the agent's prepared answers use
+       (agent_faq.js). A tapped topic sends its id along with its words, so the agent answers it from
+       prepared text in the page's language whatever the wording or the conversation so far. */
+    const TOPIC_IDS = ["what-is-stables", "what-can-i-test", "how-do-i-get-winiwa", "winiwa-and-xwiniwa", "is-my-money-safe", "where-to-download"];
+    let topicsUsed = false;
+    function renderTopics() {
+      topicsEl.innerHTML = "";
+      (T.topicList || []).forEach((q, i) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "topic-btn";
+        b.textContent = q;
+        b.addEventListener("click", () => { chatInput.value = q; sendMessage(null, TOPIC_IDS[i] || ""); });
+        topicsEl.appendChild(b);
+      });
+    }
+    function showTopics(open) {
+      topicsEl.hidden = !open;
+      topicsToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      /* The list lives at the end of the scrolling region; reopened under a conversation it would
+         sit below the fold and look dead (founder 2026-09-06: "the topic buttons are not
+         clickable"). Bring it into view, and the first topic with it. */
+      if (open && topicsUsed) {
+        const scroller = document.getElementById("chatScroll") || chatLog;
+        scroller.scrollTop = scroller.scrollHeight;
+      }
+    }
+    topicsToggle.addEventListener("click", () => showTopics(topicsEl.hidden));
+    renderTopics();
 
     function setSending(on) {
       sendBtn.disabled   = on;
@@ -488,31 +499,52 @@
       if (!on) chatInput.focus();
     }
 
-    async function sendMessage() {
+    const handledBridgeRequests = new Set();
+
+    async function sendMessage(parentBridge, topicId) {
       const text = (chatInput.value || "").trim();
       if (!text) return;
-      appendMessage(text, "user");
+      const asked = appendMessage(text, "user");
       chatInput.value = "";
+      if (!topicsUsed) { topicsUsed = true; topicsToggle.hidden = false; }
+      /* A tapped topic, or a typed question, folds the list so the answer has the room. */
+      showTopics(false);
+      showFromTop(asked);
       setSending(true);
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
       try {
         const res  = await fetch(API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text })
+          body: JSON.stringify(topicId ? { message: text, lang: langParam, topic: topicId } : { message: text, lang: langParam }),
+          signal: controller.signal
         });
         const data = await res.json();
-        appendMessage(
-          data.reply || T.maintenance,
-          "agent"
-        );
+        const reply = data.reply || T.maintenance;
+        appendMessage(reply, "agent");
+        showFromTop(asked);
+        if (parentBridge && parentBridge.source) {
+          try {
+            parentBridge.source.postMessage({ type: "stablesagent:reply", requestId: parentBridge.requestId || "", text: reply, ts: Date.now() }, "*");
+          } catch {}
+        }
       } catch {
-        appendMessage(T.networkError, "agent");
+        const reply = controller.signal.aborted ? T.slow : T.networkError;
+        appendMessage(reply, "agent");
+        showFromTop(asked);
+        if (parentBridge && parentBridge.source) {
+          try {
+            parentBridge.source.postMessage({ type: "stablesagent:reply", requestId: parentBridge.requestId || "", text: reply, ts: Date.now() }, "*");
+          } catch {}
+        }
       } finally {
+        clearTimeout(timeoutId);
         setSending(false);
       }
     }
 
-    sendBtn.addEventListener("click", sendMessage);
+    sendBtn.addEventListener("click", () => sendMessage());
     chatInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
     });
@@ -522,25 +554,44 @@
     window.addEventListener("message", (event) => {
       const d = event?.data;
       if (!d || typeof d !== "object") return;
-      if (d.type !== "stablesagent:suggest") return;
-      const text = String(d.text || "").trim();
-      if (!text) return;
-      chatInput.value = text;
-      chatInput.focus();
-      if (d.autoSend) sendMessage();
+      if (d.type === "stablesagent:suggest") {
+        const text = String(d.text || "").trim();
+        if (!text) return;
+        const requestId = String(d.requestId || "");
+        if (requestId && handledBridgeRequests.has(requestId)) {
+          try { event.source && event.source.postMessage({ type: "stablesagent:ack", ok: true, requestId }, "*"); } catch {}
+          return;
+        }
+        if (requestId) handledBridgeRequests.add(requestId);
+        if (handledBridgeRequests.size > 20) {
+          const first = handledBridgeRequests.values().next().value;
+          handledBridgeRequests.delete(first);
+        }
+        chatInput.value = text;
+        chatInput.focus();
+        if (d.autoSend) sendMessage({ source: event.source, requestId });
+      } else if (d.type === "stablesagent:set_welcome") {
+        const text = String(d.text || "").trim();
+        if (text) {
+          chatLog.innerHTML = "";
+          appendMessage(text, "agent");
+        }
+      }
       try { event.source && event.source.postMessage({ type: "stablesagent:ack", ok: true }, "*"); } catch {}
     });
 
-    appendMessage(T.firstMsg, "agent");
-    // Embed mode (?embed=1): strip chrome, let chat fill the popup
+    const welcomeParam = new URLSearchParams(window.location.search).get("welcome");
+    appendMessage(welcomeParam ? welcomeParam : T.firstMsg, "agent");
+    // Embed mode (?embed=1): strip chrome, let chat fill the popup; the field stays ours
     if (new URLSearchParams(window.location.search).get('embed') === '1') {
       const style = document.createElement('style');
       style.textContent = `
-        html, body { height: 100% !important; min-height: 0 !important; margin: 0 !important; }
-        body { padding: 0 !important; align-items: stretch !important; background: transparent !important; }
+        html, body { height: 100% !important; min-height: 0 !important; margin: 0 !important; overflow: hidden !important; }
+        body { padding: 0 !important; align-items: stretch !important; }
         .shell { width: 100% !important; height: 100% !important; min-height: 0 !important; max-height: none !important;
                  border-radius: 0 !important; border: none !important; box-shadow: none !important; }
         .shell-header { display: none !important; }
+        .shell-warn { display: none !important; }
         .shell-footer { display: none !important; }
         .chat-area { flex: 1 1 auto !important; height: auto !important; min-height: 0 !important; padding: 12px !important; }
         .byoai { flex-shrink: 0 !important; }
@@ -558,9 +609,7 @@
         setTimeout(() => { label.textContent = T.copyLabel; }, 2000);
       }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(url).then(showCopied).catch(() => {
-          copyFallback(url, label, showCopied);
-        });
+        navigator.clipboard.writeText(url).then(showCopied).catch(() => { copyFallback(url, label, showCopied); });
       } else {
         copyFallback(url, label, showCopied);
       }
@@ -573,11 +622,7 @@
       ta.select();
       ta.setSelectionRange(0, 99999);
       try {
-        if (document.execCommand("copy")) {
-          onDone();
-        } else {
-          label.textContent = T.copyFallback;
-        }
+        if (document.execCommand("copy")) onDone(); else label.textContent = T.copyFallback;
       } catch (e) {
         label.textContent = T.copyFallback;
       }
