@@ -11,9 +11,13 @@ binding statement of what ships is **`release_scope_boundary.md`**.
 
 - **xMinima** is the equity token of the Stables platform in the production design. It absorbs
   volatility so the stablecoins do not have to, and it carries governance.
-- **Voting power is strictly proportional: 1 xMinima = 1 vote.** No privileged tiers, no delegated
-  boosts, no admin keys, no quadratic voting. A holder with 10 tokens has 10 votes; a holder with
-  1,000 has 1,000. Power comes only from the amount of risk carried.
+- **Voting power is strictly proportional: 1 pledged xMinima = 1 vote.** No privileged tiers, no
+  delegated boosts, no admin keys, no quadratic voting. A holder with 10 tokens has 10 votes; a holder
+  with 1,000 has 1,000. Power comes only from the amount of risk carried.
+- **Voting means pledging** (Council decision, 2026-09-08). To vote you commit the tokens and accept a
+  lock for a period, so influence follows capital genuinely placed at risk rather than capital merely
+  held. Weight is not increased by holding for longer: an earlier holder does not outrank a later one
+  for being earlier, which would entrench whoever arrived first.
 - **Governance is not deployed and is not part of the first community test.** There is nothing to
   vote on in the app today.
 

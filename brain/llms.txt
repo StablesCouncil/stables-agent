@@ -1,6 +1,6 @@
 # Stables Council Knowledge Base
 > This file is generated for external AI models (like ChatGPT, Claude) to ingest the complete public knowledge base of the Stables ecosystem from a single URL.
-> Last updated: 2026-09-06
+> Last updated: 2026-09-10
 
 
 
@@ -73,7 +73,7 @@ in some minutes, and offers **Repair with Resync**.
 3. Tick the acknowledgement, then start the resync.
 4. Leave the app open and the phone on power. It downloads a validated chain snapshot and searches
    it for your wallet's coins.
-5. The app restarts itself when it finishes, and comes back Up to date.
+5. The app restarts itself when the resync finishes. It then checks the node and wallet proofs before showing readiness; a restart alone does not prove that it is up to date.
 
 ### What Resync does and does not do
 
@@ -92,6 +92,12 @@ in some minutes, and offers **Repair with Resync**.
   follows the chain. Even at Pause the node still keeps up when the app is open.
 
 ## If you are asked for evidence
+
+### Startup and payment readiness
+
+The v0.0.11.86 candidate opens the standalone app screen while its embedded node starts. A visible screen or a remembered balance is not proof that a payment can be sent. Payment actions still depend on fresh node status and the required wallet coins being proven. Failed wallet proofs can be retried.
+
+Warm resume with an already running node and cold startup are different measurements. Current testing does not establish a guaranteed cold-payment time, card-speed checkout, or battery efficiency. Keep the phone's selected network contribution setting; do not promise that Android will keep the node running permanently.
 
 Report the **Block height** shown in the Network section, what the Updating line says about how old
 the newest block is and whether it is gaining, and your app version from Settings.
@@ -558,7 +564,7 @@ Stables is not a traditional DeFi project. It is a **floating collateralized syn
 
 ### B. xMinima (Equity Absorption)
 - **The Structural Buffer:** xMinima represents the equity layer. The holders of xMinima voluntarily absorb the volatility of the Minima collateral. They provide the structural foundation that keeps the Stablecoin backing ratio robust in exchange for leveraged exposure to Minima's native growth.
-- **Proportional Voting:** Power resides with those who assume this structural risk: **1 xMinima token = 1 vote**. No tiers, no admin keys, no quadratic voting.
+- **Proportional Voting:** Power resides with those who assume this structural risk: **1 pledged xMinima token = 1 vote**. No tiers, no admin keys, no quadratic voting. Voting means pledging (Council decision, 2026-09-08): the tokens are committed and locked for a period, so influence follows capital genuinely at risk rather than capital merely held. Holding for longer does not increase weight. What is decided is the liquidity budget, which currency comes next, and the safety settings that keep minting and burning away from a manipulated price. Never a price, and never the launch. How the first stablecoin is created is a separate topic with its own settled answer, covering the Council's single opening act, the switch that closes it permanently, and how the price is found by trading afterwards.
 
 ## 4. The Transition Doctrine (The Arc of Money)
 Stables does not claim to be the final form of human money. It is a necessary bridge from the centralised present to a sovereign future. We view monetary history as a sequence of stages:
@@ -709,9 +715,13 @@ binding statement of what ships is **`release_scope_boundary.md`**.
 
 - **xMinima** is the equity token of the Stables platform in the production design. It absorbs
   volatility so the stablecoins do not have to, and it carries governance.
-- **Voting power is strictly proportional: 1 xMinima = 1 vote.** No privileged tiers, no delegated
-  boosts, no admin keys, no quadratic voting. A holder with 10 tokens has 10 votes; a holder with
-  1,000 has 1,000. Power comes only from the amount of risk carried.
+- **Voting power is strictly proportional: 1 pledged xMinima = 1 vote.** No privileged tiers, no
+  delegated boosts, no admin keys, no quadratic voting. A holder with 10 tokens has 10 votes; a holder
+  with 1,000 has 1,000. Power comes only from the amount of risk carried.
+- **Voting means pledging** (Council decision, 2026-09-08). To vote you commit the tokens and accept a
+  lock for a period, so influence follows capital genuinely placed at risk rather than capital merely
+  held. Weight is not increased by holding for longer: an earlier holder does not outrank a later one
+  for being earlier, which would entrench whoever arrived first.
 - **Governance is not deployed and is not part of the first community test.** There is nothing to
   vote on in the app today.
 
@@ -1156,7 +1166,7 @@ longer relevant**. Do not restate them:
 # Stables MiniDapp, Test channel overview (active development line)
 
 *For StablesAgent and external AIs: what the Stables test channel is, what works on-chain today, how
-a tester reaches it, and how it relates to the frozen demo and to future production. Rewritten 2026-08-01 for the first Stables test release; updated 2026-09-04 for the published standalone Android app (v0.0.11.53). The binding scope statement is
+a tester reaches it, and how it relates to the frozen demo and to future production. Rewritten 2026-08-01 for the first Stables test release; updated 2026-09-10 for the coordinated v0.0.11.88 testing release. The binding scope statement is
 **`release_scope_boundary.md`**; where this document and that one disagree, that one wins.*
 
 ## What the test channel is
@@ -1213,24 +1223,67 @@ later Council decision and a completed handover.
 
 ## How to access the test channel
 
-1. **Standalone Android app, v0.0.11.63, published 2026-09-06.** Install from
+1. **Standalone Android app, v0.0.11.88, testing release 2026-09-10.** Install from
    https://stablescouncil.org/payment-app/ (the Download button) or from the GitHub release
-   `StablesCouncil/stables-app`, tag `app-v0.0.11.63`, file `Stables_v0.0.11.63.apk`; verify
+   `StablesCouncil/stables-app`, tag `app-v0.0.11.88`, file `Stables_v0.0.11.88.apk`; verify
    the SHA-256 published with the release. Install a new version over the old one and never
    uninstall: the wallet stays on the device.
-2. **Minima Core companion, v0.0.11.63, published 2026-09-06 (first released at v0.0.11.60 the same day), pairing-tested, not rehearsed.** For
+2. **Minima Core companion, v0.0.11.88, testing release 2026-09-10 (first released at v0.0.11.60 on 2026-09-05), pairing-tested, not rehearsed.** For
    phones that already run the official Minima Core Android app: the companion has no node of its
    own and no Internet permission; it pairs with Core on the same phone and uses Core's node and
-   wallet. Same GitHub release, file `StablesCore_v0.0.11.63.apk`, same signing certificate, and
+   wallet. Same GitHub release, file `StablesCore_v0.0.11.88.apk`, same signing certificate, and
    the second Download button on the access page. Sends through Core need the payment code set in
    the app. Tested on one phone (reconnect, claim, mint, partial and full burn, each on the chain);
    the three-wallet rehearsal has not happened yet.
-3. **Coming soon:** the MiniDapp package for MinimaOS and the web build. Say "coming soon";
-   neither is downloadable today.
-4. **Local development web preview.** From the repo, serve the website tree and open
-   `http://localhost:8080/dapp/3-test/`. This path is for developers, not testers.
+3. **MinimaOS MiniDapp, v0.0.11.88 testing release.** Install or update `Stables_v0.0.11.88.mds.zip` through the MinimaOS hub. It uses that node and its wallet. An existing installation does not update automatically when the download changes.
+4. **Web app, v0.0.11.88 testing release.** Open `https://stablescouncil.org/dapp/3-test/` and connect a node for chain operations. The browser does not contain an embedded node.
 
-## What is new in v0.0.11.63 (2026-09-06): the battery release
+This coordinated update succeeds public v0.0.11.63. All four access options are listed at https://stablescouncil.org/payment-app/.
+
+## Startup and retail testing groundwork in v0.0.11.88
+
+Currency notes are grouped by wallet address, with amounts, ages and individual selection retained. Select all covers every address.
+
+The standalone app opens while its node starts. Payment actions still require fresh node status and wallet proofs. Failed proofs remain retryable, and concurrent receive-address requests share one node read. Faster screen loading is not proof of cold-payment readiness or battery efficiency.
+
+Retail testing groundwork binds incoming payment matching to invoice identity, recipient, token, exact amount and expiry, and checks confirmation policy again before release. Merchant business tools remain deferred from the public test scope. Broadcast detection is not block confirmation; no extra Maxima submission message is required.
+
+## Other changes included since public v0.0.11.63 (developed through v0.0.11.82)
+
+**Each currency says what is still arriving.** A faucet claim or a mint only counts in your balance
+once the network has confirmed it, which takes a few minutes. Until then the figure on a currency row
+did not include it, and nothing on the screen said so, so a person could not tell whether the amount
+they had just claimed was already counted. The row now carries the amount on its own, for example
+"+1,000.00", directly under the balance, with no wording at all. It appears only while that amount is
+genuinely not yet in the figure above it, so a plus figure always means "on top of what you can see"
+and no plus figure means everything is counted. It disappears by itself once the amount is final. A
+faucet claim or a mint adds no plus figure, because the app credits those to your balance the moment
+they are sent and there is nothing left to add; the row still pulses gently while it confirms. The currency pinned at the top of the wallet, which
+is where most people look first, had no settling signal at all before this and now carries the same
+line. If the app cannot prove your balance yet it shows no figure and no arriving line either: an
+unproven number is never shown as though it were current.
+
+**MAX offers only what you can actually spend.** Claiming Winiwa and then pressing MAX on the Mint
+page could put more in the field than the wallet could pay, and the mint was refused with "Not enough
+Winiwa in your wallet". A claim belongs to you the moment it lands and shows in your balance straight
+away, but coins cannot be spent until the network has confirmed them a few blocks later. MAX now
+reads what can actually be moved, so it can never offer more than the network will accept. A payment
+on its way out still lowers your balance immediately.
+**The xWiniwa vault runs as four independent lanes.** A mint and a burn no longer wait for each
+other and can be confirmed in the same block.
+
+**Your app can help someone who has just installed Stables.** A brand new install after a quiet day
+cannot see the faucet or the vault, because a node only sees coins its own window still reaches. Your
+app can publish a small proof to Minima that any node reads for itself, with no server in the way.
+You can turn this off, and the app now says whether it wrote and why not.
+
+**Other changes.** Opening the app no longer stalls while every repeating job fires at once. Mint
+prices xWiniwa in Winiwa rather than leaving the price line empty. Exchange says when it opens
+instead of quoting an order book this release does not include, and a button that cannot be pressed
+is shown as unavailable. A currency this test does not have says so instead of showing a balance of
+0. Hiding your amounts now also stops the settling animation, which previously still signalled that
+money was landing.
+## What was new in v0.0.11.63 (2026-09-06): the battery release
 
 Everything in this release is about what the app asks its node when nobody is waiting on anything,
 measured on a phone before and after.
@@ -1659,6 +1712,11 @@ For X, the handshake rule still applies: include the mandatory hashtags `#BYB #S
 document in this knowledge base describes a capability as available and this document says it is
 deferred, **this document wins.** Every statement below is about what a tester can actually do.*
 
+> **On the future stablecoin launch (added 2026-09-08).** How the first stablecoin will eventually be
+> created has now been settled by the Council and written down. It changes nothing here: stablecoins
+> remain **out of scope** for this test and switched off in the build. That plan describes a future
+> phase with no date and several numbers still undecided.
+
 ## The one-line answer
 
 The first Stables community test is the **Stables test release**: claim Winiwa from an on-chain faucet, mint
@@ -1668,7 +1726,7 @@ in the build.
 
 ## What a tester can do
 
-- Install the **standalone Stables Android app** (v0.0.11.63); it runs its own Minima node on the phone. Or, on a phone that already runs the official Minima Core app, install the **Minima Core companion** (also v0.0.11.63), which uses Core's node and wallet.
+- Install the **standalone Stables Android app** (v0.0.11.88); it runs its own Minima node on the phone. Or, on a phone that already runs the official Minima Core app, install the **Minima Core companion** (also v0.0.11.88), which uses Core's node and wallet.
 - Claim **Winiwa** from the on-chain faucet covenant.
 - **Mint** Winiwa into **xWiniwa** at par, one for one, through the on-chain vault covenant.
 - **Burn** xWiniwa back into Winiwa at the same par rate, in whole or in part.
@@ -1723,11 +1781,11 @@ test-token address. A tester needs a small amount of real MINIMA to pay signing 
 
 ## How the app reaches the chain
 
-The main published artifact is the **standalone Stables Android app** (v0.0.11.63, first published 2026-09-03 as v0.0.11.38, current release published
-2026-09-06). It runs **its own Minima node inside the app**, on the phone. Since 2026-09-06 the same release also carries the **Minima Core companion** (`StablesCore_v0.0.11.63.apk`, first released at v0.0.11.60): no node of its own, no Internet permission, it pairs with the official Minima Core Android app on the same phone and uses Core's node and wallet. It is released as pairing-tested, not rehearsed: proven on one phone (reconnect after install and restarts, faucet claim, mint, partial and full burn, each on the chain); the three-wallet rehearsal has not happened yet. Sends through Core need the payment code set in the app.
+The main Android artifact is the **standalone Stables Android app** (v0.0.11.88, first published 2026-09-03 as v0.0.11.38, coordinated release dated
+2026-09-10). It runs **its own Minima node inside the app**, on the phone. Since 2026-09-06 the same release also carries the **Minima Core companion** (`StablesCore_v0.0.11.88.apk`, first released at v0.0.11.60): no node of its own, no Internet permission, it pairs with the official Minima Core Android app on the same phone and uses Core's node and wallet. It is released as pairing-tested, not rehearsed: proven on one phone (reconnect after install and restarts, faucet claim, mint, partial and full burn, each on the chain); the three-wallet rehearsal has not happened yet. Sends through Core need the payment code set in the app.
 
 - Install from **https://stablescouncil.org/payment-app/** (the Download button) or from the GitHub
-  release **StablesCouncil/stables-app, tag app-v0.0.11.63**, file `Stables_v0.0.11.63.apk` (companion: `StablesCore_v0.0.11.63.apk`, same release).
+  release **StablesCouncil/stables-app, tag app-v0.0.11.88**, file `Stables_v0.0.11.88.apk` (companion: `StablesCore_v0.0.11.88.apk`, same release).
   Verify the SHA-256 published with the release before installing an APK from anywhere else.
 - Nothing else has to be installed. There is no pairing step, no RPC address and no RPC password:
   if a user is being asked for one, they are not on the standalone app.
@@ -1740,36 +1798,151 @@ The main published artifact is the **standalone Stables Android app** (v0.0.11.6
   daily chart.
 - Because the app runs the node, it holds the Android network permission the node needs.
 
-**Coming soon, not available today:** the MiniDapp package for MinimaOS, the web build, and the
-Core-connected Android companion that talks to the separately installed Minima Core app. Say
-"coming soon" for these; do not describe them as downloadable.
+The coordinated v0.0.11.88 release also includes `Stables_v0.0.11.88.mds.zip` for MinimaOS and the web app at `https://stablescouncil.org/dapp/3-test/`. MinimaOS uses its host node; the web app needs a connected node. The Core companion is already an established testing package, not a future product. Its multi-wallet rehearsal remains outstanding.
+
+Use the versioned downloads on the official access page and GitHub release.
 
 ## Balances tell the truth or say nothing
 
-A figure appears only once the app has proven the exact coins from the chain. Until then it reads
-one of four states, and the matching action stays switched off:
+A current spendable figure requires the exact coins to be proven from the chain. The app may retain a remembered balance with a last-seen or syncing label; that is not payment readiness. The proof state controls the matching action:
 
 - **Syncing** while the app is still reading.
 - **Proof unavailable** when the required coins cannot be proven from this node.
 - **Ready** when the exact coins are proven.
 - **Stale** when the data is older than it should be.
 
-A blank is honest where a zero would be a lie. Send, Claim, Mint and Burn are disabled until the
+A blank or an explicitly remembered figure must not be presented as a current zero or a ready balance. Send, Claim, Mint and Burn are disabled until the
 coins they depend on are proven. If a user reports a missing number, that is usually the app being
 truthful about proof, not a bug.
 
 ## Status of the release itself
 
-**Stables v0.0.11.63 for Android is published** (2026-09-06, the battery release; the first build, v0.0.11.38, on 2026-09-03; the Minima Core companion joined the release at v0.0.11.60 the same day): GitHub release
-`StablesCouncil/stables-app` tag `app-v0.0.11.63`, and the Download buttons on
-https://stablescouncil.org/payment-app/. It is an early test build for the existing Minima community.
-It is **not** a stablecoin launch, not a trading release, not a complete Stables protocol launch, and
-not a production-readiness claim. Bugs are expected. Testers should use a wallet holding only value
-they are willing to risk. Report problems through the in-app feedback page.
+Stables v0.0.11.88 is the coordinated testing release dated 2026-09-10 for Web, MinimaOS, standalone Android and Core-connected Android. It succeeds v0.0.11.63 from 2026-09-06. Versions .64 through .87 were development iterations.
 
-If asked whether the release is out: yes, for the standalone Android app; the MiniDapp package, the
-web build and the Core-connected companion follow later. Do not claim anything beyond what the
-Council's official channels have announced.
+The release is `StablesCouncil/stables-app`, tag `app-v0.0.11.88`, with access through https://stablescouncil.org/payment-app/. It is an early testing update for the Minima community. Stablecoin issuance, trading, merchant business tools and production use remain outside this release. Winiwa and xWiniwa have no value. Report problems through the in-app feedback page.
+
+The app can appear while the standalone node boots, but payments still require fresh status and wallet proofs. Card-speed checkout, guaranteed cold-payment readiness and isolated battery efficiency have not been established.
+
+
+========================================
+## SOURCE FILE: stablecoin_launch_process.md
+========================================
+
+# How the first Stables stablecoin will be created
+
+*Settled by the Council on 2026-09-08 (decision TV81-D27). This describes a **future phase**. It is not
+part of the current community test, and nothing in it can be done in the app today. Several numbers are
+deliberately not decided yet and are listed at the end. If someone asks when this happens, the honest
+answer is that no date is set.*
+
+## The short version
+
+The first stablecoin is created by the Council in a single opening act, and from that moment its price
+is decided by people trading it, not by anyone announcing a number. The Council's ability to do that
+opening act then switches itself off permanently, in a way anyone can check on the chain.
+
+## Why the equity comes first
+
+Stablecoins are backed by Minima, and the cushion that absorbs Minima's ups and downs is the equity
+layer, xMinima. How much stablecoin can safely exist depends on how much of that cushion exists. So the
+first step is opening xMinima minting and letting people who want that role take it up.
+
+This is not a scheduling preference. The capacity to issue stablecoins is bounded by the equity
+underneath, so there is nothing to issue against until the equity is there.
+
+## Why the shops come next
+
+A stablecoin is only worth something if you can spend it. Stables has no price feed and no oracle, so
+what makes one unit worth one dollar of goods is simply that shops accept it for one dollar of goods.
+That is the anchor, and it is the reason merchant commitments come before a launch rather than after.
+
+A commitment means a shop agrees to accept Stables as payment. That can be an annual listing in the app
+or a public engagement. A listing is a directory entry: it is not an endorsement and not a guarantee.
+
+Because the network is what creates value, the shops can be online as easily as on a high street. Where
+a group of committed shops does sit in one country, that country's currency is the one that gets
+created first. The shops choose the currency, not the other way round.
+
+## The opening act
+
+The Council deposits Minima and issues the first units against it, which creates both the first supply
+and the market it trades on at the same moment. The opening rate is simply how much Minima was put in
+for how many units issued.
+
+There is no auction and no vote on the price, for a straightforward reason: **a price is not something a
+vote can know.** What a vote would really be doing is copying a number from somewhere else. Instead the
+Council commits its own money at that opening rate, which means the Council carries the cost if the rate
+is wrong, rather than the public carrying it. Whoever sets the first price should be the one exposed to
+it being wrong.
+
+## Why this is not a back door
+
+Letting the Council do something nobody else can do is exactly the kind of special power Stables exists
+to remove, so it is bounded in four ways, and all four are enforced by the chain rather than promised:
+
+1. It happens **once**, for a fixed amount.
+2. It **switches itself off**. The same transaction that opens minting to everybody permanently closes
+   the Council's own path.
+3. Anyone can **read what was issued and what backs it**.
+4. Afterwards it grants nothing at all. No further minting, no price setting, no veto.
+
+Point 2 deserves a note, because the obvious approach would have been to destroy the Council's key and
+say so. That was rejected: **nobody can prove a key was destroyed.** The claim looks exactly the same
+whether it is true or not, and it would ask people for precisely the trust the project is built to
+remove. So the key is not destroyed. Instead the contract simply has no door left for it to enter, and
+anyone can confirm that by reading the code and the chain.
+
+## How the price works without an oracle
+
+There are two prices and it helps to keep them apart.
+
+**Inside the system**, all that matters is how many Minima one stablecoin is worth. Both sides of that
+are on the chain, so no outside information is needed. After the opening act, that rate is whatever
+people actually paid each other for it. Confirmed trades are the price. Nobody declares it.
+
+**Outside the system**, what makes a unit mean a dollar is shops accepting it for a dollar of goods.
+That is not a feed either. It is a network of people who decided to take it.
+
+Neither half needs anyone to be trusted, which is the whole point.
+
+## After the opening
+
+The market runs. Later, once the market is genuinely established rather than mostly the Council's own
+activity, the system switches to reading its price from confirmed trades automatically. That switch is
+scheduled and mechanical rather than a decision somebody makes, and it is blocked while the Council is
+still providing most of the trading. The Council cannot hold it back by doing nothing, and it cannot be
+rushed into a market that is not really there yet.
+
+The Council will provide liquidity in the early period so trading is less jumpy, with the amount set
+openly and renewed periodically. It is worth being precise about what that is and is not: the Council
+makes it easier to trade, and it does **not** defend the price. The shops are what hold the value
+steady.
+
+## What people vote on
+
+Not the price, and not the launch. Voting weight comes from pledging xMinima, which means committing it
+and accepting a lock, so influence follows capital genuinely placed at risk rather than capital merely
+held. What gets decided is the liquidity budget, which currency comes next, and the safety settings that
+keep minting and burning away from a manipulated price.
+
+There is no target backing ratio. How much cushion the system carries is the result of what equity
+holders choose to do, not a number set by committee. The one rule that follows from the backing is
+simple and always applies: while the backing is at or above 100 percent, redeeming pays full value, and
+if it ever falls below, redeeming pays the honest share of what is actually there. It is never negative,
+and nobody can redeem more than exists.
+
+## What is not decided yet
+
+Stated plainly, because the answer to these is currently "not yet", not a number being withheld:
+
+- how large the first issuance will be
+- how the opening rate is chosen and recorded
+- how much liquidity the Council commits
+- how long a pledge is locked for
+- the exact thresholds for the automatic switch to market pricing
+- how many committed shops count as enough to launch a currency
+
+There is also no date. This describes how it will work, not when.
 
 
 ========================================

@@ -63,7 +63,7 @@ in some minutes, and offers **Repair with Resync**.
 3. Tick the acknowledgement, then start the resync.
 4. Leave the app open and the phone on power. It downloads a validated chain snapshot and searches
    it for your wallet's coins.
-5. The app restarts itself when it finishes, and comes back Up to date.
+5. The app restarts itself when the resync finishes. It then checks the node and wallet proofs before showing readiness; a restart alone does not prove that it is up to date.
 
 ### What Resync does and does not do
 
@@ -82,6 +82,12 @@ in some minutes, and offers **Repair with Resync**.
   follows the chain. Even at Pause the node still keeps up when the app is open.
 
 ## If you are asked for evidence
+
+### Startup and payment readiness
+
+The v0.0.11.86 candidate opens the standalone app screen while its embedded node starts. A visible screen or a remembered balance is not proof that a payment can be sent. Payment actions still depend on fresh node status and the required wallet coins being proven. Failed wallet proofs can be retried.
+
+Warm resume with an already running node and cold startup are different measurements. Current testing does not establish a guaranteed cold-payment time, card-speed checkout, or battery efficiency. Keep the phone's selected network contribution setting; do not promise that Android will keep the node running permanently.
 
 Report the **Block height** shown in the Network section, what the Updating line says about how old
 the newest block is and whether it is gaining, and your app version from Settings.

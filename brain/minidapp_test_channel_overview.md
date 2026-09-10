@@ -1,7 +1,7 @@
 # Stables MiniDapp, Test channel overview (active development line)
 
 *For StablesAgent and external AIs: what the Stables test channel is, what works on-chain today, how
-a tester reaches it, and how it relates to the frozen demo and to future production. Rewritten 2026-08-01 for the first Stables test release; updated 2026-09-04 for the published standalone Android app (v0.0.11.53). The binding scope statement is
+a tester reaches it, and how it relates to the frozen demo and to future production. Rewritten 2026-08-01 for the first Stables test release; updated 2026-09-10 for the coordinated v0.0.11.88 testing release. The binding scope statement is
 **`release_scope_boundary.md`**; where this document and that one disagree, that one wins.*
 
 ## What the test channel is
@@ -58,24 +58,67 @@ later Council decision and a completed handover.
 
 ## How to access the test channel
 
-1. **Standalone Android app, v0.0.11.63, published 2026-09-06.** Install from
+1. **Standalone Android app, v0.0.11.88, testing release 2026-09-10.** Install from
    https://stablescouncil.org/payment-app/ (the Download button) or from the GitHub release
-   `StablesCouncil/stables-app`, tag `app-v0.0.11.63`, file `Stables_v0.0.11.63.apk`; verify
+   `StablesCouncil/stables-app`, tag `app-v0.0.11.88`, file `Stables_v0.0.11.88.apk`; verify
    the SHA-256 published with the release. Install a new version over the old one and never
    uninstall: the wallet stays on the device.
-2. **Minima Core companion, v0.0.11.63, published 2026-09-06 (first released at v0.0.11.60 the same day), pairing-tested, not rehearsed.** For
+2. **Minima Core companion, v0.0.11.88, testing release 2026-09-10 (first released at v0.0.11.60 on 2026-09-05), pairing-tested, not rehearsed.** For
    phones that already run the official Minima Core Android app: the companion has no node of its
    own and no Internet permission; it pairs with Core on the same phone and uses Core's node and
-   wallet. Same GitHub release, file `StablesCore_v0.0.11.63.apk`, same signing certificate, and
+   wallet. Same GitHub release, file `StablesCore_v0.0.11.88.apk`, same signing certificate, and
    the second Download button on the access page. Sends through Core need the payment code set in
    the app. Tested on one phone (reconnect, claim, mint, partial and full burn, each on the chain);
    the three-wallet rehearsal has not happened yet.
-3. **Coming soon:** the MiniDapp package for MinimaOS and the web build. Say "coming soon";
-   neither is downloadable today.
-4. **Local development web preview.** From the repo, serve the website tree and open
-   `http://localhost:8080/dapp/3-test/`. This path is for developers, not testers.
+3. **MinimaOS MiniDapp, v0.0.11.88 testing release.** Install or update `Stables_v0.0.11.88.mds.zip` through the MinimaOS hub. It uses that node and its wallet. An existing installation does not update automatically when the download changes.
+4. **Web app, v0.0.11.88 testing release.** Open `https://stablescouncil.org/dapp/3-test/` and connect a node for chain operations. The browser does not contain an embedded node.
 
-## What is new in v0.0.11.63 (2026-09-06): the battery release
+This coordinated update succeeds public v0.0.11.63. All four access options are listed at https://stablescouncil.org/payment-app/.
+
+## Startup and retail testing groundwork in v0.0.11.88
+
+Currency notes are grouped by wallet address, with amounts, ages and individual selection retained. Select all covers every address.
+
+The standalone app opens while its node starts. Payment actions still require fresh node status and wallet proofs. Failed proofs remain retryable, and concurrent receive-address requests share one node read. Faster screen loading is not proof of cold-payment readiness or battery efficiency.
+
+Retail testing groundwork binds incoming payment matching to invoice identity, recipient, token, exact amount and expiry, and checks confirmation policy again before release. Merchant business tools remain deferred from the public test scope. Broadcast detection is not block confirmation; no extra Maxima submission message is required.
+
+## Other changes included since public v0.0.11.63 (developed through v0.0.11.82)
+
+**Each currency says what is still arriving.** A faucet claim or a mint only counts in your balance
+once the network has confirmed it, which takes a few minutes. Until then the figure on a currency row
+did not include it, and nothing on the screen said so, so a person could not tell whether the amount
+they had just claimed was already counted. The row now carries the amount on its own, for example
+"+1,000.00", directly under the balance, with no wording at all. It appears only while that amount is
+genuinely not yet in the figure above it, so a plus figure always means "on top of what you can see"
+and no plus figure means everything is counted. It disappears by itself once the amount is final. A
+faucet claim or a mint adds no plus figure, because the app credits those to your balance the moment
+they are sent and there is nothing left to add; the row still pulses gently while it confirms. The currency pinned at the top of the wallet, which
+is where most people look first, had no settling signal at all before this and now carries the same
+line. If the app cannot prove your balance yet it shows no figure and no arriving line either: an
+unproven number is never shown as though it were current.
+
+**MAX offers only what you can actually spend.** Claiming Winiwa and then pressing MAX on the Mint
+page could put more in the field than the wallet could pay, and the mint was refused with "Not enough
+Winiwa in your wallet". A claim belongs to you the moment it lands and shows in your balance straight
+away, but coins cannot be spent until the network has confirmed them a few blocks later. MAX now
+reads what can actually be moved, so it can never offer more than the network will accept. A payment
+on its way out still lowers your balance immediately.
+**The xWiniwa vault runs as four independent lanes.** A mint and a burn no longer wait for each
+other and can be confirmed in the same block.
+
+**Your app can help someone who has just installed Stables.** A brand new install after a quiet day
+cannot see the faucet or the vault, because a node only sees coins its own window still reaches. Your
+app can publish a small proof to Minima that any node reads for itself, with no server in the way.
+You can turn this off, and the app now says whether it wrote and why not.
+
+**Other changes.** Opening the app no longer stalls while every repeating job fires at once. Mint
+prices xWiniwa in Winiwa rather than leaving the price line empty. Exchange says when it opens
+instead of quoting an order book this release does not include, and a button that cannot be pressed
+is shown as unavailable. A currency this test does not have says so instead of showing a balance of
+0. Hiding your amounts now also stops the settling animation, which previously still signalled that
+money was landing.
+## What was new in v0.0.11.63 (2026-09-06): the battery release
 
 Everything in this release is about what the app asks its node when nobody is waiting on anything,
 measured on a phone before and after.

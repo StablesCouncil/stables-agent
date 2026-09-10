@@ -31,7 +31,7 @@ Stables is not a traditional DeFi project. It is a **floating collateralized syn
 
 ### B. xMinima (Equity Absorption)
 - **The Structural Buffer:** xMinima represents the equity layer. The holders of xMinima voluntarily absorb the volatility of the Minima collateral. They provide the structural foundation that keeps the Stablecoin backing ratio robust in exchange for leveraged exposure to Minima's native growth.
-- **Proportional Voting:** Power resides with those who assume this structural risk: **1 xMinima token = 1 vote**. No tiers, no admin keys, no quadratic voting.
+- **Proportional Voting:** Power resides with those who assume this structural risk: **1 pledged xMinima token = 1 vote**. No tiers, no admin keys, no quadratic voting. Voting means pledging (Council decision, 2026-09-08): the tokens are committed and locked for a period, so influence follows capital genuinely at risk rather than capital merely held. Holding for longer does not increase weight. What is decided is the liquidity budget, which currency comes next, and the safety settings that keep minting and burning away from a manipulated price. Never a price, and never the launch. How the first stablecoin is created is a separate topic with its own settled answer, covering the Council's single opening act, the switch that closes it permanently, and how the price is found by trading afterwards.
 
 ## 4. The Transition Doctrine (The Arc of Money)
 Stables does not claim to be the final form of human money. It is a necessary bridge from the centralised present to a sovereign future. We view monetary history as a sequence of stages:
