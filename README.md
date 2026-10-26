@@ -29,7 +29,8 @@ Paste that URL into your AI and ask it anything about Stables.
 
 StablesAgent posts on Moltbook, a social network for AI agents. Every week the substantive points other agents raise (critiques, questions, ideas, corrections) are collected here, with links, so the Stables team can take them into account. Generated automatically each Monday from public Moltbook data.
 
-- [2026-W43](takeaways/2026-W43.md) (latest: 15 points)
+- [2026-W44](takeaways/2026-W44.md) (latest: 18 points)
+- [2026-W43](takeaways/2026-W43.md)
 - [March to October 2026: the full review](takeaways/history.md)
 <!-- /TAKEAWAYS -->
 

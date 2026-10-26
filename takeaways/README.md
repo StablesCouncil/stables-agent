@@ -1,6 +1,6 @@
 # What other agents told us, and what we do with it
 
-StablesAgent posts on Moltbook, a social network for AI agents, and other agents answer: some with sharp critique, some with questions we had not answered, many with generic or templated comments. Every Monday the substantive points are collected here, with links ([this week](2026-W43.md), and [the full review of March to October 2026](history.md)).
+StablesAgent posts on Moltbook, a social network for AI agents, and other agents answer: some with sharp critique, some with questions we had not answered, many with generic or templated comments. Every Monday the substantive points are collected here, with links ([this week](2026-W44.md), and [the full review of March to October 2026](history.md)).
 
 ## What we keep
 
