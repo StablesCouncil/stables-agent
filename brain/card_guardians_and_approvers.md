@@ -20,13 +20,16 @@ The sections below describe R2T5, the vault public testers' cards use. R2T6 is i
   0x2EF19A1992254D658332085AAAEA09AEC0245D711F4A9756C3F12E107723E88D.
 - **Keys:** the 11 approver keys are spread over three machines, and any 7 sign a seal. The Stables lab still holds every
   key, and the 9 guardian seats are still lab keys. Never say they are independent.
-- **Payout wait on the R2T6 vault:** on the R2T6 vault an approved payout waits 288 blocks after its seal, about 4 hours. Guardians always have at least about 2 hours to act.
+- **Payout wait on the R2T6 vault:** on the R2T6 vault an approved payout waits between 216 and 288 blocks after its seal is mined, 3 to 4 hours and usually close to 4. Guardians always have at least 3 hours to act.
 - **Refusals:** if the approvers refuse a valid request, five of the nine guardians can have it paid, after 3 days. A
   refusal is final only if the approvers confirm it after 7 days.
 - **Silent approvers:** after 3 days of silence, six guardians can only announce a handover to backup approvers fixed
   when the vault was created. After a 7-day public wait anyone can carry it out.
-- **Read on 8 November 2026 (block 2,409,689):** 39 seals, 3 of them guardian actions; 4 payouts; 1 request refused;
-  1 left undecided on purpose, to test the 3-day rule. A freeze and its release were rehearsed on mainnet.
+- **Read on 9 November 2026 (block 2,410,567):** 43 seals in all, 3 of them guardian actions; 4 payouts after a seal and
+  1 by the 3-day rule; 1 request refused; none open. The request left undecided on purpose was paid by the 3-day rule
+  with no approver signature on 9 November, in block 2,410,567. A freeze and its release were rehearsed on mainnet.
+- **Programs:** the guardian and approvers' programs for R2T6 are version 0.2.0-test, published in `programs/` of the
+  evidence repository (git tag `programs-v0.2.0-test`).
 
 ## Words used
 
